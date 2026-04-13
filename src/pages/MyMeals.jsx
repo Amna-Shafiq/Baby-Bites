@@ -1,6 +1,7 @@
 import { useState } from "react";
 import TopNav from "../components/TopNav";
 import useCustomMeals from "../hooks/useCustomMeals";
+import LoginPromptModal from "../components/LoginPromptModal";
 
 function MyMeals() {
   const { session, customMeals, householdFoods, addCustomMeal, addHouseholdFood, removeHouseholdFood, error, loading } =
@@ -16,6 +17,7 @@ function MyMeals() {
   const [householdFood, setHouseholdFood] = useState("");
   const [status, setStatus] = useState("");
   const [pantryStatus, setPantryStatus] = useState("");
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const submitMeal = async (e) => {
     e.preventDefault();
@@ -49,7 +51,11 @@ function MyMeals() {
     setPantryStatus("");
     const result = await addHouseholdFood(householdFood);
     if (result.error) {
-      setPantryStatus(result.error);
+      if (result.error === "Please log in to add foods to your pantry.") {
+        setShowLoginModal(true);
+      } else {
+        setPantryStatus(result.error);
+      }
       return;
     }
 
@@ -67,6 +73,7 @@ function MyMeals() {
   return (
     <div className="page">
       <TopNav />
+      {showLoginModal && <LoginPromptModal onClose={() => setShowLoginModal(false)} />}
       <h1>My Meals</h1>
       {!session ? <p className="muted">Login required to manage your meals.</p> : null}
       {error ? <p className="muted">{error}</p> : null}
