@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import useCustomMeals from "../hooks/useCustomMeals";
 import LoginPromptModal from "../components/LoginPromptModal";
+import PantrySearch from "../components/PantrySearch";
 
 function MyMeals() {
-  const { session, customMeals, householdFoods, addCustomMeal, addHouseholdFood, removeHouseholdFood, error, loading } =
+  const { session, customMeals, householdFoods, mealSuggestions, addCustomMeal, addHouseholdFood, removeHouseholdFood, error, loading } =
     useCustomMeals();
 
   const [title, setTitle] = useState("");
@@ -14,7 +16,6 @@ function MyMeals() {
   const [ingredientsText, setIngredientsText] = useState("");
   const [steps, setSteps] = useState("");
   const [nutritionHighlight, setNutritionHighlight] = useState("");
-  const [householdFood, setHouseholdFood] = useState("");
   const [status, setStatus] = useState("");
   const [pantryStatus, setPantryStatus] = useState("");
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -46,10 +47,9 @@ function MyMeals() {
     setStatus("Meal added.");
   };
 
-  const submitHouseholdFood = async (e) => {
-    e.preventDefault();
+  const handleAddFood = async (food) => {
     setPantryStatus("");
-    const result = await addHouseholdFood(householdFood);
+    const result = await addHouseholdFood({ name: food.name, food_id: food.id });
     if (result.error) {
       if (result.error === "Please log in to add foods to your pantry.") {
         setShowLoginModal(true);
@@ -58,16 +58,9 @@ function MyMeals() {
       }
       return;
     }
-
-    const dupMsg = result.duplicates?.length
-      ? `${result.duplicates.join(", ")} ${result.duplicates.length === 1 ? "is" : "are"} already in your pantry.`
-      : "";
-    const addMsg = result.added > 0
-      ? `${result.added} food${result.added > 1 ? "s" : ""} added!`
-      : "";
-
-    setPantryStatus([addMsg, dupMsg].filter(Boolean).join(" "));
-    if (result.added > 0) setHouseholdFood("");
+    if (result.duplicates?.length) {
+      setPantryStatus(`${result.duplicates[0]} is already in your pantry.`);
+    }
   };
 
   return (
@@ -85,17 +78,9 @@ function MyMeals() {
           Tell us what foods you have at home and we'll include them when suggesting meals you can make.
         </p>
 
-        <form onSubmit={submitHouseholdFood} style={{ display: "flex", gap: 10 }}>
-          <input
-            className="input"
-            value={householdFood}
-            onChange={(e) => setHouseholdFood(e.target.value)}
-            placeholder="e.g. rice, lentils, carrots"
-          />
-          <button type="submit" className="btn btn-primary" style={{ whiteSpace: "nowrap" }}>
-            Add to pantry
-          </button>
-        </form>
+        <div style={{ display: "flex", gap: 10 }}>
+          <PantrySearch onAdd={handleAddFood} existingFoods={householdFoods} />
+        </div>
 
         {pantryStatus && (
           <p style={{ marginTop: 10, fontSize: "0.85rem", color: "var(--muted)", fontWeight: 600 }}>
@@ -214,6 +199,37 @@ function MyMeals() {
           </button>
         </form>
       </section>
+
+      {mealSuggestions.length > 0 && (
+        <section className="panel">
+          <h2 style={{ marginBottom: "0.3rem" }}>Meals you can make</h2>
+          <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1.2rem", lineHeight: 1.6 }}>
+            Based on what's in your pantry — every ingredient is covered.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {mealSuggestions.map((meal) => (
+              <Link
+                key={meal.id}
+                to={`/meals/${meal.id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <div className="card" style={{ cursor: "pointer" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
+                    <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>
+                    <span className={`badge badge-${meal.meal_type}`} style={{ flexShrink: 0 }}>
+                      {meal.meal_type}
+                    </span>
+                  </div>
+                  <p className="muted" style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>
+                    {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months} months
+                    {meal.prep_time_minutes ? ` · ${meal.prep_time_minutes} min` : ""}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="panel">
         <h3>My added meals</h3>

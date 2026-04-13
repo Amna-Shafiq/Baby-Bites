@@ -5,6 +5,7 @@ function useCustomMeals() {
   const [session, setSession] = useState(null);
   const [customMeals, setCustomMeals] = useState([]);
   const [householdFoods, setHouseholdFoods] = useState([]);
+  const [mealSuggestions, setMealSuggestions] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -54,6 +55,27 @@ function useCustomMeals() {
     loadData();
   }, [loadData]);
 
+  // Recompute meal suggestions whenever pantry changes
+  useEffect(() => {
+    if (!supabase || !userId) { setMealSuggestions([]); return; }
+
+    const pantryFoodIds = new Set(householdFoods.map((f) => f.food_id).filter(Boolean));
+    if (pantryFoodIds.size === 0) { setMealSuggestions([]); return; }
+
+    supabase
+      .from("meals")
+      .select("id, title, meal_slot, meal_type, min_age_months, max_age_months, prep_time_minutes, nutrition_highlight, meal_foods(food_id)")
+      .eq("is_public", true)
+      .then(({ data }) => {
+        const suggestions = (data || []).filter(
+          (meal) =>
+            meal.meal_foods.length > 0 &&
+            meal.meal_foods.every((mf) => pantryFoodIds.has(mf.food_id))
+        );
+        setMealSuggestions(suggestions);
+      });
+  }, [userId, householdFoods]);
+
   const addCustomMeal = useCallback(
     async (payload) => {
       if (!supabase || !userId) return { error: "Please login first." };
@@ -77,39 +99,26 @@ function useCustomMeals() {
   );
 
   const addHouseholdFood = useCallback(
-    async (name) => {
-      if (!supabase)      return { error: "Supabase not configured." };
-      if (!userId)        return { error: "Please log in to add foods to your pantry." };
-      if (!name?.trim())  return { error: "Please enter at least one food." };
+    async ({ name, food_id }) => {
+      if (!supabase) return { error: "Supabase not configured." };
+      if (!userId)   return { error: "Please log in to add foods to your pantry." };
+      if (!name?.trim()) return { error: "Please select a food." };
 
-      const items = name
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
+      // Duplicate check: by food_id if available, otherwise by stem
+      const stem = (s) => s.toLowerCase().replace(/es$/, "").replace(/s$/, "");
+      const isDupe = food_id
+        ? householdFoods.some((f) => f.food_id === food_id)
+        : householdFoods.some((f) => stem(f.name) === stem(name));
 
-      if (items.length === 0) return { error: "Please enter at least one food." };
+      if (isDupe) return { error: null, duplicates: [name], added: 0 };
 
-      // Normalize: lowercase + strip trailing 's'/'es' for singular/plural matching
-      const stem = (s) => s.toLowerCase().replace(/es$/, '').replace(/s$/, '');
-      const existingStems = householdFoods.map((f) => stem(f.name));
-      const isDupe = (item) => existingStems.includes(stem(item));
-      const duplicates = items.filter((item) => isDupe(item));
-      const newItems   = items.filter((item) => !isDupe(item));
+      const { error } = await supabase
+        .from("household_foods")
+        .insert({ user_id: userId, name: name.trim(), food_id: food_id || null });
 
-      if (newItems.length === 0) {
-        // Everything was a duplicate — nothing to insert
-        return {
-          error: null,
-          duplicates,
-          added: 0,
-        };
-      }
-
-      const rows = newItems.map((item) => ({ user_id: userId, name: item }));
-      const { error } = await supabase.from("household_foods").insert(rows);
       if (error) return { error: error.message };
       await loadData();
-      return { error: null, duplicates, added: newItems.length };
+      return { error: null, duplicates: [], added: 1 };
     },
     [loadData, userId, householdFoods]
   );
@@ -136,6 +145,7 @@ function useCustomMeals() {
     error,
     customMeals,
     householdFoods,
+    mealSuggestions,
     addCustomMeal,
     addHouseholdFood,
     removeHouseholdFood,
