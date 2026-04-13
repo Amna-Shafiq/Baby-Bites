@@ -78,7 +78,9 @@ function useCustomMeals() {
 
   const addHouseholdFood = useCallback(
     async (name) => {
-      if (!supabase || !userId || !name?.trim()) return { error: "Invalid household food." };
+      if (!supabase)      return { error: "Supabase not configured." };
+      if (!userId)        return { error: "Please log in to add foods to your pantry." };
+      if (!name?.trim())  return { error: "Please enter at least one food." };
 
       const items = name
         .split(",")

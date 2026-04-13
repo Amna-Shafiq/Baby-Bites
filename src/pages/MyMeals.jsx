@@ -85,7 +85,7 @@ function MyMeals() {
             onChange={(e) => setHouseholdFood(e.target.value)}
             placeholder="e.g. rice, lentils, carrots"
           />
-          <button type="submit" className="btn btn-primary" disabled={!session} style={{ whiteSpace: "nowrap" }}>
+          <button type="submit" className="btn btn-primary" style={{ whiteSpace: "nowrap" }}>
             Add to pantry
           </button>
         </form>
