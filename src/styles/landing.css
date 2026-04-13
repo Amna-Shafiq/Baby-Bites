@@ -1,35 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Nunito:wght@400;500;600;700&display=swap');
-
 /* ── Root container ── */
+/* Variables and fonts are now global (index.css) */
 .landing-page {
-  --yellow: #FFF3C4;
-  --yellow-mid: #FFE580;
-  --yellow-dark: #C4920A;
-  --orange: #FFE4CC;
-  --orange-mid: #FFB87A;
-  --orange-dark: #C4622A;
-  --blue: #D6EAF8;
-  --blue-mid: #89C4E1;
-  --blue-dark: #1A6A9A;
-  --green: #D5F5E3;
-  --green-mid: #82E0AA;
-  --green-dark: #1A7A44;
-  --cream: #FFFDF5;
-  --white: #FFFFFF;
-  --dark: #2D2416;
-  --text: #4A3728;
-  --muted: #9A7B6A;
-  --border: #EDE0CC;
-  font-family: 'Nunito', sans-serif;
-  background: var(--cream);
-  color: var(--text);
   overflow-x: hidden;
-}
-
-/* Heading fonts — override the global Baloo 2 */
-.landing-page h1,
-.landing-page h2 {
-  font-family: 'Fraunces', serif;
 }
 
 /* Reset link colour inside landing page */

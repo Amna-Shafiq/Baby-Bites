@@ -8,7 +8,6 @@ function TopNav() {
 
   useEffect(() => {
     if (!supabase) return;
-
     let active = true;
 
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -42,29 +41,31 @@ function TopNav() {
     <nav className="top-nav">
       <div className="top-nav-inner">
         <NavLink to="/" end className="brand">
+          <span className="brand-dot" />
           Baby Bites
         </NavLink>
 
         <div className="top-nav-links">
           <NavLink to="/explore">Explore</NavLink>
-          <NavLink to="/foods">All Foods</NavLink>
+          <NavLink to="/foods">Foods</NavLink>
           <NavLink to="/meals">Meals</NavLink>
           <NavLink to="/my-meals">My Meals</NavLink>
         </div>
 
         <div className="top-nav-actions">
           {session ? (
-            <div className="profile-circle" title="Your profile">
-              {profileInitial}
-            </div>
-          ) : null}
-
-          {session ? (
-            <button type="button" className="btn" onClick={handleSignOut}>
-              Sign out
-            </button>
+            <>
+              <div className="profile-circle" title="Your profile">
+                {profileInitial}
+              </div>
+              <button type="button" className="btn" onClick={handleSignOut}>
+                Sign out
+              </button>
+            </>
           ) : (
-            <NavLink to="/login">Login</NavLink>
+            <button type="button" className="btn btn-primary" onClick={() => navigate("/login")}>
+              Get started
+            </button>
           )}
         </div>
       </div>
@@ -73,4 +74,3 @@ function TopNav() {
 }
 
 export default TopNav;
-
