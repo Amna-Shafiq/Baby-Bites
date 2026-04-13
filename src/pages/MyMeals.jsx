@@ -3,7 +3,7 @@ import TopNav from "../components/TopNav";
 import useCustomMeals from "../hooks/useCustomMeals";
 
 function MyMeals() {
-  const { session, customMeals, householdFoods, addCustomMeal, addHouseholdFood, error, loading } =
+  const { session, customMeals, householdFoods, addCustomMeal, addHouseholdFood, removeHouseholdFood, error, loading } =
     useCustomMeals();
 
   const [title, setTitle] = useState("");
@@ -15,6 +15,7 @@ function MyMeals() {
   const [nutritionHighlight, setNutritionHighlight] = useState("");
   const [householdFood, setHouseholdFood] = useState("");
   const [status, setStatus] = useState("");
+  const [pantryStatus, setPantryStatus] = useState("");
 
   const submitMeal = async (e) => {
     e.preventDefault();
@@ -45,14 +46,22 @@ function MyMeals() {
 
   const submitHouseholdFood = async (e) => {
     e.preventDefault();
-    setStatus("");
+    setPantryStatus("");
     const result = await addHouseholdFood(householdFood);
     if (result.error) {
-      setStatus(result.error);
+      setPantryStatus(result.error);
       return;
     }
-    setHouseholdFood("");
-    setStatus("Household food saved.");
+
+    const dupMsg = result.duplicates?.length
+      ? `${result.duplicates.join(", ")} ${result.duplicates.length === 1 ? "is" : "are"} already in your pantry.`
+      : "";
+    const addMsg = result.added > 0
+      ? `${result.added} food${result.added > 1 ? "s" : ""} added!`
+      : "";
+
+    setPantryStatus([addMsg, dupMsg].filter(Boolean).join(" "));
+    if (result.added > 0) setHouseholdFood("");
   };
 
   return (
@@ -64,22 +73,86 @@ function MyMeals() {
       {status ? <p className="muted">{status}</p> : null}
 
       <section className="panel">
-        <h3>Add household food</h3>
-        <form onSubmit={submitHouseholdFood} className="filters">
+        <h2 style={{ marginBottom: "0.3rem" }}>What's in your pantry?</h2>
+        <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1.2rem", lineHeight: 1.6 }}>
+          Tell us what foods you have at home and we'll include them when suggesting meals you can make.
+        </p>
+
+        <form onSubmit={submitHouseholdFood} style={{ display: "flex", gap: 10 }}>
           <input
             className="input"
             value={householdFood}
             onChange={(e) => setHouseholdFood(e.target.value)}
-            placeholder="e.g. Khichdi, dal soup, soft roti mash"
+            placeholder="e.g. rice, lentils, carrots"
           />
-          <button type="submit" className="btn btn-primary" disabled={!session}>
-            Save food
+          <button type="submit" className="btn btn-primary" disabled={!session} style={{ whiteSpace: "nowrap" }}>
+            Add to pantry
           </button>
         </form>
 
-        {householdFoods.length > 0 ? (
-          <p className="muted">Common foods: {householdFoods.map((f) => f.name).join(", ")}</p>
-        ) : null}
+        {pantryStatus && (
+          <p style={{ marginTop: 10, fontSize: "0.85rem", color: "var(--muted)", fontWeight: 600 }}>
+            {pantryStatus}
+          </p>
+        )}
+
+        {/* ── Pantry items ── */}
+        {householdFoods.length > 0 && (
+          <div style={{ marginTop: "1.4rem" }}>
+            <p style={{
+              fontSize: "0.72rem", fontWeight: 700, color: "var(--muted)",
+              textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.7rem"
+            }}>
+              In your pantry — {householdFoods.length} item{householdFoods.length !== 1 ? "s" : ""}
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {householdFoods.map((food) => (
+                <span key={food.id} style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  padding: "5px 10px 5px 13px",
+                  background: "var(--yellow)",
+                  border: "1px solid var(--yellow-mid)",
+                  borderRadius: "100px",
+                  fontSize: "0.82rem",
+                  fontWeight: 700,
+                  color: "var(--yellow-dark)",
+                }}>
+                  {food.name}
+                  <button
+                    type="button"
+                    onClick={() => removeHouseholdFood(food.id)}
+                    title="Remove from pantry"
+                    style={{
+                      background: "var(--yellow-mid)",
+                      border: "none",
+                      cursor: "pointer",
+                      color: "var(--yellow-dark)",
+                      fontSize: "0.7rem",
+                      lineHeight: 1,
+                      width: 18,
+                      height: 18,
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: 900,
+                    }}
+                  >
+                    ✕
+                  </button>
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {householdFoods.length === 0 && session && !pantryStatus && (
+          <p className="muted" style={{ marginTop: "1rem", fontSize: "0.85rem" }}>
+            Your pantry is empty — add some foods above to get started.
+          </p>
+        )}
       </section>
 
       <section className="panel">

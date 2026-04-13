@@ -87,8 +87,37 @@ function useCustomMeals() {
 
       if (items.length === 0) return { error: "Please enter at least one food." };
 
-      const rows = items.map((item) => ({ user_id: userId, name: item }));
+      // Case-insensitive duplicate check against already-loaded pantry
+      const existingNames = householdFoods.map((f) => f.name.toLowerCase());
+      const duplicates = items.filter((item) => existingNames.includes(item.toLowerCase()));
+      const newItems   = items.filter((item) => !existingNames.includes(item.toLowerCase()));
+
+      if (newItems.length === 0) {
+        // Everything was a duplicate — nothing to insert
+        return {
+          error: null,
+          duplicates,
+          added: 0,
+        };
+      }
+
+      const rows = newItems.map((item) => ({ user_id: userId, name: item }));
       const { error } = await supabase.from("household_foods").insert(rows);
+      if (error) return { error: error.message };
+      await loadData();
+      return { error: null, duplicates, added: newItems.length };
+    },
+    [loadData, userId, householdFoods]
+  );
+
+  const removeHouseholdFood = useCallback(
+    async (id) => {
+      if (!supabase || !userId) return { error: "Please login first." };
+      const { error } = await supabase
+        .from("household_foods")
+        .delete()
+        .eq("id", id)
+        .eq("user_id", userId);
       if (error) return { error: error.message };
       await loadData();
       return { error: null };
@@ -105,6 +134,7 @@ function useCustomMeals() {
     householdFoods,
     addCustomMeal,
     addHouseholdFood,
+    removeHouseholdFood,
     reloadCustomMeals: loadData,
   };
 }
