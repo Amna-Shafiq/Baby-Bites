@@ -89,10 +89,12 @@ function useCustomMeals() {
 
       if (items.length === 0) return { error: "Please enter at least one food." };
 
-      // Case-insensitive duplicate check against already-loaded pantry
-      const existingNames = householdFoods.map((f) => f.name.toLowerCase());
-      const duplicates = items.filter((item) => existingNames.includes(item.toLowerCase()));
-      const newItems   = items.filter((item) => !existingNames.includes(item.toLowerCase()));
+      // Normalize: lowercase + strip trailing 's'/'es' for singular/plural matching
+      const stem = (s) => s.toLowerCase().replace(/es$/, '').replace(/s$/, '');
+      const existingStems = householdFoods.map((f) => stem(f.name));
+      const isDupe = (item) => existingStems.includes(stem(item));
+      const duplicates = items.filter((item) => isDupe(item));
+      const newItems   = items.filter((item) => !isDupe(item));
 
       if (newItems.length === 0) {
         // Everything was a duplicate — nothing to insert
