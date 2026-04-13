@@ -79,10 +79,16 @@ function useCustomMeals() {
   const addHouseholdFood = useCallback(
     async (name) => {
       if (!supabase || !userId || !name?.trim()) return { error: "Invalid household food." };
-      const { error } = await supabase.from("household_foods").insert({
-        user_id: userId,
-        name: name.trim(),
-      });
+
+      const items = name
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      if (items.length === 0) return { error: "Please enter at least one food." };
+
+      const rows = items.map((item) => ({ user_id: userId, name: item }));
+      const { error } = await supabase.from("household_foods").insert(rows);
       if (error) return { error: error.message };
       await loadData();
       return { error: null };
