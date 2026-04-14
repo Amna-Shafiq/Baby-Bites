@@ -27,7 +27,7 @@ function Home() {
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { activeBaby } = useActiveBaby();
+  const { activeBaby, babies, switchBaby } = useActiveBaby();
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -87,8 +87,40 @@ function Home() {
                 position: "absolute", right: 0, top: "calc(100% + 6px)",
                 background: "var(--white)", border: "1.5px solid var(--border)",
                 borderRadius: 14, boxShadow: "0 8px 28px rgba(45,36,22,0.13)",
-                minWidth: 170, overflow: "hidden", zIndex: 300,
+                minWidth: 200, overflow: "hidden", zIndex: 300,
               }}>
+                {/* Baby switcher */}
+                {babies.length > 0 && (
+                  <>
+                    <p style={{ padding: "0.5rem 1rem 0.25rem", fontSize: "0.7rem", fontWeight: 800, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                      Switch baby
+                    </p>
+                    {babies.map((baby) => {
+                      const isActive = baby.id === activeBaby?.id;
+                      return (
+                        <button
+                          key={baby.id}
+                          type="button"
+                          onClick={() => { if (!isActive) switchBaby(baby.id); setMenuOpen(false); }}
+                          style={{
+                            width: "100%", textAlign: "left", padding: "0.55rem 1rem",
+                            background: isActive ? "var(--cream)" : "none",
+                            border: "none", cursor: isActive ? "default" : "pointer",
+                            fontSize: "0.88rem", fontWeight: 600,
+                            color: isActive ? "var(--orange-dark)" : "var(--dark)",
+                            display: "flex", alignItems: "center", gap: 8,
+                          }}
+                        >
+                          <span style={{ fontSize: "1rem" }}>{baby.avatar || "🐣"}</span>
+                          <span style={{ flex: 1 }}>{baby.name}</span>
+                          {isActive && <span style={{ fontSize: "0.7rem", color: "var(--orange-dark)" }}>✓</span>}
+                        </button>
+                      );
+                    })}
+                    <div style={{ borderTop: "1px solid var(--border)" }} />
+                  </>
+                )}
+
                 <Link
                   to="/profile"
                   onClick={() => setMenuOpen(false)}
