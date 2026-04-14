@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import useCustomMeals from "../hooks/useCustomMeals";
+import useFavorites from "../hooks/useFavorites";
 
 function MyMeals() {
   const { session, customMeals, addCustomMeal, error, loading } = useCustomMeals();
+  const { favoriteMeals, toggleFavorite } = useFavorites();
 
   const [title, setTitle]                     = useState("");
   const [minAgeMonths, setMinAgeMonths]       = useState("6");
@@ -86,6 +88,40 @@ function MyMeals() {
             Save meal
           </button>
         </form>
+      </section>
+
+      {/* ── Favourites ── */}
+      <section className="panel">
+        <h2 style={{ marginBottom: "0.3rem" }}>Saved favourites</h2>
+        <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1.2rem", lineHeight: 1.6 }}>
+          Meals you've hearted from the Meals page.
+        </p>
+        {favoriteMeals.length === 0 ? (
+          <p className="muted">No favourites yet — tap ♡ on any meal to save it here.</p>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {favoriteMeals.map((meal) => (
+              <div key={meal.id} className="card" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
+                <div>
+                  <Link to={`/meal/${meal.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+                    <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>
+                  </Link>
+                  <p className="muted" style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>
+                    {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months} months
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => toggleFavorite(meal.id)}
+                  title="Remove from favourites"
+                  style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.1rem", color: "#e74c3c", flexShrink: 0, padding: 4 }}
+                >
+                  ♥
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* ── My added meals ── */}
