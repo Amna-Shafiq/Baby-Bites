@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
+import useActiveBaby from "../hooks/useActiveBaby";
 
 function TopNav() {
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
+  const { activeBaby } = useActiveBaby();
 
   useEffect(() => {
     if (!supabase) return;
@@ -55,9 +57,10 @@ function TopNav() {
         <div className="top-nav-actions">
           {session ? (
             <>
-              <div className="profile-circle" title="Your profile">
-                {profileInitial}
-              </div>
+              <NavLink to="/profile" className="baby-nav-chip" title="My profile">
+                <span className="baby-nav-avatar">{activeBaby?.avatar || profileInitial}</span>
+                {activeBaby && <span className="baby-nav-name">{activeBaby.name}</span>}
+              </NavLink>
               <button type="button" className="btn" onClick={handleSignOut}>
                 Sign out
               </button>

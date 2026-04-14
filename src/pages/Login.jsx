@@ -11,6 +11,7 @@ function Login({ redirectTo = "/" }) {
   const [email, setEmail]             = useState("");
   const [password, setPassword]       = useState("");
   const [fullName, setFullName]       = useState("");
+  const [babyName, setBabyName]       = useState("");
   const [babyAgeMonths, setBabyAgeMonths] = useState("");
   const [babyDob, setBabyDob]         = useState("");
   const [error, setError]             = useState("");
@@ -33,7 +34,7 @@ function Login({ redirectTo = "/" }) {
     try {
       if (mode === "signUp") {
         if (!fullName.trim())                        throw new Error("Please enter your full name.");
-        if (!babyAgeMonths || Number(babyAgeMonths) < 0) throw new Error("Please enter a valid baby age in months.");
+        if (!babyName.trim())                        throw new Error("Please enter your baby's name.");
         if (!babyDob)                                throw new Error("Please select baby date of birth.");
 
         const { error } = await supabase.auth.signUp({
@@ -42,7 +43,7 @@ function Login({ redirectTo = "/" }) {
           options: {
             data: {
               full_name: fullName.trim(),
-              baby_age_months: Number(babyAgeMonths),
+              baby_name: babyName.trim(),
               baby_date_of_birth: babyDob,
             },
           },
@@ -97,16 +98,15 @@ function Login({ redirectTo = "/" }) {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   type="text"
-                  placeholder="Full name"
+                  placeholder="Your full name"
                   required
                 />
                 <input
                   className="input"
-                  value={babyAgeMonths}
-                  onChange={(e) => setBabyAgeMonths(e.target.value)}
-                  type="number"
-                  placeholder="Baby age (months)"
-                  min="0"
+                  value={babyName}
+                  onChange={(e) => setBabyName(e.target.value)}
+                  type="text"
+                  placeholder="Baby's name"
                   required
                 />
                 <label style={{ fontSize: "0.85rem", color: "var(--muted)", fontWeight: 600 }}>

@@ -6,6 +6,7 @@ import Explore from "./pages/Explore";
 import AllFoods from "./pages/AllFoods";
 import Meals from "./pages/Meals";
 import MyMeals from "./pages/MyMeals";
+import Profile from "./pages/Profile";
 import FallingVegetablesBackground from "./components/FallingVegetablesBackground";
 import AppFooter from "./components/AppFooter";
 import FoodDetail from "./pages/FoodDetail";
@@ -24,6 +25,7 @@ function App() {
           <Route path="/foods" element={<AllFoods />} />
           <Route path="/meals" element={<Meals />} />
           <Route path="/my-meals" element={<MyMeals />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/meal/:id" element={<MealPage />} />
           <Route path="/login" element={<Login redirectTo="/" />} />
           <Route path="/foods/:id" element={<FoodDetail />} />

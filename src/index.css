@@ -247,6 +247,33 @@ button { font-family: 'Nunito', sans-serif; }
   font-size: 0.82rem;
 }
 
+/* ── Baby nav chip ─────────────────────────────────── */
+.baby-nav-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 4px;
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  text-decoration: none;
+  color: var(--dark);
+  font-weight: 700;
+  font-size: 0.82rem;
+  transition: border-color 0.15s;
+}
+.baby-nav-chip:hover { border-color: var(--orange); }
+.baby-nav-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--orange);
+  display: grid;
+  place-items: center;
+  font-size: 0.95rem;
+}
+.baby-nav-name { max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
 /* ── App Footer ────────────────────────────────────── */
 .app-footer {
   background: var(--dark);

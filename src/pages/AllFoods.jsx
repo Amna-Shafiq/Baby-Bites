@@ -2,15 +2,24 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import { supabase } from "../lib/supabaseClient";
+import useActiveBaby from "../hooks/useActiveBaby";
 
 const PAGE_SIZE = 9;
 
 function AllFoods() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { activeBabyAgeMonths } = useActiveBaby();
   const [query, setQuery]         = useState("");
   const [age, setAge]             = useState("");
   const [tagFilter, setTagFilter] = useState(searchParams.get("tag") || "all");
+
+  // Pre-fill age from active baby
+  useEffect(() => {
+    if (activeBabyAgeMonths !== null && age === "") {
+      setAge(String(activeBabyAgeMonths));
+    }
+  }, [activeBabyAgeMonths]); // eslint-disable-line react-hooks/exhaustive-deps
   const [foods, setFoods]         = useState([]);
   const [error, setError]         = useState("");
   const [page, setPage]           = useState(1);

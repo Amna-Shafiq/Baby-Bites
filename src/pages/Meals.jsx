@@ -3,14 +3,26 @@ import { useNavigate } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import { supabase } from "../lib/supabaseClient";
 import useFavorites from "../hooks/useFavorites";
+import useActiveBaby from "../hooks/useActiveBaby";
 
 const PAGE_SIZE = 9;
 const SLOTS = ["all", "breakfast", "lunch", "dinner", "snack"];
 const TYPES = ["all", "quick", "fancy"];
 
+// Maps dietary flag → keywords to look for in allergen_notes
+const ALLERGEN_MAP = {
+  is_dairy_free:  ["dairy", "milk", "cheese", "butter", "cream", "lactose", "yogurt"],
+  is_egg_free:    ["egg"],
+  is_nut_free:    ["nut", "peanut", "almond", "cashew", "walnut", "pecan"],
+  is_soy_free:    ["soy", "tofu", "edamame"],
+  is_fish_free:   ["fish", "salmon", "tuna", "cod", "shellfish", "seafood"],
+  is_gluten_free: ["gluten", "wheat", "barley", "rye"],
+};
+
 function Meals() {
   const navigate = useNavigate();
   const { session, favoriteIds, toggleFavorite, favoritesError, toastMessage } = useFavorites();
+  const { activeBaby, activeBabyAgeMonths } = useActiveBaby();
 
   const [meals, setMeals]   = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,12 +34,19 @@ function Meals() {
   const [tab, setTab]       = useState("all");
   const [page, setPage]     = useState(1);
 
+  // Pre-fill age filter from active baby's DOB
+  useEffect(() => {
+    if (activeBabyAgeMonths !== null && age === "") {
+      setAge(String(activeBabyAgeMonths));
+    }
+  }, [activeBabyAgeMonths]); // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     const loadMeals = async () => {
       setLoading(true);
       const { data, error } = await supabase
         .from("meals")
-        .select("*")
+        .select("*, meal_foods(foods(allergen_notes))")
         .eq("is_public", true)
         .order("title", { ascending: true });
 
@@ -45,6 +64,11 @@ function Meals() {
     const searchText  = search.trim().toLowerCase();
     const selectedAge = Number(age);
 
+    // Build active dietary restrictions from baby profile
+    const activeAllergens = activeBaby
+      ? Object.entries(ALLERGEN_MAP).filter(([flag]) => activeBaby[flag])
+      : [];
+
     return meals.filter((meal) => {
       if (tab === "favorites" && !favoriteIds.includes(meal.id)) return false;
 
@@ -58,9 +82,20 @@ function Meals() {
       const byAge  = !age || (Number.isFinite(selectedAge) &&
         selectedAge >= meal.min_age_months && selectedAge <= meal.max_age_months);
 
-      return bySearch && bySlot && byType && byAge;
+      // Exclude meals whose ingredients contain allergens flagged on baby's profile
+      const byDiet = activeAllergens.length === 0 || (() => {
+        const allNotes = (meal.meal_foods || [])
+          .map((mf) => mf.foods?.allergen_notes || "")
+          .join(" ")
+          .toLowerCase();
+        return activeAllergens.every(([, keywords]) =>
+          !keywords.some((kw) => allNotes.includes(kw))
+        );
+      })();
+
+      return bySearch && bySlot && byType && byAge && byDiet;
     });
-  }, [meals, search, slot, type, age, tab, favoriteIds]);
+  }, [meals, search, slot, type, age, tab, favoriteIds, activeBaby]);
 
   const totalPages = Math.max(1, Math.ceil(filteredMeals.length / PAGE_SIZE));
   const pageMeals  = useMemo(() => {
@@ -79,6 +114,11 @@ function Meals() {
 
       <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>Browse</span>
       <h1>Meals</h1>
+      {activeBaby && (
+        <p className="page-sub" style={{ marginTop: "0.2rem" }}>
+          {activeBaby.avatar} Showing meals for <strong>{activeBaby.name}</strong> · {activeBabyAgeMonths}m
+        </p>
+      )}
 
       {/* ── Tabs ── */}
       <div className="tabs">
