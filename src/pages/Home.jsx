@@ -33,10 +33,10 @@ function Home() {
           Baby Bites
         </Link>
         <ul className="nav-links">
-          <li><a href="#features">Features</a></li>
-          <li><Link to="/meals">Meals</Link></li>
-          <li><Link to="/foods">Foods</Link></li>
           <li><Link to="/explore">Explore</Link></li>
+          <li><Link to="/foods">All Foods</Link></li>
+          <li><Link to="/meals">Meals</Link></li>
+          <li><Link to="/my-meals">Pantry</Link></li>
         </ul>
         <button className="nav-btn" onClick={() => navigate('/login')}>
           Get started free

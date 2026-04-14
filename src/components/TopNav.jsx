@@ -49,9 +49,9 @@ function TopNav() {
 
         <div className="top-nav-links">
           <NavLink to="/explore">Explore</NavLink>
-          <NavLink to="/foods">Foods</NavLink>
+          <NavLink to="/foods">All Foods</NavLink>
           <NavLink to="/meals">Meals</NavLink>
-          <NavLink to="/my-meals">My Meals</NavLink>
+          <NavLink to="/my-meals">Pantry</NavLink>
         </div>
 
         <div className="top-nav-actions">
