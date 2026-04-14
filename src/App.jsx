@@ -6,6 +6,7 @@ import Explore from "./pages/Explore";
 import AllFoods from "./pages/AllFoods";
 import Meals from "./pages/Meals";
 import MyMeals from "./pages/MyMeals";
+import Pantry from "./pages/Pantry";
 import Profile from "./pages/Profile";
 import FallingVegetablesBackground from "./components/FallingVegetablesBackground";
 import AppFooter from "./components/AppFooter";
@@ -26,6 +27,7 @@ function App() {
           <Route path="/foods" element={<AllFoods />} />
           <Route path="/meals" element={<Meals />} />
           <Route path="/my-meals" element={<ProtectedRoute><MyMeals /></ProtectedRoute>} />
+          <Route path="/pantry" element={<ProtectedRoute><Pantry /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/meal/:id" element={<MealPage />} />
           <Route path="/login" element={<Login redirectTo="/" />} />

@@ -36,7 +36,7 @@ function Home() {
           <li><Link to="/explore">Explore</Link></li>
           <li><Link to="/foods">All Foods</Link></li>
           <li><Link to="/meals">Meals</Link></li>
-          <li><Link to="/my-meals">Pantry</Link></li>
+          <li><Link to="/pantry">Pantry</Link></li>
         </ul>
         <button className="nav-btn" onClick={() => navigate('/login')}>
           Get started free
