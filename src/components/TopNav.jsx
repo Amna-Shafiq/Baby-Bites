@@ -52,6 +52,7 @@ function TopNav() {
           <NavLink to="/foods">All Foods</NavLink>
           <NavLink to="/meals">Meals</NavLink>
           <NavLink to="/pantry">Pantry</NavLink>
+          <NavLink to="/my-meals">My Meals</NavLink>
         </div>
 
         <div className="top-nav-actions">
