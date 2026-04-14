@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import FallingVegetablesBackground from "./components/FallingVegetablesBackground";
 import AppFooter from "./components/AppFooter";
 import FoodDetail from "./pages/FoodDetail";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const location = useLocation();
@@ -24,8 +25,8 @@ function App() {
           <Route path="/explore" element={<Explore />} />
           <Route path="/foods" element={<AllFoods />} />
           <Route path="/meals" element={<Meals />} />
-          <Route path="/my-meals" element={<MyMeals />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/my-meals" element={<ProtectedRoute><MyMeals /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/meal/:id" element={<MealPage />} />
           <Route path="/login" element={<Login redirectTo="/" />} />
           <Route path="/foods/:id" element={<FoodDetail />} />

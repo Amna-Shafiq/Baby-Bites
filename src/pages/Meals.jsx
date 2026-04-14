@@ -4,6 +4,7 @@ import TopNav from "../components/TopNav";
 import { supabase } from "../lib/supabaseClient";
 import useFavorites from "../hooks/useFavorites";
 import useActiveBaby from "../hooks/useActiveBaby";
+import LoginPromptModal from "../components/LoginPromptModal";
 
 const PAGE_SIZE = 9;
 const SLOTS = ["all", "breakfast", "lunch", "dinner", "snack"];
@@ -31,8 +32,9 @@ function Meals() {
   const [slot, setSlot]     = useState("all");
   const [type, setType]     = useState("all");
   const [age, setAge]       = useState("");
-  const [tab, setTab]       = useState("all");
-  const [page, setPage]     = useState(1);
+  const [tab, setTab]           = useState("all");
+  const [page, setPage]         = useState(1);
+  const [showAuthPrompt, setShowAuthPrompt] = useState(false);
 
   // Pre-fill age filter from active baby's DOB
   useEffect(() => {
@@ -103,6 +105,12 @@ function Meals() {
     return filteredMeals.slice(start, start + PAGE_SIZE);
   }, [filteredMeals, page]);
 
+  const handleFavoriteClick = (e, mealId) => {
+    e.stopPropagation();
+    if (!session) { setShowAuthPrompt(true); return; }
+    toggleFavorite(mealId);
+  };
+
   const label = (s) => s === "all" ? (s === slot ? "All slots" : "All types") : s.charAt(0).toUpperCase() + s.slice(1);
   const slotLabel = (s) => s === "all" ? "All slots" : s.charAt(0).toUpperCase() + s.slice(1);
   const typeLabel = (t) => t === "all" ? "All types" : t.charAt(0).toUpperCase() + t.slice(1);
@@ -111,6 +119,14 @@ function Meals() {
     <div className="page">
       <TopNav />
       {toastMessage && <div className="toast">{toastMessage}</div>}
+      {showAuthPrompt && (
+        <LoginPromptModal
+          onClose={() => setShowAuthPrompt(false)}
+          title="Sign in to get personalised meal suggestions for your baby"
+          message="Filter meals by your baby's age, save favourites, and track what's in your pantry."
+          icon="🍽️"
+        />
+      )}
 
       <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>Browse</span>
       <h1>Meals</h1>
@@ -149,6 +165,9 @@ function Meals() {
             value={age}
             onChange={(e) => setAge(e.target.value)}
             placeholder="Age (months)"
+            readOnly={!session}
+            onClick={() => { if (!session) setShowAuthPrompt(true); }}
+            style={{ cursor: !session ? "pointer" : undefined }}
           />
         </div>
       </div>
@@ -184,7 +203,23 @@ function Meals() {
       {!loading && !error && (
         <div className="foods-grid">
           {pageMeals.map((meal) => (
-            <div key={meal.id} className="food-card" onClick={() => navigate(`/meal/${meal.id}`)}>
+            <div key={meal.id} className="food-card" style={{ position: "relative" }} onClick={() => navigate(`/meal/${meal.id}`)}>
+
+              {/* Favourite heart */}
+              <button
+                type="button"
+                onClick={(e) => handleFavoriteClick(e, meal.id)}
+                title={favoriteIds.includes(meal.id) ? "Remove from favourites" : "Save to favourites"}
+                style={{
+                  position: "absolute", top: 8, right: 8, zIndex: 10,
+                  background: "none", border: "none", cursor: "pointer",
+                  fontSize: "1.15rem", lineHeight: 1, padding: 4,
+                  color: favoriteIds.includes(meal.id) ? "#e74c3c" : "var(--muted)",
+                  filter: favoriteIds.includes(meal.id) ? "none" : "opacity(0.55)",
+                }}
+              >
+                {favoriteIds.includes(meal.id) ? "♥" : "♡"}
+              </button>
 
               {/* Front */}
               <div className="food-card-front">

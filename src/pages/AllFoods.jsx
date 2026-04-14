@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import { supabase } from "../lib/supabaseClient";
 import useActiveBaby from "../hooks/useActiveBaby";
+import LoginPromptModal from "../components/LoginPromptModal";
 
 const PAGE_SIZE = 9;
 
@@ -10,9 +11,18 @@ function AllFoods() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { activeBabyAgeMonths } = useActiveBaby();
-  const [query, setQuery]         = useState("");
-  const [age, setAge]             = useState("");
-  const [tagFilter, setTagFilter] = useState(searchParams.get("tag") || "all");
+  const [query, setQuery]           = useState("");
+  const [age, setAge]               = useState("");
+  const [tagFilter, setTagFilter]   = useState(searchParams.get("tag") || "all");
+  const [session, setSession]       = useState(null);
+  const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+
+  useEffect(() => {
+    if (!supabase) return;
+    supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
+    const { data } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
+    return () => data?.subscription?.unsubscribe?.();
+  }, []);
 
   // Pre-fill age from active baby
   useEffect(() => {
@@ -61,6 +71,14 @@ function AllFoods() {
     <div className="page">
       <TopNav />
 
+      {showAuthPrompt && (
+        <LoginPromptModal
+          onClose={() => setShowAuthPrompt(false)}
+          title="Sign in to filter foods by your baby's age"
+          message="Create a free account to personalise food and meal suggestions for your baby."
+          icon="🥕"
+        />
+      )}
       <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>Library</span>
       <h1>All Foods</h1>
 
@@ -80,6 +98,9 @@ function AllFoods() {
             type="number"
             min="4"
             placeholder="Baby age (months)"
+            readOnly={!session}
+            onClick={() => { if (!session) setShowAuthPrompt(true); }}
+            style={{ cursor: !session ? "pointer" : undefined }}
           />
           <select className="input" value={tagFilter} onChange={(e) => setTagFilter(e.target.value)}>
             <option value="all">All categories</option>

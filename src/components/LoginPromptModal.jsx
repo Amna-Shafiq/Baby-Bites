@@ -1,7 +1,12 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function LoginPromptModal({ onClose }) {
+function LoginPromptModal({
+  onClose,
+  title   = "Sign in to get personalised meal suggestions for your baby",
+  message = "Create a free account to save favourites, filter meals by your baby's age, and track what's in your pantry.",
+  icon    = "🍼",
+}) {
   const navigate = useNavigate();
 
   // Close on Escape key
@@ -76,22 +81,21 @@ function LoginPromptModal({ onClose }) {
           fontSize: 28,
           margin: "0 auto 1.2rem",
         }}>
-          🥕
+          {icon}
         </div>
 
         {/* Heading */}
-        <h2 style={{ marginBottom: "0.5rem", fontSize: "1.3rem" }}>
-          Sign in to use your pantry
+        <h2 style={{ marginBottom: "0.5rem", fontSize: "1.2rem", lineHeight: 1.3 }}>
+          {title}
         </h2>
         <p style={{
           color: "var(--muted)",
           fontSize: "0.88rem",
           lineHeight: 1.6,
-          marginBottom: "1.8rem",
           maxWidth: 300,
           margin: "0 auto 1.8rem",
         }}>
-          Save the foods you have at home and get meal suggestions tailored to what's in your kitchen.
+          {message}
         </p>
 
         {/* Actions */}
