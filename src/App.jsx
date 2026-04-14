@@ -1,4 +1,5 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import MealPage from "./pages/MealPage";
 import Login from "./pages/Login";
@@ -15,7 +16,18 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = location.pathname === "/";
+
+  // After email confirmation, Supabase redirects back with #type=signup in the hash.
+  // Detect it on mount and send the user to the sign-in page.
+  useEffect(() => {
+    const hash = new URLSearchParams(window.location.hash.slice(1));
+    if (hash.get("type") === "signup") {
+      window.history.replaceState(null, "", window.location.pathname);
+      navigate("/login", { replace: true });
+    }
+  }, [navigate]);
 
   return (
     <div className="app-root">
