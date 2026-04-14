@@ -1,5 +1,8 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/landing.css';
+import { supabase } from '../lib/supabaseClient';
+import useActiveBaby from '../hooks/useActiveBaby';
 
 const STRIP_ITEMS = [
   { emoji: '🍌', name: 'Banana',       color: 'si-y' },
@@ -22,6 +25,36 @@ const STRIP_ITEMS = [
 
 function Home() {
   const navigate = useNavigate();
+  const [session, setSession] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { activeBaby } = useActiveBaby();
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    if (!supabase) return;
+    supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
+    const { data } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
+    return () => data?.subscription?.unsubscribe?.();
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handler = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [menuOpen]);
+
+  const profileInitial = useMemo(() => {
+    const src = (session?.user?.user_metadata?.full_name || session?.user?.email || "?").trim();
+    return src.charAt(0).toUpperCase();
+  }, [session]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    setMenuOpen(false);
+  };
 
   return (
     <div className="landing-page">
@@ -39,9 +72,45 @@ function Home() {
           <li><Link to="/pantry">Pantry</Link></li>
           <li><Link to="/my-meals">My Meals</Link></li>
         </ul>
-        <button className="nav-btn" onClick={() => navigate('/login')}>
-          Get started free
-        </button>
+        {session ? (
+          <div ref={menuRef} style={{ position: "relative" }}>
+            <button
+              type="button"
+              className="baby-nav-chip"
+              onClick={() => setMenuOpen((o) => !o)}
+            >
+              <span className="baby-nav-avatar">{activeBaby?.avatar || profileInitial}</span>
+              {activeBaby && <span className="baby-nav-name">{activeBaby.name}</span>}
+            </button>
+            {menuOpen && (
+              <div style={{
+                position: "absolute", right: 0, top: "calc(100% + 6px)",
+                background: "var(--white)", border: "1.5px solid var(--border)",
+                borderRadius: 14, boxShadow: "0 8px 28px rgba(45,36,22,0.13)",
+                minWidth: 170, overflow: "hidden", zIndex: 300,
+              }}>
+                <Link
+                  to="/profile"
+                  onClick={() => setMenuOpen(false)}
+                  style={{ display: "block", padding: "0.7rem 1rem", fontSize: "0.88rem", fontWeight: 600, color: "var(--dark)", textDecoration: "none", borderBottom: "1px solid var(--border)" }}
+                >
+                  My Profile
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  style={{ width: "100%", textAlign: "left", padding: "0.7rem 1rem", background: "none", border: "none", cursor: "pointer", fontSize: "0.88rem", fontWeight: 600, color: "#c0392b" }}
+                >
+                  Sign out
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <button className="nav-btn" onClick={() => navigate('/login')}>
+            Get started free
+          </button>
+        )}
       </nav>
 
       {/* ── Hero ── */}
