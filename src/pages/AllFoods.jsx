@@ -136,17 +136,17 @@ function AllFoods() {
           <div key={food.id} className="food-card" onClick={() => navigate(`/foods/${food.id}`)}>
 
             <div className="food-card-front">
-              {/* ── Add warning banner here ── */}
-    {food.is_warning && (
-      <div className="warning-banner" style={{
-        background: '#fdf0ef', border: '1.5px solid #c0392b',
-        borderRadius: 8, padding: '4px 8px', fontSize: 11,
-        color: '#c0392b', fontWeight: 700, marginBottom: 6,
-        width: '100%', textAlign: 'center'
-      }}>
-        ⚠️ Not safe before {formatAge(food.safe_from_months)}
-      </div>
-    )}
+              {/* ── Warning banner ── */}
+              {food.is_warning && (
+                <div className="warning-banner" style={{
+                  background: '#fdf0ef', border: '1.5px solid #c0392b',
+                  borderRadius: 8, padding: '4px 8px', fontSize: 11,
+                  color: '#c0392b', fontWeight: 700, marginBottom: 6,
+                  width: '100%', textAlign: 'center'
+                }}>
+                  ⚠️ Not safe before {formatAge(food.safe_from_months)}
+                </div>
+              )}
               <img
                 src={food.image_url}
                 alt={food.name}
@@ -154,6 +154,17 @@ function AllFoods() {
                 style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 12 }}
               />
               <p className="food-card-name">{food.name}</p>
+              {/* ── Allergen badge ── */}
+              {food.allergen_notes && (
+                <span style={{
+                  display: "inline-block", marginTop: 4,
+                  background: "#fdf0ef", border: "1px solid #c0392b",
+                  borderRadius: 6, padding: "2px 7px",
+                  fontSize: 10, color: "#c0392b", fontWeight: 700,
+                }}>
+                  ⚠️ Allergen
+                </span>
+              )}
             </div>
 
             <div className="food-card-details">
@@ -161,7 +172,7 @@ function AllFoods() {
               <p className="food-detail-row">Safe from: <strong>{food.safe_from_months}m+</strong></p>
               <p className="food-detail-row">Group: <strong>{food.food_group || "other"}</strong></p>
               <p className="food-detail-row">Iron rich: <strong>{food.is_iron_rich ? "✓ Yes" : "No"}</strong></p>
-              {food.is_high_allergen && (
+              {food.allergen_notes && (
                 <p className="food-allergen">⚠️ {food.allergen_notes}</p>
               )}
               <p style={{ fontSize: "0.75rem", color: "var(--orange-dark)", marginTop: 6, fontWeight: 700 }}>
