@@ -151,7 +151,13 @@ function Explore() {
 
       {/* Error */}
       {!loading && error && (
-        <p className="muted" style={{ color: "#c0392b", marginBottom: "1.25rem" }}>{error}</p>
+        <div style={{
+          background: "#fdf0ef", border: "1.5px solid #c0392b",
+          borderRadius: 10, padding: "0.75rem 1rem", marginBottom: "1.25rem",
+          color: "#c0392b", fontSize: "0.85rem",
+        }}>
+          {error}
+        </div>
       )}
 
       {/* Answer */}
