@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import { supabase } from "../lib/supabaseClient";
-import useActiveBaby from "../hooks/useActiveBaby";
 import LoginPromptModal from "../components/LoginPromptModal";
 
 const PAGE_SIZE = 9;
@@ -10,7 +9,7 @@ const PAGE_SIZE = 9;
 function AllFoods() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { activeBabyAgeMonths } = useActiveBaby();
+
   const [query, setQuery]           = useState("");
   const [age, setAge]               = useState("");
   const [tagFilter, setTagFilter]   = useState(searchParams.get("tag") || "all");
@@ -24,12 +23,6 @@ function AllFoods() {
     return () => data?.subscription?.unsubscribe?.();
   }, []);
 
-  // Pre-fill age from active baby
-  useEffect(() => {
-    if (activeBabyAgeMonths !== null && age === "") {
-      setAge(String(activeBabyAgeMonths));
-    }
-  }, [activeBabyAgeMonths]); // eslint-disable-line react-hooks/exhaustive-deps
   const [foods, setFoods]         = useState([]);
   const [error, setError]         = useState("");
   const [page, setPage]           = useState(1);
@@ -52,7 +45,10 @@ function AllFoods() {
     const searchText  = query.trim().toLowerCase();
     const selectedAge = Number(age);
     return foods.filter((food) => {
-      const byText = !searchText || food.name.toLowerCase().includes(searchText);
+      const byText =
+  !searchText ||
+  food.name.toLowerCase().includes(searchText) ||
+  (food.search_aliases && food.search_aliases.toLowerCase().includes(searchText));
       const byAge  = !age || (Number.isFinite(selectedAge) && selectedAge >= Number(food.safe_from_months || 0));
       const byTag  = tagFilter === "all" ||
         (tagFilter === "iron-rich" && !!food.is_iron_rich) ||
@@ -109,6 +105,7 @@ function AllFoods() {
             <option value="fruit">Fruit</option>
             <option value="veggie">Veggie</option>
             <option value="protein">Protein</option>
+            <option value="other">Other</option>
           </select>
         </div>
       </div>
@@ -128,6 +125,17 @@ function AllFoods() {
           <div key={food.id} className="food-card" onClick={() => navigate(`/foods/${food.id}`)}>
 
             <div className="food-card-front">
+              {/* ── Add warning banner here ── */}
+    {food.is_warning && (
+      <div style={{
+        background: '#fdf0ef', border: '1.5px solid #c0392b',
+        borderRadius: 8, padding: '4px 8px', fontSize: 11,
+        color: '#c0392b', fontWeight: 700, marginBottom: 6,
+        width: '100%', textAlign: 'center'
+      }}>
+        ⚠️ Not safe under {food.safe_from_months}
+      </div>
+    )}
               <img
                 src={food.image_url}
                 alt={food.name}
