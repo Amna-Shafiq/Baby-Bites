@@ -3,6 +3,22 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import { supabase } from "../lib/supabaseClient";
 
+const FOOD_REFERENCES = {
+  pistachio:  [{ label: "Solid Starts", url: "https://solidstarts.com/foods/pistachios/" }],
+  pistachios: [{ label: "Solid Starts", url: "https://solidstarts.com/foods/pistachios/" }],
+  walnut:     [{ label: "Solid Starts", url: "https://solidstarts.com/foods/walnuts/" }],
+  walnuts:    [{ label: "Solid Starts", url: "https://solidstarts.com/foods/walnuts/" }],
+  cashew:     [{ label: "Solid Starts", url: "https://solidstarts.com/foods/cashews/" }],
+  cashews:    [{ label: "Solid Starts", url: "https://solidstarts.com/foods/cashews/" }],
+  almond:     [{ label: "Solid Starts", url: "https://solidstarts.com/foods/almonds/" }],
+  almonds:    [{ label: "Solid Starts", url: "https://solidstarts.com/foods/almonds/" }],
+};
+
+function getReferences(food) {
+  const key = food.name?.toLowerCase().trim();
+  return food.references || FOOD_REFERENCES[key] || null;
+}
+
 function FoodDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -75,6 +91,40 @@ function FoodDetail() {
           <p style={{ color: "#c0392b", margin: 0, fontSize: "0.9rem" }}>{food.allergen_notes}</p>
         </div>
       )}
+
+      {/* ── References ── */}
+      {(() => {
+        const refs = getReferences(food);
+        if (!refs || refs.length === 0) return null;
+        return (
+          <div className="panel" style={{ marginTop: "1.5rem" }}>
+            <h2 style={{ marginBottom: "0.3rem" }}>References</h2>
+            <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1rem", lineHeight: 1.6 }}>
+              Trusted sources for guidance on introducing this food safely.
+            </p>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+              {refs.map((ref, i) => (
+                <li key={i}>
+                  <a
+                    href={ref.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex", alignItems: "center", gap: 6,
+                      color: "var(--orange-dark)", fontWeight: 700, fontSize: "0.9rem",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <span style={{ fontSize: "1rem" }}>📖</span>
+                    {ref.label}
+                    <span style={{ fontSize: "0.75rem", color: "var(--muted)" }}>↗</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })()}
 
       {/* ── Meals using this food ── */}
       <div className="panel" style={{ marginTop: "1.5rem" }}>
