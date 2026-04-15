@@ -136,17 +136,6 @@ function AllFoods() {
           <div key={food.id} className="food-card" onClick={() => navigate(`/foods/${food.id}`)}>
 
             <div className="food-card-front">
-              {/* ── Warning banner ── */}
-              {food.is_warning && (
-                <div className="warning-banner" style={{
-                  background: '#fdf0ef', border: '1.5px solid #c0392b',
-                  borderRadius: 8, padding: '4px 8px', fontSize: 11,
-                  color: '#c0392b', fontWeight: 700, marginBottom: 6,
-                  width: '100%', textAlign: 'center'
-                }}>
-                  ⚠️ Not safe before {formatAge(food.safe_from_months)}
-                </div>
-              )}
               <img
                 src={food.image_url}
                 alt={food.name}
@@ -154,16 +143,28 @@ function AllFoods() {
                 style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 12 }}
               />
               <p className="food-card-name">{food.name}</p>
-              {/* ── Allergen badge ── */}
-              {food.allergen_notes && (
-                <span style={{
-                  display: "inline-block", marginTop: 4,
-                  background: "#fdf0ef", border: "1px solid #c0392b",
-                  borderRadius: 6, padding: "2px 7px",
-                  fontSize: 10, color: "#c0392b", fontWeight: 700,
-                }}>
-                  ⚠️ Allergen
-                </span>
+              {/* ── Badges row ── */}
+              {(food.is_warning || food.allergen_notes) && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 6, width: "100%" }}>
+                  {food.is_warning && (
+                    <span style={{
+                      background: '#fdf0ef', border: '1.5px solid #c0392b',
+                      borderRadius: 6, padding: '3px 7px', fontSize: 10,
+                      color: '#c0392b', fontWeight: 700, textAlign: 'center',
+                    }}>
+                      ⚠️ Not safe before {formatAge(food.safe_from_months)}
+                    </span>
+                  )}
+                  {food.allergen_notes && (
+                    <span style={{
+                      background: '#eef4ff', border: '1.5px solid #2471a3',
+                      borderRadius: 6, padding: '3px 7px', fontSize: 10,
+                      color: '#2471a3', fontWeight: 700, textAlign: 'center',
+                    }}>
+                      🔵 Common allergen
+                    </span>
+                  )}
+                </div>
               )}
             </div>
 
