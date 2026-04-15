@@ -8,10 +8,12 @@ const FOOD_REFERENCES = {
   pistachios: [{ label: "Solid Starts", url: "https://solidstarts.com/foods/pistachios/" }],
   walnut:     [{ label: "Solid Starts", url: "https://solidstarts.com/foods/walnuts/" }],
   walnuts:    [{ label: "Solid Starts", url: "https://solidstarts.com/foods/walnuts/" }],
-  cashew:     [{ label: "Solid Starts", url: "https://solidstarts.com/foods/cashews/" }],
-  cashews:    [{ label: "Solid Starts", url: "https://solidstarts.com/foods/cashews/" }],
-  almond:     [{ label: "Solid Starts", url: "https://solidstarts.com/foods/almonds/" }],
-  almonds:    [{ label: "Solid Starts", url: "https://solidstarts.com/foods/almonds/" }],
+  cashew:     [{ label: "Solid Starts", url: "https://solidstarts.com/foods/cashew/" }],
+  cashews:    [{ label: "Solid Starts", url: "https://solidstarts.com/foods/cashew/" }],
+  almond:     [{ label: "Solid Starts", url: "https://solidstarts.com/foods/almond/" }],
+  almonds:    [{ label: "Solid Starts", url: "https://solidstarts.com/foods/almond/" }],
+  peanut:     [{ label: "Solid Starts", url: "https://solidstarts.com/foods/peanut/" }],
+  peanuts:    [{ label: "Solid Starts", url: "https://solidstarts.com/foods/peanut/" }],
 };
 
 function getReferences(food) {
@@ -92,40 +94,6 @@ function FoodDetail() {
         </div>
       )}
 
-      {/* ── References ── */}
-      {(() => {
-        const refs = getReferences(food);
-        if (!refs || refs.length === 0) return null;
-        return (
-          <div className="panel" style={{ marginTop: "1.5rem" }}>
-            <h2 style={{ marginBottom: "0.3rem" }}>References</h2>
-            <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1rem", lineHeight: 1.6 }}>
-              Trusted sources for guidance on introducing this food safely.
-            </p>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
-              {refs.map((ref, i) => (
-                <li key={i}>
-                  <a
-                    href={ref.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: "inline-flex", alignItems: "center", gap: 6,
-                      color: "var(--orange-dark)", fontWeight: 700, fontSize: "0.9rem",
-                      textDecoration: "none",
-                    }}
-                  >
-                    <span style={{ fontSize: "1rem" }}>📖</span>
-                    {ref.label}
-                    <span style={{ fontSize: "0.75rem", color: "var(--muted)" }}>↗</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
-      })()}
-
       {/* ── Meals using this food ── */}
       <div className="panel" style={{ marginTop: "1.5rem" }}>
         <h2 style={{ marginBottom: "0.3rem" }}>Meals with {food.name}</h2>
@@ -164,6 +132,40 @@ function FoodDetail() {
           </div>
         )}
       </div>
+
+      {/* ── References ── */}
+      {(() => {
+        const refs = getReferences(food);
+        if (!refs || refs.length === 0) return null;
+        return (
+          <div className="panel" style={{ marginTop: "1.5rem" }}>
+            <h2 style={{ marginBottom: "0.3rem" }}>References</h2>
+            <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1rem", lineHeight: 1.6 }}>
+              Trusted sources for guidance on introducing this food safely.
+            </p>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+              {refs.map((ref, i) => (
+                <li key={i}>
+                  <a
+                    href={ref.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex", alignItems: "center", gap: 6,
+                      color: "var(--orange-dark)", fontWeight: 700, fontSize: "0.9rem",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <span style={{ fontSize: "1rem" }}>📖</span>
+                    {ref.label}
+                    <span style={{ fontSize: "0.75rem", color: "var(--muted)" }}>↗</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })()}
     </div>
   );
 }
