@@ -6,6 +6,17 @@ import LoginPromptModal from "../components/LoginPromptModal";
 
 const PAGE_SIZE = 9;
 
+function formatAge(months) {
+  if (months <= 11) return `first ${months} months`;
+  if (months === 12) return 'first birthday';
+  if (months === 24) return '2 years old';
+  if (months === 36) return '3 years old';
+  if (months === 48) return '4 years old';
+  if (months === 60) return '5 years old';
+  const years = Math.floor(months / 12);
+  return `${years} years old`;
+}
+
 function AllFoods() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -127,13 +138,13 @@ function AllFoods() {
             <div className="food-card-front">
               {/* ── Add warning banner here ── */}
     {food.is_warning && (
-      <div style={{
+      <div className="warning-banner" style={{
         background: '#fdf0ef', border: '1.5px solid #c0392b',
         borderRadius: 8, padding: '4px 8px', fontSize: 11,
         color: '#c0392b', fontWeight: 700, marginBottom: 6,
         width: '100%', textAlign: 'center'
       }}>
-        ⚠️ Not safe under {food.safe_from_months}
+        ⚠️ Not safe before {formatAge(food.safe_from_months)}
       </div>
     )}
               <img
