@@ -79,7 +79,7 @@ function MealPage() {
             transition: "all 0.2s",
           }}
         >
-          {copied ? "✓ Copied!" : "🔗 Copy link"}
+          {copied ? "✓ Copied!" : "🔗 Share meal"}
         </button>
       </div>
 
