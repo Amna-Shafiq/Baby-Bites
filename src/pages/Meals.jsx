@@ -6,7 +6,7 @@ import useFavorites from "../hooks/useFavorites";
 import useActiveBaby from "../hooks/useActiveBaby";
 import LoginPromptModal from "../components/LoginPromptModal";
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 12;
 const SLOTS = ["all", "breakfast", "lunch", "dinner", "snack"];
 const TYPES = ["all", "quick", "fancy"];
 
@@ -34,6 +34,7 @@ function Meals() {
   const [age, setAge]       = useState("");
   const [tab, setTab]           = useState("all");
   const [page, setPage]         = useState(1);
+  const [showAll, setShowAll]   = useState(false);
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
 
   // Pre-fill age filter from active baby's DOB
@@ -60,7 +61,7 @@ function Meals() {
     loadMeals();
   }, []);
 
-  useEffect(() => { setPage(1); }, [search, slot, type, age, tab]);
+  useEffect(() => { setPage(1); setShowAll(false); }, [search, slot, type, age, tab]);
 
   const filteredMeals = useMemo(() => {
     const searchText  = search.trim().toLowerCase();
@@ -101,9 +102,10 @@ function Meals() {
 
   const totalPages = Math.max(1, Math.ceil(filteredMeals.length / PAGE_SIZE));
   const pageMeals  = useMemo(() => {
+    if (showAll) return filteredMeals;
     const start = (page - 1) * PAGE_SIZE;
     return filteredMeals.slice(start, start + PAGE_SIZE);
-  }, [filteredMeals, page]);
+  }, [filteredMeals, page, showAll]);
 
   const handleFavoriteClick = (e, mealId) => {
     e.stopPropagation();
@@ -186,7 +188,9 @@ function Meals() {
         <p className="results-count">
           {filteredMeals.length === 0
             ? "No meals found"
-            : `Showing ${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, filteredMeals.length)} of ${filteredMeals.length} meals`}
+            : showAll
+              ? `Showing all ${filteredMeals.length} meals`
+              : `Showing ${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, filteredMeals.length)} of ${filteredMeals.length} meals`}
         </p>
       )}
 
@@ -254,7 +258,7 @@ function Meals() {
       )}
 
       {/* ── Pagination ── */}
-      {!loading && totalPages > 1 && (
+      {!loading && !showAll && totalPages > 1 && (
         <div className="pagination">
           <button className="pagination-btn" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
             ← Prev
@@ -270,6 +274,16 @@ function Meals() {
           ))}
           <button className="pagination-btn" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages}>
             Next →
+          </button>
+        </div>
+      )}
+      {!loading && filteredMeals.length > PAGE_SIZE && (
+        <div style={{ textAlign: "center", marginTop: "1rem" }}>
+          <button
+            className="pagination-btn"
+            onClick={() => { setShowAll((s) => !s); setPage(1); }}
+          >
+            {showAll ? "Show pages" : "Show all"}
           </button>
         </div>
       )}
