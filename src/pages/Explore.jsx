@@ -4,6 +4,7 @@ import TopNav from "../components/TopNav";
 import useAIHelper from "../hooks/useAIHelper";
 import useActiveBaby from "../hooks/useActiveBaby";
 import { useLanguage } from "../contexts/LanguageContext";
+import articles from "../data/articles";
 
 const SUGGESTIONS = [
   "Iron rich meals for my baby",
@@ -275,6 +276,52 @@ function Explore() {
 
       {/* ── Divider ── */}
       <div style={{ borderTop: "1.5px solid var(--border)", margin: "1.5rem 0" }} />
+
+      {/* ── Articles ── */}
+      <span className="eyebrow eo" style={{ display: "block", marginBottom: "0.3rem" }}>Guides & Safety</span>
+      <h2 style={{ marginBottom: "0.3rem", fontSize: "1.25rem" }}>Parent reads</h2>
+      <p className="muted" style={{ fontSize: "0.88rem", marginBottom: "1rem", lineHeight: 1.6 }}>
+        Short, evidence-based guides for the moments that matter most.
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: "2rem" }}>
+        {articles.map((article) => (
+          <Link key={article.slug} to={`/articles/${article.slug}`} style={{ textDecoration: "none" }}>
+            <div style={{
+              background: article.color,
+              border: `1.5px solid ${article.borderColor}`,
+              borderRadius: 16,
+              padding: "1rem 1.2rem",
+              display: "flex",
+              alignItems: "center",
+              gap: 14,
+              cursor: "pointer",
+            }}>
+              <span style={{ fontSize: "2rem", flexShrink: 0 }}>{article.emoji}</span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
+                  <span style={{
+                    fontSize: "0.68rem", fontWeight: 800, textTransform: "uppercase",
+                    letterSpacing: "0.08em", color: article.borderColor,
+                  }}>
+                    {article.category}
+                  </span>
+                  <span style={{ fontSize: "0.68rem", color: "var(--muted)" }}>· {article.readTime}</span>
+                </div>
+                <p style={{ margin: 0, fontWeight: 700, fontSize: "0.95rem", color: "var(--dark)", fontFamily: "Fraunces, serif" }}>
+                  {article.title}
+                </p>
+                <p className="muted" style={{ margin: "3px 0 0", fontSize: "0.8rem", lineHeight: 1.5 }}>
+                  {article.summary}
+                </p>
+              </div>
+              <span style={{ color: "var(--muted)", fontSize: "1rem", flexShrink: 0 }}>→</span>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* ── Divider ── */}
+      <div style={{ borderTop: "1.5px solid var(--border)", margin: "0 0 1.5rem" }} />
 
       {/* ── Existing explore cards ── */}
       <span className="eyebrow eo" style={{ display: "block", marginBottom: "0.5rem" }}>{t("discoverEyebrow")}</span>
