@@ -84,7 +84,7 @@ function FoodDetail() {
       {food.texture_tips && (
         <div className="card" style={{ marginBottom: "1rem" }}>
           <h3 style={{ marginBottom: "0.6rem" }}>{t("textureTips")}</h3>
-          <p className="muted" style={{ margin: 0 }}>{food.texture_tips}</p>
+          <p className="muted" style={{ margin: 0, whiteSpace: "pre-line" }}>{food.texture_tips?.replace(/\\n/g, "\n")}</p>
         </div>
       )}
 

@@ -55,7 +55,9 @@ function MealPage() {
     </div>
   );
 
-  const steps = meal.steps ? meal.steps.split("\n").filter((s) => s.trim()) : [];
+  const steps = meal.steps
+    ? meal.steps.replace(/\\n/g, "\n").split("\n").filter((s) => s.trim())
+    : [];
   const hasAllergens = ingredients.some((i) => i.foods?.allergen_notes);
 
   return (
