@@ -83,6 +83,73 @@ const translations = {
     statFoods:     "Safe foods",
     statRecipes:   "Recipes",
     statAges:      "Ages covered",
+    floatIron:     "✓ Iron-rich",
+    floatAge:      "👶 Age-safe",
+
+    // Features section
+    featEyebrow:   "Why Baby Bites",
+    featHeading:   "Everything you need for happy, healthy mealtimes",
+    featSub:       "No more guessing what's safe. Baby Bites guides you through every stage of your baby's food journey.",
+    feat1Title:    "Age-safe food guide",
+    feat1Desc:     "Browse 80+ foods with safe-from ages, texture tips, and allergen warnings all in one place.",
+    feat2Title:    "60+ curated recipes",
+    feat2Desc:     "Quick and fancy meals for every slot — breakfast, lunch, dinner, and snacks — filtered by age.",
+    feat3Title:    "AI meal helper",
+    feat3Desc:     "Ask \"iron-rich meal for 8 months\" or \"quick breakfast\" and get instant, safe suggestions.",
+    feat4Title:    "Save your favorites",
+    feat4Desc:     "Bookmark meals you love and build your personal collection of go-to recipes for every stage.",
+    feat5Title:    "Allergen alerts",
+    feat5Desc:     "Clear warnings for all top-8 allergens so you can introduce new foods safely and confidently.",
+    feat6Title:    "Custom meals",
+    feat6Desc:     "Create and save your own recipes alongside our curated library to build your baby's personal menu.",
+
+    // How it works
+    howEyebrow:    "How it works",
+    howHeading:    "Three steps to stress-free feeding",
+    howSub:        "Simple, fast, designed for tired parents.",
+    step1Title:    "Enter your baby's age",
+    step1Desc:     "Set your baby's age in months and instantly see only the foods and meals that are safe right now.",
+    step2Title:    "Browse or search",
+    step2Desc:     "Filter by meal type, time of day, or ingredients you already have. Or just ask the AI helper.",
+    step3Title:    "Cook with confidence",
+    step3Desc:     "Follow simple step-by-step instructions with texture tips and allergen warnings built right in.",
+
+    // Sample meals
+    samplesEyebrow:"Sample meals",
+    samplesHeading:"Meals babies actually eat",
+    samplesSub:    "From 4-month purees to 18-month finger foods — every meal is age-checked and nutrition-conscious.",
+    meal1Name:     "Banana Oatmeal Mash",
+    meal1Desc:     "Creamy oatmeal mashed with ripe banana. Iron-rich and loved by little ones.",
+    meal2Name:     "Lentil & Carrot Puree",
+    meal2Desc:     "Classic iron-rich lentil puree with sweet carrot. A baby staple.",
+    meal3Name:     "Salmon with Pea Mash",
+    meal3Desc:     "Omega-rich salmon with smooth pea mash. Packed with brain-building nutrients.",
+    meal4Name:     "Mini Banana Pancakes",
+    meal4Desc:     "Two-ingredient soft pancakes — banana and egg. Naturally sweet, no sugar needed.",
+    slotBreakfast: "Breakfast",
+    slotLunch:     "Lunch",
+    slotDinner:    "Dinner",
+    typeQuick:     "Quick",
+    typeFancy:     "Fancy",
+
+    // Age guide
+    ageEyebrow:    "Age guide",
+    ageHeading:    "Right food, right time",
+    ageSub:        "Every food and meal is tagged with safe-from ages so you never have to second-guess.",
+    age1Label:     "First tastes",
+    age2Label:     "Expanding",
+    age3Label:     "Soft textures",
+    age4Label:     "Finger foods",
+
+    // CTA
+    ctaHeading:    "Start feeding with confidence today",
+    ctaSub:        "Join parents using Baby Bites to take the guesswork out of every mealtime.",
+    ctaBtn:        "Get started for free",
+
+    // Footer
+    footerFeatures:"Features",
+    footerPrivacy: "Privacy",
+    footerCopy:    "© 2026 Baby Bites",
   },
 
   ur: {
@@ -169,6 +236,73 @@ const translations = {
     statFoods:     "محفوظ غذائیں",
     statRecipes:   "نسخے",
     statAges:      "عمر کی حد",
+    floatIron:     "✓ آئرن سے بھرپور",
+    floatAge:      "👶 عمر کے مطابق",
+
+    // Features section
+    featEyebrow:   "Baby Bites کیوں؟",
+    featHeading:   "خوش اور صحت مند کھانے کے لیے سب کچھ",
+    featSub:       "اب اندازہ لگانے کی ضرورت نہیں۔ Baby Bites آپ کو آپ کے بچے کے کھانے کے سفر میں رہنمائی کرتا ہے۔",
+    feat1Title:    "عمر کے مطابق غذائی رہنما",
+    feat1Desc:     "80 سے زیادہ غذائیں، محفوظ عمر، ساخت کی تجاویز اور الرجی کی وارننگ ایک جگہ۔",
+    feat2Title:    "60 سے زیادہ منتخب نسخے",
+    feat2Desc:     "ہر وقت کے لیے تیز اور خاص کھانے — ناشتہ، دوپہر، رات اور اسنیک — عمر کے مطابق۔",
+    feat3Title:    "AI کھانے کا مددگار",
+    feat3Desc:     "\"8 ماہ کے لیے آئرن والا کھانا\" یا \"جلدی ناشتہ\" پوچھیں اور فوری محفوظ تجاویز پائیں۔",
+    feat4Title:    "پسندیدہ محفوظ کریں",
+    feat4Desc:     "پسندیدہ کھانے بُک مارک کریں اور ہر مرحلے کے لیے اپنا ذاتی مجموعہ بنائیں۔",
+    feat5Title:    "الرجی کی وارننگ",
+    feat5Desc:     "تمام بڑی الرجیوں کے لیے واضح وارننگ تاکہ آپ نئی غذائیں محفوظ طریقے سے متعارف کرا سکیں۔",
+    feat6Title:    "ذاتی کھانے",
+    feat6Desc:     "اپنے نسخے بنائیں اور ہماری لائبریری کے ساتھ شامل کریں تاکہ بچے کا ذاتی مینو بنا سکیں۔",
+
+    // How it works
+    howEyebrow:    "کیسے کام کرتا ہے",
+    howHeading:    "تین آسان مراحل",
+    howSub:        "سادہ، تیز، تھکے ہوئے والدین کے لیے بنایا گیا۔",
+    step1Title:    "بچے کی عمر درج کریں",
+    step1Desc:     "مہینوں میں عمر ڈالیں اور فوری طور پر صرف وہ غذائیں اور کھانے دیکھیں جو ابھی محفوظ ہیں۔",
+    step2Title:    "براؤز یا تلاش کریں",
+    step2Desc:     "کھانے کی قسم، وقت یا دستیاب اجزاء سے فلٹر کریں۔ یا AI مددگار سے پوچھیں۔",
+    step3Title:    "اعتماد سے پکائیں",
+    step3Desc:     "ساخت کی تجاویز اور الرجی کی وارننگ کے ساتھ آسان قدم بہ قدم ہدایات پر عمل کریں۔",
+
+    // Sample meals
+    samplesEyebrow:"نمونہ کھانے",
+    samplesHeading:"کھانے جو بچے واقعی کھاتے ہیں",
+    samplesSub:    "4 ماہ کی پیوری سے 18 ماہ کے فنگر فوڈ تک — ہر کھانا عمر کے مطابق اور غذائیت سے بھرپور۔",
+    meal1Name:     "کیلے کا دلیہ",
+    meal1Desc:     "پکے کیلے کے ساتھ کریمی دلیہ۔ آئرن سے بھرپور اور بچوں کا پسندیدہ۔",
+    meal2Name:     "دال اور گاجر کی پیوری",
+    meal2Desc:     "میٹھی گاجر کے ساتھ کلاسک آئرن بھری دال کی پیوری۔ بچوں کی ضروری غذا۔",
+    meal3Name:     "سالمن اور مٹر کا میش",
+    meal3Desc:     "ہموار مٹر کے میش کے ساتھ اومیگا بھرپور سالمن۔ دماغ کی نشوونما کے لیے بھرپور۔",
+    meal4Name:     "منی کیلے کے پینکیک",
+    meal4Desc:     "دو اجزاء سے بنے نرم پینکیک — کیلا اور انڈہ۔ قدرتی مٹھاس، چینی نہیں۔",
+    slotBreakfast: "ناشتہ",
+    slotLunch:     "دوپہر کا کھانا",
+    slotDinner:    "رات کا کھانا",
+    typeQuick:     "جلدی",
+    typeFancy:     "خاص",
+
+    // Age guide
+    ageEyebrow:    "عمر کی رہنمائی",
+    ageHeading:    "صحیح غذا، صحیح وقت",
+    ageSub:        "ہر غذا اور کھانے پر محفوظ عمر کا ٹیگ ہے تاکہ آپ کو کبھی شک نہ ہو۔",
+    age1Label:     "پہلا ذائقہ",
+    age2Label:     "توسیع",
+    age3Label:     "نرم ساخت",
+    age4Label:     "فنگر فوڈ",
+
+    // CTA
+    ctaHeading:    "آج اعتماد کے ساتھ کھلانا شروع کریں",
+    ctaSub:        "Baby Bites استعمال کرنے والے والدین کے ساتھ شامل ہوں اور کھانے کی پریشانی ختم کریں۔",
+    ctaBtn:        "مفت شروع کریں",
+
+    // Footer
+    footerFeatures:"خصوصیات",
+    footerPrivacy: "رازداری",
+    footerCopy:    "© 2026 Baby Bites",
   },
 };
 

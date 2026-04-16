@@ -79,7 +79,12 @@ function Home() {
           onClick={() => setLang(lang === "en" ? "ur" : "en")}
           title={lang === "en" ? "Switch to Urdu" : "Switch to English"}
         >
-          {lang === "en" ? "اردو" : "EN"}
+            <img
+              src={lang === "en" ? "https://flagcdn.com/20x15/pk.png" : "https://flagcdn.com/20x15/us.png"}
+              alt={lang === "en" ? "Pakistan" : "USA"}
+              style={{ width: 20, height: 15, borderRadius: 2, objectFit: "cover" }}
+            />
+            {lang === "en" ? "اردو" : "EN"}
         </button>
 
         {session ? (
@@ -179,7 +184,7 @@ function Home() {
 
           <div className="visual">
             <div style={{ position: 'relative' }}>
-              <div className="lp-float lp-f1">✓ Iron-rich</div>
+              <div className="lp-float lp-f1">{t("floatIron")}</div>
               <div className="phone">
                 <div className="notch" />
                 <div className="screen">
@@ -213,7 +218,7 @@ function Home() {
                   </div>
                 </div>
               </div>
-              <div className="lp-float lp-f2">👶 Age-safe</div>
+              <div className="lp-float lp-f2">{t("floatAge")}</div>
             </div>
           </div>
         </div>
@@ -232,42 +237,39 @@ function Home() {
 
       {/* ── Features ── */}
       <section className="lp-sec" id="features">
-        <div className="eyebrow eo">Why Baby Bites</div>
-        <h2>Everything you need for<br />happy, healthy mealtimes</h2>
-        <p className="lp-sub">
-          No more guessing what's safe. Baby Bites guides you through every
-          stage of your baby's food journey.
-        </p>
+        <div className="eyebrow eo">{t("featEyebrow")}</div>
+        <h2>{t("featHeading")}</h2>
+        <p className="lp-sub">{t("featSub")}</p>
         <div className="feat-grid">
           <div className="fc bo">
             <div className="ficon fo">🥕</div>
-            <div className="ft">Age-safe food guide</div>
-            <p className="fd">Browse 80+ foods with safe-from ages, texture tips, and allergen warnings all in one place.</p>
+            <div className="ft">{t("feat1Title")}</div>
+            <p className="fd">{t("feat1Desc")}</p>
           </div>
           <div className="fc bg">
             <div className="ficon fg">🍽️</div>
-            <div className="ft">60+ curated recipes</div>
-            <p className="fd">Quick and fancy meals for every slot — breakfast, lunch, dinner, and snacks — filtered by age.</p>
+            <div className="ft">{t("feat2Title")}</div>
+            <p className="fd">{t("feat2Desc")}</p>
           </div>
           <div className="fc bb">
             <div className="ficon fb">⚡</div>
-            <div className="ft">AI meal helper</div>
-            <p className="fd">Ask "iron-rich meal for 8 months" or "quick breakfast" and get instant, safe suggestions.</p>
+            <div className="ft">{t("feat3Title")}</div>
+            <p className="fd">{t("feat3Desc")}</p>
           </div>
           <div className="fc by">
             <div className="ficon fy">❤️</div>
-            <div className="ft">Save your favorites</div>
-            <p className="fd">Bookmark meals you love and build your personal collection of go-to recipes for every stage.</p>
+            <div className="ft">{t("feat4Title")}</div>
+            <p className="fd">{t("feat4Desc")}</p>
           </div>
           <div className="fc bo">
             <div className="ficon fo">⚠️</div>
-            <div className="ft">Allergen alerts</div>
-            <p className="fd">Clear warnings for all top-8 allergens so you can introduce new foods safely and confidently.</p>
+            <div className="ft">{t("feat5Title")}</div>
+            <p className="fd">{t("feat5Desc")}</p>
           </div>
           <div className="fc bg">
             <div className="ficon fg">📋</div>
-            <div className="ft">Custom meals</div>
-            <p className="fd">Create and save your own recipes alongside our curated library to build your baby's personal menu.</p>
+            <div className="ft">{t("feat6Title")}</div>
+            <p className="fd">{t("feat6Desc")}</p>
           </div>
         </div>
       </section>
@@ -275,28 +277,24 @@ function Home() {
       {/* ── How it works ── */}
       <div className="how-bg">
         <div className="how-in">
-          <div className="eyebrow" style={{ color: 'var(--yellow-mid)' }}>
-            How it works
-          </div>
-          <h2 style={{ color: '#fff' }}>Three steps to stress-free feeding</h2>
-          <p className="lp-sub" style={{ color: '#C8B8A8' }}>
-            Simple, fast, designed for tired parents.
-          </p>
+          <div className="eyebrow" style={{ color: 'var(--yellow-mid)' }}>{t("howEyebrow")}</div>
+          <h2 style={{ color: '#fff' }}>{t("howHeading")}</h2>
+          <p className="lp-sub" style={{ color: '#C8B8A8' }}>{t("howSub")}</p>
           <div className="lp-steps">
             <div className="lp-step">
               <div className="snum sy">01</div>
-              <div className="stitle">Enter your baby's age</div>
-              <p className="sdesc">Set your baby's age in months and instantly see only the foods and meals that are safe right now.</p>
+              <div className="stitle">{t("step1Title")}</div>
+              <p className="sdesc">{t("step1Desc")}</p>
             </div>
             <div className="lp-step">
               <div className="snum so">02</div>
-              <div className="stitle">Browse or search</div>
-              <p className="sdesc">Filter by meal type, time of day, or ingredients you already have. Or just ask the AI helper.</p>
+              <div className="stitle">{t("step2Title")}</div>
+              <p className="sdesc">{t("step2Desc")}</p>
             </div>
             <div className="lp-step">
               <div className="snum sb">03</div>
-              <div className="stitle">Cook with confidence</div>
-              <p className="sdesc">Follow simple step-by-step instructions with texture tips and allergen warnings built right in.</p>
+              <div className="stitle">{t("step3Title")}</div>
+              <p className="sdesc">{t("step3Desc")}</p>
             </div>
           </div>
         </div>
@@ -304,59 +302,56 @@ function Home() {
 
       {/* ── Sample meals ── */}
       <section className="lp-sec">
-        <div className="eyebrow eg">Sample meals</div>
-        <h2>Meals babies actually eat</h2>
-        <p className="lp-sub">
-          From 4-month purees to 18-month finger foods — every meal is
-          age-checked and nutrition-conscious.
-        </p>
+        <div className="eyebrow eg">{t("samplesEyebrow")}</div>
+        <h2>{t("samplesHeading")}</h2>
+        <p className="lp-sub">{t("samplesSub")}</p>
         <div className="meals-grid">
           <div className="mc my">
             <div className="mico">🍌</div>
             <div>
               <div className="mbadges">
-                <span className="mbg">Breakfast</span>
-                <span className="mbg">Quick</span>
+                <span className="mbg">{t("slotBreakfast")}</span>
+                <span className="mbg">{t("typeQuick")}</span>
                 <span className="mbg">4–8m</span>
               </div>
-              <div className="mname">Banana Oatmeal Mash</div>
-              <p className="mdesc">Creamy oatmeal mashed with ripe banana. Iron-rich and loved by little ones.</p>
+              <div className="mname">{t("meal1Name")}</div>
+              <p className="mdesc">{t("meal1Desc")}</p>
             </div>
           </div>
           <div className="mc mo">
             <div className="mico">🫘</div>
             <div>
               <div className="mbadges">
-                <span className="mbg">Lunch</span>
-                <span className="mbg">Quick</span>
+                <span className="mbg">{t("slotLunch")}</span>
+                <span className="mbg">{t("typeQuick")}</span>
                 <span className="mbg">6–10m</span>
               </div>
-              <div className="mname">Lentil &amp; Carrot Puree</div>
-              <p className="mdesc">Classic iron-rich lentil puree with sweet carrot. A baby staple.</p>
+              <div className="mname">{t("meal2Name")}</div>
+              <p className="mdesc">{t("meal2Desc")}</p>
             </div>
           </div>
           <div className="mc lp-mb">
             <div className="mico">🐟</div>
             <div>
               <div className="mbadges">
-                <span className="mbg">Dinner</span>
-                <span className="mbg">Quick</span>
+                <span className="mbg">{t("slotDinner")}</span>
+                <span className="mbg">{t("typeQuick")}</span>
                 <span className="mbg">6–12m</span>
               </div>
-              <div className="mname">Salmon with Pea Mash</div>
-              <p className="mdesc">Omega-rich salmon with smooth pea mash. Packed with brain-building nutrients.</p>
+              <div className="mname">{t("meal3Name")}</div>
+              <p className="mdesc">{t("meal3Desc")}</p>
             </div>
           </div>
           <div className="mc mg">
             <div className="mico">🥞</div>
             <div>
               <div className="mbadges">
-                <span className="mbg">Breakfast</span>
-                <span className="mbg">Fancy</span>
+                <span className="mbg">{t("slotBreakfast")}</span>
+                <span className="mbg">{t("typeFancy")}</span>
                 <span className="mbg">8–18m</span>
               </div>
-              <div className="mname">Mini Banana Pancakes</div>
-              <p className="mdesc">Two-ingredient soft pancakes — banana and egg. Naturally sweet, no sugar needed.</p>
+              <div className="mname">{t("meal4Name")}</div>
+              <p className="mdesc">{t("meal4Desc")}</p>
             </div>
           </div>
         </div>
@@ -365,16 +360,13 @@ function Home() {
       {/* ── Age guide ── */}
       <div className="age-bg">
         <div className="age-in">
-          <div className="eyebrow eb">Age guide</div>
-          <h2>Right food, right time</h2>
-          <p className="lp-sub">
-            Every food and meal is tagged with safe-from ages so you never
-            have to second-guess.
-          </p>
+          <div className="eyebrow eb">{t("ageEyebrow")}</div>
+          <h2>{t("ageHeading")}</h2>
+          <p className="lp-sub">{t("ageSub")}</p>
           <div className="age-grid">
             <div className="agc">
               <div className="agr">4–6m</div>
-              <div className="agl">First tastes</div>
+              <div className="agl">{t("age1Label")}</div>
               <div className="agf">
                 <span className="aft aft-y">Sweet potato</span>
                 <span className="aft aft-y">Pear</span>
@@ -384,7 +376,7 @@ function Home() {
             </div>
             <div className="agc">
               <div className="agr">6–8m</div>
-              <div className="agl">Expanding</div>
+              <div className="agl">{t("age2Label")}</div>
               <div className="agf">
                 <span className="aft aft-o">Lentils</span>
                 <span className="aft aft-o">Avocado</span>
@@ -394,7 +386,7 @@ function Home() {
             </div>
             <div className="agc">
               <div className="agr">8–10m</div>
-              <div className="agl">Soft textures</div>
+              <div className="agl">{t("age3Label")}</div>
               <div className="agf">
                 <span className="aft aft-g">Pasta</span>
                 <span className="aft aft-g">Yogurt</span>
@@ -404,7 +396,7 @@ function Home() {
             </div>
             <div className="agc">
               <div className="agr">10–18m</div>
-              <div className="agl">Finger foods</div>
+              <div className="agl">{t("age4Label")}</div>
               <div className="agf">
                 <span className="aft aft-b">Pancakes</span>
                 <span className="aft aft-b">Muffins</span>
@@ -419,12 +411,10 @@ function Home() {
       {/* ── CTA ── */}
       <div className="cta-bg">
         <div className="cta-in">
-          <h2 className="cta-t">Start feeding with confidence today</h2>
-          <p className="cta-s">
-            Join parents using Baby Bites to take the guesswork out of every mealtime.
-          </p>
+          <h2 className="cta-t">{t("ctaHeading")}</h2>
+          <p className="cta-s">{t("ctaSub")}</p>
           <button className="cta-btn" onClick={() => navigate('/login')}>
-            Get started for free
+            {t("ctaBtn")}
           </button>
         </div>
       </div>
@@ -433,12 +423,12 @@ function Home() {
       <footer className="lp-footer">
         <div className="flogo">Baby Bites</div>
         <div className="flinks">
-          <a href="#features">Features</a>
-          <Link to="/meals">Meals</Link>
-          <Link to="/foods">Foods</Link>
-          <a href="#">Privacy</a>
+          <a href="#features">{t("footerFeatures")}</a>
+          <Link to="/meals">{t("meals")}</Link>
+          <Link to="/foods">{t("allFoods")}</Link>
+          <a href="#">{t("footerPrivacy")}</a>
         </div>
-        <div className="fcopy">© 2026 Baby Bites</div>
+        <div className="fcopy">{t("footerCopy")}</div>
       </footer>
 
     </div>

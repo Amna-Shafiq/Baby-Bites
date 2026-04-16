@@ -72,6 +72,11 @@ function TopNav() {
             onClick={() => setLang(lang === "en" ? "ur" : "en")}
             title={lang === "en" ? "Switch to Urdu" : "Switch to English"}
           >
+            <img
+              src={lang === "en" ? "https://flagcdn.com/20x15/pk.png" : "https://flagcdn.com/20x15/us.png"}
+              alt={lang === "en" ? "Pakistan" : "USA"}
+              style={{ width: 20, height: 15, borderRadius: 2, objectFit: "cover" }}
+            />
             {lang === "en" ? "اردو" : "EN"}
           </button>
 

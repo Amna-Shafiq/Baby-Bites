@@ -615,6 +615,9 @@ button { font-family: 'Nunito', sans-serif; }
   transition: background 0.15s;
   white-space: nowrap;
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 .lang-toggle:hover { background: var(--cream); }
 
