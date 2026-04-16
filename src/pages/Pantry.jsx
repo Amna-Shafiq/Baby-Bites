@@ -4,8 +4,10 @@ import TopNav from "../components/TopNav";
 import useCustomMeals from "../hooks/useCustomMeals";
 import LoginPromptModal from "../components/LoginPromptModal";
 import PantrySearch from "../components/PantrySearch";
+import { useLanguage } from "../contexts/LanguageContext";
 
 function Pantry() {
+  const { t } = useLanguage();
   const {
     session,
     householdFoods,
@@ -30,7 +32,7 @@ function Pantry() {
       return;
     }
     if (result.duplicates?.length) {
-      setPantryStatus(`${result.duplicates[0]} is already in your pantry.`);
+      setPantryStatus(t("alreadyInPantry", result.duplicates[0]));
     }
   };
 
@@ -39,16 +41,16 @@ function Pantry() {
       <TopNav />
       {showLoginModal && <LoginPromptModal onClose={() => setShowLoginModal(false)} />}
 
-      <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>Kitchen</span>
-      <h1>Pantry</h1>
+      <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>{t("pantryEyebrow")}</span>
+      <h1>{t("pantryTitle")}</h1>
 
       {error && <p className="muted">{error}</p>}
 
       {/* ── Pantry search ── */}
       <section className="panel">
-        <h2 style={{ marginBottom: "0.3rem" }}>What's in your pantry?</h2>
+        <h2 style={{ marginBottom: "0.3rem" }}>{t("pantrySearchTitle")}</h2>
         <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1.2rem", lineHeight: 1.6 }}>
-          Add the foods you have at home and we'll suggest meals you can make right now.
+          {t("pantrySearchDesc")}
         </p>
 
         <div style={{ display: "flex", gap: 10 }}>
@@ -68,7 +70,7 @@ function Pantry() {
               fontSize: "0.72rem", fontWeight: 700, color: "var(--muted)",
               textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.7rem",
             }}>
-              In your pantry — {householdFoods.length} item{householdFoods.length !== 1 ? "s" : ""}
+              {t("pantryCount", householdFoods.length)}
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
               {householdFoods.map((food) => (
@@ -83,7 +85,7 @@ function Pantry() {
                   <button
                     type="button"
                     onClick={() => removeHouseholdFood(food.id)}
-                    title="Remove from pantry"
+                    title={t("removeFromPantry")}
                     style={{
                       background: "var(--yellow-mid)", border: "none", cursor: "pointer",
                       color: "var(--yellow-dark)", fontSize: "0.7rem", lineHeight: 1,
@@ -102,7 +104,7 @@ function Pantry() {
 
         {householdFoods.length === 0 && session && !pantryStatus && (
           <p className="muted" style={{ marginTop: "1rem", fontSize: "0.85rem" }}>
-            Your pantry is empty — search for a food above to get started.
+            {t("pantryEmpty")}
           </p>
         )}
       </section>
@@ -110,9 +112,9 @@ function Pantry() {
       {/* ── Meal suggestions ── */}
       {mealSuggestions.length > 0 && (
         <section className="panel">
-          <h2 style={{ marginBottom: "0.3rem" }}>Meals you can make</h2>
+          <h2 style={{ marginBottom: "0.3rem" }}>{t("mealsYouCanMake")}</h2>
           <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1.2rem", lineHeight: 1.6 }}>
-            Every ingredient for these meals is already in your pantry.
+            {t("mealsYouCanMakeDesc")}
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {mealSuggestions.map((meal) => (
@@ -138,7 +140,7 @@ function Pantry() {
       {/* ── Link to custom meals ── */}
       <div style={{ marginTop: "0.5rem", marginBottom: "2rem" }}>
         <Link to="/my-meals" style={{ fontSize: "0.88rem", color: "var(--muted)", textDecoration: "underline" }}>
-          Manage your custom meals →
+          {t("manageCustomMeals")}
         </Link>
       </div>
     </div>

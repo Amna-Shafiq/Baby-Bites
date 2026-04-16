@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import useCustomMeals from "../hooks/useCustomMeals";
 import useFavorites from "../hooks/useFavorites";
+import { useLanguage } from "../contexts/LanguageContext";
 
 function MyMeals() {
+  const { t } = useLanguage();
   const { session, customMeals, addCustomMeal, error, loading } = useCustomMeals();
   const { favoriteMeals, toggleFavorite } = useFavorites();
 
@@ -31,73 +33,73 @@ function MyMeals() {
     });
     if (result.error) { setStatus(result.error); return; }
     setTitle(""); setIngredientsText(""); setSteps(""); setNutritionHighlight("");
-    setStatus("Meal added!");
+    setStatus(t("mealAdded"));
   };
 
   return (
     <div className="page">
       <TopNav />
 
-      <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>Recipes</span>
-      <h1>My Meals</h1>
+      <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>{t("recipesEyebrow")}</span>
+      <h1>{t("myMealsTitle")}</h1>
 
       {error  && <p className="muted">{error}</p>}
       {status && <p style={{ fontSize: "0.88rem", color: "var(--muted)", fontWeight: 600 }}>{status}</p>}
 
       {/* ── Add custom meal ── */}
       <section className="panel">
-        <h2 style={{ marginBottom: "0.3rem" }}>Add a custom meal</h2>
+        <h2 style={{ marginBottom: "0.3rem" }}>{t("addCustomMealTitle")}</h2>
         <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1.2rem", lineHeight: 1.6 }}>
-          Save a recipe you love so it shows up alongside the built-in meal library.
+          {t("addCustomMealDesc")}
         </p>
         <form onSubmit={submitMeal} className="filters">
-          <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Meal title" required />
+          <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("mealTitlePlaceholder")} required />
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
             <input
               className="input" type="number" min="0"
               value={minAgeMonths} onChange={(e) => setMinAgeMonths(e.target.value)}
-              placeholder="Min age (months)" required
+              placeholder={t("minAgePlaceholder")} required
             />
             <input
               className="input" type="number" min="0"
               value={maxAgeMonths} onChange={(e) => setMaxAgeMonths(e.target.value)}
-              placeholder="Max age (months)" required
+              placeholder={t("maxAgePlaceholder")} required
             />
           </div>
           <select className="input" value={mealSlot} onChange={(e) => setMealSlot(e.target.value)}>
-            <option value="breakfast">Breakfast</option>
-            <option value="lunch">Lunch</option>
-            <option value="dinner">Dinner</option>
+            <option value="breakfast">{t("slotBreakfast")}</option>
+            <option value="lunch">{t("slotLunch")}</option>
+            <option value="dinner">{t("slotDinner")}</option>
           </select>
           <input
             className="input" value={ingredientsText}
             onChange={(e) => setIngredientsText(e.target.value)}
-            placeholder="Ingredients (comma separated)"
+            placeholder={t("ingredientsPlaceholder")}
           />
           <textarea
             className="input" value={steps}
             onChange={(e) => setSteps(e.target.value)}
-            placeholder="Preparation steps" rows={3} style={{ resize: "vertical" }}
+            placeholder={t("stepsPlaceholder")} rows={3} style={{ resize: "vertical" }}
           />
           <input
             className="input" value={nutritionHighlight}
             onChange={(e) => setNutritionHighlight(e.target.value)}
-            placeholder="Nutrition highlight"
+            placeholder={t("nutritionPlaceholder")}
           />
           <button type="submit" className="btn btn-primary" disabled={!session || loading}>
-            Save meal
+            {t("saveMeal")}
           </button>
         </form>
       </section>
 
       {/* ── Favourites ── */}
       <section className="panel">
-        <h2 style={{ marginBottom: "0.3rem" }}>Saved favourites</h2>
+        <h2 style={{ marginBottom: "0.3rem" }}>{t("savedFavsTitle")}</h2>
         <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1.2rem", lineHeight: 1.6 }}>
-          Meals you've hearted from the Meals page.
+          {t("savedFavsDesc")}
         </p>
         {favoriteMeals.length === 0 ? (
-          <p className="muted">No favourites yet — tap ♡ on any meal to save it here.</p>
+          <p className="muted">{t("noFavsMyMeals")}</p>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {favoriteMeals.map((meal) => (
@@ -107,13 +109,13 @@ function MyMeals() {
                     <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>
                   </Link>
                   <p className="muted" style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>
-                    {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months} months
+                    {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months} {t("monthsLabel")}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => toggleFavorite(meal.id)}
-                  title="Remove from favourites"
+                  title={t("savedFavsTitle")}
                   style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.1rem", color: "#e74c3c", flexShrink: 0, padding: 4 }}
                 >
                   ♥
@@ -126,16 +128,16 @@ function MyMeals() {
 
       {/* ── My added meals ── */}
       <section className="panel">
-        <h2 style={{ marginBottom: "1rem" }}>Your meals</h2>
+        <h2 style={{ marginBottom: "1rem" }}>{t("yourMealsTitle")}</h2>
         {customMeals.length === 0 ? (
-          <p className="muted">No custom meals yet — add one above.</p>
+          <p className="muted">{t("noCustomMeals")}</p>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {customMeals.map((meal) => (
               <div key={meal.id} className="card">
                 <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>
                 <p className="muted" style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>
-                  {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months} months
+                  {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months} {t("monthsLabel")}
                 </p>
               </div>
             ))}
@@ -145,7 +147,7 @@ function MyMeals() {
 
       <div style={{ marginBottom: "2rem" }}>
         <Link to="/pantry" style={{ fontSize: "0.88rem", color: "var(--muted)", textDecoration: "underline" }}>
-          ← Back to Pantry
+          {t("backToPantry")}
         </Link>
       </div>
     </div>
