@@ -13,6 +13,7 @@ import FallingVegetablesBackground from "./components/FallingVegetablesBackgroun
 import AppFooter from "./components/AppFooter";
 import FoodDetail from "./pages/FoodDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
+import CustomMealPage from "./pages/CustomMealPage";
 import InstallPrompt from "./components/InstallPrompt";
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
           <Route path="/foods" element={<AllFoods />} />
           <Route path="/meals" element={<Meals />} />
           <Route path="/my-meals" element={<ProtectedRoute><MyMeals /></ProtectedRoute>} />
+          <Route path="/my-meals/:id" element={<ProtectedRoute><CustomMealPage /></ProtectedRoute>} />
           <Route path="/pantry" element={<ProtectedRoute><Pantry /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/meal/:id" element={<MealPage />} />

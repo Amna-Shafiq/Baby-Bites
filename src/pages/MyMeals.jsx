@@ -157,28 +157,37 @@ function MyMeals() {
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {customMeals.map((meal) => (
-              <div key={meal.id} className="card" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
-                <div>
-                  <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>
-                  <p className="muted" style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>
-                    {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months} {t("monthsLabel")}
-                  </p>
+              <Link key={meal.id} to={`/my-meals/${meal.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+                <div className="card" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, cursor: "pointer" }}>
+                  {meal.image_url && (
+                    <img
+                      src={meal.image_url}
+                      alt={meal.title}
+                      style={{ width: 52, height: 52, borderRadius: 10, objectFit: "cover", flexShrink: 0, border: "1.5px solid var(--border)" }}
+                    />
+                  )}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>
+                    <p className="muted" style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>
+                      {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months} {t("monthsLabel")}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) => { e.preventDefault(); deleteCustomMeal(meal.id); }}
+                    title="Delete meal"
+                    style={{
+                      background: "none", border: "none", cursor: "pointer",
+                      color: "var(--muted)", fontSize: "1rem", padding: 4, flexShrink: 0,
+                      lineHeight: 1,
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.color = "#c0392b"}
+                    onMouseOut={(e) => e.currentTarget.style.color = "var(--muted)"}
+                  >
+                    ✕
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => deleteCustomMeal(meal.id)}
-                  title="Delete meal"
-                  style={{
-                    background: "none", border: "none", cursor: "pointer",
-                    color: "var(--muted)", fontSize: "1rem", padding: 4, flexShrink: 0,
-                    lineHeight: 1,
-                  }}
-                  onMouseOver={(e) => e.currentTarget.style.color = "#c0392b"}
-                  onMouseOut={(e) => e.currentTarget.style.color = "var(--muted)"}
-                >
-                  ✕
-                </button>
-              </div>
+              </Link>
             ))}
           </div>
         )}
