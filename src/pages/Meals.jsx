@@ -5,6 +5,7 @@ import { supabase } from "../lib/supabaseClient";
 import useFavorites from "../hooks/useFavorites";
 import useActiveBaby from "../hooks/useActiveBaby";
 import LoginPromptModal from "../components/LoginPromptModal";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const PAGE_SIZE = 12;
 const SLOTS = ["all", "breakfast", "lunch", "dinner", "snack"];
@@ -24,6 +25,7 @@ function Meals() {
   const navigate = useNavigate();
   const { session, favoriteIds, toggleFavorite, favoritesError, toastMessage } = useFavorites();
   const { activeBaby, activeBabyAgeMonths } = useActiveBaby();
+  const { t } = useLanguage();
 
   const [meals, setMeals]   = useState([]);
   const [loading, setLoading] = useState(true);
@@ -114,8 +116,8 @@ function Meals() {
   };
 
   const label = (s) => s === "all" ? (s === slot ? "All slots" : "All types") : s.charAt(0).toUpperCase() + s.slice(1);
-  const slotLabel = (s) => s === "all" ? "All slots" : s.charAt(0).toUpperCase() + s.slice(1);
-  const typeLabel = (t) => t === "all" ? "All types" : t.charAt(0).toUpperCase() + t.slice(1);
+  const slotLabel = (s) => s === "all" ? t("allSlots") : s.charAt(0).toUpperCase() + s.slice(1);
+  const typeLabel = (tp) => tp === "all" ? t("allTypes") : tp.charAt(0).toUpperCase() + tp.slice(1);
 
   return (
     <div className="page">
@@ -130,8 +132,8 @@ function Meals() {
         />
       )}
 
-      <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>Browse</span>
-      <h1>Meals</h1>
+      <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>{t("mealsEyebrow")}</span>
+      <h1>{t("mealsTitle")}</h1>
       {activeBaby && (
         <p className="page-sub" style={{ marginTop: "0.2rem" }}>
           {activeBaby.avatar} Showing meals for <strong>{activeBaby.name}</strong> · {activeBabyAgeMonths}m
@@ -140,8 +142,8 @@ function Meals() {
 
       {/* ── Tabs ── */}
       <div className="tabs">
-        <button className={tab === "all"       ? "btn btn-primary" : "btn"} onClick={() => setTab("all")}>All Meals</button>
-        <button className={tab === "favorites" ? "btn btn-primary" : "btn"} onClick={() => setTab("favorites")}>Favorites</button>
+        <button className={tab === "all"       ? "btn btn-primary" : "btn"} onClick={() => setTab("all")}>{t("allMealsTab")}</button>
+        <button className={tab === "favorites" ? "btn btn-primary" : "btn"} onClick={() => setTab("favorites")}>{t("favoritesTab")}</button>
       </div>
 
       {/* ── Filters ── */}
@@ -150,7 +152,7 @@ function Meals() {
           className="input"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search meals..."
+          placeholder={t("searchMeals")}
         />
         <div className="filters-row-3">
           <select className="input" value={slot} onChange={(e) => setSlot(e.target.value)}>
@@ -166,7 +168,7 @@ function Meals() {
             max="24"
             value={age}
             onChange={(e) => setAge(e.target.value)}
-            placeholder="Age (months)"
+            placeholder={t("ageMonths")}
             readOnly={!session}
             onClick={() => { if (!session) setShowAuthPrompt(true); }}
             style={{ cursor: !session ? "pointer" : undefined }}
@@ -187,10 +189,10 @@ function Meals() {
       {!loading && !error && (
         <p className="results-count">
           {filteredMeals.length === 0
-            ? "No meals found"
+            ? t("noMeals")
             : showAll
-              ? `Showing all ${filteredMeals.length} meals`
-              : `Showing ${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, filteredMeals.length)} of ${filteredMeals.length} meals`}
+              ? t("showingAllMeals", filteredMeals.length)
+              : t("showingMeals", (page - 1) * PAGE_SIZE + 1, Math.min(page * PAGE_SIZE, filteredMeals.length), filteredMeals.length)}
         </p>
       )}
 
@@ -198,9 +200,9 @@ function Meals() {
       {loading && <p className="muted">Loading meals...</p>}
       {error && <p className="muted">{error}</p>}
       {favoritesError && <p className="muted">{favoritesError}</p>}
-      {tab === "favorites" && !session && <p className="muted">Log in to see your saved favorites.</p>}
+      {tab === "favorites" && !session && <p className="muted">{t("logInFavs")}</p>}
       {tab === "favorites" && session && filteredMeals.length === 0 && !loading && (
-        <p className="muted">No favorites yet. Tap the heart icon to save meals.</p>
+        <p className="muted">{t("noFavsYet")}</p>
       )}
 
       {/* ── Meal grid ── */}
@@ -249,7 +251,7 @@ function Meals() {
                   <p className="food-detail-row" style={{ marginTop: 4 }}>{meal.nutrition_highlight}</p>
                 )}
                 <p style={{ fontSize: "0.75rem", color: "var(--orange-dark)", marginTop: 6, fontWeight: 700 }}>
-                  Click for full recipe →
+                  {t("clickRecipe")}
                 </p>
               </div>
             </div>
@@ -283,7 +285,7 @@ function Meals() {
             className="pagination-btn"
             onClick={() => { setShowAll((s) => !s); setPage(1); }}
           >
-            {showAll ? "Show pages" : "Show all"}
+            {showAll ? t("showPages") : t("showAll")}
           </button>
         </div>
       )}

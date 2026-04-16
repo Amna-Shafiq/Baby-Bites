@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import { supabase } from "../lib/supabaseClient";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const FOOD_REFERENCES = {
   pistachio:  [{ label: "Solid Starts", url: "https://solidstarts.com/foods/pistachios/" }],
@@ -24,6 +25,7 @@ function getReferences(food) {
 function FoodDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [food, setFood]     = useState(null);
   const [meals, setMeals]   = useState([]);
   const [error, setError]   = useState("");
@@ -57,7 +59,7 @@ function FoodDetail() {
       <TopNav />
 
       <button className="btn btn-ghost" onClick={() => navigate(-1)} style={{ marginTop: "1.5rem", paddingLeft: 0 }}>
-        ← Back
+        {t("back")}
       </button>
 
       {/* ── Food header ── */}
@@ -81,7 +83,7 @@ function FoodDetail() {
       {/* ── Texture tips ── */}
       {food.texture_tips && (
         <div className="card" style={{ marginBottom: "1rem" }}>
-          <h3 style={{ marginBottom: "0.6rem" }}>Texture tips</h3>
+          <h3 style={{ marginBottom: "0.6rem" }}>{t("textureTips")}</h3>
           <p className="muted" style={{ margin: 0 }}>{food.texture_tips}</p>
         </div>
       )}
@@ -89,19 +91,19 @@ function FoodDetail() {
       {/* ── Allergen notes ── */}
       {food.allergen_notes && (
         <div className="card card-allergen">
-          <h3 style={{ marginBottom: "0.5rem", color: "#c0392b", fontSize: "0.95rem" }}>⚠️ Allergen notes</h3>
+          <h3 style={{ marginBottom: "0.5rem", color: "#c0392b", fontSize: "0.95rem" }}>{t("allergenNotes")}</h3>
           <p style={{ color: "#c0392b", margin: 0, fontSize: "0.9rem" }}>{food.allergen_notes}</p>
         </div>
       )}
 
       {/* ── Meals using this food ── */}
       <div className="panel" style={{ marginTop: "1.5rem" }}>
-        <h2 style={{ marginBottom: "0.3rem" }}>Meals with {food.name}</h2>
+        <h2 style={{ marginBottom: "0.3rem" }}>{t("mealsWith")} {food.name}</h2>
         <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1.2rem", lineHeight: 1.6 }}>
-          Recipes from the meal library that include this ingredient.
+          {t("mealsWithDesc")}
         </p>
         {meals.length === 0 ? (
-          <p className="muted">No meals found for this food yet.</p>
+          <p className="muted">{t("noMealsFood")}</p>
         ) : (
           <div style={{ display: "flex", gap: 12, overflowX: "auto", paddingBottom: 8, scrollSnapType: "x mandatory" }}>
             {meals.map((meal) => (
@@ -139,9 +141,9 @@ function FoodDetail() {
         if (!refs || refs.length === 0) return null;
         return (
           <div className="panel" style={{ marginTop: "1.5rem" }}>
-            <h2 style={{ marginBottom: "0.3rem" }}>References</h2>
+            <h2 style={{ marginBottom: "0.3rem" }}>{t("references")}</h2>
             <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1rem", lineHeight: 1.6 }}>
-              Trusted sources for guidance on introducing this food safely.
+              {t("referencesDesc")}
             </p>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
               {refs.map((ref, i) => (

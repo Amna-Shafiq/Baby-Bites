@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import { supabase } from "../lib/supabaseClient";
 import LoginPromptModal from "../components/LoginPromptModal";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const PAGE_SIZE = 12;
 
@@ -20,6 +21,7 @@ function formatAge(months) {
 function AllFoods() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const [query, setQuery]           = useState("");
   const [age, setAge]               = useState("");
@@ -88,8 +90,8 @@ function AllFoods() {
           icon="🥕"
         />
       )}
-      <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>Library</span>
-      <h1>All Foods</h1>
+      <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>{t("foodsEyebrow")}</span>
+      <h1>{t("foodsTitle")}</h1>
 
       {/* ── Filters ── */}
       <div className="filters" style={{ marginTop: "1rem" }}>
@@ -97,7 +99,7 @@ function AllFoods() {
           className="input"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search foods..."
+          placeholder={t("searchFoods")}
         />
         <div className="filters-row">
           <input
@@ -106,19 +108,19 @@ function AllFoods() {
             onChange={(e) => setAge(e.target.value)}
             type="number"
             min="4"
-            placeholder="Baby age (months)"
+            placeholder={t("babyAge")}
             readOnly={!session}
             onClick={() => { if (!session) setShowAuthPrompt(true); }}
             style={{ cursor: !session ? "pointer" : undefined }}
           />
           <select className="input" value={tagFilter} onChange={(e) => setTagFilter(e.target.value)}>
-            <option value="all">All categories</option>
-            <option value="iron-rich">Iron-rich</option>
-            <option value="grain">Grain</option>
-            <option value="fruit">Fruit</option>
-            <option value="veggie">Veggie</option>
-            <option value="protein">Protein</option>
-            <option value="other">Other</option>
+            <option value="all">{t("allCategories")}</option>
+            <option value="iron-rich">{t("ironRich")}</option>
+            <option value="grain">{t("grain")}</option>
+            <option value="fruit">{t("fruit")}</option>
+            <option value="veggie">{t("veggie")}</option>
+            <option value="protein">{t("protein")}</option>
+            <option value="other">{t("other")}</option>
           </select>
         </div>
       </div>
@@ -128,8 +130,8 @@ function AllFoods() {
       {!error && (
         <p className="results-count">
           {showAll
-            ? `Showing all ${filteredFoods.length} foods`
-            : `Showing ${filteredFoods.length === 0 ? 0 : (page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, filteredFoods.length)} of ${filteredFoods.length} foods`}
+            ? t("showingAllFoods", filteredFoods.length)
+            : t("showingFoods", filteredFoods.length === 0 ? 0 : (page - 1) * PAGE_SIZE + 1, Math.min(page * PAGE_SIZE, filteredFoods.length), filteredFoods.length)}
         </p>
       )}
 
@@ -212,7 +214,7 @@ function AllFoods() {
           className="pagination-btn"
           onClick={() => { setShowAll((s) => !s); setPage(1); }}
         >
-          {showAll ? "Show pages" : "Show all"}
+          {showAll ? t("showPages") : t("showAll")}
         </button>
       </div>
     </div>

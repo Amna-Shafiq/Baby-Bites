@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import '../styles/landing.css';
 import { supabase } from '../lib/supabaseClient';
 import useActiveBaby from '../hooks/useActiveBaby';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const STRIP_ITEMS = [
   { emoji: '🍌', name: 'Banana',       color: 'si-y' },
@@ -29,6 +30,7 @@ function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { activeBaby, babies, switchBaby } = useActiveBaby();
   const menuRef = useRef(null);
+  const { lang, setLang, t } = useLanguage();
 
   useEffect(() => {
     if (!supabase) return;
@@ -66,12 +68,20 @@ function Home() {
           Baby Bites
         </Link>
         <ul className="nav-links">
-          <li><Link to="/explore">Explore</Link></li>
-          <li><Link to="/foods">All Foods</Link></li>
-          <li><Link to="/meals">Meals</Link></li>
-          <li><Link to="/pantry">Pantry</Link></li>
-          <li><Link to="/my-meals">My Meals</Link></li>
+          <li><Link to="/explore">{t("explore")}</Link></li>
+          <li><Link to="/foods">{t("allFoods")}</Link></li>
+          <li><Link to="/meals">{t("meals")}</Link></li>
+          <li><Link to="/pantry">{t("pantry")}</Link></li>
+          <li><Link to="/my-meals">{t("myMeals")}</Link></li>
         </ul>
+        <button
+          className="lang-toggle"
+          onClick={() => setLang(lang === "en" ? "ur" : "en")}
+          title={lang === "en" ? "Switch to Urdu" : "Switch to English"}
+        >
+          {lang === "en" ? "اردو" : "EN"}
+        </button>
+
         {session ? (
           <div ref={menuRef} style={{ position: "relative" }}>
             <button
@@ -93,7 +103,7 @@ function Home() {
                 {babies.length > 0 && (
                   <>
                     <p style={{ padding: "0.5rem 1rem 0.25rem", fontSize: "0.7rem", fontWeight: 800, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                      Switch baby
+                      {t("switchBaby")}
                     </p>
                     {babies.map((baby) => {
                       const isActive = baby.id === activeBaby?.id;
@@ -133,14 +143,14 @@ function Home() {
                   onClick={handleSignOut}
                   style={{ width: "100%", textAlign: "left", padding: "0.7rem 1rem", background: "none", border: "none", cursor: "pointer", fontSize: "0.88rem", fontWeight: 600, color: "#c0392b" }}
                 >
-                  Sign out
+                  {t("signOut")}
                 </button>
               </div>
             )}
           </div>
         ) : (
           <button className="nav-btn" onClick={() => navigate('/login')}>
-            Get started free
+            {t("getStartedFree")}
           </button>
         )}
       </nav>
@@ -149,24 +159,21 @@ function Home() {
       <div className="hero-bg">
         <div className="lp-hero">
           <div>
-            <div className="hero-pill">🌿 Safe, age-based nutrition</div>
-            <h1>Feed your baby with <em>confidence</em></h1>
-            <p className="hero-sub">
-              Age-appropriate meals, safe food guides, and nutrition tips —
-              tailored to every stage of your baby's development.
-            </p>
+            <div className="hero-pill">{t("heroTag")}</div>
+            <h1>{t("heroHeading")} <em>{t("heroEm")}</em></h1>
+            <p className="hero-sub">{t("heroSub")}</p>
             <div className="hero-btns">
               <button className="btn-a" onClick={() => navigate('/login')}>
-                Start for free
+                {t("startFree")}
               </button>
               <button className="btn-b" onClick={() => navigate('/meals')}>
-                Explore meals
+                {t("exploreMeals")}
               </button>
             </div>
             <div className="lp-stats">
-              <div><div className="sn">80+</div><div className="sl">Safe foods</div></div>
-              <div><div className="sn">60+</div><div className="sl">Recipes</div></div>
-              <div><div className="sn">4–18m</div><div className="sl">Ages covered</div></div>
+              <div><div className="sn">100+</div><div className="sl">{t("statFoods")}</div></div>
+              <div><div className="sn">60+</div><div className="sl">{t("statRecipes")}</div></div>
+              <div><div className="sn">4–18m</div><div className="sl">{t("statAges")}</div></div>
             </div>
           </div>
 

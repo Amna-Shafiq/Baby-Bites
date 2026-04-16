@@ -582,6 +582,42 @@ button { font-family: 'Nunito', sans-serif; }
   100% { background-position: -100% 0; }
 }
 
+/* ── Urdu / RTL mode ───────────────────────────────── */
+.urdu-mode body,
+.urdu-mode .page,
+.urdu-mode .top-nav,
+.urdu-mode input,
+.urdu-mode select,
+.urdu-mode button,
+.urdu-mode p,
+.urdu-mode h1,
+.urdu-mode h2,
+.urdu-mode h3 {
+  font-family: 'Noto Naskh Arabic', 'Nunito', sans-serif;
+}
+
+.urdu-mode .top-nav-links { direction: rtl; }
+.urdu-mode .top-nav-inner { flex-direction: row-reverse; }
+.urdu-mode .filters-row,
+.urdu-mode .filters-row-3 { direction: rtl; }
+
+/* Lang toggle button */
+.lang-toggle {
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--dark);
+  font-family: 'Nunito', sans-serif;
+  transition: background 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.lang-toggle:hover { background: var(--cream); }
+
 /* ── Responsive ────────────────────────────────────── */
 @media (max-width: 1100px) {
   .foods-grid      { grid-template-columns: repeat(3, 1fr); }

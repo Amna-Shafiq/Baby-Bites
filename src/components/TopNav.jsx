@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
 import useActiveBaby from "../hooks/useActiveBaby";
+import { useLanguage } from "../contexts/LanguageContext";
 
 function TopNav() {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ function TopNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { activeBaby, babies, switchBaby } = useActiveBaby();
   const menuRef = useRef(null);
+  const { lang, setLang, t } = useLanguage();
 
   useEffect(() => {
     if (!supabase) return;
@@ -57,14 +59,22 @@ function TopNav() {
         </NavLink>
 
         <div className="top-nav-links">
-          <NavLink to="/explore">Explore</NavLink>
-          <NavLink to="/foods">All Foods</NavLink>
-          <NavLink to="/meals">Meals</NavLink>
-          <NavLink to="/pantry">Pantry</NavLink>
-          <NavLink to="/my-meals">My Meals</NavLink>
+          <NavLink to="/explore">{t("explore")}</NavLink>
+          <NavLink to="/foods">{t("allFoods")}</NavLink>
+          <NavLink to="/meals">{t("meals")}</NavLink>
+          <NavLink to="/pantry">{t("pantry")}</NavLink>
+          <NavLink to="/my-meals">{t("myMeals")}</NavLink>
         </div>
 
         <div className="top-nav-actions">
+          <button
+            className="lang-toggle"
+            onClick={() => setLang(lang === "en" ? "ur" : "en")}
+            title={lang === "en" ? "Switch to Urdu" : "Switch to English"}
+          >
+            {lang === "en" ? "اردو" : "EN"}
+          </button>
+
           {session ? (
             <div ref={menuRef} style={{ position: "relative" }}>
               <button
@@ -88,7 +98,7 @@ function TopNav() {
                   {babies.length > 0 && (
                     <>
                       <p style={{ padding: "0.5rem 1rem 0.25rem", fontSize: "0.7rem", fontWeight: 800, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                        Switch baby
+                        {t("switchBaby")}
                       </p>
                       {babies.map((baby) => {
                         const isActive = baby.id === activeBaby?.id;
@@ -122,21 +132,21 @@ function TopNav() {
                     onClick={() => setMenuOpen(false)}
                     style={{ display: "block", padding: "0.7rem 1rem", fontSize: "0.88rem", fontWeight: 600, color: "var(--dark)", textDecoration: "none", borderBottom: "1px solid var(--border)" }}
                   >
-                    My Profile
+                    {t("myProfile")}
                   </NavLink>
                   <button
                     type="button"
                     onClick={handleSignOut}
                     style={{ width: "100%", textAlign: "left", padding: "0.7rem 1rem", background: "none", border: "none", cursor: "pointer", fontSize: "0.88rem", fontWeight: 600, color: "#c0392b" }}
                   >
-                    Sign out
+                    {t("signOut")}
                   </button>
                 </div>
               )}
             </div>
           ) : (
             <button type="button" className="btn btn-primary" onClick={() => navigate("/login")}>
-              Get started
+              {t("getStarted")}
             </button>
           )}
         </div>

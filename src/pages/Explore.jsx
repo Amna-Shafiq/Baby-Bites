@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import useAIHelper from "../hooks/useAIHelper";
 import useActiveBaby from "../hooks/useActiveBaby";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const SUGGESTIONS = [
   "Iron rich meals for my baby",
@@ -48,6 +49,7 @@ function Explore() {
 
   const { activeBaby, activeBabyAgeMonths } = useActiveBaby();
   const { ask, answer, recommendedMeals, recommendedFoods, safetyNote, loading, error } = useAIHelper();
+  const { t } = useLanguage();
 
   const submit = async (question) => {
     if (!question.trim() || loading || cooldown) return;
@@ -73,11 +75,9 @@ function Explore() {
       <TopNav />
 
       {/* ── AI Helper ── */}
-      <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>AI Meal Helper</span>
-      <h1 style={{ marginBottom: "0.4rem" }}>Ask Baby Bites AI</h1>
-      <p className="page-sub" style={{ marginBottom: "1rem" }}>
-        Get personalised meal and food ideas based on your baby's age and profile.
-      </p>
+      <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>{t("aiEyebrow")}</span>
+      <h1 style={{ marginBottom: "0.4rem" }}>{t("aiTitle")}</h1>
+      <p className="page-sub" style={{ marginBottom: "1rem" }}>{t("aiSub")}</p>
 
       {!activeBaby && (
         <p style={{
@@ -86,7 +86,7 @@ function Explore() {
           background: "var(--cream)", border: "1.5px solid var(--border)",
           borderRadius: 10, padding: "8px 12px", display: "inline-block",
         }}>
-          💡 Add your baby's profile for personalised answers
+          {t("addBabyNudge")}
         </p>
       )}
 
@@ -97,7 +97,7 @@ function Explore() {
           className="input"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask anything about baby food..."
+          placeholder={t("aiPlaceholder")}
           style={{ flex: 1 }}
           disabled={loading}
         />
@@ -107,7 +107,7 @@ function Explore() {
           disabled={!input.trim() || loading || cooldown}
           style={{ flexShrink: 0 }}
         >
-          {loading ? "…" : "Ask"}
+          {loading ? "…" : t("askBtn")}
         </button>
       </form>
 
@@ -186,7 +186,7 @@ function Explore() {
           {recommendedMeals.length > 0 && (
             <div style={{ marginBottom: "1rem" }}>
               <p style={{ fontWeight: 700, fontSize: "0.88rem", marginBottom: 0, color: "var(--dark)" }}>
-                Suggested meals
+                {t("suggestedMeals")}
               </p>
               <HorizontalScroll>
                 {recommendedMeals.map((meal) => (
@@ -225,7 +225,7 @@ function Explore() {
           {recommendedFoods.length > 0 && (
             <div style={{ marginBottom: "1rem" }}>
               <p style={{ fontWeight: 700, fontSize: "0.88rem", marginBottom: 0, color: "var(--dark)" }}>
-                Suggested foods
+                {t("suggestedFoods")}
               </p>
               <HorizontalScroll>
                 {recommendedFoods.map((food) => (
@@ -277,7 +277,7 @@ function Explore() {
       <div style={{ borderTop: "1.5px solid var(--border)", margin: "1.5rem 0" }} />
 
       {/* ── Existing explore cards ── */}
-      <span className="eyebrow eo" style={{ display: "block", marginBottom: "0.5rem" }}>Discover</span>
+      <span className="eyebrow eo" style={{ display: "block", marginBottom: "0.5rem" }}>{t("discoverEyebrow")}</span>
       <div className="card-grid" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))" }}>
         <Link className="explore-card" to="/foods?tag=iron-rich">
           <div style={{ fontSize: 28, marginBottom: "0.75rem" }}>🩸</div>
