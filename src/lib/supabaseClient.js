@@ -9,3 +9,4 @@ export const supabase =
     ? createClient(supabaseUrl, supabaseAnonKey)
     : null;
 
+// ALTER TABLE household_foods ADD COLUMN food_id UUID REFERENCES foods(id) ON DELETE SET NULL;

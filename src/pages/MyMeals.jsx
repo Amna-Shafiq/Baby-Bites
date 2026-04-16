@@ -130,7 +130,30 @@ function MyMeals() {
       <section className="panel">
         <h2 style={{ marginBottom: "1rem" }}>{t("yourMealsTitle")}</h2>
         {customMeals.length === 0 ? (
-          <p className="muted">{t("noCustomMeals")}</p>
+          <div>
+            <p className="muted" style={{ marginBottom: "0.75rem" }}>{t("noCustomMeals")}</p>
+            <button
+              type="button"
+              onClick={() => {
+                setTitle("Banana Oatmeal Mash");
+                setMinAgeMonths("6");
+                setMaxAgeMonths("12");
+                setMealSlot("breakfast");
+                setIngredientsText("Banana, Oatmeal, Breast milk or formula");
+                setSteps("1. Cook oatmeal according to package instructions.\n2. Mash a ripe banana with a fork until smooth.\n3. Mix mashed banana into warm oatmeal.\n4. Add a splash of breast milk or formula to reach desired consistency.");
+                setNutritionHighlight("Iron-rich oats + natural banana sweetness");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              style={{
+                background: "var(--cream)", border: "1.5px solid var(--border)",
+                borderRadius: 12, padding: "8px 16px",
+                fontSize: "0.85rem", fontWeight: 700, color: "var(--orange-dark)",
+                cursor: "pointer",
+              }}
+            >
+              Try a sample recipe →
+            </button>
+          </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {customMeals.map((meal) => (

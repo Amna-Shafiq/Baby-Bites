@@ -13,6 +13,7 @@ import FallingVegetablesBackground from "./components/FallingVegetablesBackgroun
 import AppFooter from "./components/AppFooter";
 import FoodDetail from "./pages/FoodDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
+import InstallPrompt from "./components/InstallPrompt";
 
 function App() {
   const location = useLocation();
@@ -32,6 +33,7 @@ function App() {
   return (
     <div className="app-root">
       {!isHome && <FallingVegetablesBackground />}
+      <InstallPrompt />
       <div className="app-content">
         <Routes>
           <Route path="/" element={<Home />} />

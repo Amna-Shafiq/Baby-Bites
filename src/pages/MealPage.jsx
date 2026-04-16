@@ -1,15 +1,25 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useLanguage } from "../contexts/LanguageContext";
 import TopNav from "../components/TopNav";
 import { supabase } from "../lib/supabaseClient";
 
 function MealPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [meal, setMeal]           = useState(null);
   const [ingredients, setIngredients] = useState([]);
   const [loading, setLoading]     = useState(true);
   const [error, setError]         = useState("");
+  const [copied, setCopied]       = useState(false);
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   useEffect(() => {
     const loadMeal = async () => {
@@ -52,9 +62,26 @@ function MealPage() {
     <div className="page">
       <TopNav />
 
-      <button className="btn btn-ghost" onClick={() => navigate(-1)} style={{ marginTop: "1.5rem", paddingLeft: 0 }}>
-        ← Back
-      </button>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1.5rem" }}>
+        <button className="btn btn-ghost" onClick={() => navigate(-1)} style={{ paddingLeft: 0 }}>
+          {t("back")}
+        </button>
+        <button
+          type="button"
+          onClick={handleShare}
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            background: copied ? "var(--cream)" : "none",
+            border: "1.5px solid var(--border)", borderRadius: 10,
+            padding: "6px 14px", cursor: "pointer",
+            fontSize: "0.82rem", fontWeight: 700,
+            color: copied ? "var(--orange-dark)" : "var(--muted)",
+            transition: "all 0.2s",
+          }}
+        >
+          {copied ? "✓ Copied!" : "🔗 Copy link"}
+        </button>
+      </div>
 
       {/* ── Header ── */}
       <div style={{ margin: "1rem 0 1.5rem" }}>

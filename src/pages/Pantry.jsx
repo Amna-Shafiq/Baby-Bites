@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { supabase } from "../lib/supabaseClient";
 import { Link } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import useCustomMeals from "../hooks/useCustomMeals";
@@ -19,6 +20,20 @@ function Pantry() {
 
   const [pantryStatus, setPantryStatus]   = useState("");
   const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const SUGGESTED_FOODS = ["Banana", "Sweet Potato", "Oatmeal"];
+
+  const handleAddSuggested = async (name) => {
+    setPantryStatus("");
+    const { data } = await supabase.from("foods").select("id, name").ilike("name", name).limit(1);
+    const food = data?.[0];
+    if (food) {
+      await handleAddFood({ name: food.name, id: food.id });
+    } else {
+      const result = await addHouseholdFood({ name });
+      if (result?.duplicates?.length) setPantryStatus(t("alreadyInPantry", name));
+    }
+  };
 
   const handleAddFood = async (food) => {
     setPantryStatus("");
@@ -103,9 +118,31 @@ function Pantry() {
         )}
 
         {householdFoods.length === 0 && session && !pantryStatus && (
-          <p className="muted" style={{ marginTop: "1rem", fontSize: "0.85rem" }}>
-            {t("pantryEmpty")}
-          </p>
+          <div style={{ marginTop: "1.2rem" }}>
+            <p className="muted" style={{ fontSize: "0.85rem", marginBottom: "0.75rem" }}>
+              {t("pantryEmpty")}
+            </p>
+            <p style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.5rem" }}>
+              Popular first foods
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {SUGGESTED_FOODS.map((name) => (
+                <button
+                  key={name}
+                  type="button"
+                  onClick={() => handleAddSuggested(name)}
+                  style={{
+                    background: "var(--cream)", border: "1.5px solid var(--border)",
+                    borderRadius: "100px", padding: "6px 14px",
+                    fontSize: "0.82rem", fontWeight: 700, color: "var(--dark)",
+                    cursor: "pointer",
+                  }}
+                >
+                  + {name}
+                </button>
+              ))}
+            </div>
+          </div>
         )}
       </section>
 

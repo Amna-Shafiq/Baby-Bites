@@ -37,6 +37,7 @@ function Meals() {
   const [tab, setTab]           = useState("all");
   const [page, setPage]         = useState(1);
   const [showAll, setShowAll]   = useState(false);
+  const [prepTime, setPrepTime] = useState("any");
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
 
   // Pre-fill age filter from active baby's DOB
@@ -63,11 +64,12 @@ function Meals() {
     loadMeals();
   }, []);
 
-  useEffect(() => { setPage(1); setShowAll(false); }, [search, slot, type, age, tab]);
+  useEffect(() => { setPage(1); setShowAll(false); }, [search, slot, type, age, tab, prepTime]);
 
   const filteredMeals = useMemo(() => {
     const searchText  = search.trim().toLowerCase();
     const selectedAge = Number(age);
+    // prepTime captured via closure — dependency tracked via useMemo deps below
 
     // Build active dietary restrictions from baby profile
     const activeAllergens = activeBaby
@@ -98,9 +100,11 @@ function Meals() {
         );
       })();
 
-      return bySearch && bySlot && byType && byAge && byDiet;
+      const byPrep = prepTime === "any" || (meal.prep_time_minutes != null && meal.prep_time_minutes <= 15);
+
+      return bySearch && bySlot && byType && byAge && byDiet && byPrep;
     });
-  }, [meals, search, slot, type, age, tab, favoriteIds, activeBaby]);
+  }, [meals, search, slot, type, age, tab, favoriteIds, activeBaby, prepTime]);
 
   const totalPages = Math.max(1, Math.ceil(filteredMeals.length / PAGE_SIZE));
   const pageMeals  = useMemo(() => {
@@ -174,6 +178,26 @@ function Meals() {
             style={{ cursor: !session ? "pointer" : undefined }}
           />
         </div>
+      </div>
+
+      {/* ── Quick filter toggle ── */}
+      <div style={{ display: "flex", gap: 8, marginTop: "0.5rem" }}>
+        <button
+          type="button"
+          onClick={() => setPrepTime("any")}
+          className={prepTime === "any" ? "btn btn-primary" : "btn"}
+          style={{ fontSize: "0.8rem", padding: "5px 14px" }}
+        >
+          Any time
+        </button>
+        <button
+          type="button"
+          onClick={() => setPrepTime("quick")}
+          className={prepTime === "quick" ? "btn btn-primary" : "btn"}
+          style={{ fontSize: "0.8rem", padding: "5px 14px" }}
+        >
+          ⚡ Quick &lt;15 min
+        </button>
       </div>
 
       {/* ── Active filter pills ── */}
