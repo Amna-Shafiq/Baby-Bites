@@ -7,7 +7,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 
 function MyMeals() {
   const { t } = useLanguage();
-  const { session, customMeals, addCustomMeal, error, loading } = useCustomMeals();
+  const { session, customMeals, addCustomMeal, deleteCustomMeal, error, loading } = useCustomMeals();
   const { favoriteMeals, toggleFavorite } = useFavorites();
 
   const [title, setTitle]                     = useState("");
@@ -157,11 +157,27 @@ function MyMeals() {
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {customMeals.map((meal) => (
-              <div key={meal.id} className="card">
-                <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>
-                <p className="muted" style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>
-                  {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months} {t("monthsLabel")}
-                </p>
+              <div key={meal.id} className="card" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
+                <div>
+                  <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>
+                  <p className="muted" style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>
+                    {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months} {t("monthsLabel")}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => deleteCustomMeal(meal.id)}
+                  title="Delete meal"
+                  style={{
+                    background: "none", border: "none", cursor: "pointer",
+                    color: "var(--muted)", fontSize: "1rem", padding: 4, flexShrink: 0,
+                    lineHeight: 1,
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.color = "#c0392b"}
+                  onMouseOut={(e) => e.currentTarget.style.color = "var(--muted)"}
+                >
+                  ✕
+                </button>
               </div>
             ))}
           </div>

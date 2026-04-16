@@ -98,6 +98,21 @@ function useCustomMeals() {
     [loadData, userId]
   );
 
+  const deleteCustomMeal = useCallback(
+    async (id) => {
+      if (!supabase || !userId) return { error: "Please login first." };
+      const { error } = await supabase
+        .from("custom_meals")
+        .delete()
+        .eq("id", id)
+        .eq("user_id", userId);
+      if (error) return { error: error.message };
+      await loadData();
+      return { error: null };
+    },
+    [loadData, userId]
+  );
+
   const addHouseholdFood = useCallback(
     async ({ name, food_id }) => {
       if (!supabase) return { error: "Supabase not configured." };
@@ -147,6 +162,7 @@ function useCustomMeals() {
     householdFoods,
     mealSuggestions,
     addCustomMeal,
+    deleteCustomMeal,
     addHouseholdFood,
     removeHouseholdFood,
     reloadCustomMeals: loadData,
