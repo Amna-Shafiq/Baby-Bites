@@ -4,7 +4,7 @@ import TopNav from "../components/TopNav";
 import { supabase } from "../lib/supabaseClient";
 import LoginPromptModal from "../components/LoginPromptModal";
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 12;
 
 function formatAge(months) {
   if (months <= 11) return `first ${months} months`;
@@ -26,6 +26,7 @@ function AllFoods() {
   const [tagFilter, setTagFilter]   = useState(searchParams.get("tag") || "all");
   const [session, setSession]       = useState(null);
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+  const [showAll, setShowAll]       = useState(false);
 
   useEffect(() => {
     if (!supabase) return;
@@ -70,9 +71,10 @@ function AllFoods() {
 
   const totalPages = Math.max(1, Math.ceil(filteredFoods.length / PAGE_SIZE));
   const pageFoods  = useMemo(() => {
+    if (showAll) return filteredFoods;
     const start = (page - 1) * PAGE_SIZE;
     return filteredFoods.slice(start, start + PAGE_SIZE);
-  }, [filteredFoods, page]);
+  }, [filteredFoods, page, showAll]);
 
   return (
     <div className="page">
@@ -125,8 +127,9 @@ function AllFoods() {
 
       {!error && (
         <p className="results-count">
-          Showing {filteredFoods.length === 0 ? 0 : (page - 1) * PAGE_SIZE + 1}–
-          {Math.min(page * PAGE_SIZE, filteredFoods.length)} of {filteredFoods.length} foods
+          {showAll
+            ? `Showing all ${filteredFoods.length} foods`
+            : `Showing ${filteredFoods.length === 0 ? 0 : (page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, filteredFoods.length)} of ${filteredFoods.length} foods`}
         </p>
       )}
 
@@ -185,7 +188,7 @@ function AllFoods() {
       </div>
 
       {/* ── Pagination ── */}
-      {totalPages > 1 && (
+      {!showAll && totalPages > 1 && (
         <div className="pagination">
           <button className="pagination-btn" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
             ← Prev
@@ -204,6 +207,14 @@ function AllFoods() {
           </button>
         </div>
       )}
+      <div style={{ textAlign: "center", marginTop: "1rem" }}>
+        <button
+          className="pagination-btn"
+          onClick={() => { setShowAll((s) => !s); setPage(1); }}
+        >
+          {showAll ? "Show pages" : "Show all"}
+        </button>
+      </div>
     </div>
   );
 }

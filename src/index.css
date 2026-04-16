@@ -98,7 +98,7 @@ button { font-family: 'Nunito', sans-serif; }
   background: var(--white);
   border: 1.5px solid var(--border);
   border-radius: 16px;
-  padding: 1.2rem;
+  padding: 1rem;
 }
 .card-clickable { cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
 .card-clickable:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.07); }
@@ -119,15 +119,15 @@ button { font-family: 'Nunito', sans-serif; }
   background: var(--white);
   border: 1.5px solid var(--border);
   border-radius: 16px;
-  padding: 1.4rem;
-  margin: 1rem 0;
+  padding: 1rem 1.1rem;
+  margin: 0.75rem 0;
 }
 
 /* ── Page layout ───────────────────────────────────── */
 .page {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 2rem 2.5rem 4rem;
+  padding: 1.25rem 2rem 3rem;
 }
 
 /* ── Utilities ─────────────────────────────────────── */
@@ -153,11 +153,11 @@ button { font-family: 'Nunito', sans-serif; }
 .eg { color: var(--green-dark); }
 
 .page-sub {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   color: var(--muted);
-  line-height: 1.7;
+  line-height: 1.65;
   max-width: 520px;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-weight: 500;
 }
 
@@ -355,9 +355,9 @@ button { font-family: 'Nunito', sans-serif; }
 
 .foods-grid {
   display: grid;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  grid-template-columns: repeat(4, 1fr);
 }
 
 /* ── Food / Meal hover cards ───────────────────────── */
@@ -369,7 +369,7 @@ button { font-family: 'Nunito', sans-serif; }
   transition: box-shadow 0.2s, transform 0.2s;
   background: var(--white);
   border: 1.5px solid var(--border);
-  min-height: 170px;
+  min-height: 150px;
 }
 .food-card:hover {
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
@@ -381,9 +381,9 @@ button { font-family: 'Nunito', sans-serif; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem 0.75rem 1rem;
-  gap: 8px;
-  min-height: 170px;
+  padding: 1rem 0.75rem 0.75rem;
+  gap: 6px;
+  min-height: 150px;
   transition: opacity 0.2s;
 }
 
@@ -583,13 +583,17 @@ button { font-family: 'Nunito', sans-serif; }
 }
 
 /* ── Responsive ────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .foods-grid      { grid-template-columns: repeat(3, 1fr); }
+}
+
 @media (max-width: 900px) {
   .foods-grid      { grid-template-columns: repeat(2, 1fr); }
   .filters-row-3   { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 640px) {
-  .foods-grid      { grid-template-columns: 1fr; }
+  .foods-grid      { grid-template-columns: repeat(2, 1fr); }
   .filters-row     { grid-template-columns: 1fr; }
   .filters-row-3   { grid-template-columns: 1fr; }
   .page            { padding: 1rem 1rem 5rem; }
