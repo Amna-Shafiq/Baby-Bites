@@ -206,9 +206,9 @@ function LandingParticleTitle() {
 
         offCtx.font         = `${isItalic ? "italic " : ""}700 ${fs}px 'Aileron', sans-serif`;
         offCtx.fillStyle    = "white";
-        offCtx.textAlign    = "center";
+        offCtx.textAlign    = "left";
         offCtx.textBaseline = "middle";
-        offCtx.fillText(text, W / 2, yPos);
+        offCtx.fillText(text, 0, yPos);
 
         const { data } = offCtx.getImageData(0, 0, W, H);
         const pts = [];
@@ -272,7 +272,9 @@ function LandingParticleTitle() {
           p.y += p.vy;
         }
 
-        if (p.opacity < 1) p.opacity = Math.min(1, p.opacity + 0.022);
+        // Full opacity when cursor is away; fade when cursor is near
+        const targetOpacity = dist < LP_REPEL_RADIUS ? 0.15 : 1;
+        p.opacity += (targetOpacity - p.opacity) * 0.06;
 
         const { r, g, b } = p.rgb;
 
