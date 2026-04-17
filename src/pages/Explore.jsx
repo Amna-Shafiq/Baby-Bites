@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import useAIHelper from "../hooks/useAIHelper";
@@ -31,6 +31,56 @@ function SkeletonLine({ w = "80%" }) {
   );
 }
 
+function ArticleCard({ article }) {
+  return (
+    <Link to={`/articles/${article.slug}`} style={{ textDecoration: "none", display: "block" }}>
+      <div style={{ width: 220, cursor: "pointer" }}>
+        <div style={{
+          height: 130, borderRadius: 14,
+          background: article.color,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          marginBottom: "0.7rem",
+          position: "relative", overflow: "hidden",
+        }}>
+          {article.image
+            ? <img src={article.image} alt={article.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            : <span style={{ fontSize: "3.2rem" }}>{article.emoji}</span>
+          }
+          <span style={{
+            position: "absolute", bottom: 7, right: 9,
+            fontSize: "0.6rem", fontWeight: 700,
+            color: "var(--dark)", background: "rgba(255,255,255,0.75)",
+            padding: "2px 7px", borderRadius: 4,
+            backdropFilter: "blur(2px)",
+          }}>
+            {article.readTime}
+          </span>
+        </div>
+        <span style={{
+          fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase",
+          letterSpacing: "0.08em", color: article.borderColor, display: "block",
+          marginBottom: 3,
+        }}>
+          {article.category}
+        </span>
+        <p style={{
+          margin: "0 0 4px", fontWeight: 700, fontSize: "0.92rem",
+          color: "var(--dark)", fontFamily: "Aileron, sans-serif", lineHeight: 1.3,
+        }}>
+          {article.title}
+        </p>
+        <p className="muted" style={{
+          margin: 0, fontSize: "0.78rem", lineHeight: 1.5,
+          display: "-webkit-box", WebkitLineClamp: 2,
+          WebkitBoxOrient: "vertical", overflow: "hidden",
+        }}>
+          {article.summary}
+        </p>
+      </div>
+    </Link>
+  );
+}
+
 function HorizontalScroll({ children }) {
   return (
     <div style={{
@@ -44,9 +94,20 @@ function HorizontalScroll({ children }) {
 }
 
 function Explore() {
-  const [input, setInput]       = useState("");
-  const [cooldown, setCooldown] = useState(false);
+  const [input, setInput]         = useState("");
+  const [cooldown, setCooldown]   = useState(false);
+  const [showAllArticles, setShowAllArticles] = useState(false);
+  const [activeIdx, setActiveIdx] = useState(0);
   const inputRef = useRef(null);
+
+  // Auto-cycle articles every 3.5 s when not showing all
+  useEffect(() => {
+    if (showAllArticles) return;
+    const id = setInterval(() => {
+      setActiveIdx((i) => (i + 1) % articles.length);
+    }, 3500);
+    return () => clearInterval(id);
+  }, [showAllArticles]);
 
   const { activeBaby } = useActiveBaby();
   const { ask, answer, recommendedMeals, recommendedFoods, safetyNote, loading, error } = useAIHelper();
@@ -308,78 +369,89 @@ function Explore() {
 
         {/* ── ARTICLES ── */}
         <div style={{ marginBottom: "3.5rem" }}>
-          <span style={{
-            fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
-            letterSpacing: "0.12em", color: "var(--orange-dark)", display: "block",
-            marginBottom: "0.4rem",
-          }}>
-            Guides & Safety
-          </span>
-          <h2 style={{
-            margin: "0 0 1.5rem",
-            fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
-            fontFamily: "Aileron, sans-serif",
-            fontWeight: 700,
-            color: "var(--dark)",
-            lineHeight: 1.1,
-            letterSpacing: "-0.01em",
-          }}>
-            Parent reads
-          </h2>
+          {/* Header row */}
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "1.5rem" }}>
+            <div>
+              <span style={{
+                fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
+                letterSpacing: "0.12em", color: "var(--orange-dark)", display: "block",
+                marginBottom: "0.4rem",
+              }}>
+                Guides & Safety
+              </span>
+              <h2 style={{
+                margin: 0,
+                fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
+                fontFamily: "Aileron, sans-serif",
+                fontWeight: 700,
+                color: "var(--dark)",
+                lineHeight: 1.1,
+                letterSpacing: "-0.01em",
+              }}>
+                Parent reads
+              </h2>
+            </div>
+            <button
+              onClick={() => setShowAllArticles((v) => !v)}
+              style={{
+                background: "none", border: "none", cursor: "pointer",
+                fontSize: "0.78rem", fontWeight: 700,
+                color: "var(--orange-dark)", fontFamily: "Nunito, sans-serif",
+                padding: "4px 0", marginBottom: 4,
+                textDecoration: "underline", textUnderlineOffset: 3,
+              }}
+            >
+              {showAllArticles ? "Show less" : "Show all"}
+            </button>
+          </div>
 
-          <HorizontalScroll>
-            {articles.map((article) => (
-              <Link
-                key={article.slug}
-                to={`/articles/${article.slug}`}
-                style={{ textDecoration: "none", flexShrink: 0, scrollSnapAlign: "start" }}
-              >
-                <div style={{ width: 220, cursor: "pointer" }}>
-                  <div style={{
-                    height: 130, borderRadius: 14,
-                    background: article.color,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    marginBottom: "0.7rem",
-                    position: "relative", overflow: "hidden",
-                  }}>
-                    {article.image
-                      ? <img src={article.image} alt={article.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                      : <span style={{ fontSize: "3.2rem" }}>{article.emoji}</span>
-                    }
-                    <span style={{
-                      position: "absolute", bottom: 7, right: 9,
-                      fontSize: "0.6rem", fontWeight: 700,
-                      color: "var(--dark)", background: "rgba(255,255,255,0.75)",
-                      padding: "2px 7px", borderRadius: 4,
-                      backdropFilter: "blur(2px)",
-                    }}>
-                      {article.readTime}
-                    </span>
+          {showAllArticles ? (
+            /* Full horizontal scroll */
+            <HorizontalScroll>
+              {articles.map((article) => (
+                <ArticleCard key={article.slug} article={article} />
+              ))}
+            </HorizontalScroll>
+          ) : (
+            /* Auto-cycling: show 3 articles, swap one at a time */
+            <div style={{ display: "flex", gap: 16, overflow: "hidden" }}>
+              {[0, 1, 2].map((offset) => {
+                const article = articles[(activeIdx + offset) % articles.length];
+                return (
+                  <div
+                    key={`${article.slug}-${offset}`}
+                    style={{
+                      flex: "0 0 220px",
+                      opacity: 1,
+                      transition: "opacity 0.4s ease",
+                      animation: offset === 2 ? "article-fade-in 0.4s ease" : "none",
+                    }}
+                  >
+                    <ArticleCard article={article} />
                   </div>
-                  <span style={{
-                    fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase",
-                    letterSpacing: "0.08em", color: article.borderColor, display: "block",
-                    marginBottom: 3,
-                  }}>
-                    {article.category}
-                  </span>
-                  <p style={{
-                    margin: "0 0 4px", fontWeight: 700, fontSize: "0.92rem",
-                    color: "var(--dark)", fontFamily: "Aileron, sans-serif", lineHeight: 1.3,
-                  }}>
-                    {article.title}
-                  </p>
-                  <p className="muted" style={{
-                    margin: 0, fontSize: "0.78rem", lineHeight: 1.5,
-                    display: "-webkit-box", WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical", overflow: "hidden",
-                  }}>
-                    {article.summary}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </HorizontalScroll>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Dot indicators */}
+          {!showAllArticles && (
+            <div style={{ display: "flex", gap: 6, marginTop: "1rem" }}>
+              {articles.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveIdx(i)}
+                  style={{
+                    width: i === activeIdx ? 18 : 6,
+                    height: 6, borderRadius: 3,
+                    background: i === activeIdx ? "var(--orange-dark)" : "var(--border)",
+                    border: "none", cursor: "pointer", padding: 0,
+                    transition: "width 0.3s ease, background 0.3s ease",
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* ── DISCOVER ── */}

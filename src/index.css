@@ -587,6 +587,11 @@ button { font-family: 'Nunito', sans-serif; }
   100% { background-position: -100% 0; }
 }
 
+@keyframes article-fade-in {
+  from { opacity: 0; transform: translateX(12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
 /* ── Urdu / RTL mode ───────────────────────────────── */
 .urdu-mode body,
 .urdu-mode .page,
