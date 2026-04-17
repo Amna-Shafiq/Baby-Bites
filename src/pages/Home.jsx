@@ -152,6 +152,176 @@ function EatStack() {
   );
 }
 
+// ── LandingParticleTitle: "Feed your baby with confidence" as interactive particles ──
+const LP_REPEL_RADIUS = 90;
+const LP_REPEL_FORCE  = 7;
+const LP_SPRING       = 0.055;
+const LP_FRICTION     = 0.82;
+
+// Pre-parse hex → {r,g,b} so we're not doing it every animation frame
+function hexRgb(hex) {
+  return {
+    r: parseInt(hex.slice(1, 3), 16),
+    g: parseInt(hex.slice(3, 5), 16),
+    b: parseInt(hex.slice(5, 7), 16),
+  };
+}
+const COLOR_DARK   = hexRgb("#2D2416"); // var(--dark)
+const COLOR_ORANGE = hexRgb("#C4622A"); // var(--orange-dark)
+
+function LandingParticleTitle() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx    = canvas.getContext("2d");
+    let animId;
+    const cursor = { x: -9999, y: -9999 };
+    let particles = [];
+
+    async function init() {
+      try { await document.fonts.load("700 80px 'Aileron'"); } catch (_) {}
+
+      const W = canvas.offsetWidth || 490;
+      const H = 200;
+      canvas.width  = W;
+      canvas.height = H;
+
+      // Pick a font size that fits the longer line, then auto-shrink if needed
+      let fontSize = Math.min(W * 0.09, 52);
+      const leading = fontSize * 1.18;
+
+      function sampleLine(text, yPos, rgb, isItalic) {
+        const off    = document.createElement("canvas");
+        off.width    = W;
+        off.height   = H;
+        const offCtx = off.getContext("2d");
+
+        // Auto-shrink if text overflows
+        let fs = fontSize;
+        offCtx.font = `${isItalic ? "italic " : ""}700 ${fs}px 'Aileron', sans-serif`;
+        const measured = offCtx.measureText(text).width;
+        if (measured > W * 0.94) fs = fs * (W * 0.94) / measured;
+
+        offCtx.font         = `${isItalic ? "italic " : ""}700 ${fs}px 'Aileron', sans-serif`;
+        offCtx.fillStyle    = "white";
+        offCtx.textAlign    = "center";
+        offCtx.textBaseline = "middle";
+        offCtx.fillText(text, W / 2, yPos);
+
+        const { data } = offCtx.getImageData(0, 0, W, H);
+        const pts = [];
+        for (let y = 0; y < H; y += 3) {
+          for (let x = 0; x < W; x += 3) {
+            if (data[(y * W + x) * 4 + 3] > 100) pts.push({ x, y });
+          }
+        }
+        return pts.map((pt) => ({ ...pt, rgb }));
+      }
+
+      const line1 = sampleLine("Feed your baby with", H / 2 - leading * 0.5, COLOR_DARK,   false);
+      const line2 = sampleLine("confidence",          H / 2 + leading * 0.5, COLOR_ORANGE, true);
+
+      particles = [...line1, ...line2].map(({ x, y, rgb }) => ({
+        tx: x, ty: y,
+        x:  Math.random() * W,
+        y:  Math.random() < 0.5 ? -Math.random() * 100 : H + Math.random() * 100,
+        vx: 0, vy: 0,
+        r:       Math.random() * 0.85 + 0.45,
+        opacity: 0,
+        phase:   Math.random() * Math.PI * 2,
+        settled: false,
+        rgb,
+      }));
+
+      animId = requestAnimationFrame(animate);
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const p of particles) {
+        const dx   = p.x - cursor.x;
+        const dy   = p.y - cursor.y;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < LP_REPEL_RADIUS && dist > 0) {
+          const f  = (LP_REPEL_RADIUS - dist) / LP_REPEL_RADIUS;
+          p.vx    += (dx / dist) * f * LP_REPEL_FORCE;
+          p.vy    += (dy / dist) * f * LP_REPEL_FORCE;
+          p.settled = false;
+        }
+
+        p.vx += (p.tx - p.x) * LP_SPRING;
+        p.vy += (p.ty - p.y) * LP_SPRING;
+        p.vx *= LP_FRICTION;
+        p.vy *= LP_FRICTION;
+
+        if (!p.settled &&
+            Math.hypot(p.x - p.tx, p.y - p.ty) < 2 &&
+            Math.abs(p.vx) < 0.1 && Math.abs(p.vy) < 0.1) {
+          p.settled = true;
+        }
+
+        if (p.settled && dist >= LP_REPEL_RADIUS) {
+          p.phase += 0.02;
+          p.x = p.tx + Math.cos(p.phase)       * 0.4;
+          p.y = p.ty + Math.sin(p.phase * 1.3) * 0.4;
+        } else if (!p.settled) {
+          p.x += p.vx;
+          p.y += p.vy;
+        }
+
+        if (p.opacity < 1) p.opacity = Math.min(1, p.opacity + 0.022);
+
+        const { r, g, b } = p.rgb;
+
+        // Glow near cursor (uses particle's own color)
+        if (dist < LP_REPEL_RADIUS) {
+          const nf   = 1 - dist / LP_REPEL_RADIUS;
+          const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
+          glow.addColorStop(0, `rgba(${r},${g},${b},${nf * 0.5})`);
+          glow.addColorStop(1, `rgba(${r},${g},${b},0)`);
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2);
+          ctx.fillStyle = glow;
+          ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${r},${g},${b},${p.opacity})`;
+        ctx.fill();
+      }
+      animId = requestAnimationFrame(animate);
+    }
+
+    init();
+
+    const onMove  = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      cursor.x   = e.clientX - rect.left;
+      cursor.y   = e.clientY - rect.top;
+    };
+    const onLeave = () => { cursor.x = -9999; cursor.y = -9999; };
+    canvas.addEventListener("mousemove",  onMove);
+    canvas.addEventListener("mouseleave", onLeave);
+    return () => {
+      cancelAnimationFrame(animId);
+      canvas.removeEventListener("mousemove",  onMove);
+      canvas.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
+  return (
+    <canvas ref={canvasRef} style={{
+      width: "100%", height: 200, display: "block",
+      cursor: "none", background: "transparent",
+      marginBottom: "1rem",
+    }} />
+  );
+}
+
 function Home() {
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
@@ -294,7 +464,7 @@ function Home() {
         <div className="lp-hero">
           <div>
             <div className="hero-pill">{t("heroTag")}</div>
-            <h1>{t("heroHeading")} <em>{t("heroEm")}</em></h1>
+            <LandingParticleTitle />
             <p className="hero-sub">{t("heroSub")}</p>
             <div className="hero-btns">
               {!session && (
