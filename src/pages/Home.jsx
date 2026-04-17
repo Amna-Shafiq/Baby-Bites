@@ -24,6 +24,52 @@ const STRIP_ITEMS = [
   { emoji: '🥚', name: 'Egg',          color: 'si-g' },
 ];
 
+const EAT_VIDS = ["/eat1.mp4", "/eat2.mp4", "/eat3.mp4"];
+
+// Stacked cards that cycle front→back every 3 s
+function EatStack() {
+  const [order, setOrder] = useState([0, 1, 2]); // indices into EAT_VIDS; order[0]=front
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setOrder(([f, m, b]) => [m, b, f]); // rotate: front goes to back
+    }, 3000);
+    return () => clearInterval(id);
+  }, []);
+
+  // position styles for front / middle / back
+  const pos = [
+    { bottom: 60, left: 0,  rotate:  0, scale: 1,    zIndex: 3, opacity: 1 },
+    { bottom: 30, left: 15, rotate: -3, scale: 0.93,  zIndex: 2, opacity: 0.9 },
+    { bottom:  0, left: 28, rotate:  5, scale: 0.86,  zIndex: 1, opacity: 0.75 },
+  ];
+
+  return (
+    <div style={{ position: "relative", width: 220, height: 420 }}>
+      {order.map((vidIdx, posIdx) => (
+        <video
+          key={vidIdx}
+          src={EAT_VIDS[vidIdx]}
+          autoPlay muted loop playsInline
+          style={{
+            position: "absolute",
+            width: 180, height: 320,
+            objectFit: "cover",
+            borderRadius: 22,
+            boxShadow: "0 12px 40px rgba(0,0,0,0.18)",
+            bottom:   pos[posIdx].bottom,
+            left:     pos[posIdx].left,
+            zIndex:   pos[posIdx].zIndex,
+            opacity:  pos[posIdx].opacity,
+            transform: `rotate(${pos[posIdx].rotate}deg) scale(${pos[posIdx].scale})`,
+            transition: "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 function Home() {
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
@@ -185,43 +231,7 @@ function Home() {
           </div>
 
           <div className="visual">
-            <div style={{ position: 'relative' }}>
-              <div className="lp-float lp-f1">{t("floatIron")}</div>
-              <div className="phone">
-                <div className="notch" />
-                <div className="screen">
-                  <div className="scr-top">
-                    <div className="scr-title">Today's Meals</div>
-                    <div className="age-badge">8 months</div>
-                  </div>
-                  <div className="scr-card">
-                    <div className="scr-row">
-                      <div className="scr-name">Banana Oatmeal Mash</div>
-                      <div className="scr-time">5 min</div>
-                    </div>
-                    <div className="scr-sub">Breakfast</div>
-                    <span className="stag st-o">4–8m</span>
-                  </div>
-                  <div className="scr-card">
-                    <div className="scr-row">
-                      <div className="scr-name">Lentil &amp; Carrot Puree</div>
-                      <div className="scr-time">15 min</div>
-                    </div>
-                    <div className="scr-sub">Lunch</div>
-                    <span className="stag st-g">Iron-rich</span>
-                  </div>
-                  <div className="scr-card">
-                    <div className="scr-row">
-                      <div className="scr-name">Salmon &amp; Pea Mash</div>
-                      <div className="scr-time">12 min</div>
-                    </div>
-                    <div className="scr-sub">Dinner</div>
-                    <span className="stag st-b">Omega-3</span>
-                  </div>
-                </div>
-              </div>
-              <div className="lp-float lp-f2">{t("floatAge")}</div>
-            </div>
+            <EatStack />
           </div>
         </div>
       </div>

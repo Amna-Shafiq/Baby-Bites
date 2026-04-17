@@ -199,13 +199,75 @@
   font-weight: 700;
 }
 
-/* ── Phone mockup ── */
+/* ── Eat video stack ── */
 .visual {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1rem;
+}
+
+.eat-stack {
+  position: relative;
+  width: 220px;
+  height: 420px;
+}
+
+.eat-vid {
+  position: absolute;
+  width: 180px;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 22px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+}
+
+/* Bottom card — tilted right, animates slowest */
+.eat-vid-3 {
+  bottom: 0;
+  left: 20px;
+  transform: rotate(4deg);
+  z-index: 1;
+  animation: eat-sway-3 5s ease-in-out infinite;
+}
+
+/* Middle card — slight left tilt */
+.eat-vid-2 {
+  bottom: 28px;
+  left: 10px;
+  transform: rotate(-2deg);
+  z-index: 2;
+  animation: eat-sway-2 4.5s ease-in-out infinite;
+  animation-delay: -1.5s;
+}
+
+/* Top card — straight, animates fastest */
+.eat-vid-1 {
+  bottom: 56px;
+  left: 0px;
+  transform: rotate(0deg);
+  z-index: 3;
+  animation: eat-sway-1 4s ease-in-out infinite;
+  animation-delay: -0.8s;
+}
+
+@keyframes eat-sway-1 {
+  0%, 100% { transform: translateX(0px)   rotate(0deg); }
+  40%       { transform: translateX(-10px) rotate(-1deg); }
+  70%       { transform: translateX(8px)   rotate(0.8deg); }
+}
+
+@keyframes eat-sway-2 {
+  0%, 100% { transform: translateX(0px)  rotate(-2deg); }
+  35%       { transform: translateX(10px) rotate(-0.5deg); }
+  70%       { transform: translateX(-7px) rotate(-2.5deg); }
+}
+
+@keyframes eat-sway-3 {
+  0%, 100% { transform: translateX(0px)  rotate(4deg); }
+  40%       { transform: translateX(12px) rotate(5.5deg); }
+  70%       { transform: translateX(-8px) rotate(3deg); }
 }
 
 .phone {
