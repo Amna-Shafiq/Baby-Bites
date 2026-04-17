@@ -284,6 +284,7 @@ const articles = [
     slug: "baby-led-weaning",
     title: "Baby-Led Weaning vs Purees",
     emoji: "🥕",
+    image: "/blw.webp",
     category: "Feeding",
     readTime: "4 min read",
     color: "#f0fff4",
