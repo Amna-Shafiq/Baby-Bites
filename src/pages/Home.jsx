@@ -168,9 +168,11 @@ function Home() {
             <h1>{t("heroHeading")} <em>{t("heroEm")}</em></h1>
             <p className="hero-sub">{t("heroSub")}</p>
             <div className="hero-btns">
-              <button className="btn-a" onClick={() => navigate('/login')}>
-                {t("startFree")}
-              </button>
+              {!session && (
+                <button className="btn-a" onClick={() => navigate('/login')}>
+                  {t("startFree")}
+                </button>
+              )}
               <button className="btn-b" onClick={() => navigate('/meals')}>
                 {t("exploreMeals")}
               </button>
