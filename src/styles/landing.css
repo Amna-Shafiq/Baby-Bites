@@ -103,14 +103,15 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--green);
+  /* semi-transparent so the gradient hero bleeds through */
+  background: rgba(213,245,227,0.35);
   color: var(--green-dark);
   font-size: 0.78rem;
   font-weight: 700;
   padding: 0.35rem 0.9rem;
   border-radius: 100px;
   margin-bottom: 1.2rem;
-  border: 1px solid var(--green-mid);
+  /* border removed — liquid-glass ::before provides gradient border */
 }
 
 .landing-page h1 {
@@ -525,10 +526,11 @@
 }
 
 .lp-step {
+  /* background kept translucent so blur shows the dark bg through */
   background: rgba(255, 255, 255, 0.06);
   border-radius: 20px;
   padding: 1.4rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* border removed — liquid-glass-strong ::before provides gradient border */
 }
 
 .snum {
