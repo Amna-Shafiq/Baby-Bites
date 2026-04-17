@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import { supabase } from "../lib/supabaseClient";
 import { useLanguage } from "../contexts/LanguageContext";
+import LogMealModal from "../components/LogMealModal";
 
 const FOOD_REFERENCES = {
   pistachio:  [{ label: "Solid Starts", url: "https://solidstarts.com/foods/pistachios/" }],
@@ -29,6 +30,27 @@ function FoodDetail() {
   const [food, setFood]     = useState(null);
   const [meals, setMeals]   = useState([]);
   const [error, setError]   = useState("");
+  const [session, setSession]   = useState(null);
+  const [logOpen, setLogOpen]   = useState(false);
+  const [logSaved, setLogSaved] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
+  }, []);
+
+  const handleLogSubmit = async (reaction, notes) => {
+    if (!session || !food) return;
+    await supabase.from("feeding_logs").insert({
+      user_id:   session.user.id,
+      food_id:   food.id,
+      item_name: food.name,
+      reaction,
+      notes:     notes?.trim() || null,
+      fed_at:    new Date().toISOString(),
+    });
+    setLogSaved(true);
+    setTimeout(() => setLogSaved(false), 3000);
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -58,9 +80,33 @@ function FoodDetail() {
     <div className="page">
       <TopNav />
 
-      <button className="btn btn-ghost" onClick={() => navigate(-1)} style={{ marginTop: "1.5rem", paddingLeft: 0 }}>
-        {t("back")}
-      </button>
+      {logOpen && food && (
+        <LogMealModal
+          mealName={food.name}
+          onSubmit={handleLogSubmit}
+          onClose={() => setLogOpen(false)}
+        />
+      )}
+
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1.5rem" }}>
+        <button className="btn btn-ghost" onClick={() => navigate(-1)} style={{ paddingLeft: 0 }}>
+          {t("back")}
+        </button>
+        <button
+          type="button"
+          onClick={() => session ? setLogOpen(true) : navigate("/login")}
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 5,
+            background: logSaved ? "var(--cream)" : "none",
+            border: "1.5px solid var(--border)", borderRadius: 10,
+            padding: "6px 12px", cursor: "pointer",
+            fontSize: "0.82rem", fontWeight: 700,
+            color: logSaved ? "var(--orange-dark)" : "var(--muted)",
+          }}
+        >
+          {logSaved ? "✓ Logged!" : "📋 Log as fed"}
+        </button>
+      </div>
 
       {/* ── Food header ── */}
       <div style={{ display: "flex", gap: 24, alignItems: "flex-start", flexWrap: "wrap", margin: "1.5rem 0" }}>

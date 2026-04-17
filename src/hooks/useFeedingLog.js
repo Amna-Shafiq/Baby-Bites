@@ -44,12 +44,13 @@ function useFeedingLog(userId) {
 
   useEffect(() => { load(); }, [load]);
 
-  const addLog = useCallback(async ({ mealId, customMealId, itemName, reaction, notes }) => {
+  const addLog = useCallback(async ({ mealId, customMealId, foodId, itemName, reaction, notes }) => {
     if (!userId) return { error: "Not logged in" };
     const { error } = await supabase.from("feeding_logs").insert({
       user_id:        userId,
       meal_id:        mealId || null,
       custom_meal_id: customMealId || null,
+      food_id:        foodId || null,
       item_name:      itemName,
       reaction,
       notes:          notes?.trim() || null,

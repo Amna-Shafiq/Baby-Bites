@@ -199,64 +199,82 @@ function MyMeals() {
       {/* ── Feeding Log ── */}
       <section className="panel">
         <h2 style={{ marginBottom: "0.2rem", fontSize: "1rem" }}>Feeding Log</h2>
-        <p className="muted" style={{ fontSize: "0.8rem", marginBottom: "0.9rem" }}>
-          Open any meal and tap "Log as fed" to record a feeding.
+        <p className="muted" style={{ fontSize: "0.8rem", marginBottom: "1rem" }}>
+          Open any meal or food and tap "Log as fed".
         </p>
+
         {logs.length === 0 ? (
           <p className="muted" style={{ fontSize: "0.82rem" }}>No entries yet.</p>
-        ) : (
-          <>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              {(showAllLogs ? logs : logs.slice(0, 10)).map((log, i, arr) => (
-                <div key={log.id} style={{
-                  display: "flex", alignItems: "center", gap: 10,
-                  padding: "8px 0",
-                  borderBottom: i < arr.length - 1 ? "1px solid var(--border)" : "none",
-                }}>
-                  <span style={{ fontSize: "1.1rem", flexShrink: 0 }}>{REACTION_EMOJI[log.reaction]}</span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <span style={{ fontSize: "0.88rem", fontWeight: 700, color: "var(--dark)" }}>
-                      {log.item_name}
-                    </span>
-                    {log.notes && (
-                      <span className="muted" style={{ fontSize: "0.76rem", marginLeft: 5 }}>
-                        · {log.notes.length > 45 ? log.notes.slice(0, 45) + "…" : log.notes}
-                      </span>
-                    )}
-                  </div>
-                  <span className="muted" style={{ fontSize: "0.72rem", flexShrink: 0 }}>
-                    {relativeDate(log.fed_at)}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => deleteLog(log.id)}
-                    style={{
-                      background: "none", border: "none", cursor: "pointer",
-                      color: "var(--muted)", fontSize: "0.72rem", padding: "2px 4px", flexShrink: 0,
-                    }}
-                    onMouseOver={(e) => e.currentTarget.style.color = "#c0392b"}
-                    onMouseOut={(e) => e.currentTarget.style.color = "var(--muted)"}
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
-            </div>
-            {logs.length > 10 && (
+        ) : (() => {
+          const mealLogs = logs.filter((l) => !l.food_id);
+          const foodLogs = logs.filter((l) =>  l.food_id);
+          const visibleMeals = showAllLogs ? mealLogs : mealLogs.slice(0, 8);
+          const visibleFoods = showAllLogs ? foodLogs : foodLogs.slice(0, 8);
+          const hasMore = mealLogs.length > 8 || foodLogs.length > 8;
+
+          const LogEntry = ({ log }) => (
+            <div style={{
+              display: "flex", alignItems: "flex-start", gap: 6,
+              padding: "6px 0", borderBottom: "1px solid var(--border)",
+            }}>
+              <span style={{ fontSize: "1rem", flexShrink: 0, lineHeight: 1.4 }}>{REACTION_EMOJI[log.reaction]}</span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ margin: 0, fontSize: "0.82rem", fontWeight: 700, color: "var(--dark)", lineHeight: 1.3 }}>
+                  {log.item_name}
+                </p>
+                {log.notes && (
+                  <p className="muted" style={{ margin: 0, fontSize: "0.72rem", lineHeight: 1.3 }}>
+                    {log.notes.length > 35 ? log.notes.slice(0, 35) + "…" : log.notes}
+                  </p>
+                )}
+                <p className="muted" style={{ margin: 0, fontSize: "0.68rem" }}>{relativeDate(log.fed_at)}</p>
+              </div>
               <button
                 type="button"
-                onClick={() => setShowAllLogs((s) => !s)}
-                style={{
-                  fontSize: "0.8rem", color: "var(--orange-dark)", fontWeight: 700,
-                  background: "none", border: "none", cursor: "pointer",
-                  padding: "8px 0 0", display: "block",
-                }}
-              >
-                {showAllLogs ? "Show less" : `Show all ${logs.length} entries`}
-              </button>
-            )}
-          </>
-        )}
+                onClick={() => deleteLog(log.id)}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "var(--muted)", fontSize: "0.7rem", padding: "2px", flexShrink: 0, lineHeight: 1 }}
+                onMouseOver={(e) => e.currentTarget.style.color = "#c0392b"}
+                onMouseOut={(e) => e.currentTarget.style.color = "var(--muted)"}
+              >✕</button>
+            </div>
+          );
+
+          return (
+            <>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                {/* Meals column */}
+                <div>
+                  <p style={{ fontSize: "0.68rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--muted)", marginBottom: "0.4rem" }}>
+                    Meals fed
+                  </p>
+                  {mealLogs.length === 0
+                    ? <p className="muted" style={{ fontSize: "0.78rem" }}>None yet</p>
+                    : visibleMeals.map((log) => <LogEntry key={log.id} log={log} />)
+                  }
+                </div>
+                {/* Foods column */}
+                <div>
+                  <p style={{ fontSize: "0.68rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--muted)", marginBottom: "0.4rem" }}>
+                    Foods tried
+                  </p>
+                  {foodLogs.length === 0
+                    ? <p className="muted" style={{ fontSize: "0.78rem" }}>None yet</p>
+                    : visibleFoods.map((log) => <LogEntry key={log.id} log={log} />)
+                  }
+                </div>
+              </div>
+              {hasMore && (
+                <button
+                  type="button"
+                  onClick={() => setShowAllLogs((s) => !s)}
+                  style={{ fontSize: "0.8rem", color: "var(--orange-dark)", fontWeight: 700, background: "none", border: "none", cursor: "pointer", padding: "8px 0 0", display: "block" }}
+                >
+                  {showAllLogs ? "Show less" : `Show all (${logs.length})`}
+                </button>
+              )}
+            </>
+          );
+        })()}
       </section>
 
       <div style={{ marginBottom: "2rem" }}>
