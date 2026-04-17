@@ -93,6 +93,224 @@ function HorizontalScroll({ children }) {
   );
 }
 
+// ── Particle canvas constants ──────────────────────────────
+const REPEL_RADIUS = 90;
+const REPEL_FORCE  = 7;
+const SPRING       = 0.055;
+const FRICTION     = 0.82;
+
+// ── ParticleCanvas: 90 floating dust motes over the hero ──
+function ParticleCanvas() {
+  const canvasRef = useRef(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let W, H, animId;
+    const particles = [];
+
+    function resize() {
+      W = canvas.offsetWidth;
+      H = canvas.offsetHeight;
+      canvas.width  = W;
+      canvas.height = H;
+    }
+
+    function spawn() {
+      particles.length = 0;
+      for (let i = 0; i < 90; i++) {
+        particles.push({
+          x:           Math.random() * (W || window.innerWidth),
+          y:           Math.random() * (H || window.innerHeight),
+          r:           Math.random() * 1.6 + 0.2,
+          baseOpacity: Math.random() * 0.55 + 0.08,
+          speed:       Math.random() * 0.35 + 0.08,
+          drift:       (Math.random() - 0.5) * 0.25,
+          phase:       Math.random() * Math.PI * 2,
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for (const p of particles) {
+        p.y     -= p.speed;
+        p.x     += p.drift;
+        p.phase += 0.012;
+        if (p.y < -p.r * 3)   p.y = H + p.r;
+        if (p.x < -p.r * 3)   p.x = W + p.r;
+        if (p.x >  W + p.r * 3) p.x = -p.r;
+        const opacity = p.baseOpacity * (0.65 + 0.35 * Math.sin(p.phase));
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 2.5);
+        g.addColorStop(0, `rgba(255,255,255,${opacity})`);
+        g.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = g;
+        ctx.fill();
+      }
+      animId = requestAnimationFrame(draw);
+    }
+
+    resize();
+    spawn();
+    draw();
+    window.addEventListener("resize", resize);
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  return (
+    <canvas ref={canvasRef} style={{
+      position: "absolute", inset: 0,
+      width: "100%", height: "100%",
+      pointerEvents: "none", zIndex: 2,
+    }} />
+  );
+}
+
+// ── ParticleTitle: text rendered as interactive particles ──
+function ParticleTitle() {
+  const canvasRef = useRef(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx     = canvas.getContext("2d");
+    let animId;
+    const cursor  = { x: -9999, y: -9999 };
+    let particles = [];
+
+    async function init() {
+      try { await document.fonts.load("italic 80px 'Instrument Serif'"); } catch (_) {}
+
+      const W      = canvas.offsetWidth || 560;
+      const H      = 230;
+      canvas.width  = W;
+      canvas.height = H;
+
+      const fontSize = Math.min(W * 0.086, 90);
+      const leading  = fontSize * 1.08;
+
+      // Render text to offscreen canvas for pixel sampling
+      const off    = document.createElement("canvas");
+      off.width    = W;
+      off.height   = H;
+      const offCtx = off.getContext("2d");
+      offCtx.fillStyle     = "white";
+      offCtx.font          = `italic ${fontSize}px 'Instrument Serif', serif`;
+      offCtx.textAlign     = "center";
+      offCtx.textBaseline  = "middle";
+      offCtx.fillText("Ask Anything", W / 2, H / 2 - leading * 0.5);
+      offCtx.fillText("Baby Bites",   W / 2, H / 2 + leading * 0.5);
+
+      const { data } = offCtx.getImageData(0, 0, W, H);
+      const points = [];
+      for (let y = 0; y < H; y += 3) {
+        for (let x = 0; x < W; x += 3) {
+          if (data[(y * W + x) * 4 + 3] > 100) points.push({ x, y });
+        }
+      }
+
+      particles = points.map(({ x, y }) => ({
+        tx: x, ty: y,
+        x:  Math.random() * W,
+        y:  Math.random() < 0.5 ? -Math.random() * 100 : H + Math.random() * 100,
+        vx: 0, vy: 0,
+        r:       Math.random() * 0.85 + 0.45,
+        opacity: 0,
+        phase:   Math.random() * Math.PI * 2,
+        settled: false,
+      }));
+
+      animId = requestAnimationFrame(animate);
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const p of particles) {
+        const dx   = p.x - cursor.x;
+        const dy   = p.y - cursor.y;
+        const dist = Math.hypot(dx, dy);
+
+        // Cursor repulsion
+        if (dist < REPEL_RADIUS && dist > 0) {
+          const f  = (REPEL_RADIUS - dist) / REPEL_RADIUS;
+          p.vx    += (dx / dist) * f * REPEL_FORCE;
+          p.vy    += (dy / dist) * f * REPEL_FORCE;
+          p.settled = false;
+        }
+
+        // Spring toward target
+        p.vx += (p.tx - p.x) * SPRING;
+        p.vy += (p.ty - p.y) * SPRING;
+        p.vx *= FRICTION;
+        p.vy *= FRICTION;
+
+        if (!p.settled && Math.hypot(p.x - p.tx, p.y - p.ty) < 2 &&
+            Math.abs(p.vx) < 0.1 && Math.abs(p.vy) < 0.1) {
+          p.settled = true;
+        }
+
+        if (p.settled && dist >= REPEL_RADIUS) {
+          // Gentle breathing drift once settled
+          p.phase += 0.02;
+          p.x = p.tx + Math.cos(p.phase)       * 0.4;
+          p.y = p.ty + Math.sin(p.phase * 1.3) * 0.4;
+        } else if (!p.settled) {
+          p.x += p.vx;
+          p.y += p.vy;
+        }
+
+        if (p.opacity < 1) p.opacity = Math.min(1, p.opacity + 0.022);
+
+        // Glow near cursor
+        if (dist < REPEL_RADIUS) {
+          const nf  = 1 - dist / REPEL_RADIUS;
+          const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
+          glow.addColorStop(0, `rgba(255,255,255,${nf * 0.6})`);
+          glow.addColorStop(1, "rgba(255,255,255,0)");
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2);
+          ctx.fillStyle = glow;
+          ctx.fill();
+        }
+
+        // Solid particle dot
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${p.opacity})`;
+        ctx.fill();
+      }
+      animId = requestAnimationFrame(animate);
+    }
+
+    init();
+
+    const onMove  = (e) => {
+      const r  = canvas.getBoundingClientRect();
+      cursor.x = e.clientX - r.left;
+      cursor.y = e.clientY - r.top;
+    };
+    const onLeave = () => { cursor.x = -9999; cursor.y = -9999; };
+    canvas.addEventListener("mousemove",  onMove);
+    canvas.addEventListener("mouseleave", onLeave);
+    return () => {
+      cancelAnimationFrame(animId);
+      canvas.removeEventListener("mousemove",  onMove);
+      canvas.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
+  return (
+    <canvas ref={canvasRef} style={{
+      width: "100%", height: 230, display: "block",
+      cursor: "none", background: "transparent",
+    }} />
+  );
+}
+
 function Explore() {
   const [input, setInput]         = useState("");
   const [cooldown, setCooldown]   = useState(false);
@@ -176,9 +394,12 @@ function Explore() {
           background: "linear-gradient(to right, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.15) 100%)",
         }} />
 
+        {/* Floating dust particles */}
+        <ParticleCanvas />
+
         {/* Content on top */}
         <div style={{
-          position: "relative", zIndex: 1,
+          position: "relative", zIndex: 3,
           padding: "3.5rem calc(50vw - 50%) 4rem calc(50vw - 50%)",
           paddingLeft: "max(2rem, calc(50vw - 530px))",
           paddingRight: "max(2rem, calc(50vw - 530px))",
@@ -192,17 +413,7 @@ function Explore() {
             {t("aiEyebrow")}
           </span>
 
-          <h1 style={{
-            margin: "0 0 0.75rem",
-            fontSize: "clamp(2.5rem, 6vw, 4rem)",
-            fontFamily: "Aileron, sans-serif",
-            fontWeight: 700,
-            color: "#ffffff",
-            lineHeight: 1.08,
-            letterSpacing: "-0.02em",
-          }}>
-            {t("aiTitle")}
-          </h1>
+          <ParticleTitle />
 
           <p style={{
             margin: "0 0 2rem",
