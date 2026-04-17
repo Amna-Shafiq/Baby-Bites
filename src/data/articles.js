@@ -350,6 +350,117 @@ const articles = [
       },
     ],
   },
+
+  {
+    slug: "starting-solids",
+    title: "When to Start Solids",
+    emoji: "🥣",
+    category: "Milestones",
+    readTime: "3 min read",
+    color: "#fff8ee",
+    borderColor: "#e67e22",
+    summary: "Most babies are ready around 6 months — but age alone isn't the signal. Look for these three readiness signs first.",
+    sections: [
+      {
+        type: "callout",
+        style: "tip",
+        text: "The WHO and NHS both recommend exclusive breastfeeding or formula until around 6 months, then introducing solids alongside milk feeds.",
+      },
+      {
+        type: "heading",
+        text: "The three readiness signs",
+      },
+      {
+        type: "body",
+        text: "Age is a guideline, not a rule. Pediatricians look for three signs together before giving the green light:",
+      },
+      {
+        type: "list",
+        items: [
+          "Sits up with little or no support and holds their head steady",
+          "Has lost the tongue-thrust reflex (doesn't automatically push food back out)",
+          "Shows interest in food — reaches for it, watches you eat, opens mouth when food approaches",
+        ],
+      },
+      {
+        type: "heading",
+        text: "What to offer first",
+      },
+      {
+        type: "body",
+        text: "Iron-rich foods matter most early on because your baby's iron stores from birth start to deplete around 6 months. Good first foods include pureed or mashed meat, lentils, cooked egg yolk, and iron-fortified infant cereal. Pair these with vitamin C-rich foods (sweet potato, broccoli) to boost absorption.",
+      },
+      {
+        type: "callout",
+        style: "warning",
+        text: "Never start solids before 4 months — the gut and airway are not ready. Babies who start too early have a higher risk of choking and developing food allergies.",
+      },
+      {
+        type: "heading",
+        text: "How much to offer",
+      },
+      {
+        type: "body",
+        text: "Start with 1–2 teaspoons once a day. Milk (breast or formula) remains the primary nutrition source until 12 months. Food at this stage is exploration — don't worry if most of it ends up on the floor.",
+      },
+    ],
+  },
+
+  {
+    slug: "water-for-babies",
+    title: "Water for Babies",
+    emoji: "💧",
+    category: "Nutrition",
+    readTime: "3 min read",
+    color: "#eaf6ff",
+    borderColor: "#2980b9",
+    summary: "Babies don't need water before 6 months — and even after, it's easy to give too much. Here's exactly what to offer and when.",
+    sections: [
+      {
+        type: "callout",
+        style: "warning",
+        text: "Never give water to babies under 6 months. Their kidneys can't handle it and it can cause dangerous low sodium levels (hyponatraemia).",
+      },
+      {
+        type: "heading",
+        text: "Under 6 months: milk only",
+      },
+      {
+        type: "body",
+        text: "Breast milk and formula provide all the fluid a young baby needs — even in hot weather. Giving water before 6 months can fill up small stomachs, reducing milk intake and the nutrients that come with it.",
+      },
+      {
+        type: "heading",
+        text: "6–12 months: small sips with meals",
+      },
+      {
+        type: "body",
+        text: "Once solids begin, you can offer small sips of cooled boiled water with meals — a few teaspoons up to about 120ml a day. Milk (breast or formula) still provides most of their fluid. Water is just to help with the transition to eating.",
+      },
+      {
+        type: "callout",
+        style: "tip",
+        text: "Use an open cup or a free-flow sippy cup rather than a valve cup — it's better for dental development and teaches proper drinking.",
+      },
+      {
+        type: "heading",
+        text: "Over 12 months",
+      },
+      {
+        type: "body",
+        text: "After the first birthday, water becomes the main drink alongside whole cow's milk. Aim for 4–6 cups of fluid per day total. Avoid juice, squash, and sweet drinks — they damage teeth and add empty calories.",
+      },
+      {
+        type: "list",
+        items: [
+          "Under 6 months: no water at all",
+          "6–12 months: small sips with meals only (cooled boiled water)",
+          "12+ months: water freely, whole milk 300–400ml/day",
+          "Always: avoid juice, squash, flavoured water, and fizzy drinks",
+        ],
+      },
+    ],
+  },
 ];
 
 export default articles;
