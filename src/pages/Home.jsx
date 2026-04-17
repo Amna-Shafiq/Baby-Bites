@@ -50,8 +50,8 @@ function ScrollThread() {
 
   return (
     <div style={{
-      position: "fixed", left: 20, top: 0, bottom: 0,
-      width: 20, zIndex: 50, pointerEvents: "none",
+      position: "fixed", left: 12, top: 0, bottom: 0,
+      width: 30, zIndex: 50, pointerEvents: "none",
       display: "flex", flexDirection: "column", alignItems: "center",
     }}>
       {/* Track */}
@@ -72,7 +72,7 @@ function ScrollThread() {
         transition: "height 0.15s ease-out",
       }} />
 
-      {/* Section nodes */}
+      {/* Section nodes — small tick marks */}
       {THREAD_NODES.map((node) => {
         const reached = progress >= node.pct - 0.02;
         return (
@@ -81,29 +81,27 @@ function ScrollThread() {
             top: `${node.pct * 100}%`,
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: reached ? 10 : 7,
-            height: reached ? 10 : 7,
+            width: 4, height: 4,
             borderRadius: "50%",
             background: reached ? "var(--orange-dark)" : "rgba(196,98,42,0.2)",
-            border: reached ? "2px solid var(--orange-mid)" : "2px solid rgba(196,98,42,0.15)",
-            boxShadow: reached ? "0 0 10px rgba(196,98,42,0.5)" : "none",
-            transition: "all 0.4s ease",
+            transition: "background 0.4s ease",
           }} />
         );
       })}
 
-      {/* Glowing dot at current position */}
+      {/* Spoon travelling down the thread */}
       <div style={{
         position: "absolute",
         top: `${progress * 100}%`,
         left: "50%",
-        transform: "translate(-50%, -50%)",
-        width: 8, height: 8,
-        borderRadius: "50%",
-        background: "var(--orange-dark)",
-        boxShadow: "0 0 0 4px rgba(196,98,42,0.2), 0 0 12px rgba(196,98,42,0.6)",
+        transform: "translate(-50%, -50%) rotate(180deg)",
+        fontSize: 18,
+        filter: "drop-shadow(0 2px 4px rgba(196,98,42,0.4))",
         transition: "top 0.15s ease-out",
-      }} />
+        lineHeight: 1,
+      }}>
+        🥄
+      </div>
     </div>
   );
 }
