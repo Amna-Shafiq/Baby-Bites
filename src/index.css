@@ -42,6 +42,21 @@ h1, h2, h3, h4 {
   font-family: 'Aileron', sans-serif;
   color: var(--dark);
   line-height: 1.2;
+  display: inline-block;
+  cursor: default;
+}
+
+@keyframes heading-wiggle {
+  0%   { transform: translateY(0);    }
+  20%  { transform: translateY(-6px); }
+  40%  { transform: translateY(3px);  }
+  60%  { transform: translateY(-4px); }
+  80%  { transform: translateY(2px);  }
+  100% { transform: translateY(0);    }
+}
+
+h1:hover, h2:hover, h3:hover, h4:hover {
+  animation: heading-wiggle 0.45s ease;
 }
 
 button { font-family: 'Nunito', sans-serif; }
