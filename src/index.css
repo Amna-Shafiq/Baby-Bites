@@ -92,6 +92,10 @@ button { font-family: 'Nunito', sans-serif; }
 }
 .input:focus { border-color: var(--orange-mid); }
 .input-lg { min-height: 48px; }
+/* Hero search input on dark video background */
+.input.input-glass::placeholder { color: rgba(255,255,255,0.55); }
+.input.input-glass { color: #fff; caret-color: #fff; }
+.input.input-glass:focus { border-color: rgba(255,255,255,0.6); }
 
 /* ── Cards ─────────────────────────────────────────── */
 .card {
