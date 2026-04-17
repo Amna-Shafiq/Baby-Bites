@@ -813,3 +813,8 @@
   .lp-steps { grid-template-columns: 1fr; }
   .age-grid  { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* Hide scroll thread on small screens */
+@media (max-width: 760px) {
+  .scroll-thread { display: none; }
+}

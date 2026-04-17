@@ -24,6 +24,90 @@ const STRIP_ITEMS = [
   { emoji: '🥚', name: 'Egg',          color: 'si-g' },
 ];
 
+// ── Scroll thread ──────────────────────────────────────
+const THREAD_NODES = [
+  { label: "Welcome",  pct: 0   },
+  { label: "Features", pct: 0.3 },
+  { label: "How",      pct: 0.55 },
+  { label: "Meals",    pct: 0.72 },
+  { label: "Done",     pct: 1   },
+];
+
+function ScrollThread() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const el = document.documentElement;
+      const scrolled = el.scrollTop || document.body.scrollTop;
+      const total    = el.scrollHeight - el.clientHeight;
+      setProgress(total > 0 ? Math.min(scrolled / total, 1) : 0);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <div style={{
+      position: "fixed", left: 20, top: 0, bottom: 0,
+      width: 20, zIndex: 50, pointerEvents: "none",
+      display: "flex", flexDirection: "column", alignItems: "center",
+    }}>
+      {/* Track */}
+      <div style={{
+        position: "absolute", top: 0, bottom: 0, left: "50%",
+        width: 2, transform: "translateX(-50%)",
+        background: "rgba(196,98,42,0.12)",
+        borderRadius: 1,
+      }} />
+
+      {/* Fill */}
+      <div style={{
+        position: "absolute", top: 0, left: "50%",
+        width: 2, transform: "translateX(-50%)",
+        height: `${progress * 100}%`,
+        background: "linear-gradient(to bottom, var(--orange-dark), var(--orange-mid))",
+        borderRadius: 1,
+        transition: "height 0.15s ease-out",
+      }} />
+
+      {/* Section nodes */}
+      {THREAD_NODES.map((node) => {
+        const reached = progress >= node.pct - 0.02;
+        return (
+          <div key={node.label} style={{
+            position: "absolute",
+            top: `${node.pct * 100}%`,
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: reached ? 10 : 7,
+            height: reached ? 10 : 7,
+            borderRadius: "50%",
+            background: reached ? "var(--orange-dark)" : "rgba(196,98,42,0.2)",
+            border: reached ? "2px solid var(--orange-mid)" : "2px solid rgba(196,98,42,0.15)",
+            boxShadow: reached ? "0 0 10px rgba(196,98,42,0.5)" : "none",
+            transition: "all 0.4s ease",
+          }} />
+        );
+      })}
+
+      {/* Glowing dot at current position */}
+      <div style={{
+        position: "absolute",
+        top: `${progress * 100}%`,
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: 8, height: 8,
+        borderRadius: "50%",
+        background: "var(--orange-dark)",
+        boxShadow: "0 0 0 4px rgba(196,98,42,0.2), 0 0 12px rgba(196,98,42,0.6)",
+        transition: "top 0.15s ease-out",
+      }} />
+    </div>
+  );
+}
+
 const EAT_VIDS = ["/eat1.mp4", "/eat2.mp4", "/eat3.mp4"];
 
 // Stacked cards that cycle front→back every 3 s
@@ -106,6 +190,7 @@ function Home() {
 
   return (
     <div className="landing-page">
+      <ScrollThread />
 
       {/* ── Nav ── */}
       <nav className="lp-nav">
