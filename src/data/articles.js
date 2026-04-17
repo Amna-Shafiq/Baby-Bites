@@ -4,7 +4,7 @@ const articles = [
     title: "Gagging vs Choking",
     emoji: "🤢",
     category: "Safety",
-    readTime: "4 min read",
+    readTime: "5 min read",
     color: "#eef4ff",
     borderColor: "#2471a3",
     summary: "Gagging sounds alarming but is normal and protective. Choking is silent and dangerous. Learn the difference — and what to do.",
@@ -20,7 +20,7 @@ const articles = [
       },
       {
         type: "body",
-        text: "Gagging is a normal, healthy reflex that protects your baby from choking. Babies have a gag reflex that sits much further forward on the tongue than adults — this is by design. As babies learn to eat solid foods, they frequently gag on lumpy or textured food. It sounds scary but it means the reflex is working exactly as it should.",
+        text: "Gagging is an instinctive protective reflex triggered when the brain detects something shouldn't pass further into the airway. In babies, the gag reflex sits much further forward on the tongue than in adults — this is by design. It works by briefly closing the breathing tube and pushing food forward and out of the mouth. As babies learn to eat solids, gagging is completely expected regardless of whether they are spoon-fed or doing baby-led weaning. It does not mean the food is unsafe or that the feeding approach is wrong.",
       },
       {
         type: "heading",
@@ -29,30 +29,42 @@ const articles = [
       {
         type: "list",
         items: [
-          "Loud, forceful coughing or retching sounds",
-          "Face going red or eyes watering",
-          "Food being pushed forward to the front of the mouth",
-          "Baby can cry or make noise before and after",
+          "Loud, forceful coughing, retching, or gagging sounds — noise is a good sign",
+          "Face going red, eyes watering",
+          "Tongue pushing forward, mouth wide open",
+          "Food moving toward the front of the mouth",
+          "Baby can cry or make noise before and after the episode",
+          "Sometimes results in vomiting — still normal if baby recovers quickly",
           "Resolves on its own within seconds",
         ],
       },
       {
         type: "body",
-        text: "The best thing to do when your baby gags is stay calm and do nothing. Your anxiety can transfer to the baby. Resist the urge to pat their back or stick fingers in their mouth — this can make things worse.",
+        text: "The best response to gagging is to stay calm and do nothing. Your anxiety transfers to the baby and can make them panic. Do not pat their back during gagging — you may dislodge food into a worse position. Never put your fingers into their mouth — this risks pushing food further back and turning a gag into a choke.",
+      },
+      {
+        type: "callout",
+        style: "tip",
+        text: "Important: simple coughing is NOT choking. Coughing is the airway clearing itself and is a healthy response. Only intervene when there is silence combined with distress.",
       },
       {
         type: "heading",
         text: "Signs of choking (emergency — act immediately)",
       },
       {
+        type: "body",
+        text: "Choking is when the airway is partially or completely blocked by a foreign body and the baby cannot clear it on their own. The critical difference from gagging: choking is generally silent because the blocked airway prevents sound.",
+      },
+      {
         type: "list",
         items: [
-          "Silence — no crying, no coughing sound",
-          "Weak or high-pitched squeak (partial blockage)",
-          "Face turning blue or purple, especially around the lips",
-          "Cannot breathe in or out",
-          "Appears panicked, eyes wide",
-          "Limpness if prolonged",
+          "Silence — no crying, no coughing, no sound at all",
+          "Weak, high-pitched squeak (partial blockage)",
+          "Cannot breathe in or out — chest may appear sucked in",
+          "Face turning blue or purple around the lips (on lighter skin)",
+          "On darker skin tones: check gums, inside lips, and fingernails for blue colouring",
+          "Look of terror, eyes wide",
+          "Limpness if oxygen deprivation is prolonged",
         ],
       },
       {
@@ -62,18 +74,49 @@ const articles = [
       {
         type: "steps",
         items: [
-          "Lay baby face-down along your forearm, head lower than chest. Support the head.",
+          "Shout for help. Remove baby from high chair immediately.",
+          "Lay baby face-down along your forearm, head lower than chest. Support the head firmly.",
           "Give 5 firm back blows between the shoulder blades using the heel of your hand.",
-          "Turn baby face-up on your forearm. Give 5 chest thrusts — 2 fingers on the centre of the chest, just below the nipple line, push down about 1.5 inches.",
-          "Look in the mouth. If you can see the object, remove it. Never do a blind finger sweep.",
-          "Repeat back blows and chest thrusts until the object is dislodged or emergency services arrive.",
-          "Call emergency services (1122 / 115) immediately or have someone else call while you help the baby.",
+          "Turn baby face-up on your forearm. Give 5 chest thrusts — 2 fingers on the centre of the chest, just below the nipple line, pressing down about 1.5 inches.",
+          "Look in the mouth. If you can clearly see the object, remove it. Never do a blind finger sweep — you may push the object deeper.",
+          "Repeat back blows and chest thrusts until the object is dislodged or help arrives.",
+          "Call emergency services (1122 / 115) immediately, or have someone else call while you act.",
         ],
+      },
+      {
+        type: "heading",
+        text: "When to speak to your paediatrician",
+      },
+      {
+        type: "body",
+        text: "Gagging at most meals is expected in the early weeks of weaning. However, contact your doctor if: gagging persists at most meals after 2–3 weeks on purees or 1–2 months on finger foods; your baby consistently becomes very distressed after gagging; or you notice any difficulty swallowing liquids.",
+      },
+      {
+        type: "heading",
+        text: "Does baby-led weaning increase choking risk?",
+      },
+      {
+        type: "body",
+        text: "Research shows that infants doing baby-led weaning with appropriate choking-risk education do not choke more than traditionally spoon-fed infants. However, studies found that children across all feeding methods were frequently offered high-choking-risk foods (small, round, or hard items). Supervision and food preparation matter more than the feeding method.",
       },
       {
         type: "callout",
         style: "tip",
-        text: "Take an infant first aid course. Reading about it helps, but hands-on practice with a manikin builds real confidence. Many hospitals offer free or low-cost sessions for new parents.",
+        text: "Take an infant first aid course. Reading about it helps, but hands-on practice with a manikin builds real muscle memory. Many hospitals and clinics offer free or low-cost sessions for new parents.",
+      },
+    ],
+    references: [
+      {
+        label: "Solid Starts — Gagging",
+        url: "https://solidstarts.com/gagging/",
+      },
+      {
+        label: "NHS — Choking and gagging on food",
+        url: "https://www.nhs.uk/best-start-in-life/baby/weaning/safe-weaning/choking-and-gagging-on-food/",
+      },
+      {
+        label: "PMC — Choking vs Gagging in Infant Feeding (2023)",
+        url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10594011/",
       },
     ],
   },

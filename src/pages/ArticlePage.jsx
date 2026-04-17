@@ -120,7 +120,38 @@ function ArticlePage() {
         })}
       </div>
 
-      <div style={{ marginTop: "2.5rem", marginBottom: "2rem", borderTop: "1.5px solid var(--border)", paddingTop: "1.25rem" }}>
+      {/* ── References ── */}
+      {article.references?.length > 0 && (
+        <div style={{ marginTop: "2rem", borderTop: "1.5px solid var(--border)", paddingTop: "1.25rem" }}>
+          <p style={{
+            fontSize: "0.68rem", fontWeight: 800, textTransform: "uppercase",
+            letterSpacing: "0.09em", color: "var(--muted)", marginBottom: "0.6rem",
+          }}>
+            References
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {article.references.map((ref, i) => (
+              <a
+                key={i}
+                href={ref.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  color: "var(--orange-dark)", fontWeight: 700, fontSize: "0.85rem",
+                  textDecoration: "none",
+                }}
+              >
+                <span style={{ fontSize: "0.9rem" }}>📖</span>
+                {ref.label}
+                <span style={{ fontSize: "0.7rem", color: "var(--muted)" }}>↗</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div style={{ marginTop: "1.5rem", marginBottom: "2rem", borderTop: "1.5px solid var(--border)", paddingTop: "1.1rem" }}>
         <p className="muted" style={{ fontSize: "0.78rem" }}>
           This content is for general information only and does not replace professional medical advice. Always consult your paediatrician.
         </p>
