@@ -265,7 +265,7 @@ function Meals() {
 
               {/* Hover */}
               <div className="food-card-details">
-                <p style={{ fontWeight: 700, fontSize: "0.9rem", margin: "0 0 5px", color: "var(--dark)", fontFamily: "Fraunces, serif" }}>
+                <p style={{ fontWeight: 700, fontSize: "0.9rem", margin: "0 0 5px", color: "var(--dark)", fontFamily: "Aileron, sans-serif" }}>
                   {meal.title}
                 </p>
                 <p className="food-detail-row">{meal.description}</p>

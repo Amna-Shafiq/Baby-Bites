@@ -45,7 +45,7 @@ function LogMealModal({ mealName, onSubmit, onClose }) {
         </p>
         <p style={{
           fontWeight: 700, fontSize: "1rem", color: "var(--dark)",
-          marginBottom: "1.1rem", fontFamily: "Fraunces, serif",
+          marginBottom: "1.1rem", fontFamily: "Aileron, sans-serif",
           whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
         }}>
           {mealName}

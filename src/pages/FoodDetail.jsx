@@ -167,7 +167,7 @@ function FoodDetail() {
                     <span className="badge badge-slot">{meal.meal_slot}</span>
                     <span className={`badge badge-${meal.meal_type}`}>{meal.meal_type}</span>
                   </div>
-                  <p style={{ fontWeight: 700, fontSize: "0.92rem", margin: "0 0 6px", color: "var(--dark)", fontFamily: "Fraunces, serif", lineHeight: 1.3 }}>
+                  <p style={{ fontWeight: 700, fontSize: "0.92rem", margin: "0 0 6px", color: "var(--dark)", fontFamily: "Aileron, sans-serif", lineHeight: 1.3 }}>
                     {meal.title}
                   </p>
                   <p className="muted" style={{ fontSize: "0.78rem", margin: 0 }}>

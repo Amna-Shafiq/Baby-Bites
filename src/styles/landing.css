@@ -25,7 +25,7 @@
 }
 
 .landing-page .lp-logo {
-  font-family: 'Fraunces', serif;
+  font-family: 'Aileron', sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--orange-dark);
@@ -187,7 +187,7 @@
 }
 
 .sn {
-  font-family: 'Fraunces', serif;
+  font-family: 'Aileron', sans-serif;
   font-size: 1.6rem;
   font-weight: 700;
   color: var(--dark);
@@ -239,7 +239,7 @@
 }
 
 .scr-title {
-  font-family: 'Fraunces', serif;
+  font-family: 'Aileron', sans-serif;
   font-size: 0.8rem;
   font-weight: 700;
   color: var(--dark);
@@ -429,7 +429,7 @@
 .fy { background: var(--yellow); }
 
 .ft {
-  font-family: 'Fraunces', serif;
+  font-family: 'Aileron', sans-serif;
   font-size: 1rem;
   font-weight: 600;
   color: var(--dark);
@@ -470,7 +470,7 @@
 }
 
 .snum {
-  font-family: 'Fraunces', serif;
+  font-family: 'Aileron', sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
   line-height: 1;
@@ -482,7 +482,7 @@
 .sb { color: var(--blue-mid); }
 
 .stitle {
-  font-family: 'Fraunces', serif;
+  font-family: 'Aileron', sans-serif;
   font-size: 1.05rem;
   font-weight: 600;
   color: #fff;
@@ -551,7 +551,7 @@
 }
 
 .mname {
-  font-family: 'Fraunces', serif;
+  font-family: 'Aileron', sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--dark);
@@ -594,7 +594,7 @@
 }
 
 .agr {
-  font-family: 'Fraunces', serif;
+  font-family: 'Aileron', sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--dark);
@@ -643,7 +643,7 @@
 }
 
 .cta-t {
-  font-family: 'Fraunces', serif;
+  font-family: 'Aileron', sans-serif;
   font-size: 2.4rem;
   font-weight: 700;
   color: var(--dark);
@@ -690,7 +690,7 @@
 }
 
 .flogo {
-  font-family: 'Fraunces', serif;
+  font-family: 'Aileron', sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--orange-mid);

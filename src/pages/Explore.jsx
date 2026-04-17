@@ -68,7 +68,20 @@ function Explore() {
       <TopNav />
 
       {/* ── HERO: full-bleed video background, content on top ── */}
-      <div style={{ position: "relative", overflow: "hidden", minHeight: "92vh" }}>
+      <div style={{
+        position: "relative", overflow: "hidden", minHeight: "92vh",
+        /* Fade all four edges into the page background */
+        WebkitMaskImage: [
+          "linear-gradient(to bottom, transparent 0%, black 8%, black 88%, transparent 100%)",
+          "linear-gradient(to right,  transparent 0%, black 6%, black 94%, transparent 100%)",
+        ].join(", "),
+        maskImage: [
+          "linear-gradient(to bottom, transparent 0%, black 8%, black 88%, transparent 100%)",
+          "linear-gradient(to right,  transparent 0%, black 6%, black 94%, transparent 100%)",
+        ].join(", "),
+        WebkitMaskComposite: "destination-in",
+        maskComposite: "intersect",
+      }}>
 
         {/* Background video */}
         {VIDEO_URL ? (
@@ -116,7 +129,7 @@ function Explore() {
         }}>
           <span style={{
             fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
-            letterSpacing: "0.14em", color: "rgba(255,255,255,0.7)", display: "block",
+            letterSpacing: "0.14em", color: "rgba(255,255,255,0.85)", display: "block",
             marginBottom: "0.75rem",
           }}>
             {t("aiEyebrow")}
@@ -125,9 +138,8 @@ function Explore() {
           <h1 style={{
             margin: "0 0 0.75rem",
             fontSize: "clamp(2.5rem, 6vw, 4rem)",
-            fontFamily: "Fraunces, serif",
-            fontStyle: "italic",
-            fontWeight: 300,
+            fontFamily: "Aileron, sans-serif",
+            fontWeight: 700,
             color: "#ffffff",
             lineHeight: 1.08,
             letterSpacing: "-0.02em",
@@ -253,7 +265,7 @@ function Explore() {
                           <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 4 }}>
                             <span className="badge badge-slot">{meal.meal_slot}</span>
                           </div>
-                          <p style={{ fontWeight: 700, fontSize: "0.88rem", margin: "0 0 3px", color: "#fff", fontFamily: "Fraunces, serif", lineHeight: 1.3 }}>
+                          <p style={{ fontWeight: 700, fontSize: "0.88rem", margin: "0 0 3px", color: "#fff", fontFamily: "Aileron, sans-serif", lineHeight: 1.3 }}>
                             {meal.title}
                           </p>
                           <p style={{ fontSize: "0.72rem", margin: 0, color: "rgba(255,255,255,0.6)" }}>
@@ -280,7 +292,7 @@ function Explore() {
                             onError={(e) => { e.target.src = "https://placehold.co/60x60?text=🍽"; }}
                             style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 10, marginBottom: 5 }}
                           />
-                          <p style={{ fontWeight: 700, fontSize: "0.78rem", margin: "0 0 1px", color: "#fff", fontFamily: "Fraunces, serif" }}>
+                          <p style={{ fontWeight: 700, fontSize: "0.78rem", margin: "0 0 1px", color: "#fff", fontFamily: "Aileron, sans-serif" }}>
                             {food.name}
                           </p>
                           <p style={{ fontSize: "0.68rem", margin: 0, color: "rgba(255,255,255,0.6)" }}>{food.food_group}</p>
@@ -302,7 +314,7 @@ function Explore() {
         <div style={{ marginBottom: "3.5rem" }}>
           <span style={{
             fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
-            letterSpacing: "0.12em", color: "var(--orange)", display: "block",
+            letterSpacing: "0.12em", color: "var(--orange-dark)", display: "block",
             marginBottom: "0.4rem",
           }}>
             Guides & Safety
@@ -310,9 +322,8 @@ function Explore() {
           <h2 style={{
             margin: "0 0 1.5rem",
             fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
-            fontFamily: "Fraunces, serif",
-            fontStyle: "italic",
-            fontWeight: 400,
+            fontFamily: "Aileron, sans-serif",
+            fontWeight: 700,
             color: "var(--dark)",
             lineHeight: 1.1,
             letterSpacing: "-0.01em",
@@ -355,7 +366,7 @@ function Explore() {
                   </span>
                   <p style={{
                     margin: "0 0 4px", fontWeight: 700, fontSize: "0.92rem",
-                    color: "var(--dark)", fontFamily: "Fraunces, serif", lineHeight: 1.3,
+                    color: "var(--dark)", fontFamily: "Aileron, sans-serif", lineHeight: 1.3,
                   }}>
                     {article.title}
                   </p>
@@ -376,7 +387,7 @@ function Explore() {
         <div style={{ marginBottom: "2rem" }}>
           <span style={{
             fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
-            letterSpacing: "0.12em", color: "var(--orange)", display: "block",
+            letterSpacing: "0.12em", color: "var(--orange-dark)", display: "block",
             marginBottom: "0.4rem",
           }}>
             {t("discoverEyebrow")}
@@ -384,9 +395,8 @@ function Explore() {
           <h2 style={{
             margin: "0 0 1.75rem",
             fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
-            fontFamily: "Fraunces, serif",
-            fontStyle: "italic",
-            fontWeight: 400,
+            fontFamily: "Aileron, sans-serif",
+            fontWeight: 700,
             color: "var(--dark)",
             lineHeight: 1.1,
             letterSpacing: "-0.01em",
@@ -402,7 +412,7 @@ function Explore() {
             ].map((item) => (
               <Link key={item.to} to={item.to} style={{ textDecoration: "none", display: "block" }}>
                 <span style={{ fontSize: "2rem", display: "block", marginBottom: "0.55rem" }}>{item.emoji}</span>
-                <p style={{ margin: "0 0 5px", fontWeight: 800, fontSize: "1rem", color: "var(--dark)", fontFamily: "Fraunces, serif" }}>
+                <p style={{ margin: "0 0 5px", fontWeight: 800, fontSize: "1rem", color: "var(--dark)", fontFamily: "Aileron, sans-serif" }}>
                   {item.title}
                 </p>
                 <p className="muted" style={{ margin: 0, fontSize: "0.83rem", lineHeight: 1.55 }}>
