@@ -4,11 +4,14 @@ import TopNav from "../components/TopNav";
 import useCustomMeals from "../hooks/useCustomMeals";
 import useFavorites from "../hooks/useFavorites";
 import { useLanguage } from "../contexts/LanguageContext";
+import useFeedingLog, { REACTION_EMOJI, relativeDate } from "../hooks/useFeedingLog";
 
 function MyMeals() {
   const { t } = useLanguage();
-  const { session, customMeals, addCustomMeal, deleteCustomMeal, error, loading } = useCustomMeals();
+  const { session, userId, customMeals, addCustomMeal, deleteCustomMeal, error, loading } = useCustomMeals();
   const { favoriteMeals, toggleFavorite } = useFavorites();
+  const { logs, deleteLog } = useFeedingLog(userId);
+  const [showAllLogs, setShowAllLogs] = useState(false);
 
   const [title, setTitle]                     = useState("");
   const [minAgeMonths, setMinAgeMonths]       = useState("6");
@@ -190,6 +193,69 @@ function MyMeals() {
               </Link>
             ))}
           </div>
+        )}
+      </section>
+
+      {/* ── Feeding Log ── */}
+      <section className="panel">
+        <h2 style={{ marginBottom: "0.2rem", fontSize: "1rem" }}>Feeding Log</h2>
+        <p className="muted" style={{ fontSize: "0.8rem", marginBottom: "0.9rem" }}>
+          Open any meal and tap "Log as fed" to record a feeding.
+        </p>
+        {logs.length === 0 ? (
+          <p className="muted" style={{ fontSize: "0.82rem" }}>No entries yet.</p>
+        ) : (
+          <>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {(showAllLogs ? logs : logs.slice(0, 10)).map((log, i, arr) => (
+                <div key={log.id} style={{
+                  display: "flex", alignItems: "center", gap: 10,
+                  padding: "8px 0",
+                  borderBottom: i < arr.length - 1 ? "1px solid var(--border)" : "none",
+                }}>
+                  <span style={{ fontSize: "1.1rem", flexShrink: 0 }}>{REACTION_EMOJI[log.reaction]}</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <span style={{ fontSize: "0.88rem", fontWeight: 700, color: "var(--dark)" }}>
+                      {log.item_name}
+                    </span>
+                    {log.notes && (
+                      <span className="muted" style={{ fontSize: "0.76rem", marginLeft: 5 }}>
+                        · {log.notes.length > 45 ? log.notes.slice(0, 45) + "…" : log.notes}
+                      </span>
+                    )}
+                  </div>
+                  <span className="muted" style={{ fontSize: "0.72rem", flexShrink: 0 }}>
+                    {relativeDate(log.fed_at)}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => deleteLog(log.id)}
+                    style={{
+                      background: "none", border: "none", cursor: "pointer",
+                      color: "var(--muted)", fontSize: "0.72rem", padding: "2px 4px", flexShrink: 0,
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.color = "#c0392b"}
+                    onMouseOut={(e) => e.currentTarget.style.color = "var(--muted)"}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+            {logs.length > 10 && (
+              <button
+                type="button"
+                onClick={() => setShowAllLogs((s) => !s)}
+                style={{
+                  fontSize: "0.8rem", color: "var(--orange-dark)", fontWeight: 700,
+                  background: "none", border: "none", cursor: "pointer",
+                  padding: "8px 0 0", display: "block",
+                }}
+              >
+                {showAllLogs ? "Show less" : `Show all ${logs.length} entries`}
+              </button>
+            )}
+          </>
         )}
       </section>
 

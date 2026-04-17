@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import TopNav from "../components/TopNav";
 import { supabase } from "../lib/supabaseClient";
 import { useLanguage } from "../contexts/LanguageContext";
+import LogMealModal from "../components/LogMealModal";
 
 function CustomMealPage() {
   const { id } = useParams();
@@ -15,6 +16,8 @@ function CustomMealPage() {
   const [error, setError]       = useState("");
   const [uploading, setUploading] = useState(false);
   const [session, setSession]   = useState(null);
+  const [logOpen, setLogOpen]   = useState(false);
+  const [logSaved, setLogSaved] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
@@ -33,6 +36,20 @@ function CustomMealPage() {
     };
     load();
   }, [id]);
+
+  const handleLogSubmit = async (reaction, notes) => {
+    if (!session || !meal) return;
+    await supabase.from("feeding_logs").insert({
+      user_id:        session.user.id,
+      custom_meal_id: meal.id,
+      item_name:      meal.title,
+      reaction,
+      notes:          notes?.trim() || null,
+      fed_at:         new Date().toISOString(),
+    });
+    setLogSaved(true);
+    setTimeout(() => setLogSaved(false), 3000);
+  };
 
   const handlePhotoUpload = async (e) => {
     const file = e.target.files?.[0];
@@ -78,9 +95,33 @@ function CustomMealPage() {
     <div className="page">
       <TopNav />
 
-      <button className="btn btn-ghost" onClick={() => navigate(-1)} style={{ marginTop: "1.5rem", paddingLeft: 0 }}>
-        {t("back")}
-      </button>
+      {logOpen && meal && (
+        <LogMealModal
+          mealName={meal.title}
+          onSubmit={handleLogSubmit}
+          onClose={() => setLogOpen(false)}
+        />
+      )}
+
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1.5rem", gap: 8 }}>
+        <button className="btn btn-ghost" onClick={() => navigate(-1)} style={{ paddingLeft: 0 }}>
+          {t("back")}
+        </button>
+        <button
+          type="button"
+          onClick={() => setLogOpen(true)}
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 5,
+            background: logSaved ? "var(--cream)" : "none",
+            border: "1.5px solid var(--border)", borderRadius: 10,
+            padding: "6px 12px", cursor: "pointer",
+            fontSize: "0.82rem", fontWeight: 700,
+            color: logSaved ? "var(--orange-dark)" : "var(--muted)",
+          }}
+        >
+          {logSaved ? "✓ Logged!" : "📋 Log as fed"}
+        </button>
+      </div>
 
       {/* ── Photo ── */}
       <div
