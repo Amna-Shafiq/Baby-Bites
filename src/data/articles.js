@@ -126,6 +126,7 @@ const articles = [
     slug: "infant-cpr",
     title: "Infant CPR",
     emoji: "🫀",
+    image: "/cpr.webp",
     category: "Safety",
     readTime: "5 min read",
     color: "#fdf0ef",
