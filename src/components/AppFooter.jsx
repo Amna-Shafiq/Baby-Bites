@@ -11,6 +11,7 @@ function AppFooter() {
         <Link to="/explore">Explore</Link>
         <Link to="/meals">Meals</Link>
         <Link to="/foods">Foods</Link>
+        <Link to="/about">About</Link>
         <a href="#">Privacy</a>
       </div>
       <div className="app-footer-copy">© 2026 Baby Bites</div>

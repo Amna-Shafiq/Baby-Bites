@@ -15,6 +15,7 @@ import FoodDetail from "./pages/FoodDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CustomMealPage from "./pages/CustomMealPage";
 import ArticlePage from "./pages/ArticlePage";
+import About from "./pages/About";
 import InstallPrompt from "./components/InstallPrompt";
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
           <Route path="/login" element={<Login redirectTo="/" />} />
           <Route path="/foods/:id" element={<FoodDetail />} />
           <Route path="/articles/:slug" element={<ArticlePage />} />
+          <Route path="/about" element={<About />} />
         </Routes>
         {!isHome && <AppFooter />}
       </div>
