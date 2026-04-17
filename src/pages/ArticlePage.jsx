@@ -30,18 +30,27 @@ function ArticlePage() {
         background: article.color,
         border: `1.5px solid ${article.borderColor}`,
         borderRadius: 18,
-        padding: "1.5rem",
+        overflow: "hidden",
         margin: "1rem 0 1.75rem",
       }}>
-        <p style={{ fontSize: "2.5rem", margin: "0 0 0.5rem" }}>{article.emoji}</p>
-        <span style={{
-          fontSize: "0.7rem", fontWeight: 800, textTransform: "uppercase",
-          letterSpacing: "0.09em", color: article.borderColor,
-        }}>
-          {article.category} · {article.readTime}
-        </span>
-        <h1 style={{ margin: "0.4rem 0 0.6rem", fontSize: "1.6rem" }}>{article.title}</h1>
-        <p className="muted" style={{ margin: 0, fontSize: "0.92rem", lineHeight: 1.6 }}>{article.summary}</p>
+        {article.image && (
+          <img
+            src={article.image}
+            alt={article.title}
+            style={{ width: "100%", height: 220, objectFit: "cover", display: "block" }}
+          />
+        )}
+        <div style={{ padding: "1.25rem 1.5rem 1.5rem" }}>
+          {!article.image && <p style={{ fontSize: "2.5rem", margin: "0 0 0.5rem" }}>{article.emoji}</p>}
+          <span style={{
+            fontSize: "0.7rem", fontWeight: 800, textTransform: "uppercase",
+            letterSpacing: "0.09em", color: article.borderColor,
+          }}>
+            {article.category} · {article.readTime}
+          </span>
+          <h1 style={{ margin: "0.4rem 0 0.6rem", fontSize: "1.6rem" }}>{article.title}</h1>
+          <p className="muted" style={{ margin: 0, fontSize: "0.92rem", lineHeight: 1.6 }}>{article.summary}</p>
+        </div>
       </div>
 
       {/* ── Content sections ── */}

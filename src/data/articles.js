@@ -3,6 +3,7 @@ const articles = [
     slug: "gagging-vs-choking",
     title: "Gagging vs Choking",
     emoji: "🤢",
+    image: "/gagg.webp",
     category: "Safety",
     readTime: "5 min read",
     color: "#eef4ff",

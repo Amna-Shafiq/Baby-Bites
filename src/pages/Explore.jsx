@@ -346,7 +346,10 @@ function Explore() {
                     marginBottom: "0.7rem",
                     position: "relative", overflow: "hidden",
                   }}>
-                    <span style={{ fontSize: "3.2rem" }}>{article.emoji}</span>
+                    {article.image
+                      ? <img src={article.image} alt={article.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                      : <span style={{ fontSize: "3.2rem" }}>{article.emoji}</span>
+                    }
                     <span style={{
                       position: "absolute", bottom: 7, right: 9,
                       fontSize: "0.6rem", fontWeight: 700,
