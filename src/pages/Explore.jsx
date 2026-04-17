@@ -70,17 +70,11 @@ function Explore() {
       {/* ── HERO: full-bleed video background, content on top ── */}
       <div style={{
         position: "relative", overflow: "hidden", minHeight: "92vh",
-        /* Fade all four edges into the page background */
-        WebkitMaskImage: [
-          "linear-gradient(to bottom, transparent 0%, black 8%, black 88%, transparent 100%)",
-          "linear-gradient(to right,  transparent 0%, black 6%, black 94%, transparent 100%)",
-        ].join(", "),
-        maskImage: [
-          "linear-gradient(to bottom, transparent 0%, black 8%, black 88%, transparent 100%)",
-          "linear-gradient(to right,  transparent 0%, black 6%, black 94%, transparent 100%)",
-        ].join(", "),
-        WebkitMaskComposite: "destination-in",
-        maskComposite: "intersect",
+        marginLeft: "calc(-50vw + 50%)",
+        width: "100vw",
+        /* Fade top and bottom edges into the page background */
+        WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 6%, black 90%, transparent 100%)",
+        maskImage: "linear-gradient(to bottom, transparent 0%, black 6%, black 90%, transparent 100%)",
       }}>
 
         {/* Background video */}
@@ -124,9 +118,11 @@ function Explore() {
         {/* Content on top */}
         <div style={{
           position: "relative", zIndex: 1,
-          padding: "3.5rem 2rem 4rem",
-          maxWidth: 560,
-        }}>
+          padding: "3.5rem calc(50vw - 50%) 4rem calc(50vw - 50%)",
+          paddingLeft: "max(2rem, calc(50vw - 530px))",
+          paddingRight: "max(2rem, calc(50vw - 530px))",
+          maxWidth: "none",
+        }}><div style={{ maxWidth: 560 }}>
           <span style={{
             fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
             letterSpacing: "0.14em", color: "rgba(255,255,255,0.85)", display: "block",
@@ -304,7 +300,7 @@ function Explore() {
               )}
             </div>
           )}
-        </div>
+        </div></div>{/* end maxWidth:560 */}
       </div>
 
       {/* ── Below-the-fold sections (back to normal padding) ── */}
