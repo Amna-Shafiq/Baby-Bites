@@ -426,6 +426,7 @@ function Home() {
           <a href="#features">{t("footerFeatures")}</a>
           <Link to="/meals">{t("meals")}</Link>
           <Link to="/foods">{t("allFoods")}</Link>
+          <Link to="/about">{t("footerAbout")}</Link>
           <a href="#">{t("footerPrivacy")}</a>
         </div>
         <div className="fcopy">{t("footerCopy")}</div>

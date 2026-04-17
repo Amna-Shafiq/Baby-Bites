@@ -182,6 +182,7 @@ const translations = {
 
     // Footer
     footerFeatures:"Features",
+    footerAbout:   "About",
     footerPrivacy: "Privacy",
     footerCopy:    "© 2026 Baby Bites",
   },
@@ -369,6 +370,7 @@ const translations = {
 
     // Footer
     footerFeatures:"خصوصیات",
+    footerAbout:   "ہمارے بارے میں",
     footerPrivacy: "رازداری",
     footerCopy:    "© 2026 Baby Bites",
   },
