@@ -121,13 +121,13 @@ function EatStack() {
 
   // position styles for front / middle / back
   const pos = [
-    { bottom: 60, left: 0,  rotate:  0, scale: 1,    zIndex: 3, opacity: 1 },
-    { bottom: 30, left: 15, rotate: -3, scale: 0.93,  zIndex: 2, opacity: 0.9 },
-    { bottom:  0, left: 28, rotate:  5, scale: 0.86,  zIndex: 1, opacity: 0.75 },
+    { bottom: 90, left: 0,  rotate:  0, scale: 1,    zIndex: 3, opacity: 1 },
+    { bottom: 45, left: 22, rotate: -3, scale: 0.93,  zIndex: 2, opacity: 0.9 },
+    { bottom:  0, left: 42, rotate:  5, scale: 0.86,  zIndex: 1, opacity: 0.75 },
   ];
 
   return (
-    <div style={{ position: "relative", width: 220, height: 420 }}>
+    <div style={{ position: "relative", width: 360, height: 630 }}>
       {order.map((vidIdx, posIdx) => (
         <video
           key={vidIdx}
@@ -135,7 +135,7 @@ function EatStack() {
           autoPlay muted loop playsInline
           style={{
             position: "absolute",
-            width: 180, height: 320,
+            width: 300, height: 520,
             objectFit: "cover",
             borderRadius: 22,
             boxShadow: "0 12px 40px rgba(0,0,0,0.18)",
