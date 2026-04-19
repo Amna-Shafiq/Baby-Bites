@@ -315,8 +315,10 @@ function Explore() {
   const [input, setInput]       = useState("");
   const [cooldown, setCooldown] = useState(false);
   const [articleScroll, setArticleScroll] = useState(0);
+  const [dragging, setDragging] = useState(false);
   const articleRowRef = useRef(null);
-  const inputRef = useRef(null);
+  const trackRef      = useRef(null);
+  const inputRef      = useRef(null);
 
   const onArticleScroll = () => {
     const el = articleRowRef.current;
@@ -324,6 +326,33 @@ function Explore() {
     const max = el.scrollWidth - el.clientWidth;
     setArticleScroll(max > 0 ? Math.min(el.scrollLeft / max, 1) : 0);
   };
+
+  // Drag the dish to scroll
+  const startDrag = (e) => { e.preventDefault(); setDragging(true); };
+
+  useEffect(() => {
+    if (!dragging) return;
+    const move = (e) => {
+      const track = trackRef.current;
+      const row   = articleRowRef.current;
+      if (!track || !row) return;
+      const rect    = track.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const pct     = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      row.scrollLeft = pct * (row.scrollWidth - row.clientWidth);
+    };
+    const up = () => setDragging(false);
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup",   up);
+    document.addEventListener("touchmove", move, { passive: true });
+    document.addEventListener("touchend",  up);
+    return () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup",   up);
+      document.removeEventListener("touchmove", move);
+      document.removeEventListener("touchend",  up);
+    };
+  }, [dragging]);
 
   const { activeBaby } = useActiveBaby();
   const { ask, answer, recommendedMeals, recommendedFoods, safetyNote, loading, error } = useAIHelper();
@@ -614,36 +643,32 @@ function Explore() {
             ))}
           </div>
 
-          {/* Plate-fill scroll progress indicator */}
-          <div style={{ marginTop: 14, display: "flex", alignItems: "center", gap: 12 }}>
-            {/* Circular plate */}
-            <div style={{ position: "relative", width: 38, height: 38, flexShrink: 0 }}>
-              <div style={{
-                width: "100%", height: "100%", borderRadius: "50%",
-                border: "2px solid var(--border)", overflow: "hidden",
-              }}>
-                <div style={{
-                  position: "absolute", bottom: 0, left: 0, right: 0,
-                  height: `${articleScroll * 100}%`,
-                  background: "linear-gradient(to top, var(--green-dark), var(--green-mid))",
-                  transition: "height 0.12s ease",
-                }} />
-              </div>
-              <div style={{
-                position: "absolute", inset: 0,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 16, lineHeight: 1,
-              }}>
-                {articleScroll < 0.05 ? "🍽️" : articleScroll > 0.9 ? "🍲" : "🥄"}
-              </div>
-            </div>
-            {/* Thin green track */}
-            <div style={{ flex: 1, height: 3, borderRadius: 2, background: "var(--border)", overflow: "hidden" }}>
-              <div style={{
-                width: `${articleScroll * 100}%`, height: "100%",
-                background: "var(--green-dark)", borderRadius: 2,
-                transition: "width 0.12s ease",
-              }} />
+          {/* Dish sliding along green track — draggable */}
+          <div ref={trackRef} style={{ marginTop: 14, position: "relative", height: 32 }}>
+            {/* Track line */}
+            <div style={{
+              position: "absolute", top: "50%", left: 0, right: 0,
+              height: 2, borderRadius: 1,
+              background: "var(--green-dark)",
+              transform: "translateY(-50%)",
+            }} />
+            {/* Draggable dish */}
+            <div
+              onMouseDown={startDrag}
+              onTouchStart={startDrag}
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: `${articleScroll * 100}%`,
+                transform: "translate(-50%, -50%)",
+                fontSize: 22, lineHeight: 1,
+                transition: dragging ? "none" : "left 0.12s ease",
+                filter: "drop-shadow(0 1px 4px rgba(26,122,68,0.4))",
+                cursor: dragging ? "grabbing" : "grab",
+                userSelect: "none",
+              }}
+            >
+              🍽️
             </div>
           </div>
         </div>
