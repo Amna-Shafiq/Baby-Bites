@@ -341,7 +341,7 @@ function MealsShowcase() {
 
   useEffect(() => {
     if (paused) return;
-    const id = setInterval(() => setActive(i => (i + 1) % SHOWCASE_DISHES.length), 3200);
+    const id = setInterval(() => setActive(i => (i + 1) % SHOWCASE_DISHES.length), 1000);
     return () => clearInterval(id);
   }, [paused]);
 
@@ -356,7 +356,7 @@ function MealsShowcase() {
     >
       {/* Image — zoom pans to each dish via transform-origin transition */}
       <img
-        src="/food-spread.jpg"
+        src="/food-spread.png"
         alt={dish.name}
         style={{
           width: "100%", height: "100%",
@@ -364,7 +364,7 @@ function MealsShowcase() {
           display: "block",
           transform: "scale(2.4)",
           transformOrigin: dish.origin,
-          transition: "transform-origin 1.1s cubic-bezier(0.4, 0, 0.2, 1)",
+          transition: "transform-origin 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
         }}
       />
 
@@ -394,21 +394,6 @@ function MealsShowcase() {
           {dish.name}
         </h3>
 
-        {/* Dot indicators */}
-        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          {SHOWCASE_DISHES.map((_, i) => (
-            <button
-              key={i}
-              onClick={e => { e.stopPropagation(); setActive(i); }}
-              style={{
-                width: i === active ? 20 : 6, height: 6, borderRadius: 3,
-                background: i === active ? "#fff" : "rgba(255,255,255,0.38)",
-                border: "none", cursor: "pointer", padding: 0,
-                transition: "width 0.3s ease, background 0.3s ease",
-              }}
-            />
-          ))}
-        </div>
       </div>
 
       {/* View meals arrow badge */}
