@@ -324,6 +324,109 @@ function LandingParticleTitle() {
   );
 }
 
+// ── Meals showcase ────────────────────────────────────────
+const SHOWCASE_DISHES = [
+  { name: "Sweet Pea Mash",         sub: "4–6m · Starter",    origin: "15% 22%",  link: "/meals" },
+  { name: "Pea & Rice Medley",      sub: "6–10m · Lunch",     origin: "50% 22%",  link: "/meals" },
+  { name: "Herb Roast Chicken",     sub: "10–18m · Dinner",   origin: "84% 22%",  link: "/meals" },
+  { name: "Banana Oat Porridge",    sub: "4–8m · Breakfast",  origin: "15% 80%",  link: "/meals" },
+  { name: "Lentil & Carrot Puree",  sub: "6–10m · Lunch",     origin: "50% 80%",  link: "/meals" },
+  { name: "Mini Oat Pancakes",      sub: "8–18m · Breakfast", origin: "84% 80%",  link: "/meals" },
+];
+
+function MealsShowcase() {
+  const [active, setActive]   = useState(0);
+  const [paused, setPaused]   = useState(false);
+  const navigate              = useNavigate();
+
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => setActive(i => (i + 1) % SHOWCASE_DISHES.length), 3200);
+    return () => clearInterval(id);
+  }, [paused]);
+
+  const dish = SHOWCASE_DISHES[active];
+
+  return (
+    <div
+      style={{ position: "relative", borderRadius: 24, overflow: "hidden", height: 440, cursor: "pointer", userSelect: "none" }}
+      onClick={() => navigate(dish.link)}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      {/* Image — zoom pans to each dish via transform-origin transition */}
+      <img
+        src="/food-spread.jpg"
+        alt={dish.name}
+        style={{
+          width: "100%", height: "100%",
+          objectFit: "cover",
+          display: "block",
+          transform: "scale(2.4)",
+          transformOrigin: dish.origin,
+          transition: "transform-origin 1.1s cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
+      />
+
+      {/* Dark gradient at bottom for text legibility */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "linear-gradient(to bottom, transparent 35%, rgba(0,0,0,0.78) 100%)",
+        pointerEvents: "none",
+      }} />
+
+      {/* Dish info */}
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "1.5rem 1.75rem" }}>
+        <p style={{
+          margin: "0 0 5px",
+          fontSize: "0.68rem", fontWeight: 800,
+          textTransform: "uppercase", letterSpacing: "0.12em",
+          color: "rgba(255,255,255,0.65)",
+        }}>
+          {dish.sub}
+        </p>
+        <h3 style={{
+          margin: "0 0 1.1rem",
+          fontFamily: "Aileron, sans-serif",
+          fontSize: "clamp(1.4rem, 3vw, 2rem)",
+          fontWeight: 700, color: "#fff", lineHeight: 1.15,
+        }}>
+          {dish.name}
+        </h3>
+
+        {/* Dot indicators */}
+        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+          {SHOWCASE_DISHES.map((_, i) => (
+            <button
+              key={i}
+              onClick={e => { e.stopPropagation(); setActive(i); }}
+              style={{
+                width: i === active ? 20 : 6, height: 6, borderRadius: 3,
+                background: i === active ? "#fff" : "rgba(255,255,255,0.38)",
+                border: "none", cursor: "pointer", padding: 0,
+                transition: "width 0.3s ease, background 0.3s ease",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* View meals arrow badge */}
+      <div style={{
+        position: "absolute", top: "1rem", right: "1rem",
+        background: "rgba(255,255,255,0.18)",
+        backdropFilter: "blur(6px)",
+        border: "1px solid rgba(255,255,255,0.3)",
+        borderRadius: 100, padding: "6px 14px",
+        fontSize: "0.75rem", fontWeight: 700, color: "#fff",
+        display: "flex", alignItems: "center", gap: 6,
+      }}>
+        View meals →
+      </div>
+    </div>
+  );
+}
+
 function HowItWorks({ t }) {
   const sectionRef = useRef(null);
 
@@ -613,56 +716,7 @@ function Home() {
         <div className="eyebrow eg">{t("samplesEyebrow")}</div>
         <h2>{t("samplesHeading")}</h2>
         <p className="lp-sub">{t("samplesSub")}</p>
-        <div className="meals-grid">
-          <div className="mc my">
-            <div className="mico">🍌</div>
-            <div>
-              <div className="mbadges">
-                <span className="mbg">{t("slotBreakfast")}</span>
-                <span className="mbg">{t("typeQuick")}</span>
-                <span className="mbg">4–8m</span>
-              </div>
-              <div className="mname">{t("meal1Name")}</div>
-              <p className="mdesc">{t("meal1Desc")}</p>
-            </div>
-          </div>
-          <div className="mc mo">
-            <div className="mico">🫘</div>
-            <div>
-              <div className="mbadges">
-                <span className="mbg">{t("slotLunch")}</span>
-                <span className="mbg">{t("typeQuick")}</span>
-                <span className="mbg">6–10m</span>
-              </div>
-              <div className="mname">{t("meal2Name")}</div>
-              <p className="mdesc">{t("meal2Desc")}</p>
-            </div>
-          </div>
-          <div className="mc lp-mb">
-            <div className="mico">🐟</div>
-            <div>
-              <div className="mbadges">
-                <span className="mbg">{t("slotDinner")}</span>
-                <span className="mbg">{t("typeQuick")}</span>
-                <span className="mbg">6–12m</span>
-              </div>
-              <div className="mname">{t("meal3Name")}</div>
-              <p className="mdesc">{t("meal3Desc")}</p>
-            </div>
-          </div>
-          <div className="mc mg">
-            <div className="mico">🥞</div>
-            <div>
-              <div className="mbadges">
-                <span className="mbg">{t("slotBreakfast")}</span>
-                <span className="mbg">{t("typeFancy")}</span>
-                <span className="mbg">8–18m</span>
-              </div>
-              <div className="mname">{t("meal4Name")}</div>
-              <p className="mdesc">{t("meal4Desc")}</p>
-            </div>
-          </div>
-        </div>
+        <MealsShowcase />
       </section>
 
       {/* ── Age guide ── */}
