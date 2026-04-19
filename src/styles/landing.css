@@ -16,7 +16,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2.5rem;
-  background: rgba(255, 253, 245, 0.95);
+  background: rgba(245, 226, 210, 0.92);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
   position: sticky;
@@ -86,7 +86,7 @@
 
 /* ── Hero ── */
 .hero-bg {
-  background: linear-gradient(150deg, var(--yellow) 0%, var(--orange) 45%, var(--blue) 100%);
+  background: radial-gradient(ellipse at 30% 0%, #F8DEC8 0%, #EDCDB5 50%, #E5C5AA 100%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;

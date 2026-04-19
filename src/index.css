@@ -4,24 +4,33 @@
 
 /* ── Design tokens ─────────────────────────────────── */
 :root {
-  --yellow:      #FFF3C4;
-  --yellow-mid:  #FFE580;
-  --yellow-dark: #C4920A;
-  --orange:      #FFE4CC;
-  --orange-mid:  #FFB87A;
-  --orange-dark: #C4622A;
-  --blue:        #D6EAF8;
-  --blue-mid:    #89C4E1;
-  --blue-dark:   #1A6A9A;
-  --green:       #D5F5E3;
-  --green-mid:   #82E0AA;
-  --green-dark:  #1A7A44;
-  --cream:       #FFFDF5;
-  --white:       #FFFFFF;
-  --dark:        #2D2416;
-  --text:        #4A3728;
-  --muted:       #9A7B6A;
-  --border:      #EDE0CC;
+  /* Yellow → warm golden honey */
+  --yellow:      #FDEECB;
+  --yellow-mid:  #F5C340;
+  --yellow-dark: #A07200;
+
+  /* Orange → terracotta / warm peach */
+  --orange:      #F5D8C8;
+  --orange-mid:  #E8906A;
+  --orange-dark: #BF4A22;
+
+  /* Blue → dusty sky */
+  --blue:        #D4E8F5;
+  --blue-mid:    #6ABCDC;
+  --blue-dark:   #1A6090;
+
+  /* Green → fresh sage */
+  --green:       #D4F0E4;
+  --green-mid:   #52C490;
+  --green-dark:  #177244;
+
+  /* Neutrals — warm peach background theme */
+  --cream:       #F5E2D2;
+  --white:       #FFFAF7;
+  --dark:        #1A0E08;
+  --text:        #2A1810;
+  --muted:       #8A6A58;
+  --border:      #E8D0BC;
 }
 
 /* ── Base ──────────────────────────────────────────── */
