@@ -466,7 +466,7 @@ function Home() {
         <div className="lp-hero">
           <div>
             <div className="hero-pill liquid-glass">{t("heroTag")}</div>
-            <LandingParticleTitle />
+            <h1>{t("heroHeading")} <em>{t("heroEm")}</em></h1>
             <p className="hero-sub">{t("heroSub")}</p>
             <div className="hero-btns">
               {!session && (
