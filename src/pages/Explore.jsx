@@ -312,20 +312,18 @@ function ParticleTitle() {
 }
 
 function Explore() {
-  const [input, setInput]         = useState("");
-  const [cooldown, setCooldown]   = useState(false);
-  const [showAllArticles, setShowAllArticles] = useState(false);
-  const [activeIdx, setActiveIdx] = useState(0);
+  const [input, setInput]       = useState("");
+  const [cooldown, setCooldown] = useState(false);
+  const [articleScroll, setArticleScroll] = useState(0);
+  const articleRowRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Auto-cycle articles every 3.5 s when not showing all
-  useEffect(() => {
-    if (showAllArticles) return;
-    const id = setInterval(() => {
-      setActiveIdx((i) => (i + 1) % articles.length);
-    }, 3500);
-    return () => clearInterval(id);
-  }, [showAllArticles]);
+  const onArticleScroll = () => {
+    const el = articleRowRef.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    setArticleScroll(max > 0 ? Math.min(el.scrollLeft / max, 1) : 0);
+  };
 
   const { activeBaby } = useActiveBaby();
   const { ask, answer, recommendedMeals, recommendedFoods, safetyNote, loading, error } = useAIHelper();
@@ -580,89 +578,74 @@ function Explore() {
 
         {/* ── ARTICLES ── */}
         <div style={{ marginBottom: "3.5rem" }}>
-          {/* Header row */}
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "1.5rem" }}>
-            <div>
-              <span style={{
-                fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
-                letterSpacing: "0.12em", color: "var(--orange-dark)", display: "block",
-                marginBottom: "0.4rem",
-              }}>
-                Guides & Safety
-              </span>
-              <h2 style={{
-                margin: 0,
-                fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
-                fontFamily: "Aileron, sans-serif",
-                fontWeight: 700,
-                color: "var(--dark)",
-                lineHeight: 1.1,
-                letterSpacing: "-0.01em",
-              }}>
-                Parent reads
-              </h2>
-            </div>
-            <button
-              onClick={() => setShowAllArticles((v) => !v)}
-              style={{
-                background: "none", border: "none", cursor: "pointer",
-                fontSize: "0.78rem", fontWeight: 700,
-                color: "var(--orange-dark)", fontFamily: "Nunito, sans-serif",
-                padding: "4px 0", marginBottom: 4,
-                textDecoration: "underline", textUnderlineOffset: 3,
-              }}
-            >
-              {showAllArticles ? "Show less" : "Show all"}
-            </button>
+          <span style={{
+            fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
+            letterSpacing: "0.12em", color: "var(--orange-dark)", display: "block",
+            marginBottom: "0.4rem",
+          }}>
+            Guides & Safety
+          </span>
+          <h2 style={{
+            margin: "0 0 1.5rem",
+            fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
+            fontFamily: "Aileron, sans-serif",
+            fontWeight: 700, color: "var(--dark)",
+            lineHeight: 1.1, letterSpacing: "-0.01em",
+          }}>
+            Parent reads
+          </h2>
+
+          {/* All articles in one scrollable row, ~5 visible */}
+          <div
+            ref={articleRowRef}
+            onScroll={onArticleScroll}
+            className="articles-row"
+            style={{
+              display: "flex", gap: 16,
+              overflowX: "auto", paddingBottom: 8,
+              scrollSnapType: "x mandatory",
+              WebkitOverflowScrolling: "touch",
+            }}
+          >
+            {articles.map((article) => (
+              <div key={article.slug} style={{ flex: "0 0 200px", scrollSnapAlign: "start" }}>
+                <ArticleCard article={article} />
+              </div>
+            ))}
           </div>
 
-          {showAllArticles ? (
-            /* Full horizontal scroll */
-            <HorizontalScroll>
-              {articles.map((article) => (
-                <ArticleCard key={article.slug} article={article} />
-              ))}
-            </HorizontalScroll>
-          ) : (
-            /* Auto-cycling: show 3 articles, swap one at a time */
-            <div style={{ display: "flex", gap: 16, overflow: "hidden" }}>
-              {[0, 1, 2].map((offset) => {
-                const article = articles[(activeIdx + offset) % articles.length];
-                return (
-                  <div
-                    key={`${article.slug}-${offset}`}
-                    style={{
-                      flex: "0 0 220px",
-                      opacity: 1,
-                      transition: "opacity 0.4s ease",
-                      animation: offset === 2 ? "article-fade-in 0.4s ease" : "none",
-                    }}
-                  >
-                    <ArticleCard article={article} />
-                  </div>
-                );
-              })}
+          {/* Plate-fill scroll progress indicator */}
+          <div style={{ marginTop: 14, display: "flex", alignItems: "center", gap: 12 }}>
+            {/* Circular plate */}
+            <div style={{ position: "relative", width: 38, height: 38, flexShrink: 0 }}>
+              <div style={{
+                width: "100%", height: "100%", borderRadius: "50%",
+                border: "2px solid var(--border)", overflow: "hidden",
+              }}>
+                <div style={{
+                  position: "absolute", bottom: 0, left: 0, right: 0,
+                  height: `${articleScroll * 100}%`,
+                  background: "linear-gradient(to top, var(--green-dark), var(--green-mid))",
+                  transition: "height 0.12s ease",
+                }} />
+              </div>
+              <div style={{
+                position: "absolute", inset: 0,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 16, lineHeight: 1,
+              }}>
+                {articleScroll < 0.05 ? "🍽️" : articleScroll > 0.9 ? "🍲" : "🥄"}
+              </div>
             </div>
-          )}
-
-          {/* Dot indicators */}
-          {!showAllArticles && (
-            <div style={{ display: "flex", gap: 6, marginTop: "1rem" }}>
-              {articles.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveIdx(i)}
-                  style={{
-                    width: i === activeIdx ? 18 : 6,
-                    height: 6, borderRadius: 3,
-                    background: i === activeIdx ? "var(--orange-dark)" : "var(--border)",
-                    border: "none", cursor: "pointer", padding: 0,
-                    transition: "width 0.3s ease, background 0.3s ease",
-                  }}
-                />
-              ))}
+            {/* Thin green track */}
+            <div style={{ flex: 1, height: 3, borderRadius: 2, background: "var(--border)", overflow: "hidden" }}>
+              <div style={{
+                width: `${articleScroll * 100}%`, height: "100%",
+                background: "var(--green-dark)", borderRadius: 2,
+                transition: "width 0.12s ease",
+              }} />
             </div>
-          )}
+          </div>
         </div>
 
         {/* ── DISCOVER ── */}
@@ -677,20 +660,18 @@ function Explore() {
           <h2 style={{
             margin: "0 0 1.75rem",
             fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
-            fontFamily: "Aileron, sans-serif",
-            fontWeight: 700,
-            color: "var(--dark)",
-            lineHeight: 1.1,
-            letterSpacing: "-0.01em",
+            fontFamily: "Aileron, sans-serif", fontWeight: 700,
+            color: "var(--dark)", lineHeight: 1.1, letterSpacing: "-0.01em",
           }}>
             Start exploring
           </h2>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 32 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 24 }}>
             {[
-              { to: "/foods?tag=iron-rich", emoji: "🩸", title: "Iron-rich foods",    desc: "See foods that support iron intake and healthy growth." },
-              { to: "/foods",               emoji: "🥕", title: "Foods by age",       desc: "Filter the full food library by your baby's age in months." },
-              { to: "/meals",               emoji: "🍽️", title: "Meal ideas by age", desc: "Switch between quick and fancy options for every meal slot." },
+              { to: "/foods?tag=iron-rich", emoji: "🩸", title: "Iron-rich foods",     desc: "Foods that support iron intake and healthy growth." },
+              { to: "/foods",               emoji: "🥕", title: "Foods by age",         desc: "Filter the full food library by your baby's age in months." },
+              { to: "/meals",               emoji: "🍽️", title: "Meal ideas by age",   desc: "Quick and fancy options for every meal slot." },
+              { to: "/pantry",              emoji: "🧺", title: "Your pantry",          desc: "Track what you have at home and get matching meal ideas." },
+              { to: "/my-meals",            emoji: "📋", title: "Saved meals",          desc: "Your personal collection of logged and saved baby meals." },
             ].map((item) => (
               <Link key={item.to} to={item.to} style={{ textDecoration: "none", display: "block" }}>
                 <span style={{ fontSize: "2rem", display: "block", marginBottom: "0.55rem" }}>{item.emoji}</span>
