@@ -324,6 +324,70 @@ function LandingParticleTitle() {
   );
 }
 
+function HowItWorks({ t }) {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("how-visible");
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div className="how-bg">
+      <div className="how-in" ref={sectionRef}>
+        {/* Header */}
+        <div className="how-header">
+          <div className="eyebrow" style={{ color: "var(--yellow-mid)" }}>{t("howEyebrow")}</div>
+          <h2 style={{ color: "#fff" }}>{t("howHeading")}</h2>
+          <p className="lp-sub" style={{ color: "#C8B8A8" }}>{t("howSub")}</p>
+        </div>
+
+        {/* Body: video left, steps right */}
+        <div className="how-body">
+          <div className="how-video-wrap">
+            <video
+              src="/cooking.mp4"
+              autoPlay muted loop playsInline
+              className="how-video"
+            />
+            {/* soft gradient at bottom so it melts into the dark bg */}
+            <div className="how-video-fade" />
+          </div>
+
+          <div className="lp-steps">
+            <div className="lp-step liquid-glass-strong">
+              <div className="snum sy">01</div>
+              <div className="stitle">{t("step1Title")}</div>
+              <p className="sdesc">{t("step1Desc")}</p>
+            </div>
+            <div className="lp-step liquid-glass-strong">
+              <div className="snum so">02</div>
+              <div className="stitle">{t("step2Title")}</div>
+              <p className="sdesc">{t("step2Desc")}</p>
+            </div>
+            <div className="lp-step liquid-glass-strong">
+              <div className="snum sb">03</div>
+              <div className="stitle">{t("step3Title")}</div>
+              <p className="sdesc">{t("step3Desc")}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Home() {
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
@@ -542,30 +606,7 @@ function Home() {
       </section>
 
       {/* ── How it works ── */}
-      <div className="how-bg">
-        <div className="how-in">
-          <div className="eyebrow" style={{ color: 'var(--yellow-mid)' }}>{t("howEyebrow")}</div>
-          <h2 style={{ color: '#fff' }}>{t("howHeading")}</h2>
-          <p className="lp-sub" style={{ color: '#C8B8A8' }}>{t("howSub")}</p>
-          <div className="lp-steps">
-            <div className="lp-step liquid-glass-strong">
-              <div className="snum sy">01</div>
-              <div className="stitle">{t("step1Title")}</div>
-              <p className="sdesc">{t("step1Desc")}</p>
-            </div>
-            <div className="lp-step liquid-glass-strong">
-              <div className="snum so">02</div>
-              <div className="stitle">{t("step2Title")}</div>
-              <p className="sdesc">{t("step2Desc")}</p>
-            </div>
-            <div className="lp-step liquid-glass-strong">
-              <div className="snum sb">03</div>
-              <div className="stitle">{t("step3Title")}</div>
-              <p className="sdesc">{t("step3Desc")}</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <HowItWorks t={t} />
 
       {/* ── Sample meals ── */}
       <section className="lp-sec">

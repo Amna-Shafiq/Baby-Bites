@@ -515,7 +515,7 @@
 /* ── How it works ── */
 .how-bg {
   background: var(--dark);
-  padding: 3.5rem 2.5rem;
+  padding: 3.5rem 2.5rem 4rem;
 }
 
 .how-in {
@@ -523,19 +523,95 @@
   margin: 0 auto;
 }
 
-.lp-steps {
+.how-header {
+  margin-bottom: 2.5rem;
+}
+
+/* Side-by-side: video | steps */
+.how-body {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+/* ── Video panel ── */
+.how-video-wrap {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  height: 460px;
+  /* entry animation: starts off-screen left, invisible */
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+
+.how-visible .how-video-wrap {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.how-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* fade bottom of video into dark bg */
+.how-video-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 55%,
+    var(--dark) 100%
+  );
+  pointer-events: none;
+}
+
+/* ── Step cards (stacked column) ── */
+.lp-steps {
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
-  margin-top: 1.75rem;
 }
 
 .lp-step {
-  /* background kept translucent so blur shows the dark bg through */
   background: rgba(255, 255, 255, 0.06);
   border-radius: 20px;
   padding: 1.4rem;
-  /* border removed — liquid-glass-strong ::before provides gradient border */
+  /* entry animation: starts right, invisible */
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.how-visible .lp-step:nth-child(1) {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.15s;
+}
+.how-visible .lp-step:nth-child(2) {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.32s;
+}
+.how-visible .lp-step:nth-child(3) {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.49s;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .how-body {
+    grid-template-columns: 1fr;
+  }
+  .how-video-wrap {
+    height: 280px;
+  }
 }
 
 .snum {
