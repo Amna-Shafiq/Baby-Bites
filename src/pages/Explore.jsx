@@ -318,6 +318,7 @@ function Explore() {
   const [dragging, setDragging] = useState(false);
   const articleRowRef = useRef(null);
   const trackRef      = useRef(null);
+  const isDragging    = useRef(false);
   const inputRef      = useRef(null);
 
   const onArticleScroll = () => {
@@ -327,12 +328,16 @@ function Explore() {
     setArticleScroll(max > 0 ? Math.min(el.scrollLeft / max, 1) : 0);
   };
 
-  // Drag the dish to scroll
-  const startDrag = (e) => { e.preventDefault(); setDragging(true); };
+  const startDrag = (e) => {
+    e.preventDefault();
+    isDragging.current = true;
+    setDragging(true);
+  };
 
+  // Add listeners once on mount — use ref for sync drag check
   useEffect(() => {
-    if (!dragging) return;
     const move = (e) => {
+      if (!isDragging.current) return;
       const track = trackRef.current;
       const row   = articleRowRef.current;
       if (!track || !row) return;
@@ -341,7 +346,11 @@ function Explore() {
       const pct     = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
       row.scrollLeft = pct * (row.scrollWidth - row.clientWidth);
     };
-    const up = () => setDragging(false);
+    const up = () => {
+      if (!isDragging.current) return;
+      isDragging.current = false;
+      setDragging(false);
+    };
     document.addEventListener("mousemove", move);
     document.addEventListener("mouseup",   up);
     document.addEventListener("touchmove", move, { passive: true });
@@ -352,7 +361,7 @@ function Explore() {
       document.removeEventListener("touchmove", move);
       document.removeEventListener("touchend",  up);
     };
-  }, [dragging]);
+  }, []);
 
   const { activeBaby } = useActiveBaby();
   const { ask, answer, recommendedMeals, recommendedFoods, safetyNote, loading, error } = useAIHelper();

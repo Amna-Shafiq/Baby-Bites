@@ -364,7 +364,7 @@ function MealsShowcase() {
           display: "block",
           transform: "scale(2.4)",
           transformOrigin: dish.origin,
-          transition: "transform-origin 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+          transition: "transform-origin 2s cubic-bezier(0.4, 0, 0.2, 1)",
         }}
       />
 
