@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import TopNav from "../components/TopNav";
+
 import useActiveBaby from "../hooks/useActiveBaby";
 import { supabase } from "../lib/supabaseClient";
 
@@ -163,7 +163,7 @@ function Profile() {
 
   return (
     <div className="page">
-      <TopNav />
+
 
       <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>Account</span>
       <h1>Profile</h1>

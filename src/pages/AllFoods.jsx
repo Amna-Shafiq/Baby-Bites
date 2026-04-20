@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import TopNav from "../components/TopNav";
+
 import { supabase } from "../lib/supabaseClient";
 import LoginPromptModal from "../components/LoginPromptModal";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -80,7 +80,7 @@ function AllFoods() {
 
   return (
     <div className="page">
-      <TopNav />
+
 
       {showAuthPrompt && (
         <LoginPromptModal
@@ -209,13 +209,21 @@ function AllFoods() {
           </button>
         </div>
       )}
-      <div style={{ textAlign: "center", marginTop: "1rem" }}>
+      <div style={{ textAlign: "center", marginTop: "1rem", display: "flex", gap: "0.5rem", justifyContent: "center" }}>
         <button
           className="pagination-btn"
           onClick={() => { setShowAll((s) => !s); setPage(1); }}
         >
           {showAll ? t("showPages") : t("showAll")}
         </button>
+        {showAll && (
+          <button
+            className="pagination-btn"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            ↑ Top
+          </button>
+        )}
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ import CustomMealPage from "./pages/CustomMealPage";
 import ArticlePage from "./pages/ArticlePage";
 import About from "./pages/About";
 import InstallPrompt from "./components/InstallPrompt";
+import TopNav from "./components/TopNav";
 
 function App() {
   const location = useLocation();
@@ -36,6 +37,7 @@ function App() {
   return (
     <div className="app-root">
       {!isHome && <FallingVegetablesBackground />}
+      {!isHome && <TopNav />}
       <InstallPrompt />
       <div className="app-content">
         <Routes>

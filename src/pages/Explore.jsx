@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import TopNav from "../components/TopNav";
+
 import useAIHelper from "../hooks/useAIHelper";
 import useActiveBaby from "../hooks/useActiveBaby";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -380,7 +380,7 @@ function Explore() {
 
   return (
     <div className="page" style={{ paddingTop: 0, paddingLeft: 0, paddingRight: 0 }}>
-      <TopNav />
+
 
       {/* ── HERO: full-bleed video background, content on top ── */}
       <div style={{

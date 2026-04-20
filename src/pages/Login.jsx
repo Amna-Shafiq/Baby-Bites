@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import TopNav from "../components/TopNav";
+
 import { supabase } from "../lib/supabaseClient";
 
 function Login({ redirectTo = "/" }) {
@@ -65,7 +65,7 @@ function Login({ redirectTo = "/" }) {
 
   return (
     <div className="page">
-      <TopNav />
+
 
       <div className="login-wrapper">
         <div className="login-card">

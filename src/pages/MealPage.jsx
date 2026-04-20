@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
-import TopNav from "../components/TopNav";
+
 import { supabase } from "../lib/supabaseClient";
 import LogMealModal from "../components/LogMealModal";
 
@@ -68,10 +68,10 @@ function MealPage() {
     loadMeal();
   }, [id]);
 
-  if (loading) return <div className="page"><TopNav /><p className="muted" style={{ marginTop: "2rem" }}>Loading...</p></div>;
+  if (loading) return <div className="page"><p className="muted" style={{ marginTop: "2rem" }}>Loading...</p></div>;
   if (error || !meal) return (
     <div className="page">
-      <TopNav />
+      
       <p className="muted" style={{ marginTop: "2rem" }}>{error || "Meal not found."}</p>
       <button className="btn" onClick={() => navigate(-1)} style={{ marginTop: 12 }}>← Go Back</button>
     </div>
@@ -84,7 +84,7 @@ function MealPage() {
 
   return (
     <div className="page">
-      <TopNav />
+      
 
       {logOpen && meal && (
         <LogMealModal

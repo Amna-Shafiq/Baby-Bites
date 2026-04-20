@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import TopNav from "../components/TopNav";
+
 import useCustomMeals from "../hooks/useCustomMeals";
 import useFavorites from "../hooks/useFavorites";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -41,7 +41,7 @@ function MyMeals() {
 
   return (
     <div className="page">
-      <TopNav />
+
 
       <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>{t("recipesEyebrow")}</span>
       <h1>{t("myMealsTitle")}</h1>

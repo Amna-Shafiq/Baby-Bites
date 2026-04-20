@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import TopNav from "../components/TopNav";
+
 import { supabase } from "../lib/supabaseClient";
 import { useLanguage } from "../contexts/LanguageContext";
 import LogMealModal from "../components/LogMealModal";
@@ -73,12 +73,12 @@ function FoodDetail() {
     load();
   }, [id]);
 
-  if (error) return <div className="page"><TopNav /><p className="muted" style={{ marginTop: "2rem" }}>{error}</p></div>;
-  if (!food)  return <div className="page"><TopNav /><p className="muted" style={{ marginTop: "2rem" }}>Loading...</p></div>;
+  if (error) return <div className="page"><p className="muted" style={{ marginTop: "2rem" }}>{error}</p></div>;
+  if (!food)  return <div className="page"><p className="muted" style={{ marginTop: "2rem" }}>Loading...</p></div>;
 
   return (
     <div className="page">
-      <TopNav />
+      
 
       {logOpen && food && (
         <LogMealModal

@@ -1,4 +1,4 @@
-import TopNav from "../components/TopNav";
+
 
 const TEAM = [
   { name: "Amna Shafiq", role: "Co-founder & Product", avatar: "👩‍💻" },
@@ -15,7 +15,7 @@ const VALUES = [
 function About() {
   return (
     <div className="page">
-      <TopNav />
+
 
       {/* ── Hero ── */}
       <div style={{ margin: "2rem 0 2.5rem" }}>

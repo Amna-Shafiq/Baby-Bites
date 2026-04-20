@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import TopNav from "../components/TopNav";
+
 import articles from "../data/articles";
 import { useLanguage } from "../contexts/LanguageContext";
 
@@ -11,7 +11,7 @@ function ArticlePage() {
 
   if (!article) return (
     <div className="page">
-      <TopNav />
+      
       <p className="muted" style={{ marginTop: "2rem" }}>Article not found.</p>
       <button className="btn" onClick={() => navigate(-1)} style={{ marginTop: 12 }}>← Go Back</button>
     </div>
@@ -19,7 +19,7 @@ function ArticlePage() {
 
   return (
     <div className="page">
-      <TopNav />
+      
 
       <button className="btn btn-ghost" onClick={() => navigate(-1)} style={{ marginTop: "1.5rem", paddingLeft: 0 }}>
         {t("back")}

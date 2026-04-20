@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { Link } from "react-router-dom";
-import TopNav from "../components/TopNav";
+
 import useCustomMeals from "../hooks/useCustomMeals";
 import LoginPromptModal from "../components/LoginPromptModal";
 import PantrySearch from "../components/PantrySearch";
@@ -53,7 +53,7 @@ function Pantry() {
 
   return (
     <div className="page">
-      <TopNav />
+
       {showLoginModal && <LoginPromptModal onClose={() => setShowLoginModal(false)} />}
 
       <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>{t("pantryEyebrow")}</span>
