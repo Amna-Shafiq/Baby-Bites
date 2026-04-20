@@ -896,6 +896,7 @@
   .landing-page .lp-nav-inner { border-radius: 100px; padding: 0.5rem 1rem; }
 
   .nav-links { display: none; }
+  .lp-hamburger { display: flex; }
 
   .how-bg,
   .age-bg,
@@ -909,6 +910,51 @@
   .lp-steps { grid-template-columns: 1fr; }
   .age-grid  { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ── Hamburger + mobile nav ── */
+.lp-hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--dark);
+  padding: 0.3rem 0.5rem;
+  border-radius: 8px;
+  line-height: 1;
+}
+
+.lp-mobile-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 1.25rem;
+  right: 1.25rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 200;
+}
+
+.lp-mobile-menu a {
+  padding: 0.85rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--dark);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+
+.lp-mobile-menu a:last-child { border-bottom: none; }
+.lp-mobile-menu a:hover { background: var(--orange); }
 
 /* Hide scroll thread on small screens */
 @media (max-width: 760px) {

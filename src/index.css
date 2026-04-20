@@ -56,6 +56,15 @@ body::before {
   pointer-events: none;
 }
 
+/* iOS Safari doesn't support position:fixed on pseudo-elements reliably */
+@supports (-webkit-touch-callout: none) {
+  body::before {
+    position: absolute;
+    min-height: 100%;
+    width: 100%;
+  }
+}
+
 #root { min-height: 100vh; }
 
 a { color: var(--orange-dark); text-decoration: none; }

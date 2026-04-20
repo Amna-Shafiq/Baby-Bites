@@ -480,6 +480,7 @@ function Home() {
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const { activeBaby, babies, switchBaby } = useActiveBaby();
   const menuRef = useRef(null);
   const { lang, setLang, t } = useLanguage();
@@ -517,17 +518,17 @@ function Home() {
       {/* ── Nav ── */}
       <nav className="lp-nav">
         <div className="lp-nav-inner">
-        <Link to="/" className="lp-logo">
-          <span className="logo-dot" />
-          Baby Bites
-        </Link>
-        <ul className="nav-links">
-          <li><Link to="/explore">{t("explore")}</Link></li>
-          <li><Link to="/foods">{t("allFoods")}</Link></li>
-          <li><Link to="/meals">{t("meals")}</Link></li>
-          <li><Link to="/pantry">{t("pantry")}</Link></li>
-          <li><Link to="/my-meals">{t("myMeals")}</Link></li>
-        </ul>
+          <Link to="/" className="lp-logo">
+            <span className="logo-dot" />
+            Baby Bites
+          </Link>
+          <ul className="nav-links">
+            <li><Link to="/explore">{t("explore")}</Link></li>
+            <li><Link to="/foods">{t("allFoods")}</Link></li>
+            <li><Link to="/meals">{t("meals")}</Link></li>
+            <li><Link to="/pantry">{t("pantry")}</Link></li>
+            <li><Link to="/my-meals">{t("myMeals")}</Link></li>
+          </ul>
         <button
           className="lang-toggle"
           onClick={() => setLang(lang === "en" ? "ur" : "en")}
@@ -612,7 +613,24 @@ function Home() {
             {t("getStartedFree")}
           </button>
         )}
+          <button
+            className="lp-hamburger"
+            onClick={() => setMobileNavOpen(o => !o)}
+            aria-label="Menu"
+          >
+            {mobileNavOpen ? "✕" : "☰"}
+          </button>
         </div>
+
+        {mobileNavOpen && (
+          <div className="lp-mobile-menu">
+            <Link to="/explore" onClick={() => setMobileNavOpen(false)}>{t("explore")}</Link>
+            <Link to="/foods" onClick={() => setMobileNavOpen(false)}>{t("allFoods")}</Link>
+            <Link to="/meals" onClick={() => setMobileNavOpen(false)}>{t("meals")}</Link>
+            <Link to="/pantry" onClick={() => setMobileNavOpen(false)}>{t("pantry")}</Link>
+            <Link to="/my-meals" onClick={() => setMobileNavOpen(false)}>{t("myMeals")}</Link>
+          </div>
+        )}
       </nav>
 
       {/* ── Hero ── */}
