@@ -4,6 +4,7 @@ import '../styles/landing.css';
 import { supabase } from '../lib/supabaseClient';
 import useActiveBaby from '../hooks/useActiveBaby';
 import { useLanguage } from '../contexts/LanguageContext';
+import CTAFooter from '../components/CTAFooter';
 
 const STRIP_ITEMS = [
   { emoji: '🍌', name: 'Banana',       color: 'si-y' },
@@ -780,15 +781,7 @@ function Home() {
       </div>
 
       {/* ── CTA ── */}
-      <div className="cta-bg">
-        <div className="cta-in">
-          <h2 className="cta-t">{t("ctaHeading")}</h2>
-          <p className="cta-s">{t("ctaSub")}</p>
-          <button className="cta-btn" onClick={() => navigate('/login')}>
-            {t("ctaBtn")}
-          </button>
-        </div>
-      </div>
+      <CTAFooter />
 
       {/* ── Footer ── */}
       <footer className="lp-footer">

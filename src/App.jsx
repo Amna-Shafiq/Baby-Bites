@@ -18,6 +18,7 @@ import ArticlePage from "./pages/ArticlePage";
 import About from "./pages/About";
 import InstallPrompt from "./components/InstallPrompt";
 import TopNav from "./components/TopNav";
+import CTAFooter from "./components/CTAFooter";
 
 function App() {
   const location = useLocation();
@@ -55,6 +56,7 @@ function App() {
           <Route path="/articles/:slug" element={<ArticlePage />} />
           <Route path="/about" element={<About />} />
         </Routes>
+        {!isHome && <CTAFooter />}
         {!isHome && <AppFooter />}
       </div>
     </div>
