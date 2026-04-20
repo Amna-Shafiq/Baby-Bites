@@ -131,18 +131,25 @@ function MealPage() {
       </div>
 
       {/* ── Header ── */}
-      <div style={{ margin: "1rem 0 1.5rem" }}>
-        <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
-          <span className="badge badge-slot">{meal.meal_slot}</span>
-          <span className={`badge ${meal.meal_type === "quick" ? "badge-quick" : "badge-fancy"}`}>
-            {meal.meal_type}
-          </span>
-        </div>
-        <h1 style={{ marginBottom: 8 }}>{meal.title}</h1>
-        <p className="muted" style={{ marginBottom: 10 }}>{meal.description}</p>
-        <div style={{ display: "flex", gap: 16, fontSize: "0.88rem", color: "var(--muted)", flexWrap: "wrap" }}>
-          <span>🕐 {meal.prep_time_minutes} min prep</span>
-          <span>👶 {meal.min_age_months}–{meal.max_age_months} months</span>
+      <div className="meal-detail-header">
+        <img
+          src={meal.image_url || "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776696906/Gemini_Generated_Image_y2myiqy2myiqy2my_sd3eov.png"}
+          alt={meal.title}
+          style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", borderRadius: 16, display: "block" }}
+        />
+        <div>
+          <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
+            <span className="badge badge-slot">{meal.meal_slot}</span>
+            <span className={`badge ${meal.meal_type === "quick" ? "badge-quick" : "badge-fancy"}`}>
+              {meal.meal_type}
+            </span>
+          </div>
+          <h1 style={{ marginBottom: 8 }}>{meal.title}</h1>
+          <p className="muted" style={{ marginBottom: 10 }}>{meal.description}</p>
+          <div style={{ display: "flex", gap: 16, fontSize: "0.88rem", color: "var(--muted)", flexWrap: "wrap" }}>
+            <span>🕐 {meal.prep_time_minutes} min prep</span>
+            <span>👶 {meal.min_age_months}–{meal.max_age_months} months</span>
+          </div>
         </div>
       </div>
 
