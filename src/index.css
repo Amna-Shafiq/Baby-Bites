@@ -40,6 +40,10 @@ body {
   margin: 0;
   font-family: 'Nunito', sans-serif;
   background: var(--cream);
+  background-image: url('/bg-gradient.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   color: var(--text);
   line-height: 1.6;
 }
@@ -224,7 +228,7 @@ button { font-family: 'Nunito', sans-serif; }
 .page {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 1.25rem 2rem 3rem;
+  padding: 0 2rem 3rem;
 }
 
 /* ── Utilities ─────────────────────────────────────── */
@@ -273,9 +277,8 @@ button { font-family: 'Nunito', sans-serif; }
   z-index: 100;
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  background: rgba(255, 253, 245, 0.95);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--border);
+  background: transparent;
+  padding: 0.65rem 1.25rem;
 }
 
 .top-nav-inner {
@@ -285,7 +288,13 @@ button { font-family: 'Nunito', sans-serif; }
   gap: 1rem;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0.9rem 2.5rem;
+  padding: 0.6rem 1.5rem;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
 }
 
 .top-nav-links,
@@ -737,7 +746,7 @@ button { font-family: 'Nunito', sans-serif; }
   .foods-grid      { grid-template-columns: repeat(2, 1fr); }
   .filters-row     { grid-template-columns: 1fr; }
   .filters-row-3   { grid-template-columns: 1fr; }
-  .page            { padding: 1rem 1rem 5rem; }
+  .page            { padding: 0 1rem 5rem; }
   .explore-hero    { grid-template-columns: 1fr !important; }
 }
 
@@ -746,10 +755,14 @@ button { font-family: 'Nunito', sans-serif; }
     position: fixed;
     bottom: 0;
     top: auto;
-    border-top: 1px solid var(--border);
-    border-bottom: none;
+    padding: 0.5rem 0.75rem;
   }
-  .top-nav-inner   { padding: 0.6rem 1rem; justify-content: center; }
+  .top-nav-inner   {
+    padding: 0.5rem 1rem;
+    justify-content: center;
+    border-radius: 100px;
+    border-top: 1px solid rgba(255,255,255,0.5);
+  }
   .top-nav a.brand,
   .top-nav-actions { display: none; }
   .top-nav-links   { width: 100%; justify-content: space-between; }
