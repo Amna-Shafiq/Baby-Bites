@@ -881,7 +881,8 @@ CREATE TABLE public.meals (
  
   -- Visibility
   is_public           BOOLEAN     NOT NULL DEFAULT TRUE,
- 
+  image_url           TEXT,
+
   created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at          TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -1919,3 +1920,28 @@ WHERE name = 'Plum';
 
 -- Verify
 SELECT name, search_aliases FROM public.foods WHERE name = 'Plum';
+ALTER TABLE custom_meals ADD COLUMN IF NOT EXISTS image_url TEXT;
+CREATE POLICY "Users upload own meal images"
+ON storage.objects FOR INSERT
+WITH CHECK (bucket_id = 'meal-images' AND auth.uid()::text = (storage.foldername(name))[1]);
+
+CREATE TABLE IF NOT EXISTS feeding_logs (
+  id              UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id         UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  meal_id         UUID REFERENCES meals(id) ON DELETE SET NULL,
+  custom_meal_id  UUID REFERENCES custom_meals(id) ON DELETE SET NULL,
+  item_name       TEXT NOT NULL,
+  reaction        TEXT CHECK (reaction IN ('loved','liked','neutral','disliked','allergic')) NOT NULL,
+  notes           TEXT,
+  fed_at          TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  created_at      TIMESTAMPTZ DEFAULT NOW() NOT NULL
+);
+
+ALTER TABLE feeding_logs ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users manage own logs"
+ON feeding_logs FOR ALL
+USING (auth.uid() = user_id)
+WITH CHECK (auth.uid() = user_id);
+
+ALTER TABLE feeding_logs ADD COLUMN IF NOT EXISTS food_id UUID REFERENCES foods(id) ON DELETE SET NULL;

@@ -253,7 +253,14 @@ function Meals() {
 
               {/* Front */}
               <div className="food-card-front">
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center" }}>
+                {meal.image_url && (
+                  <img
+                    src={meal.image_url}
+                    alt={meal.title}
+                    className="meal-card-img"
+                  />
+                )}
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center", padding: "0 0.5rem" }}>
                   <span className="badge badge-slot">{meal.meal_slot}</span>
                   <span className={`badge ${meal.meal_type === "quick" ? "badge-quick" : "badge-fancy"}`}>
                     {meal.meal_type}

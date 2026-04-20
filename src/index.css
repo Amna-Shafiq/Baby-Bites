@@ -507,10 +507,18 @@ button { font-family: 'Nunito', sans-serif; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem 0.75rem 0.75rem;
+  padding: 0.75rem 0.75rem 0.75rem;
   gap: 6px;
   min-height: 150px;
   transition: opacity 0.2s;
+}
+
+.meal-card-img {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 4px;
 }
 
 .food-card-name {
