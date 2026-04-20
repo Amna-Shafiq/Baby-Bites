@@ -40,7 +40,7 @@ body {
   margin: 0;
   font-family: 'Nunito', sans-serif;
   background: var(--cream);
-  background-image: url('/bg-gradient.jpg');
+  background-image: url('/bg.png');
   background-size: cover;
   background-attachment: fixed;
   background-repeat: no-repeat;
