@@ -423,6 +423,9 @@ button { font-family: 'Nunito', sans-serif; }
 .app-footer-links a { color: #7A6050; font-size: 0.85rem; font-weight: 600; transition: color 0.2s; }
 .app-footer-links a:hover { color: #fff; }
 .app-footer-copy { color: #5A4030; font-size: 0.8rem; font-weight: 600; }
+.app-footer-social { display: flex; gap: 0.75rem; align-items: center; }
+.social-icon { color: #7A6050; transition: color 0.2s; display: flex; }
+.social-icon:hover { color: #fff; }
 
 /* ── Toast ─────────────────────────────────────────── */
 .toast {
