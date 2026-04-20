@@ -141,6 +141,7 @@ create table if not exists public.custom_meals (
   ingredients text[] not null default '{}',
   steps text not null default '',
   nutrition_highlight text not null default '',
+  image_url text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
