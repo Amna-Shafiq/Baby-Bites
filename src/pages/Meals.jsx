@@ -253,13 +253,11 @@ function Meals() {
 
               {/* Front */}
               <div className="food-card-front">
-                {meal.image_url && (
-                  <img
-                    src={meal.image_url}
-                    alt={meal.title}
-                    className="meal-card-img"
-                  />
-                )}
+                <img
+                  src={meal.image_url || "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776696906/Gemini_Generated_Image_y2myiqy2myiqy2my_sd3eov.png"}
+                  alt={meal.title}
+                  className="meal-card-img"
+                />
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center", padding: "0 0.5rem" }}>
                   <span className="badge badge-slot">{meal.meal_slot}</span>
                   <span className={`badge ${meal.meal_type === "quick" ? "badge-quick" : "badge-fancy"}`}>
