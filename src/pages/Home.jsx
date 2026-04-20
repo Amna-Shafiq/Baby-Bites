@@ -106,7 +106,11 @@ function ScrollThread() {
   );
 }
 
-const EAT_VIDS = ["/eat1.mp4", "/eat2.mp4", "/eat3.mp4"];
+const EAT_VIDS = [
+  "https://res.cloudinary.com/dr0ixt3za/video/upload/v1776673986/eat1_ehgf5d.mp4",
+  "https://res.cloudinary.com/dr0ixt3za/video/upload/v1776673972/eat2_pcpgrn.mp4",
+  "https://res.cloudinary.com/dr0ixt3za/video/upload/v1776673952/eat3_ro6i2c.mp4",
+];
 
 // Stacked cards that cycle front→back every 3 s
 function EatStack() {
@@ -445,7 +449,7 @@ function HowItWorks({ t }) {
         <div className="how-body">
           <div className="how-video-wrap">
             <video
-              src="/cooking.mp4"
+              src="https://res.cloudinary.com/dr0ixt3za/video/upload/v1776674027/cooking_imctv7.mp4"
               autoPlay muted loop playsInline
               className="how-video"
             />

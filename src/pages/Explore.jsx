@@ -7,7 +7,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import articles from "../data/articles";
 
 // ── Paste your video URL here (YouTube embed or direct .mp4) ──
-const VIDEO_URL = "/explore-video.mp4";
+const VIDEO_URL = "https://res.cloudinary.com/dr0ixt3za/video/upload/v1776674045/7331655-hd_1920_1080_25fps_g8qi8l.mp4";
 // YouTube example: "https://www.youtube.com/embed/VIDEO_ID"
 // MP4 example:     "/videos/my-video.mp4"
 
