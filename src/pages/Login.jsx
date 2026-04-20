@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { supabase } from "../lib/supabaseClient";
@@ -20,6 +20,13 @@ function Login({ redirectTo = "/" }) {
 
   const finalRedirectTo = location.state?.redirectTo || redirectTo;
 
+  // Show success message when redirected back after email verification
+  useEffect(() => {
+    if (location.state?.verified) {
+      setMessage("✅ Email verified! You can now sign in.");
+    }
+  }, [location.state]);
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -37,7 +44,7 @@ function Login({ redirectTo = "/" }) {
         if (!babyName.trim())                        throw new Error("Please enter your baby's name.");
         if (!babyDob)                                throw new Error("Please select baby date of birth.");
 
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -49,7 +56,11 @@ function Login({ redirectTo = "/" }) {
           },
         });
         if (error) throw error;
-        setMessage("Account created! Check your email for confirmation, then sign in.");
+        // Supabase silently "succeeds" for existing emails — identities array is empty
+        if (data?.user?.identities?.length === 0) {
+          throw new Error("An account with this email already exists. Please sign in instead.");
+        }
+        setMessage("Account created! Check your email to confirm, then sign in.");
         return;
       }
 

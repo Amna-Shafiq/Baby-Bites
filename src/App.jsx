@@ -30,7 +30,7 @@ function App() {
     const hash = new URLSearchParams(window.location.hash.slice(1));
     if (hash.get("type") === "signup") {
       window.history.replaceState(null, "", window.location.pathname);
-      navigate("/login", { replace: true });
+      navigate("/login", { replace: true, state: { verified: true } });
     }
   }, [navigate]);
 
