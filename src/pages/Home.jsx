@@ -615,7 +615,8 @@ function Home() {
           </div>
         ) : (
           <button className="nav-btn" onClick={() => navigate('/login')}>
-            {t("getStartedFree")}
+            <span className="nav-btn-full">{t("getStartedFree")}</span>
+            <span className="nav-btn-short">{t("getStarted")}</span>
           </button>
         )}
           <button

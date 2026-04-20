@@ -73,6 +73,8 @@
   color: var(--orange-dark);
 }
 
+.nav-btn-short { display: none; }
+
 /* Override the global .nav-btn style */
 .landing-page .nav-btn {
   background: var(--orange-mid);
@@ -897,7 +899,8 @@
 
   .nav-links { display: none; }
   .lp-hamburger { display: flex; }
-  .landing-page .nav-btn { display: none; }
+  .nav-btn-full { display: none; }
+  .nav-btn-short { display: inline; }
 
   .how-bg,
   .age-bg,
