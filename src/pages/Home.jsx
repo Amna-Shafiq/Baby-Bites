@@ -516,6 +516,7 @@ function Home() {
 
       {/* ── Nav ── */}
       <nav className="lp-nav">
+        <div className="lp-nav-inner">
         <Link to="/" className="lp-logo">
           <span className="logo-dot" />
           Baby Bites
@@ -611,6 +612,7 @@ function Home() {
             {t("getStartedFree")}
           </button>
         )}
+        </div>
       </nav>
 
       {/* ── Hero ── */}

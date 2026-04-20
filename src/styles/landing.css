@@ -12,17 +12,26 @@
 
 /* ── Nav ── */
 .landing-page .lp-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2.5rem;
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   position: sticky;
   top: 0;
   z-index: 100;
+  padding: 0.65rem 1.25rem;
+  background: transparent;
+}
+
+.landing-page .lp-nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.6rem 1.5rem;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
 }
 
 .landing-page .lp-logo {
@@ -87,7 +96,9 @@
 
 /* ── Hero ── */
 .hero-bg {
-  background: radial-gradient(ellipse at 30% 0%, #F8DEC8 0%, #EDCDB5 50%, #E5C5AA 100%);
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -881,7 +892,8 @@
 
   .lp-sec { padding: 2.5rem 1.5rem; }
 
-  .landing-page .lp-nav { padding: 1rem 1.5rem; }
+  .landing-page .lp-nav { padding: 0.5rem 0.75rem; }
+  .landing-page .lp-nav-inner { border-radius: 100px; padding: 0.5rem 1rem; }
 
   .nav-links { display: none; }
 

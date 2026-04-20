@@ -40,12 +40,20 @@ body {
   margin: 0;
   font-family: 'Nunito', sans-serif;
   background: var(--cream);
-  background-image: url('/bg.png');
-  background-size: cover;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
   color: var(--text);
   line-height: 1.6;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('/bg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.35;
+  z-index: -1;
+  pointer-events: none;
 }
 
 #root { min-height: 100vh; }
@@ -228,7 +236,7 @@ button { font-family: 'Nunito', sans-serif; }
 .page {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0 2rem 3rem;
+  padding: 5rem 2rem 3rem;
 }
 
 /* ── Utilities ─────────────────────────────────────── */
@@ -272,11 +280,11 @@ button { font-family: 'Nunito', sans-serif; }
 
 /* ── Top Nav ───────────────────────────────────────── */
 .top-nav {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
   background: transparent;
   padding: 0.65rem 1.25rem;
 }
@@ -746,7 +754,7 @@ button { font-family: 'Nunito', sans-serif; }
   .foods-grid      { grid-template-columns: repeat(2, 1fr); }
   .filters-row     { grid-template-columns: 1fr; }
   .filters-row-3   { grid-template-columns: 1fr; }
-  .page            { padding: 0 1rem 5rem; }
+  .page            { padding: 1rem 1rem 5rem; }
   .explore-hero    { grid-template-columns: 1fr !important; }
 }
 
