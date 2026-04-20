@@ -897,6 +897,7 @@
 
   .nav-links { display: none; }
   .lp-hamburger { display: flex; }
+  .landing-page .nav-btn { display: none; }
 
   .how-bg,
   .age-bg,
