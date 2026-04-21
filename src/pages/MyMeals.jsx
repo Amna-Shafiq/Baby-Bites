@@ -43,10 +43,13 @@ function MyMeals() {
       const ext = imageFile.name.split(".").pop();
       const path = `${session.user.id}/${Date.now()}.${ext}`;
       const { error: upErr } = await supabase.storage.from("meal-images").upload(path, imageFile, { upsert: true });
-      if (!upErr) {
-        const { data: { publicUrl } } = supabase.storage.from("meal-images").getPublicUrl(path);
-        imageUrl = publicUrl;
+      if (upErr) {
+        setStatus(`Photo upload failed: ${upErr.message}`);
+        setUploading(false);
+        return;
       }
+      const { data: { publicUrl } } = supabase.storage.from("meal-images").getPublicUrl(path);
+      imageUrl = publicUrl;
     }
 
     const result = await addCustomMeal({

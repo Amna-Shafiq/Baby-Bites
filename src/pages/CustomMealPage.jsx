@@ -15,6 +15,7 @@ function CustomMealPage() {
   const [loading, setLoading]   = useState(true);
   const [error, setError]       = useState("");
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
   const [session, setSession]   = useState(null);
   const [logOpen, setLogOpen]   = useState(false);
   const [logSaved, setLogSaved] = useState(false);
@@ -63,10 +64,11 @@ function CustomMealPage() {
       .upload(path, file, { upsert: true });
 
     if (upErr) {
-      console.error("Upload error:", upErr.message);
+      setUploadError(`Photo upload failed: ${upErr.message}`);
       setUploading(false);
       return;
     }
+    setUploadError("");
 
     const { data: { publicUrl } } = supabase.storage
       .from("meal-images")
@@ -123,14 +125,29 @@ function CustomMealPage() {
         </button>
       </div>
 
+      {/* ── Header ── */}
+      <div style={{ margin: "1.5rem 0 1rem" }}>
+        <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
+          <span className="badge badge-slot">{meal.meal_slot}</span>
+          <span className="badge badge-quick">Custom</span>
+        </div>
+        <h1 style={{ marginBottom: 8 }}>{meal.title}</h1>
+        <p className="muted" style={{ fontSize: "0.88rem" }}>
+          👶 {meal.min_age_months}–{meal.max_age_months} months
+        </p>
+      </div>
+
       {/* ── Photo ── */}
+      {uploadError && (
+        <p style={{ fontSize: "0.82rem", color: "#c0392b", fontWeight: 600, marginBottom: 8 }}>{uploadError}</p>
+      )}
       <div
         onClick={() => fileRef.current?.click()}
         style={{
-          margin: "1rem 0",
+          margin: "0 0 1.5rem",
           width: "100%",
-          height: 220,
-          borderRadius: 18,
+          height: meal.image_url ? 220 : 90,
+          borderRadius: 14,
           border: meal.image_url ? "none" : "2px dashed var(--border)",
           overflow: "hidden",
           cursor: "pointer",
@@ -148,12 +165,11 @@ function CustomMealPage() {
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : (
-          <div style={{ textAlign: "center", color: "var(--muted)", pointerEvents: "none" }}>
-            <p style={{ fontSize: "2.5rem", margin: 0 }}>📷</p>
-            <p style={{ margin: "6px 0 0", fontSize: "0.85rem", fontWeight: 700 }}>
-              {uploading ? "Uploading..." : "Add a photo"}
+          <div style={{ textAlign: "center", color: "var(--muted)", pointerEvents: "none", display: "flex", alignItems: "center", gap: 8 }}>
+            <p style={{ fontSize: "1.4rem", margin: 0 }}>📷</p>
+            <p style={{ margin: 0, fontSize: "0.82rem", fontWeight: 700 }}>
+              {uploading ? "Uploading..." : "Add a photo (optional)"}
             </p>
-            <p style={{ margin: "2px 0 0", fontSize: "0.75rem" }}>Tap to choose from your camera roll</p>
           </div>
         )}
         {meal.image_url && (
@@ -168,18 +184,6 @@ function CustomMealPage() {
         )}
       </div>
       <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handlePhotoUpload} />
-
-      {/* ── Header ── */}
-      <div style={{ margin: "0.5rem 0 1.5rem" }}>
-        <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
-          <span className="badge badge-slot">{meal.meal_slot}</span>
-          <span className="badge badge-quick">Custom</span>
-        </div>
-        <h1 style={{ marginBottom: 8 }}>{meal.title}</h1>
-        <p className="muted" style={{ fontSize: "0.88rem" }}>
-          👶 {meal.min_age_months}–{meal.max_age_months} months
-        </p>
-      </div>
 
       {/* ── Nutrition ── */}
       {meal.nutrition_highlight && (
