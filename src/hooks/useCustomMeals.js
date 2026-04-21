@@ -83,12 +83,13 @@ function useCustomMeals() {
       const { error } = await supabase.from("custom_meals").insert({
         user_id: userId,
         title: payload.title,
-        min_age_months: Number(payload.minAgeMonths),
-        max_age_months: Number(payload.maxAgeMonths),
+        min_age_months: Number(payload.startingMonth),
+        max_age_months: Math.max(Number(payload.startingMonth) + 12, 36),
         meal_slot: payload.mealSlot,
         ingredients: payload.ingredients,
         steps: payload.steps,
         nutrition_highlight: payload.nutritionHighlight,
+        image_url: payload.imageUrl || null,
       });
 
       if (error) return { error: error.message };

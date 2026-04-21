@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "../lib/supabaseClient";
 
 import useCustomMeals from "../hooks/useCustomMeals";
 import useFavorites from "../hooks/useFavorites";
@@ -14,28 +15,49 @@ function MyMeals() {
   const [showAllLogs, setShowAllLogs] = useState(false);
 
   const [title, setTitle]                     = useState("");
-  const [minAgeMonths, setMinAgeMonths]       = useState("6");
-  const [maxAgeMonths, setMaxAgeMonths]       = useState("12");
+  const [startingMonth, setStartingMonth]     = useState("6");
   const [mealSlot, setMealSlot]               = useState("lunch");
   const [ingredientsText, setIngredientsText] = useState("");
   const [steps, setSteps]                     = useState("");
   const [nutritionHighlight, setNutritionHighlight] = useState("");
   const [status, setStatus]                   = useState("");
+  const [imageFile, setImageFile]             = useState(null);
+  const [imagePreview, setImagePreview]       = useState(null);
+  const [uploading, setUploading]             = useState(false);
+  const fileRef                               = useRef(null);
+
+  const handleImagePick = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
 
   const submitMeal = async (e) => {
     e.preventDefault();
     setStatus("");
+    setUploading(true);
+
+    let imageUrl = null;
+    if (imageFile && session) {
+      const ext = imageFile.name.split(".").pop();
+      const path = `${session.user.id}/${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("meal-images").upload(path, imageFile, { upsert: true });
+      if (!upErr) {
+        const { data: { publicUrl } } = supabase.storage.from("meal-images").getPublicUrl(path);
+        imageUrl = publicUrl;
+      }
+    }
+
     const result = await addCustomMeal({
-      title,
-      minAgeMonths,
-      maxAgeMonths,
-      mealSlot,
+      title, startingMonth, mealSlot,
       ingredients: ingredientsText.split(",").map((s) => s.trim()).filter(Boolean),
-      steps,
-      nutritionHighlight,
+      steps, nutritionHighlight, imageUrl,
     });
+    setUploading(false);
     if (result.error) { setStatus(result.error); return; }
     setTitle(""); setIngredientsText(""); setSteps(""); setNutritionHighlight("");
+    setImageFile(null); setImagePreview(null);
     setStatus(t("mealAdded"));
   };
 
@@ -51,46 +73,86 @@ function MyMeals() {
 
       {/* ── Add custom meal ── */}
       <section className="panel">
-        <h2 style={{ marginBottom: "0.3rem" }}>{t("addCustomMealTitle")}</h2>
-        <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1.2rem", lineHeight: 1.6 }}>
-          {t("addCustomMealDesc")}
-        </p>
-        <form onSubmit={submitMeal} className="filters">
-          <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("mealTitlePlaceholder")} required />
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-            <input
-              className="input" type="number" min="0"
-              value={minAgeMonths} onChange={(e) => setMinAgeMonths(e.target.value)}
-              placeholder={t("minAgePlaceholder")} required
-            />
-            <input
-              className="input" type="number" min="0"
-              value={maxAgeMonths} onChange={(e) => setMaxAgeMonths(e.target.value)}
-              placeholder={t("maxAgePlaceholder")} required
-            />
+        <h2 style={{ marginBottom: "1rem" }}>{t("addCustomMealTitle")}</h2>
+        <form onSubmit={submitMeal} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+
+          {/* Image picker */}
+          <div
+            onClick={() => fileRef.current?.click()}
+            style={{
+              width: "100%", height: 120, borderRadius: 12, cursor: "pointer",
+              border: imagePreview ? "none" : "2px dashed var(--border)",
+              background: imagePreview ? "none" : "var(--cream)",
+              overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center",
+              position: "relative",
+            }}
+          >
+            {imagePreview ? (
+              <>
+                <img src={imagePreview} alt="preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <span style={{ position: "absolute", bottom: 6, right: 8, background: "rgba(0,0,0,0.5)", color: "#fff", fontSize: "0.72rem", fontWeight: 700, padding: "3px 8px", borderRadius: 6 }}>
+                  📷 Change
+                </span>
+              </>
+            ) : (
+              <div style={{ textAlign: "center", color: "var(--muted)" }}>
+                <p style={{ margin: 0, fontSize: "1.5rem" }}>📷</p>
+                <p style={{ margin: "4px 0 0", fontSize: "0.8rem", fontWeight: 700 }}>Add photo (optional)</p>
+              </div>
+            )}
           </div>
-          <select className="input" value={mealSlot} onChange={(e) => setMealSlot(e.target.value)}>
-            <option value="breakfast">{t("slotBreakfast")}</option>
-            <option value="lunch">{t("slotLunch")}</option>
-            <option value="dinner">{t("slotDinner")}</option>
-          </select>
+          <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleImagePick} />
+
+          {/* Title */}
+          <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("mealTitlePlaceholder")} required />
+
+          {/* Starting month + meal slot */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            <div>
+              <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 4 }}>
+                Starting month
+              </label>
+              <input
+                className="input" type="number" min="0" max="36"
+                value={startingMonth} onChange={(e) => setStartingMonth(e.target.value)}
+                placeholder="e.g. 6" required
+              />
+            </div>
+            <div>
+              <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 4 }}>
+                Meal slot
+              </label>
+              <select className="input" value={mealSlot} onChange={(e) => setMealSlot(e.target.value)}>
+                <option value="breakfast">{t("slotBreakfast")}</option>
+                <option value="lunch">{t("slotLunch")}</option>
+                <option value="dinner">{t("slotDinner")}</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Ingredients */}
           <input
             className="input" value={ingredientsText}
             onChange={(e) => setIngredientsText(e.target.value)}
             placeholder={t("ingredientsPlaceholder")}
           />
+
+          {/* Steps */}
           <textarea
             className="input" value={steps}
             onChange={(e) => setSteps(e.target.value)}
             placeholder={t("stepsPlaceholder")} rows={3} style={{ resize: "vertical" }}
           />
+
+          {/* Nutrition */}
           <input
             className="input" value={nutritionHighlight}
             onChange={(e) => setNutritionHighlight(e.target.value)}
             placeholder={t("nutritionPlaceholder")}
           />
-          <button type="submit" className="btn btn-primary" disabled={!session || loading}>
-            {t("saveMeal")}
+
+          <button type="submit" className="btn btn-primary" disabled={!session || loading || uploading}>
+            {uploading ? "Saving…" : t("saveMeal")}
           </button>
         </form>
       </section>
@@ -139,8 +201,7 @@ function MyMeals() {
               type="button"
               onClick={() => {
                 setTitle("Banana Oatmeal Mash");
-                setMinAgeMonths("6");
-                setMaxAgeMonths("12");
+                setStartingMonth("6");
                 setMealSlot("breakfast");
                 setIngredientsText("Banana, Oatmeal, Breast milk or formula");
                 setSteps("1. Cook oatmeal according to package instructions.\n2. Mash a ripe banana with a fork until smooth.\n3. Mix mashed banana into warm oatmeal.\n4. Add a splash of breast milk or formula to reach desired consistency.");
