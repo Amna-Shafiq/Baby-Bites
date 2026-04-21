@@ -270,16 +270,15 @@ function Meals() {
 
               {/* Hover */}
               <div className="food-card-details">
-                <p style={{ fontWeight: 700, fontSize: "0.9rem", margin: "0 0 5px", color: "var(--dark)", fontFamily: "Aileron, sans-serif" }}>
+                <p style={{ fontWeight: 700, fontSize: "0.9rem", margin: "0 0 6px", color: "var(--dark)", fontFamily: "Aileron, sans-serif" }}>
                   {meal.title}
                 </p>
-                <p className="food-detail-row">{meal.description}</p>
                 <p className="food-detail-row">Age: <strong>{meal.min_age_months}–{meal.max_age_months}m</strong></p>
                 <p className="food-detail-row">Prep: <strong>{meal.prep_time_minutes} min</strong></p>
                 {meal.nutrition_highlight && (
-                  <p className="food-detail-row" style={{ marginTop: 4 }}>{meal.nutrition_highlight}</p>
+                  <p className="food-detail-row" style={{ color: "var(--green-dark)", fontWeight: 600 }}>✓ {meal.nutrition_highlight}</p>
                 )}
-                <p style={{ fontSize: "0.75rem", color: "var(--orange-dark)", marginTop: 6, fontWeight: 700 }}>
+                <p style={{ fontSize: "0.75rem", color: "var(--orange-dark)", marginTop: 8, fontWeight: 700 }}>
                   {t("clickRecipe")}
                 </p>
               </div>

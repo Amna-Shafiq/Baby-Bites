@@ -174,14 +174,10 @@ function AllFoods() {
             </div>
 
             <div className="food-card-details">
-              <p className="food-detail-row"><strong>{food.name}</strong></p>
+              <p style={{ fontWeight: 700, fontSize: "0.9rem", margin: "0 0 6px", color: "var(--dark)", fontFamily: "Aileron, sans-serif" }}>{food.name}</p>
               <p className="food-detail-row">Safe from: <strong>{food.safe_from_months}m+</strong></p>
-              <p className="food-detail-row">Group: <strong>{food.food_group || "other"}</strong></p>
               <p className="food-detail-row">Iron rich: <strong>{food.is_iron_rich ? "✓ Yes" : "No"}</strong></p>
-              {food.allergen_notes && (
-                <p className="food-allergen">⚠️ {food.allergen_notes}</p>
-              )}
-              <p style={{ fontSize: "0.75rem", color: "var(--orange-dark)", marginTop: 6, fontWeight: 700 }}>
+              <p style={{ fontSize: "0.75rem", color: "var(--orange-dark)", marginTop: 8, fontWeight: 700 }}>
                 Click for details →
               </p>
             </div>
