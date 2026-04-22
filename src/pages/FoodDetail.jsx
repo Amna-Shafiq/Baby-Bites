@@ -44,6 +44,8 @@ const FOOD_REFERENCES = {
   // Other
   "french toast": [SS("french-toast")],
   "ice cream":    [SS("ice-cream")],
+  egg:            [SS("eggs"), { label: "Australian Eggs — Babies & Children", url: "https://www.australianeggs.org.au/nutrition/babies-and-children" }],
+  eggs:           [SS("eggs"), { label: "Australian Eggs — Babies & Children", url: "https://www.australianeggs.org.au/nutrition/babies-and-children" }],
 };
 
 function getReferences(food) {
