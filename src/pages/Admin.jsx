@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "../lib/supabaseClient";
 
-const FOOD_GROUPS = ["grain", "veggie", "fruit", "protein"];
+const FOOD_GROUPS = ["grain", "veggie", "fruit", "protein", "spice"];
 const MEAL_SLOTS  = ["breakfast", "lunch", "dinner"];
 const MEAL_TYPES  = ["quick", "fancy"];
 
