@@ -23,6 +23,95 @@ function getReferences(food) {
   return food.references || FOOD_REFERENCES[key] || null;
 }
 
+const STAGES = [
+  {
+    key:      "tip_puree",
+    phase:    "🍼 Just Starting Solids",
+    age:      "6+ months",
+    color:    "#fff8f0",
+    border:   "#f5cba7",
+    textures: [
+      { icon: "🥣", name: "Smooth Purees",      desc: "Completely blended · No lumps" },
+      { icon: "🥄", name: "Slightly Textured",  desc: "Very soft tiny lumps" },
+    ],
+    generic: "Blend with breast milk, formula, or water until completely smooth. Strain if needed. Progress to a fork-mashed consistency with tiny soft lumps as baby gains confidence.",
+  },
+  {
+    key:      "tip_finger_food",
+    phase:    "👅 Learning to Move Food",
+    age:      "7–9 months",
+    color:    "#f0fff4",
+    border:   "#a9dfbf",
+    textures: [
+      { icon: "🍌", name: "Soft Finger Foods", desc: "Easy to squish · Large enough to hold" },
+    ],
+    generic: "Cut into finger-length strips baby can grip. Steam or cook until soft enough to squish between fingers. Soft enough to gum without teeth.",
+  },
+  {
+    key:      "tip_self_feeding",
+    phase:    "🤲 Self-Feeding Stage",
+    age:      "8–10 months",
+    color:    "#f0f4ff",
+    border:   "#a9c4f5",
+    textures: [
+      { icon: "🧩", name: "Mixed Textures", desc: "Soft + small chunks" },
+    ],
+    generic: "Combine mashed base with small soft pieces. Encourages chewing practice. Pieces should still be soft enough to squish easily.",
+  },
+  {
+    key:      "tip_family_meal",
+    phase:    "🍽️ Eating with Family",
+    age:      "12+ months",
+    color:    "#fdf0ff",
+    border:   "#d7a9f5",
+    textures: [
+      { icon: "🍛", name: "Modified Family Meals", desc: "Same food, adjusted" },
+    ],
+    generic: "Serve the same food the family eats. Reduce salt and strong spices. Cut into safe bite-sized pieces. Avoid honey, whole nuts, and hard raw vegetables.",
+  },
+];
+
+function ServingStages({ food }) {
+  return (
+    <div style={{ marginBottom: "1.5rem" }}>
+      <h3 style={{ marginBottom: "1rem", fontSize: "1rem" }}>How to Serve by Stage</h3>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {STAGES.map((stage) => {
+          const tip = food[stage.key];
+          return (
+            <div key={stage.key} style={{ borderRadius: 14, border: `1.5px solid ${stage.border}`, background: stage.color, overflow: "hidden" }}>
+              {/* Stage header */}
+              <div style={{ padding: "10px 14px 6px", borderBottom: `1px solid ${stage.border}` }}>
+                <p style={{ margin: 0, fontWeight: 800, fontSize: "0.88rem", color: "var(--dark)" }}>{stage.phase}</p>
+                <p style={{ margin: "1px 0 0", fontSize: "0.72rem", color: "var(--muted)", fontWeight: 600 }}>{stage.age}</p>
+              </div>
+              {/* Textures */}
+              <div style={{ padding: "10px 14px", display: "flex", flexDirection: "column", gap: 10 }}>
+                {stage.textures.map((tex) => (
+                  <div key={tex.name}>
+                    <p style={{ margin: "0 0 2px", fontWeight: 700, fontSize: "0.82rem", color: "var(--dark)" }}>
+                      {tex.icon} {tex.name}
+                    </p>
+                    <p style={{ margin: "0 0 8px", fontSize: "0.72rem", color: "var(--muted)" }}>{tex.desc}</p>
+                    <div style={{ background: "rgba(255,255,255,0.7)", borderRadius: 8, padding: "8px 10px" }}>
+                      <p style={{ margin: "0 0 4px", fontSize: "0.7rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)" }}>
+                        👉 How to prepare
+                      </p>
+                      <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--dark)", lineHeight: 1.5 }}>
+                        {tip || stage.generic}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function FoodDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -126,21 +215,16 @@ function FoodDetail() {
         </div>
       </div>
 
-      {/* ── Texture tips ── */}
-      {food.texture_tips && (
-        <div className="card" style={{ marginBottom: "1rem" }}>
-          <h3 style={{ marginBottom: "0.6rem" }}>{t("textureTips")}</h3>
-          <p className="muted" style={{ margin: 0, whiteSpace: "pre-line" }}>{food.texture_tips?.replace(/\\n/g, "\n")}</p>
-        </div>
-      )}
-
-      {/* ── Allergen notes ── */}
-      {food.allergen_notes && (
-        <div className="card card-allergen">
-          <h3 style={{ marginBottom: "0.5rem", color: "#c0392b", fontSize: "0.95rem" }}>{t("allergenNotes")}</h3>
-          <p style={{ color: "#c0392b", margin: 0, fontSize: "0.9rem" }}>{food.allergen_notes}</p>
-        </div>
-      )}
+      {/* ── Stages + Allergen side by side ── */}
+      <div style={{ display: "grid", gridTemplateColumns: food.allergen_notes ? "1fr 300px" : "1fr", gap: 16, alignItems: "start", marginBottom: "1rem" }}>
+        <ServingStages food={food} />
+        {food.allergen_notes && (
+          <div className="card card-allergen" style={{ position: "sticky", top: 90 }}>
+            <h3 style={{ marginBottom: "0.5rem", color: "#c0392b", fontSize: "0.9rem" }}>{t("allergenNotes")}</h3>
+            <p style={{ color: "#c0392b", margin: 0, fontSize: "0.82rem", lineHeight: 1.6 }}>{food.allergen_notes}</p>
+          </div>
+        )}
+      </div>
 
       {/* ── Meals using this food ── */}
       <div className="panel" style={{ marginTop: "1.5rem" }}>

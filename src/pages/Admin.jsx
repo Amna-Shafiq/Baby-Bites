@@ -9,6 +9,7 @@ const emptyFood = {
   name: "", safe_from_months: "6", is_iron_rich: false,
   food_group: "protein", allergen_notes: "", texture_tips: "",
   is_warning: false, search_aliases: "", image_url: "",
+  tip_puree: "", tip_finger_food: "", tip_self_feeding: "", tip_family_meal: "",
 };
 
 const emptyMeal = {
@@ -64,6 +65,10 @@ function Admin() {
       is_warning:       food.is_warning,
       search_aliases:   food.search_aliases.trim() || null,
       image_url:        food.image_url.trim() || null,
+      tip_puree:        food.tip_puree.trim() || null,
+      tip_finger_food:  food.tip_finger_food.trim() || null,
+      tip_self_feeding: food.tip_self_feeding.trim() || null,
+      tip_family_meal:  food.tip_family_meal.trim() || null,
     };
     const { error } = await supabase.from("foods").insert(payload);
     if (error) { setFoodStatus(`Error: ${error.message}`); return; }
@@ -179,7 +184,13 @@ function Admin() {
 
               <input className="input" placeholder="Search aliases (e.g. qeema, mince)" value={food.search_aliases} onChange={(e) => setF("search_aliases", e.target.value)} />
               <input className="input" placeholder="Allergen notes" value={food.allergen_notes} onChange={(e) => setF("allergen_notes", e.target.value)} />
-              <textarea className="input" placeholder="Texture tips / serving tips" value={food.texture_tips} onChange={(e) => setF("texture_tips", e.target.value)} rows={2} style={{ resize: "vertical" }} />
+              <textarea className="input" placeholder="Texture tips (legacy fallback)" value={food.texture_tips} onChange={(e) => setF("texture_tips", e.target.value)} rows={2} style={{ resize: "vertical" }} />
+
+              <p style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)", margin: "4px 0 0" }}>Serving stage tips (optional — shown on food detail page)</p>
+              <textarea className="input" placeholder="🍼 Just Starting Solids (6m+) — puree & textured tips" value={food.tip_puree} onChange={(e) => setF("tip_puree", e.target.value)} rows={2} style={{ resize: "vertical" }} />
+              <textarea className="input" placeholder="👅 Learning to Move Food (7–9m) — finger food tips" value={food.tip_finger_food} onChange={(e) => setF("tip_finger_food", e.target.value)} rows={2} style={{ resize: "vertical" }} />
+              <textarea className="input" placeholder="🤲 Self-Feeding Stage (8–10m) — mixed texture tips" value={food.tip_self_feeding} onChange={(e) => setF("tip_self_feeding", e.target.value)} rows={2} style={{ resize: "vertical" }} />
+              <textarea className="input" placeholder="🍽️ Eating with Family (12m+) — family meal tips" value={food.tip_family_meal} onChange={(e) => setF("tip_family_meal", e.target.value)} rows={2} style={{ resize: "vertical" }} />
 
               <div style={{ display: "flex", gap: 20, fontSize: "0.85rem", fontWeight: 700 }}>
                 <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}>
