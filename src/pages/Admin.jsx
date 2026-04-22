@@ -8,7 +8,7 @@ const MEAL_TYPES  = ["quick", "fancy"];
 const emptyFood = {
   name: "", safe_from_months: "6", is_iron_rich: false,
   food_group: "protein", allergen_notes: "", texture_tips: "",
-  is_warning: false, search_aliases: "", image_url: "",
+  is_warning: false, search_aliases: "", image_url: "", notes: "",
   tip_puree: "", tip_finger_food: "", tip_self_feeding: "", tip_family_meal: "",
 };
 
@@ -65,6 +65,7 @@ function Admin() {
       is_warning:       food.is_warning,
       search_aliases:   food.search_aliases.trim() || null,
       image_url:        food.image_url.trim() || null,
+      notes:            food.notes.trim() || null,
       tip_puree:        food.tip_puree.trim() || null,
       tip_finger_food:  food.tip_finger_food.trim() || null,
       tip_self_feeding: food.tip_self_feeding.trim() || null,
@@ -184,6 +185,7 @@ function Admin() {
 
               <input className="input" placeholder="Search aliases (e.g. qeema, mince)" value={food.search_aliases} onChange={(e) => setF("search_aliases", e.target.value)} />
               <input className="input" placeholder="Allergen notes" value={food.allergen_notes} onChange={(e) => setF("allergen_notes", e.target.value)} />
+              <textarea className="input" placeholder="Notes (e.g. variants, cultural context)" value={food.notes} onChange={(e) => setF("notes", e.target.value)} rows={2} style={{ resize: "vertical" }} />
               <textarea className="input" placeholder="Texture tips (legacy fallback)" value={food.texture_tips} onChange={(e) => setF("texture_tips", e.target.value)} rows={2} style={{ resize: "vertical" }} />
 
               <p style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)", margin: "4px 0 0" }}>Serving stage tips (optional — shown on food detail page)</p>

@@ -46,6 +46,7 @@ const FOOD_REFERENCES = {
   "ice cream":    [SS("ice-cream")],
   egg:            [SS("eggs"), { label: "Australian Eggs — Babies & Children", url: "https://www.australianeggs.org.au/nutrition/babies-and-children" }],
   eggs:           [SS("eggs"), { label: "Australian Eggs — Babies & Children", url: "https://www.australianeggs.org.au/nutrition/babies-and-children" }],
+  roti:           [{ label: "EuroKids — Introducing Roti to Kids", url: "https://www.eurokidsindia.com/blog/introducing-roti-to-kids-timing-preparation-and-benefits.php" }],
 };
 
 function getReferences(food) {
@@ -244,6 +245,14 @@ function FoodDetail() {
           </div>
         </div>
       </div>
+
+      {/* ── Notes ── */}
+      {food.notes && (
+        <div className="card" style={{ marginBottom: "1rem", background: "#fffbf0", border: "1.5px solid #f5e0a0" }}>
+          <h3 style={{ marginBottom: "0.5rem", fontSize: "0.9rem" }}>📝 Notes</h3>
+          <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--dark)", lineHeight: 1.6 }}>{food.notes}</p>
+        </div>
+      )}
 
       {/* ── Stages + Allergen side by side ── */}
       <div style={{ display: "grid", gridTemplateColumns: food.allergen_notes ? "1fr 300px" : "1fr", gap: 16, alignItems: "start", marginBottom: "1rem" }}>
