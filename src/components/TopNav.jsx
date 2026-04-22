@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
 import useActiveBaby from "../hooks/useActiveBaby";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 function TopNav() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ function TopNav() {
   const { activeBaby, babies, switchBaby } = useActiveBaby();
   const menuRef = useRef(null);
   const { lang, setLang, t } = useLanguage();
+  const { dark, toggleTheme } = useTheme();
 
   useEffect(() => {
     if (!supabase) return;
@@ -67,6 +69,19 @@ function TopNav() {
         </div>
 
         <div className="top-nav-actions">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            title={dark ? "Switch to light mode" : "Switch to dark mode"}
+            style={{
+              background: "none", border: "none", cursor: "pointer",
+              fontSize: "1.1rem", padding: "4px 6px", lineHeight: 1,
+              color: "var(--muted)", borderRadius: 8,
+            }}
+          >
+            {dark ? "☀️" : "🌙"}
+          </button>
+
           <button
             className="lang-toggle"
             onClick={() => setLang(lang === "en" ? "ur" : "en")}

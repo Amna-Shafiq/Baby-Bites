@@ -33,6 +33,91 @@
   --border:      #E8D0BC;
 }
 
+/* ── Dark mode tokens ──────────────────────────────── */
+[data-theme="dark"] {
+  --yellow:      #3D2E00;
+  --yellow-mid:  #C49A20;
+  --yellow-dark: #F5C340;
+
+  --orange:      #2E1608;
+  --orange-mid:  #C0623A;
+  --orange-dark: #E8724A;
+
+  --blue:        #0A1E2E;
+  --blue-mid:    #3A8AAC;
+  --blue-dark:   #6ABCDC;
+
+  --green:       #071A10;
+  --green-mid:   #2A9060;
+  --green-dark:  #4AC888;
+
+  --cream:       #1C1008;
+  --white:       #261608;
+  --dark:        #F5E2D2;
+  --text:        #EDD5C0;
+  --muted:       #9A7A65;
+  --border:      #3A2214;
+}
+
+[data-theme="dark"] body {
+  background: #120A04;
+}
+
+[data-theme="dark"] body::before {
+  opacity: 0.12;
+}
+
+[data-theme="dark"] .top-nav-inner,
+[data-theme="dark"] .lp-nav-inner {
+  background: rgba(30, 16, 6, 0.75);
+  border-color: rgba(255,255,255,0.08);
+}
+
+[data-theme="dark"] .card {
+  background: var(--white);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .panel {
+  background: var(--white);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .input {
+  background: var(--cream);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .input::placeholder {
+  color: var(--muted);
+}
+
+[data-theme="dark"] .food-card {
+  background: var(--white);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .food-card-details {
+  background: rgba(26, 14, 4, 0.96);
+}
+
+[data-theme="dark"] .badge-age  { background: var(--blue);   color: var(--blue-dark); }
+[data-theme="dark"] .badge-slot { background: var(--green);  color: var(--green-dark); }
+[data-theme="dark"] .badge-quick { background: var(--yellow); color: var(--yellow-dark); }
+
+[data-theme="dark"] .pagination-btn {
+  background: var(--white);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+[data-theme="dark"] .filter-pill {
+  background: var(--cream);
+  border-color: var(--border);
+  color: var(--text);
+}
+
 /* ── Base ──────────────────────────────────────────── */
 * { box-sizing: border-box; }
 
