@@ -312,47 +312,81 @@ function ParticleTitle() {
   );
 }
 
-// ── Seasonal spotlights (summer in Pakistan) ──────────────
-const SPOTLIGHTS = [
+// ── Seasonal spotlights — auto-switches by month (Pakistan seasons) ──
+const month = new Date().getMonth(); // 0 = Jan
+const isSummer = month >= 3 && month <= 8; // Apr–Sep
+
+const SPOTLIGHTS = isSummer ? [
   {
-    keywords:  ["ice cream", "frozen", "yogurt"],
-    headline:  "🍦 Beat the summer heat",
-    tagline:   "It's scorching outside — cool down your little one with something creamy and refreshing.",
-    bg:        "linear-gradient(135deg, #d4f0ff 0%, #a8d5f0 100%)",
-    accent:    "#1a6090",
-    textDark:  true,
+    keywords: ["ice cream", "frozen", "yogurt"],
+    headline: "🍦 Beat the summer heat",
+    tagline:  "It's scorching outside — cool down your little one with something creamy and refreshing.",
+    bg:       "linear-gradient(135deg, #d4f0ff 0%, #a8d5f0 100%)",
+    accent:   "#1a6090", textDark: true,
   },
   {
-    keywords:  ["mango", "fruit", "banana"],
-    headline:  "🥭 Mango season is here!",
-    tagline:   "Peak aam season in Pakistan — sweet, ripe mangoes make the perfect baby puree right now.",
-    bg:        "linear-gradient(135deg, #fff3cc 0%, #ffd87a 100%)",
-    accent:    "#a07200",
-    textDark:  true,
+    keywords: ["mango", "fruit", "banana"],
+    headline: "🥭 Mango season is here!",
+    tagline:  "Peak aam season in Pakistan — sweet, ripe mangoes make the perfect baby puree right now.",
+    bg:       "linear-gradient(135deg, #fff3cc 0%, #ffd87a 100%)",
+    accent:   "#a07200", textDark: true,
   },
   {
-    keywords:  ["avocado", "smoothie", "oat"],
-    headline:  "🌤️ Light & easy for hot days",
-    tagline:   "Keep meals simple and cool in the summer heat — light, nutrient-packed, and quick to prepare.",
-    bg:        "linear-gradient(135deg, #e8f8ee 0%, #b8e8cc 100%)",
-    accent:    "#177244",
-    textDark:  true,
+    keywords: ["avocado", "smoothie", "oat"],
+    headline: "🌤️ Light & easy for hot days",
+    tagline:  "Keep meals simple and cool in the summer heat — light, nutrient-packed, and quick to prepare.",
+    bg:       "linear-gradient(135deg, #e8f8ee 0%, #b8e8cc 100%)",
+    accent:   "#177244", textDark: true,
   },
   {
-    keywords:  ["chicken", "lentil", "dal", "soup"],
-    headline:  "💧 Stay nourished this summer",
-    tagline:   "Babies need more hydration in the heat — soft, moist meals help keep fluid levels up.",
-    bg:        "linear-gradient(135deg, #fff0e8 0%, #f5c8a8 100%)",
-    accent:    "#bf4a22",
-    textDark:  true,
+    keywords: ["chicken", "lentil", "dal", "soup"],
+    headline: "💧 Stay nourished this summer",
+    tagline:  "Babies need more hydration in the heat — soft, moist meals help keep fluid levels up.",
+    bg:       "linear-gradient(135deg, #fff0e8 0%, #f5c8a8 100%)",
+    accent:   "#bf4a22", textDark: true,
   },
   {
-    keywords:  ["egg", "porridge", "oatmeal", "breakfast"],
-    headline:  "🌅 Start mornings right",
-    tagline:   "A cool, calm morning is the best time for a nutritious breakfast before the heat kicks in.",
-    bg:        "linear-gradient(135deg, #fdf4e8 0%, #f5dfa8 100%)",
-    accent:    "#a07200",
-    textDark:  true,
+    keywords: ["egg", "porridge", "oatmeal", "breakfast"],
+    headline: "🌅 Start mornings right",
+    tagline:  "A cool, calm morning is the best time for a nutritious breakfast before the heat kicks in.",
+    bg:       "linear-gradient(135deg, #fdf4e8 0%, #f5dfa8 100%)",
+    accent:   "#a07200", textDark: true,
+  },
+] : [
+  {
+    keywords: ["oatmeal", "porridge", "oat"],
+    headline: "🥣 Warm up with oatmeal",
+    tagline:  "Cold winter mornings call for a cosy, iron-rich bowl to start the day right.",
+    bg:       "linear-gradient(135deg, #fff8ee 0%, #f5dcb0 100%)",
+    accent:   "#a07200", textDark: true,
+  },
+  {
+    keywords: ["soup", "lentil", "dal", "chicken"],
+    headline: "🍲 Warming soups for cold days",
+    tagline:  "A soft, slow-cooked soup keeps baby nourished and warm through Pakistan's winter chill.",
+    bg:       "linear-gradient(135deg, #fff0e8 0%, #f5c090 100%)",
+    accent:   "#bf4a22", textDark: true,
+  },
+  {
+    keywords: ["banana", "apple", "pear"],
+    headline: "🍎 Winter fruits to the rescue",
+    tagline:  "Apples, pears, and bananas are in season — naturally sweet and easy to puree.",
+    bg:       "linear-gradient(135deg, #f0ffe8 0%, #c8f0a8 100%)",
+    accent:   "#177244", textDark: true,
+  },
+  {
+    keywords: ["egg", "meat", "beef", "lamb"],
+    headline: "🔥 Protein to fight the cold",
+    tagline:  "Babies need extra warmth in winter — iron-rich proteins keep energy levels high.",
+    bg:       "linear-gradient(135deg, #f8f0ff 0%, #d8b8f0 100%)",
+    accent:   "#6a1a90", textDark: true,
+  },
+  {
+    keywords: ["cookie", "oat", "biscuit"],
+    headline: "🍪 Bake something cosy",
+    tagline:  "Winter is perfect for baking — soft oat cookies make a wonderful baby-friendly snack.",
+    bg:       "linear-gradient(135deg, #fdf4e8 0%, #f0d0a0 100%)",
+    accent:   "#a07200", textDark: true,
   },
 ];
 
