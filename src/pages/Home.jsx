@@ -4,6 +4,7 @@ import '../styles/landing.css';
 import { supabase } from '../lib/supabaseClient';
 import useActiveBaby from '../hooks/useActiveBaby';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
 import CTAFooter from '../components/CTAFooter';
 
 const STRIP_ITEMS = [
@@ -489,6 +490,7 @@ function Home() {
   const { activeBaby, babies, switchBaby } = useActiveBaby();
   const menuRef = useRef(null);
   const { lang, setLang, t } = useLanguage();
+  const { dark, toggleTheme } = useTheme();
 
   useEffect(() => {
     if (!supabase) return;
@@ -534,18 +536,28 @@ function Home() {
             <li><Link to="/pantry">{t("pantry")}</Link></li>
             <li><Link to="/my-meals">{t("myMeals")}</Link></li>
           </ul>
-        <button
-          className="lang-toggle"
-          onClick={() => setLang(lang === "en" ? "ur" : "en")}
-          title={lang === "en" ? "Switch to Urdu" : "Switch to English"}
-        >
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            title={dark ? "Switch to light mode" : "Switch to dark mode"}
+            style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.1rem", padding: "4px 6px", lineHeight: 1, color: "var(--muted)", borderRadius: 8 }}
+          >
+            {dark ? "☀️" : "🌙"}
+          </button>
+          <button
+            className="lang-toggle"
+            onClick={() => setLang(lang === "en" ? "ur" : "en")}
+            title={lang === "en" ? "Switch to Urdu" : "Switch to English"}
+          >
             <img
               src={lang === "en" ? "https://flagcdn.com/20x15/pk.png" : "https://flagcdn.com/20x15/us.png"}
               alt={lang === "en" ? "Pakistan" : "USA"}
               style={{ width: 20, height: 15, borderRadius: 2, objectFit: "cover" }}
             />
             {lang === "en" ? "اردو" : "EN"}
-        </button>
+          </button>
+        </div>
 
         {session ? (
           <div ref={menuRef} style={{ position: "relative" }}>
