@@ -17,10 +17,12 @@ const IconYouTube = () => (
 function AppFooter() {
   return (
     <footer className="app-footer">
-      <div className="app-footer-logo">
-        <span className="brand-dot" />
-        Baby Bites
-      </div>
+      <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+        <div className="app-footer-logo">
+          <span className="brand-dot" />
+          Baby Bites
+        </div>
+      </Link>
       <div className="app-footer-links">
         <Link to="/explore">Explore</Link>
         <Link to="/meals">Meals</Link>

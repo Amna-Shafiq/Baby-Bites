@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 
+import { supabase } from "../lib/supabaseClient";
 import useAIHelper from "../hooks/useAIHelper";
 import useActiveBaby from "../hooks/useActiveBaby";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -311,6 +312,200 @@ function ParticleTitle() {
   );
 }
 
+// ── Seasonal spotlights (summer in Pakistan) ──────────────
+const SPOTLIGHTS = [
+  {
+    keywords:  ["ice cream", "frozen", "yogurt"],
+    headline:  "🍦 Beat the summer heat",
+    tagline:   "It's scorching outside — cool down your little one with something creamy and refreshing.",
+    bg:        "linear-gradient(135deg, #d4f0ff 0%, #a8d5f0 100%)",
+    accent:    "#1a6090",
+    textDark:  true,
+  },
+  {
+    keywords:  ["mango", "fruit", "banana"],
+    headline:  "🥭 Mango season is here!",
+    tagline:   "Peak aam season in Pakistan — sweet, ripe mangoes make the perfect baby puree right now.",
+    bg:        "linear-gradient(135deg, #fff3cc 0%, #ffd87a 100%)",
+    accent:    "#a07200",
+    textDark:  true,
+  },
+  {
+    keywords:  ["avocado", "smoothie", "oat"],
+    headline:  "🌤️ Light & easy for hot days",
+    tagline:   "Keep meals simple and cool in the summer heat — light, nutrient-packed, and quick to prepare.",
+    bg:        "linear-gradient(135deg, #e8f8ee 0%, #b8e8cc 100%)",
+    accent:    "#177244",
+    textDark:  true,
+  },
+  {
+    keywords:  ["chicken", "lentil", "dal", "soup"],
+    headline:  "💧 Stay nourished this summer",
+    tagline:   "Babies need more hydration in the heat — soft, moist meals help keep fluid levels up.",
+    bg:        "linear-gradient(135deg, #fff0e8 0%, #f5c8a8 100%)",
+    accent:    "#bf4a22",
+    textDark:  true,
+  },
+  {
+    keywords:  ["egg", "porridge", "oatmeal", "breakfast"],
+    headline:  "🌅 Start mornings right",
+    tagline:   "A cool, calm morning is the best time for a nutritious breakfast before the heat kicks in.",
+    bg:        "linear-gradient(135deg, #fdf4e8 0%, #f5dfa8 100%)",
+    accent:    "#a07200",
+    textDark:  true,
+  },
+];
+
+function MealOfTheDay() {
+  const [slides, setSlides]   = useState([]);  // [{meal, spotlight}]
+  const [active, setActive]   = useState(0);
+  const [fading, setFading]   = useState(false);
+  const timerRef              = useRef(null);
+
+  useEffect(() => {
+    supabase
+      .from("meals")
+      .select("id, title, image_url, meal_slot, min_age_months, max_age_months, nutrition_highlight")
+      .eq("is_public", true)
+      .limit(40)
+      .then(({ data }) => {
+        if (!data || data.length === 0) return;
+        const built = [];
+        const used  = new Set();
+
+        for (const spot of SPOTLIGHTS) {
+          const match = data.find(
+            (m) => !used.has(m.id) &&
+              spot.keywords.some((kw) => m.title.toLowerCase().includes(kw))
+          ) || data.find((m) => !used.has(m.id));
+          if (match) { used.add(match.id); built.push({ meal: match, spotlight: spot }); }
+        }
+        setSlides(built.slice(0, 5));
+      });
+  }, []);
+
+  const goTo = useCallback((idx) => {
+    setFading(true);
+    setTimeout(() => { setActive(idx); setFading(false); }, 300);
+  }, []);
+
+  const next = useCallback(() => {
+    goTo((active + 1) % slides.length);
+  }, [active, slides.length, goTo]);
+
+  useEffect(() => {
+    if (slides.length < 2) return;
+    timerRef.current = setInterval(next, 5000);
+    return () => clearInterval(timerRef.current);
+  }, [slides.length, next]);
+
+  if (slides.length === 0) return null;
+
+  const { meal, spotlight } = slides[active];
+
+  return (
+    <div style={{ marginBottom: "3.5rem" }}>
+      <span style={{
+        fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
+        letterSpacing: "0.12em", color: "var(--orange-dark)", display: "block",
+        marginBottom: "0.4rem",
+      }}>
+        Meal of the Day
+      </span>
+      <h2 style={{
+        margin: "0 0 1rem",
+        fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
+        fontFamily: "Aileron, sans-serif", fontWeight: 700,
+        color: "var(--dark)", lineHeight: 1.1, letterSpacing: "-0.01em",
+      }}>
+        Today's pick
+      </h2>
+
+      {/* Card */}
+      <Link to={`/meal/${meal.id}`} style={{ textDecoration: "none", display: "block" }}>
+        <div style={{
+          borderRadius: 20, overflow: "hidden",
+          background: spotlight.bg,
+          display: "grid", gridTemplateColumns: "1fr 1fr",
+          minHeight: 200,
+          opacity: fading ? 0 : 1,
+          transform: fading ? "translateY(6px)" : "translateY(0)",
+          transition: "opacity 0.3s ease, transform 0.3s ease",
+          cursor: "pointer",
+          border: "1.5px solid rgba(0,0,0,0.06)",
+        }}>
+          {/* Text side */}
+          <div style={{ padding: "1.75rem 1.5rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <p style={{
+              margin: "0 0 0.5rem", fontFamily: "Aileron, sans-serif",
+              fontSize: "clamp(1.1rem, 2.5vw, 1.5rem)", fontWeight: 800,
+              color: spotlight.accent, lineHeight: 1.2,
+            }}>
+              {spotlight.headline}
+            </p>
+            <p style={{
+              margin: "0 0 1rem", fontSize: "0.82rem", lineHeight: 1.6,
+              color: spotlight.textDark ? "rgba(0,0,0,0.6)" : "rgba(255,255,255,0.85)",
+              fontWeight: 500,
+            }}>
+              {spotlight.tagline}
+            </p>
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: 6,
+              background: spotlight.accent, color: "#fff",
+              borderRadius: 20, padding: "5px 14px",
+              fontSize: "0.78rem", fontWeight: 700, alignSelf: "flex-start",
+            }}>
+              {meal.title} →
+            </div>
+            <div style={{ display: "flex", gap: 6, marginTop: 10, flexWrap: "wrap" }}>
+              <span className="badge badge-slot">{meal.meal_slot}</span>
+              <span className="badge badge-age">{meal.min_age_months}–{meal.max_age_months}m</span>
+            </div>
+          </div>
+
+          {/* Image side */}
+          <div style={{ position: "relative", minHeight: 200 }}>
+            <img
+              src={meal.image_url || "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776696906/Gemini_Generated_Image_y2myiqy2myiqy2my_sd3eov.png"}
+              alt={meal.title}
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            />
+            {meal.nutrition_highlight && (
+              <div style={{
+                position: "absolute", bottom: 10, left: 10, right: 10,
+                background: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)",
+                borderRadius: 8, padding: "5px 10px",
+                fontSize: "0.72rem", fontWeight: 700, color: "#fff",
+              }}>
+                ✓ {meal.nutrition_highlight}
+              </div>
+            )}
+          </div>
+        </div>
+      </Link>
+
+      {/* Dots */}
+      <div style={{ display: "flex", gap: 8, justifyContent: "center", marginTop: 14 }}>
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => { clearInterval(timerRef.current); goTo(i); }}
+            style={{
+              width: i === active ? 20 : 8, height: 8,
+              borderRadius: 4, border: "none", cursor: "pointer",
+              background: i === active ? "var(--orange-dark)" : "var(--border)",
+              transition: "width 0.3s ease, background 0.3s ease",
+              padding: 0,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Explore() {
   const [input, setInput]       = useState("");
   const [cooldown, setCooldown] = useState(false);
@@ -613,6 +808,9 @@ function Explore() {
 
       {/* ── Below-the-fold sections (back to normal padding) ── */}
       <div style={{ padding: "3rem 2rem 3rem" }}>
+
+        {/* ── MEAL OF THE DAY ── */}
+        <MealOfTheDay />
 
         {/* ── ARTICLES ── */}
         <div style={{ marginBottom: "3.5rem" }}>
