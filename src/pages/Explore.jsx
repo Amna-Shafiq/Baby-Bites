@@ -390,8 +390,16 @@ const SPOTLIGHTS = isSummer ? [
   },
 ];
 
+// Deterministic daily offset — changes every day, same all day
+function getDayOffset() {
+  const now = new Date();
+  return now.getFullYear() * 1000 + Math.floor(
+    (now - new Date(now.getFullYear(), 0, 0)) / 86400000
+  );
+}
+
 function MealOfTheDay() {
-  const [slides, setSlides]   = useState([]);  // [{meal, spotlight}]
+  const [slides, setSlides]   = useState([]);
   const [active, setActive]   = useState(0);
   const [fading, setFading]   = useState(false);
   const timerRef              = useRef(null);
@@ -401,17 +409,21 @@ function MealOfTheDay() {
       .from("meals")
       .select("id, title, image_url, meal_slot, min_age_months, max_age_months, nutrition_highlight")
       .eq("is_public", true)
-      .limit(40)
       .then(({ data }) => {
         if (!data || data.length === 0) return;
+
+        // Rotate the meal pool daily using day-of-year as offset
+        const offset = getDayOffset() % data.length;
+        const rotated = [...data.slice(offset), ...data.slice(0, offset)];
+
         const built = [];
         const used  = new Set();
 
         for (const spot of SPOTLIGHTS) {
-          const match = data.find(
-            (m) => !used.has(m.id) &&
-              spot.keywords.some((kw) => m.title.toLowerCase().includes(kw))
-          ) || data.find((m) => !used.has(m.id));
+          // Try keyword match first, then fall back to next unused meal
+          const match =
+            rotated.find((m) => !used.has(m.id) && spot.keywords.some((kw) => m.title.toLowerCase().includes(kw))) ||
+            rotated.find((m) => !used.has(m.id));
           if (match) { used.add(match.id); built.push({ meal: match, spotlight: spot }); }
         }
         setSlides(built.slice(0, 5));
