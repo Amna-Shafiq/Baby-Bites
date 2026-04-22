@@ -5,17 +5,45 @@ import { supabase } from "../lib/supabaseClient";
 import { useLanguage } from "../contexts/LanguageContext";
 import LogMealModal from "../components/LogMealModal";
 
+const SS  = (slug) => ({ label: "Solid Starts",  url: `https://solidstarts.com/foods/${slug}/` });
+const SRN = { label: "SR Nutrition — Herbs & Spices for Baby", url: "https://www.srnutrition.co.uk/2021/08/herbs-and-spices-for-baby/" };
+
 const FOOD_REFERENCES = {
-  pistachio:  [{ label: "Solid Starts", url: "https://solidstarts.com/foods/pistachios/" }],
-  pistachios: [{ label: "Solid Starts", url: "https://solidstarts.com/foods/pistachios/" }],
-  walnut:     [{ label: "Solid Starts", url: "https://solidstarts.com/foods/walnuts/" }],
-  walnuts:    [{ label: "Solid Starts", url: "https://solidstarts.com/foods/walnuts/" }],
-  cashew:     [{ label: "Solid Starts", url: "https://solidstarts.com/foods/cashew/" }],
-  cashews:    [{ label: "Solid Starts", url: "https://solidstarts.com/foods/cashew/" }],
-  almond:     [{ label: "Solid Starts", url: "https://solidstarts.com/foods/almond/" }],
-  almonds:    [{ label: "Solid Starts", url: "https://solidstarts.com/foods/almond/" }],
-  peanut:     [{ label: "Solid Starts", url: "https://solidstarts.com/foods/peanut/" }],
-  peanuts:    [{ label: "Solid Starts", url: "https://solidstarts.com/foods/peanut/" }],
+  pistachio:      [SS("pistachios")],
+  pistachios:     [SS("pistachios")],
+  walnut:         [SS("walnuts")],
+  walnuts:        [SS("walnuts")],
+  cashew:         [SS("cashew")],
+  cashews:        [SS("cashew")],
+  almond:         [SS("almond")],
+  almonds:        [SS("almond")],
+  peanut:         [SS("peanut")],
+  peanuts:        [SS("peanut")],
+  // Herbs & spices
+  cinnamon:       [SS("cinnamon"),    SRN],
+  cumin:          [SS("cumin"),       SRN],
+  turmeric:       [SS("turmeric"),    SRN],
+  ginger:         [SS("ginger"),      SRN],
+  garlic:         [SS("garlic"),      SRN],
+  cardamom:       [SS("cardamom"),    SRN],
+  "black pepper": [SS("black-pepper"), SRN],
+  paprika:        [SS("paprika"),     SRN],
+  oregano:        [SS("oregano"),     SRN],
+  basil:          [SS("basil"),       SRN],
+  nutmeg:         [SS("nutmeg"),      SRN],
+  coriander:      [SRN],
+  "garam masala": [SRN],
+  fennel:         [SRN],
+  thyme:          [SRN],
+  rosemary:       [SRN],
+  // Meats
+  chicken:        [SS("chicken")],
+  "ground beef":  [SS("ground-beef")],
+  lamb:           [SS("lamb")],
+  turkey:         [SS("turkey")],
+  // Other
+  "french toast": [SS("french-toast")],
+  "ice cream":    [SS("ice-cream")],
 };
 
 function getReferences(food) {
