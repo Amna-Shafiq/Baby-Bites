@@ -19,6 +19,8 @@ import About from "./pages/About";
 import InstallPrompt from "./components/InstallPrompt";
 import TopNav from "./components/TopNav";
 import CTAFooter from "./components/CTAFooter";
+import Admin from "./pages/Admin";
+import AdminRoute from "./components/AdminRoute";
 
 function App() {
   const location = useLocation();
@@ -55,6 +57,7 @@ function App() {
           <Route path="/foods/:id" element={<FoodDetail />} />
           <Route path="/articles/:slug" element={<ArticlePage />} />
           <Route path="/about" element={<About />} />
+          <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
         </Routes>
         {!isHome && <CTAFooter />}
         {!isHome && <AppFooter />}
