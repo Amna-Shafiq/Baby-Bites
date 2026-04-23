@@ -420,7 +420,10 @@
   white-space: nowrap;
   font-size: 0.82rem;
   font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
 }
+.si:hover { opacity: 0.8; transform: scale(1.05); }
 
 .si-y { background: var(--yellow); color: var(--yellow-dark); }
 .si-o { background: var(--orange); color: var(--orange-dark); }

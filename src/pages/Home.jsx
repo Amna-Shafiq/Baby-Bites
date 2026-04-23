@@ -685,9 +685,14 @@ function Home() {
       <div className="lp-strip">
         <div className="strip-track">
           {[...STRIP_ITEMS, ...STRIP_ITEMS].map((item, i) => (
-            <div key={i} className={`si ${item.color}`}>
+            <Link
+              key={i}
+              to={`/foods/${item.name.toLowerCase().replace(/\s+/g, "-")}`}
+              className={`si ${item.color}`}
+              style={{ textDecoration: "none" }}
+            >
               {item.emoji} {item.name}
-            </div>
+            </Link>
           ))}
         </div>
       </div>

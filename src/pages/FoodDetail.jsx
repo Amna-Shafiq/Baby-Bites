@@ -174,16 +174,20 @@ function FoodDetail() {
 
   useEffect(() => {
     const load = async () => {
-      // Load food + meals that use this food in parallel
-      const [foodRes, mealsRes] = await Promise.all([
-        supabase.from("foods").select("*").eq("id", id).single(),
-        supabase
-          .from("meal_foods")
-          .select("meals(*)")
-          .eq("food_id", id),
-      ]);
+      const isUUID = /^[0-9a-f-]{36}$/i.test(id);
+      // Support name-slug lookup e.g. /foods/sweet-potato → name ILIKE 'sweet potato'
+      const foodRes = await (isUUID
+        ? supabase.from("foods").select("*").eq("id", id).single()
+        : supabase.from("foods").select("*").ilike("name", id.replace(/-/g, " ")).limit(1).single());
+
       if (foodRes.error) { setError("Food not found."); return; }
       setFood(foodRes.data);
+
+      const mealsRes = await supabase
+        .from("meal_foods")
+        .select("meals(*)")
+        .eq("food_id", foodRes.data.id);
+
       setMeals(
         (mealsRes.data || [])
           .map((r) => r.meals)
