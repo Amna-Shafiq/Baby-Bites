@@ -24,6 +24,13 @@ const DIETARY_FLAGS = [
 
 const BLANK_FLAGS = Object.fromEntries(DIETARY_FLAGS.map(({ key }) => [key, false]));
 
+const TABS = [
+  { k: "basics",   l: "Basics" },
+  { k: "diet",     l: "Diet" },
+  { k: "allergy",  l: "Allergies" },
+  { k: "account",  l: "Account" },
+];
+
 function ageLabel(dob) {
   if (!dob) return "";
   const months = Math.max(0, Math.floor((Date.now() - new Date(dob)) / (30.44 * 24 * 60 * 60 * 1000)));
@@ -39,26 +46,27 @@ function Profile() {
 
   const { babies, activeBaby, switchBaby, addBaby, updateBaby, deleteBaby, loading } = useActiveBaby();
 
-  const [session, setSession]           = useState(null);
-  const [showForm, setShowForm]         = useState(setup);
-  const [editingBaby, setEditingBaby]   = useState(null);
-  const [deleteConfirm, setDeleteConfirm] = useState(null); // baby id to confirm delete
-  const [formStatus, setFormStatus]     = useState("");
-  const [pageStatus, setPageStatus]     = useState(setup ? "Add your first baby to get personalised suggestions." : "");
+  const [session, setSession]             = useState(null);
+  const [tab, setTab]                     = useState("basics");
+  const [selectedBabyId, setSelectedBabyId] = useState(null);
+  const [addMode, setAddMode]             = useState(setup);
+  const [pageStatus, setPageStatus]       = useState("");
+  const [formStatus, setFormStatus]       = useState("");
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
 
   // form fields
-  const [babyName, setBabyName]         = useState("");
-  const [dob, setDob]                   = useState("");
-  const [gender, setGender]             = useState("prefer_not_to_say");
-  const [avatar, setAvatar]             = useState("🐣");
+  const [babyName, setBabyName]       = useState("");
+  const [dob, setDob]                 = useState("");
+  const [gender, setGender]           = useState("prefer_not_to_say");
+  const [avatar, setAvatar]           = useState("🐣");
   const [feedingStyle, setFeedingStyle] = useState("solids only");
-  const [flags, setFlags]               = useState({ ...BLANK_FLAGS });
+  const [flags, setFlags]             = useState({ ...BLANK_FLAGS });
   const [allergyNotes, setAllergyNotes] = useState("");
 
-  // account section
-  const [showPasswordForm, setShowPasswordForm] = useState(false);
-  const [newPassword, setNewPassword]           = useState("");
-  const [passwordStatus, setPasswordStatus]     = useState("");
+  // account
+  const [showPasswordForm, setShowPasswordForm]   = useState(false);
+  const [newPassword, setNewPassword]             = useState("");
+  const [passwordStatus, setPasswordStatus]       = useState("");
   const [showDeleteAccount, setShowDeleteAccount] = useState(false);
 
   useEffect(() => {
@@ -68,77 +76,65 @@ function Profile() {
     return () => data?.subscription?.unsubscribe?.();
   }, []);
 
+  // seed selectedBabyId from activeBaby once loaded
+  useEffect(() => {
+    if (!selectedBabyId && activeBaby) setSelectedBabyId(activeBaby.id);
+  }, [activeBaby, selectedBabyId]);
+
+  // pre-fill form from selected baby
+  const selectedBaby = babies.find(b => b.id === selectedBabyId);
+  useEffect(() => {
+    if (selectedBaby && !addMode) {
+      setBabyName(selectedBaby.name || "");
+      setDob(selectedBaby.date_of_birth || "");
+      setGender(selectedBaby.gender || "prefer_not_to_say");
+      setAvatar(selectedBaby.avatar || "🐣");
+      setFeedingStyle(selectedBaby.feeding_style || "solids only");
+      setFlags(Object.fromEntries(DIETARY_FLAGS.map(({ key }) => [key, !!selectedBaby[key]])));
+      setAllergyNotes(selectedBaby.allergy_notes || "");
+    }
+  }, [selectedBabyId, selectedBaby, addMode]);
+
   const resetForm = () => {
     setBabyName(""); setDob(""); setGender("prefer_not_to_say");
     setAvatar("🐣"); setFeedingStyle("solids only");
-    setFlags({ ...BLANK_FLAGS }); setAllergyNotes("");
-    setFormStatus("");
+    setFlags({ ...BLANK_FLAGS }); setAllergyNotes(""); setFormStatus("");
   };
 
-  const openAdd = () => {
-    // Pre-fill from user metadata if no babies yet
-    if (babies.length === 0 && session?.user?.user_metadata) {
-      const meta = session.user.user_metadata;
-      if (meta.baby_name)         setBabyName(meta.baby_name);
-      if (meta.baby_date_of_birth) setDob(meta.baby_date_of_birth);
-    }
-    setEditingBaby(null);
-    setShowForm(true);
-    setFormStatus("");
-  };
+  const flash = (msg) => { setPageStatus(msg); setTimeout(() => setPageStatus(""), 2500); };
 
-  const openEdit = (baby) => {
-    setBabyName(baby.name);
-    setDob(baby.date_of_birth);
-    setGender(baby.gender || "prefer_not_to_say");
-    setAvatar(baby.avatar || "🐣");
-    setFeedingStyle(baby.feeding_style || "solids only");
-    setFlags(Object.fromEntries(DIETARY_FLAGS.map(({ key }) => [key, !!baby[key]])));
-    setAllergyNotes(baby.allergy_notes || "");
-    setEditingBaby(baby);
-    setShowForm(true);
-    setFormStatus("");
-  };
-
-  const handleSaveBaby = async (e) => {
-    e.preventDefault();
+  const saveBabyData = async () => {
     setFormStatus("");
     const payload = {
-      name: babyName.trim(),
-      date_of_birth: dob,
-      gender,
-      avatar,
-      feeding_style: feedingStyle,
-      ...flags,
-      allergy_notes: allergyNotes,
+      name: babyName.trim(), date_of_birth: dob, gender, avatar,
+      feeding_style: feedingStyle, ...flags, allergy_notes: allergyNotes,
     };
-    const result = editingBaby
-      ? await updateBaby(editingBaby.id, payload)
-      : await addBaby(payload);
-
-    if (result.error) { setFormStatus(result.error); return; }
-    setShowForm(false);
-    setEditingBaby(null);
-    resetForm();
-    setPageStatus(editingBaby ? "Baby updated." : "Baby added!");
-    setTimeout(() => setPageStatus(""), 3000);
+    if (addMode) {
+      const result = await addBaby(payload);
+      if (result.error) { setFormStatus(result.error); return; }
+      setAddMode(false); resetForm(); flash("Baby added!");
+    } else {
+      const result = await updateBaby(selectedBabyId, payload);
+      if (result.error) { setFormStatus(result.error); return; }
+      flash("Saved!");
+    }
   };
+
+  const handleSaveBaby = async (e) => { e.preventDefault(); await saveBabyData(); };
 
   const handleDeleteBaby = async (id) => {
     const result = await deleteBaby(id);
     if (result.error) { setPageStatus(result.error); return; }
     setDeleteConfirm(null);
-    if (showForm && editingBaby?.id === id) { setShowForm(false); setEditingBaby(null); resetForm(); }
+    if (selectedBabyId === id) setSelectedBabyId(activeBaby?.id || babies[0]?.id || null);
   };
 
   const handleChangePassword = async (e) => {
-    e.preventDefault();
-    setPasswordStatus("");
+    e.preventDefault(); setPasswordStatus("");
     if (!newPassword || newPassword.length < 6) { setPasswordStatus("Password must be at least 6 characters."); return; }
     const { error } = await supabase.auth.updateUser({ password: newPassword });
     if (error) { setPasswordStatus(error.message); return; }
-    setPasswordStatus("Password updated!");
-    setNewPassword("");
+    setPasswordStatus("Password updated!"); setNewPassword("");
     setTimeout(() => { setPasswordStatus(""); setShowPasswordForm(false); }, 2000);
   };
 
@@ -147,287 +143,365 @@ function Profile() {
     if (navigator.share) {
       navigator.share({ title: "Baby Bites", text: "Safe, age-appropriate meal ideas for your baby!", url });
     } else {
-      navigator.clipboard.writeText(url).then(() => setPageStatus("Link copied!"));
-      setTimeout(() => setPageStatus(""), 2500);
+      navigator.clipboard.writeText(url).then(() => flash("Link copied!"));
     }
   };
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    navigate("/");
-  };
+  const handleSignOut = async () => { await supabase.auth.signOut(); navigate("/"); };
 
-  const panelStyle = { background: "var(--white)", border: "1.5px solid var(--border)", borderRadius: 20, padding: "1.6rem", marginBottom: "1.2rem" };
-  const h2Style = { marginBottom: "0.3rem", fontSize: "1.15rem" };
-  const subStyle = { fontSize: "0.88rem", color: "var(--muted)", lineHeight: 1.6, marginBottom: "1.2rem" };
+  const isActiveBaby = (b) => b.is_active || b.id === activeBaby?.id;
+
+  // ── Shared styles ──
+  const panelCard = { background: "var(--white)", border: "1.5px solid var(--border)", borderRadius: 18, padding: 16 };
+  const labelStyle = { fontSize: ".72rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 4, letterSpacing: ".04em", textTransform: "uppercase", fontFamily: "Nunito, sans-serif" };
+  const sectionTitle = { fontFamily: "Aileron, sans-serif", fontWeight: 700, fontSize: "1.05rem", color: "var(--dark)", marginBottom: 4 };
+  const sectionSub = { fontFamily: "Nunito, sans-serif", fontSize: ".82rem", color: "var(--muted)", marginBottom: 12 };
+
+  if (!session && !loading) {
+    return (
+      <div className="page">
+        <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>Account</span>
+        <h1>Profile</h1>
+        <p className="muted">Please <button className="btn btn-primary" onClick={() => navigate("/login")}>sign in</button> to view your profile.</p>
+      </div>
+    );
+  }
+
+  const visibleTabs = addMode ? TABS.filter(t => t.k !== "account") : TABS;
 
   return (
-    <div className="page">
-
-
-      <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>Account</span>
-      <h1>Profile</h1>
+    <div className="page" style={{ paddingBottom: 40 }}>
+      {/* Page header */}
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginTop: "1.5rem", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
+        <div>
+          <span className="eyebrow eo" style={{ display: "block" }}>Account</span>
+          <h1 style={{ margin: "2px 0 0" }}>Profile</h1>
+        </div>
+        {session && (
+          <div style={{ fontSize: ".82rem", color: "var(--muted)", fontFamily: "Nunito, sans-serif" }}>
+            Signed in as <strong style={{ color: "var(--dark)" }}>{session.user.email}</strong>
+          </div>
+        )}
+      </div>
 
       {pageStatus && (
-        <p style={{ fontSize: "0.88rem", color: "var(--muted)", fontWeight: 600, marginBottom: "0.8rem" }}>
-          {pageStatus}
-        </p>
+        <p style={{ fontSize: ".88rem", color: "var(--muted)", fontWeight: 600, marginBottom: ".8rem" }}>{pageStatus}</p>
       )}
 
-      {!session && !loading && (
-        <p className="muted">Please <button className="btn btn-primary" onClick={() => navigate("/login")}>sign in</button> to view your profile.</p>
-      )}
-
-      {/* ── Babies ── */}
       {session && (
-        <div style={panelStyle}>
-          <h2 style={h2Style}>My Babies</h2>
-          <p style={subStyle}>Switch between babies to personalise meal and food suggestions.</p>
+        <div className="profile-grid">
 
-          {loading ? (
-            <p className="muted">Loading…</p>
-          ) : babies.length === 0 ? (
-            <p className="muted" style={{ marginBottom: "1rem" }}>No babies yet — add your first one below.</p>
-          ) : (
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: "1rem" }}>
-              {babies.map((baby) => {
-                const isActive = baby.is_active || baby.id === activeBaby?.id;
+          {/* ── SIDEBAR ── */}
+          <div style={{ ...panelCard, padding: 12, alignSelf: "start", position: "sticky", top: 80 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "2px 4px 8px" }}>
+              <div style={{ fontFamily: "Aileron, sans-serif", fontWeight: 700, fontSize: ".95rem", color: "var(--dark)" }}>My Babies</div>
+              <button
+                onClick={() => { setAddMode(true); resetForm(); setTab("basics"); }}
+                style={{ background: "none", border: "none", color: "var(--orange-dark)", fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: ".78rem", cursor: "pointer" }}
+              >+ Add</button>
+            </div>
+
+            {loading ? (
+              <p className="muted" style={{ padding: "8px 4px", fontSize: ".82rem" }}>Loading…</p>
+            ) : babies.length === 0 ? (
+              <p className="muted" style={{ padding: "8px 4px", fontSize: ".82rem" }}>No babies yet.</p>
+            ) : (
+              babies.map(b => {
+                const on = !addMode && b.id === selectedBabyId;
                 return (
                   <div
-                    key={baby.id}
+                    key={b.id}
+                    onClick={() => { setSelectedBabyId(b.id); setAddMode(false); }}
                     style={{
-                      border: `2px solid ${isActive ? "var(--orange)" : "var(--border)"}`,
-                      background: isActive ? "var(--orange-light, #FFF3EA)" : "var(--cream)",
-                      borderRadius: 16,
-                      padding: "0.8rem 1rem",
-                      minWidth: 130,
+                      display: "flex", alignItems: "center", gap: 10,
+                      padding: "8px 10px", marginBottom: 4, borderRadius: 12,
+                      background: on ? "var(--orange)" : "transparent",
+                      border: "1.5px solid " + (on ? "var(--orange-mid)" : "transparent"),
                       cursor: "pointer",
-                      position: "relative",
                     }}
-                    onClick={() => !isActive && switchBaby(baby.id)}
                   >
-                    {isActive && (
-                      <span style={{ position: "absolute", top: 6, right: 8, fontSize: "0.65rem", fontWeight: 800, color: "var(--orange-dark)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-                        Active
-                      </span>
-                    )}
-                    <div style={{ fontSize: 28, marginBottom: 4 }}>{baby.avatar || "🐣"}</div>
-                    <div style={{ fontWeight: 700, fontSize: "0.92rem", color: "var(--dark)" }}>{baby.name}</div>
-                    <div style={{ fontSize: "0.78rem", color: "var(--muted)", marginTop: 2 }}>{ageLabel(baby.date_of_birth)}</div>
-                    <button
-                      type="button"
-                      onClick={(e) => { e.stopPropagation(); openEdit(baby); }}
-                      style={{ marginTop: 8, fontSize: "0.75rem", background: "none", border: "none", color: "var(--muted)", cursor: "pointer", textDecoration: "underline", padding: 0 }}
-                    >
-                      Edit
-                    </button>
+                    <span style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--cream)", display: "grid", placeItems: "center", fontSize: 20, flexShrink: 0 }}>{b.avatar || "🐣"}</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: ".88rem", color: on ? "var(--orange-dark)" : "var(--dark)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{b.name}</div>
+                      <div style={{ fontFamily: "Nunito, sans-serif", fontSize: ".72rem", color: "var(--muted)" }}>{ageLabel(b.date_of_birth)}</div>
+                    </div>
+                    {isActiveBaby(b) && <span style={{ fontSize: ".65rem", fontWeight: 800, color: "var(--orange-dark)", letterSpacing: ".06em", flexShrink: 0 }}>ACTIVE</span>}
                   </div>
+                );
+              })
+            )}
+
+            {/* Quick stats */}
+            {selectedBaby && !addMode && (
+              <div style={{ borderTop: "1px solid var(--border)", marginTop: 10, paddingTop: 10 }}>
+                <div style={{ fontFamily: "Nunito, sans-serif", fontSize: ".72rem", fontWeight: 700, color: "var(--muted)", textTransform: "uppercase", letterSpacing: ".06em", padding: "0 4px 6px" }}>Quick stats</div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, padding: "0 4px" }}>
+                  {[
+                    ["Age", ageLabel(selectedBaby.date_of_birth) || "—"],
+                    ["Allergen flags", DIETARY_FLAGS.filter(({ key }) => !!selectedBaby[key]).length],
+                  ].map(([l, v], i) => (
+                    <div key={i} style={{ background: "var(--cream)", borderRadius: 10, padding: "6px 8px" }}>
+                      <div style={{ fontFamily: "Aileron, sans-serif", fontWeight: 700, fontSize: "1rem", color: "var(--orange-dark)" }}>{v}</div>
+                      <div style={{ fontFamily: "Nunito, sans-serif", fontSize: ".65rem", color: "var(--muted)", textTransform: "uppercase", letterSpacing: ".06em" }}>{l}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* ── MAIN PANEL ── */}
+          <div>
+            {/* Baby header strip */}
+            {!addMode && selectedBaby && (
+              <div style={{ ...panelCard, padding: 14, marginBottom: 10, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+                <span style={{ width: 56, height: 56, borderRadius: 14, background: "var(--cream)", display: "grid", placeItems: "center", fontSize: 32, flexShrink: 0 }}>{selectedBaby.avatar || "🐣"}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontFamily: "Aileron, sans-serif", fontWeight: 700, fontSize: "1.3rem", color: "var(--dark)", lineHeight: 1.1 }}>{selectedBaby.name}</div>
+                  <div style={{ display: "flex", gap: 6, marginTop: 6, flexWrap: "wrap" }}>
+                    <span className="badge badge-age">{ageLabel(selectedBaby.date_of_birth)}</span>
+                    <span className="badge badge-slot">{selectedBaby.feeding_style || "solids only"}</span>
+                    {DIETARY_FLAGS.filter(({ key }) => !!selectedBaby[key]).slice(0, 3).map(({ key, label }) => (
+                      <span key={key} className="badge">{label}</span>
+                    ))}
+                  </div>
+                </div>
+                {!isActiveBaby(selectedBaby) && (
+                  <button className="btn" onClick={() => switchBaby(selectedBaby.id)} style={{ fontSize: ".8rem", flexShrink: 0 }}>Set as active</button>
+                )}
+              </div>
+            )}
+
+            {addMode && (
+              <div style={{ ...panelCard, padding: 14, marginBottom: 10, display: "flex", alignItems: "center", gap: 14 }}>
+                <span style={{ width: 56, height: 56, borderRadius: 14, background: "var(--cream)", display: "grid", placeItems: "center", fontSize: 32 }}>🐣</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontFamily: "Aileron, sans-serif", fontWeight: 700, fontSize: "1.3rem", color: "var(--dark)", lineHeight: 1.1 }}>New baby</div>
+                  <div style={{ fontFamily: "Nunito, sans-serif", fontSize: ".82rem", color: "var(--muted)", marginTop: 4 }}>Fill in the details below</div>
+                </div>
+                <button className="btn btn-ghost" onClick={() => { setAddMode(false); setFormStatus(""); }} style={{ fontSize: ".8rem" }}>Cancel</button>
+              </div>
+            )}
+
+            {/* Tab strip */}
+            <div style={{ display: "flex", gap: 4, padding: "4px", background: "var(--cream)", borderRadius: 100, border: "1.5px solid var(--border)", marginBottom: 10, width: "fit-content", flexWrap: "wrap" }}>
+              {visibleTabs.map(t => {
+                const on = tab === t.k;
+                return (
+                  <button
+                    key={t.k}
+                    onClick={() => setTab(t.k)}
+                    style={{
+                      padding: "6px 16px", borderRadius: 100, border: "none",
+                      background: on ? "var(--white)" : "transparent",
+                      color: on ? "var(--orange-dark)" : "var(--muted)",
+                      fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: ".82rem",
+                      cursor: "pointer", boxShadow: on ? "0 2px 8px rgba(0,0,0,0.06)" : "none",
+                    }}
+                  >{t.l}</button>
                 );
               })}
             </div>
-          )}
 
-          {!showForm && (
-            <button className="btn btn-primary" onClick={openAdd}>
-              + Add baby
-            </button>
-          )}
-
-          {/* ── Baby form ── */}
-          {showForm && (
-            <form onSubmit={handleSaveBaby} style={{ marginTop: "1.2rem", borderTop: "1.5px solid var(--border)", paddingTop: "1.2rem" }}>
-              <h3 style={{ marginBottom: "1rem" }}>{editingBaby ? `Edit ${editingBaby.name}` : "Add a baby"}</h3>
-
-              {/* Name */}
-              <div style={{ marginBottom: 12 }}>
-                <label style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 4 }}>Baby's name</label>
-                <input className="input" value={babyName} onChange={(e) => setBabyName(e.target.value)} placeholder="e.g. Aiden" required />
-              </div>
-
-              {/* DOB + Gender */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
-                <div>
-                  <label style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 4 }}>Date of birth</label>
-                  <input className="input" type="date" value={dob} onChange={(e) => setDob(e.target.value)} required />
+            {/* ── Tab: Basics ── */}
+            {tab === "basics" && (
+              <form onSubmit={handleSaveBaby} style={panelCard}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  <div>
+                    <label style={labelStyle}>Baby's name</label>
+                    <input className="input" value={babyName} onChange={e => setBabyName(e.target.value)} placeholder="e.g. Aiden" required />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Date of birth</label>
+                    <input className="input" type="date" value={dob} onChange={e => setDob(e.target.value)} required />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Gender</label>
+                    <select className="input" value={gender} onChange={e => setGender(e.target.value)}>
+                      <option value="boy">Boy</option>
+                      <option value="girl">Girl</option>
+                      <option value="other">Other</option>
+                      <option value="prefer_not_to_say">Prefer not to say</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Feeding style</label>
+                    <select className="input" value={feedingStyle} onChange={e => setFeedingStyle(e.target.value)}>
+                      {FEEDING_STYLES.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
+                    </select>
+                  </div>
                 </div>
-                <div>
-                  <label style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 4 }}>Gender</label>
-                  <select className="input" value={gender} onChange={(e) => setGender(e.target.value)}>
-                    <option value="boy">Boy</option>
-                    <option value="girl">Girl</option>
-                    <option value="other">Other</option>
-                    <option value="prefer_not_to_say">Prefer not to say</option>
-                  </select>
+
+                <div style={{ marginTop: 12 }}>
+                  <label style={labelStyle}>Avatar</label>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                    {AVATARS.map(a => (
+                      <button
+                        key={a}
+                        type="button"
+                        onClick={() => setAvatar(a)}
+                        style={{
+                          fontSize: 20, width: 36, height: 36, borderRadius: 10, cursor: "pointer",
+                          border: "1.5px solid " + (avatar === a ? "var(--orange-dark)" : "var(--border)"),
+                          background: avatar === a ? "var(--orange)" : "var(--cream)",
+                          display: "grid", placeItems: "center",
+                        }}
+                      >{a}</button>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* Avatar picker */}
-              <div style={{ marginBottom: 12 }}>
-                <label style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 6 }}>Avatar</label>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                  {AVATARS.map((a) => (
-                    <button
-                      key={a}
-                      type="button"
-                      onClick={() => setAvatar(a)}
-                      style={{
-                        fontSize: 22,
-                        width: 42,
-                        height: 42,
-                        borderRadius: 10,
-                        border: `2px solid ${avatar === a ? "var(--orange)" : "var(--border)"}`,
-                        background: avatar === a ? "var(--orange-light, #FFF3EA)" : "var(--cream)",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {a}
-                    </button>
-                  ))}
+                {formStatus && <p style={{ color: "#c0392b", fontSize: ".85rem", marginTop: 10 }}>{formStatus}</p>}
+
+                <div style={{ marginTop: 14, display: "flex", gap: 8, justifyContent: "flex-end", flexWrap: "wrap", alignItems: "center" }}>
+                  {!addMode && selectedBaby && babies.length > 1 && (
+                    deleteConfirm === selectedBabyId ? (
+                      <>
+                        <span style={{ fontSize: ".85rem", color: "var(--muted)" }}>Are you sure?</span>
+                        <button type="button" className="btn" style={{ color: "#c0392b", borderColor: "#c0392b" }} onClick={() => handleDeleteBaby(selectedBabyId)}>Yes, delete</button>
+                        <button type="button" className="btn btn-ghost" onClick={() => setDeleteConfirm(null)}>Cancel</button>
+                      </>
+                    ) : (
+                      <button type="button" className="btn btn-ghost" style={{ color: "#c0392b" }} onClick={() => setDeleteConfirm(selectedBabyId)}>Delete baby</button>
+                    )
+                  )}
+                  <button type="submit" className="btn btn-primary">{addMode ? "Add baby" : "Save changes"}</button>
                 </div>
-              </div>
-
-              {/* Feeding style */}
-              <div style={{ marginBottom: 12 }}>
-                <label style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 4 }}>Feeding style</label>
-                <select className="input" value={feedingStyle} onChange={(e) => setFeedingStyle(e.target.value)}>
-                  {FEEDING_STYLES.map((s) => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
-                </select>
-              </div>
-
-              {/* Dietary flags */}
-              <div style={{ marginBottom: 12 }}>
-                <label style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 8 }}>Dietary preferences</label>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                  {DIETARY_FLAGS.map(({ key, label }) => (
-                    <label
-                      key={key}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 8,
-                        padding: "6px 10px",
-                        borderRadius: 10,
-                        border: `1.5px solid ${flags[key] ? "var(--orange)" : "var(--border)"}`,
-                        background: flags[key] ? "var(--orange-light, #FFF3EA)" : "var(--cream)",
-                        cursor: "pointer",
-                        fontSize: "0.85rem",
-                        fontWeight: 600,
-                        color: flags[key] ? "var(--orange-dark)" : "var(--muted)",
-                        userSelect: "none",
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={flags[key]}
-                        onChange={(e) => setFlags((f) => ({ ...f, [key]: e.target.checked }))}
-                        style={{ accentColor: "var(--orange)" }}
-                      />
-                      {label}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Allergy notes */}
-              <div style={{ marginBottom: 16 }}>
-                <label style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 4 }}>Allergy notes (optional)</label>
-                <textarea
-                  className="input"
-                  value={allergyNotes}
-                  onChange={(e) => setAllergyNotes(e.target.value)}
-                  placeholder="Any specific allergies or notes…"
-                  rows={2}
-                  style={{ resize: "vertical" }}
-                />
-              </div>
-
-              {formStatus && (
-                <p style={{ fontSize: "0.85rem", color: "#c0392b", marginBottom: 10 }}>{formStatus}</p>
-              )}
-
-              {/* Form actions */}
-              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                <button type="submit" className="btn btn-primary">
-                  {editingBaby ? "Save changes" : "Add baby"}
-                </button>
-                <button type="button" className="btn" onClick={() => { setShowForm(false); setEditingBaby(null); resetForm(); }}>
-                  Cancel
-                </button>
-                {editingBaby && babies.length > 1 && (
-                  deleteConfirm === editingBaby.id ? (
-                    <>
-                      <span style={{ fontSize: "0.85rem", color: "var(--muted)", alignSelf: "center" }}>Are you sure?</span>
-                      <button type="button" className="btn" style={{ color: "#c0392b", borderColor: "#c0392b" }} onClick={() => handleDeleteBaby(editingBaby.id)}>
-                        Yes, delete
-                      </button>
-                      <button type="button" className="btn btn-ghost" onClick={() => setDeleteConfirm(null)}>Cancel</button>
-                    </>
-                  ) : (
-                    <button type="button" className="btn btn-ghost" style={{ color: "#c0392b" }} onClick={() => setDeleteConfirm(editingBaby.id)}>
-                      Delete baby
-                    </button>
-                  )
-                )}
-              </div>
-            </form>
-          )}
-        </div>
-      )}
-
-      {/* ── Account ── */}
-      {session && (
-        <div style={panelStyle}>
-          <h2 style={h2Style}>Account</h2>
-          <p style={subStyle}>{session.user.email}</p>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-
-            {/* Change password */}
-            {!showPasswordForm ? (
-              <button className="btn" style={{ alignSelf: "flex-start" }} onClick={() => setShowPasswordForm(true)}>
-                Change password
-              </button>
-            ) : (
-              <form onSubmit={handleChangePassword} style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end" }}>
-                <input
-                  className="input"
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="New password (min 6 chars)"
-                  minLength={6}
-                  style={{ flex: 1, minWidth: 200 }}
-                />
-                <button type="submit" className="btn btn-primary">Update</button>
-                <button type="button" className="btn btn-ghost" onClick={() => { setShowPasswordForm(false); setNewPassword(""); setPasswordStatus(""); }}>Cancel</button>
-                {passwordStatus && <p style={{ width: "100%", fontSize: "0.85rem", color: passwordStatus.includes("!") ? "var(--green-dark)" : "#c0392b", margin: 0 }}>{passwordStatus}</p>}
               </form>
             )}
 
-            {/* Share */}
-            <button className="btn" style={{ alignSelf: "flex-start" }} onClick={handleShare}>
-              Share Baby Bites
-            </button>
+            {/* ── Tab: Diet ── */}
+            {tab === "diet" && (
+              <div style={panelCard}>
+                <div style={sectionTitle}>Dietary preferences</div>
+                <div style={sectionSub}>Tap to toggle. Meal suggestions will respect these.</div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {DIETARY_FLAGS.map(({ key, label }) => {
+                    const on = !!flags[key];
+                    return (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => setFlags(f => ({ ...f, [key]: !f[key] }))}
+                        style={{
+                          padding: "7px 14px", borderRadius: 100, cursor: "pointer",
+                          border: "1.5px solid " + (on ? "var(--orange-dark)" : "var(--border)"),
+                          background: on ? "var(--orange-dark)" : "var(--white)",
+                          color: on ? "#fff" : "var(--text)",
+                          fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: ".82rem",
+                          display: "inline-flex", alignItems: "center", gap: 5,
+                        }}
+                      >{on && <span>✓</span>}{label}</button>
+                    );
+                  })}
+                </div>
+                <div style={{ marginTop: 14, display: "flex", justifyContent: "flex-end" }}>
+                  <button className="btn btn-primary" onClick={saveBabyData}>Save changes</button>
+                </div>
+              </div>
+            )}
 
-            {/* Sign out */}
-            <button className="btn" style={{ alignSelf: "flex-start" }} onClick={handleSignOut}>
-              Sign out
-            </button>
+            {/* ── Tab: Allergies ── */}
+            {tab === "allergy" && (
+              <div style={panelCard}>
+                <div style={sectionTitle}>Allergy notes</div>
+                <div style={sectionSub}>Anything specific we should watch for.</div>
+                <textarea
+                  className="input"
+                  value={allergyNotes}
+                  onChange={e => setAllergyNotes(e.target.value)}
+                  rows={4}
+                  style={{ resize: "vertical", width: "100%", boxSizing: "border-box" }}
+                  placeholder="Any specific allergies or notes…"
+                />
+                <div style={{ marginTop: 10, padding: 12, background: "#FDF0EF", border: "1.5px solid #F4C6C1", borderRadius: 12 }}>
+                  <div style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: ".85rem", color: "#C0392B", marginBottom: 4 }}>⚠ Known reactions</div>
+                  <div style={{ fontFamily: "Nunito, sans-serif", fontSize: ".82rem", color: "var(--text)" }}>We'll flag recipes containing ingredients from this note.</div>
+                </div>
+                <div style={{ marginTop: 14, display: "flex", justifyContent: "flex-end" }}>
+                  <button className="btn btn-primary" onClick={saveBabyData}>Save changes</button>
+                </div>
+              </div>
+            )}
 
-            {/* Delete account */}
-            {!showDeleteAccount ? (
-              <button className="btn btn-ghost" style={{ alignSelf: "flex-start", color: "#c0392b" }} onClick={() => setShowDeleteAccount(true)}>
-                Delete account
-              </button>
-            ) : (
-              <div style={{ background: "var(--cream)", border: "1.5px solid #c0392b", borderRadius: 12, padding: "1rem" }}>
-                <p style={{ fontSize: "0.88rem", marginBottom: 10 }}>
-                  To permanently delete your account and all data, email <strong>support@babybites.app</strong> from your registered address.
-                </p>
-                <button className="btn btn-ghost" onClick={() => setShowDeleteAccount(false)}>Cancel</button>
+            {/* ── Tab: Account ── */}
+            {tab === "account" && !addMode && (
+              <div style={panelCard}>
+                {/* Email */}
+                <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 4px 12px", marginBottom: 4, borderBottom: "1px solid var(--border)" }}>
+                  <span style={{ width: 36, height: 36, borderRadius: 10, background: "var(--cream)", display: "grid", placeItems: "center", fontSize: 18, flexShrink: 0 }}>✉️</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontFamily: "Nunito, sans-serif", fontSize: ".72rem", fontWeight: 700, color: "var(--muted)", textTransform: "uppercase", letterSpacing: ".06em" }}>Email</div>
+                    <div style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: ".9rem", color: "var(--dark)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{session.user.email}</div>
+                  </div>
+                </div>
+
+                {/* Password */}
+                <div style={{ padding: "12px 4px", borderBottom: "1px solid var(--border)" }}>
+                  {!showPasswordForm ? (
+                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <span style={{ fontSize: 20 }}>🔑</span>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: ".9rem", color: "var(--dark)" }}>Change password</div>
+                        <div style={{ fontFamily: "Nunito, sans-serif", fontSize: ".78rem", color: "var(--muted)" }}>Update your login password</div>
+                      </div>
+                      <button className="btn" onClick={() => setShowPasswordForm(true)}>Change</button>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleChangePassword} style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end" }}>
+                      <input
+                        className="input"
+                        type="password"
+                        value={newPassword}
+                        onChange={e => setNewPassword(e.target.value)}
+                        placeholder="New password (min 6 chars)"
+                        minLength={6}
+                        style={{ flex: 1, minWidth: 200 }}
+                      />
+                      <button type="submit" className="btn btn-primary">Update</button>
+                      <button type="button" className="btn btn-ghost" onClick={() => { setShowPasswordForm(false); setNewPassword(""); setPasswordStatus(""); }}>Cancel</button>
+                      {passwordStatus && <p style={{ width: "100%", fontSize: ".85rem", color: passwordStatus.includes("!") ? "var(--green-dark)" : "#c0392b", margin: 0 }}>{passwordStatus}</p>}
+                    </form>
+                  )}
+                </div>
+
+                {/* Share */}
+                <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 4px", borderBottom: "1px solid var(--border)" }}>
+                  <span style={{ fontSize: 20 }}>🔗</span>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: ".9rem", color: "var(--dark)" }}>Share Baby Bites</div>
+                    <div style={{ fontFamily: "Nunito, sans-serif", fontSize: ".78rem", color: "var(--muted)" }}>Invite a co-parent or friend</div>
+                  </div>
+                  <button className="btn" onClick={handleShare}>Copy link</button>
+                </div>
+
+                {/* Sign out */}
+                <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 4px", borderBottom: "1px solid var(--border)" }}>
+                  <span style={{ fontSize: 20 }}>🚪</span>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: ".9rem", color: "var(--dark)" }}>Sign out</div>
+                    <div style={{ fontFamily: "Nunito, sans-serif", fontSize: ".78rem", color: "var(--muted)" }}>End this session</div>
+                  </div>
+                  <button className="btn" onClick={handleSignOut}>Sign out</button>
+                </div>
+
+                {/* Delete account */}
+                <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 4px" }}>
+                  <span style={{ fontSize: 20 }}>🗑️</span>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: ".9rem", color: "#C0392B" }}>Delete account</div>
+                    <div style={{ fontFamily: "Nunito, sans-serif", fontSize: ".78rem", color: "var(--muted)" }}>Permanently remove your data</div>
+                  </div>
+                  <button className="btn btn-ghost" style={{ color: "#c0392b", borderColor: "#c0392b" }} onClick={() => setShowDeleteAccount(!showDeleteAccount)}>Delete</button>
+                </div>
+                {showDeleteAccount && (
+                  <div style={{ background: "var(--cream)", border: "1.5px solid #c0392b", borderRadius: 12, padding: "1rem", marginTop: 8 }}>
+                    <p style={{ fontSize: ".88rem", marginBottom: 10 }}>
+                      To permanently delete your account and all data, email <strong>support@babybites.app</strong> from your registered address.
+                    </p>
+                    <button className="btn btn-ghost" onClick={() => setShowDeleteAccount(false)}>Cancel</button>
+                  </div>
+                )}
               </div>
             )}
           </div>
