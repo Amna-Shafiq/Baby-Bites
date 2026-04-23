@@ -103,6 +103,8 @@ const STAGES = [
 ];
 
 function ServingStages({ food }) {
+  const hasAnyTip = STAGES.some((s) => food[s.key]);
+  if (!hasAnyTip) return null;
   return (
     <div style={{ marginBottom: "1.5rem" }}>
       <h3 style={{ marginBottom: "1rem", fontSize: "1rem" }}>How to Serve by Stage</h3>
@@ -259,7 +261,11 @@ function FoodDetail() {
       )}
 
       {/* ── Stages + Allergen side by side ── */}
-      <div style={{ display: "grid", gridTemplateColumns: food.allergen_notes ? "1fr 300px" : "1fr", gap: 16, alignItems: "start", marginBottom: "1rem" }}>
+      {(() => {
+        const hasStages = STAGES.some((s) => food[s.key]);
+        if (!hasStages && !food.allergen_notes) return null;
+        return (
+      <div style={{ display: "grid", gridTemplateColumns: hasStages && food.allergen_notes ? "1fr 300px" : "1fr", gap: 16, alignItems: "start", marginBottom: "1rem" }}>
         <ServingStages food={food} />
         {food.allergen_notes && (
           <div className="card card-allergen" style={{ position: "sticky", top: 90 }}>
@@ -268,6 +274,8 @@ function FoodDetail() {
           </div>
         )}
       </div>
+        );
+      })()}
 
       {/* ── Meals using this food ── */}
       <div className="panel" style={{ marginTop: "1.5rem" }}>
