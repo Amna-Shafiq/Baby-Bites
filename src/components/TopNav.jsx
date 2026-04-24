@@ -56,8 +56,7 @@ function TopNav() {
     <nav className="top-nav">
       <div className="top-nav-inner">
         <NavLink to="/" end className="brand">
-          <span className="brand-dot" />
-          Baby Bites
+          <img src="https://res.cloudinary.com/dr0ixt3za/image/upload/v1777020365/baby-bites-wordmark_nhiijh.svg" alt="Baby Bites" style={{ height: 28, display: "block" }} />
         </NavLink>
 
         <div className="top-nav-links">

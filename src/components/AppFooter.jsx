@@ -19,8 +19,7 @@ function AppFooter() {
     <footer className="app-footer">
       <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
         <div className="app-footer-logo">
-          <span className="brand-dot" />
-          Baby Bites
+          <img src="https://res.cloudinary.com/dr0ixt3za/image/upload/v1777020365/baby-bites-wordmark_nhiijh.svg" alt="Baby Bites" style={{ height: 26, display: "block" }} />
         </div>
       </Link>
       <div className="app-footer-links">
