@@ -9,7 +9,6 @@ import { useLanguage } from "../contexts/LanguageContext";
 
 const PAGE_SIZE = 12;
 const SLOTS = ["all", "breakfast", "lunch", "dinner", "snack"];
-const TYPES = ["all", "quick", "fancy"];
 
 // Maps dietary flag → keywords to look for in allergen_notes
 const ALLERGEN_MAP = {
@@ -32,7 +31,6 @@ function Meals() {
   const [error, setError]   = useState("");
   const [search, setSearch] = useState("");
   const [slot, setSlot]     = useState("all");
-  const [type, setType]     = useState("all");
   const [age, setAge]       = useState("");
   const [tab, setTab]           = useState("all");
   const [page, setPage]         = useState(1);
@@ -64,7 +62,7 @@ function Meals() {
     loadMeals();
   }, []);
 
-  useEffect(() => { setPage(1); setShowAll(false); }, [search, slot, type, age, tab, prepTime]);
+  useEffect(() => { setPage(1); setShowAll(false); }, [search, slot, age, tab, prepTime]);
 
   const filteredMeals = useMemo(() => {
     const searchText  = search.trim().toLowerCase();
@@ -85,7 +83,7 @@ function Meals() {
         meal.nutrition_highlight?.toLowerCase().includes(searchText);
 
       const bySlot = slot === "all" || meal.meal_slot === slot;
-      const byType = type === "all" || meal.meal_type === type;
+
       const byAge  = !age || (Number.isFinite(selectedAge) &&
         selectedAge >= meal.min_age_months && selectedAge <= meal.max_age_months);
 
@@ -102,9 +100,9 @@ function Meals() {
 
       const byPrep = prepTime === "any" || (meal.prep_time_minutes != null && meal.prep_time_minutes <= 15);
 
-      return bySearch && bySlot && byType && byAge && byDiet && byPrep;
+      return bySearch && bySlot && byAge && byDiet && byPrep;
     });
-  }, [meals, search, slot, type, age, tab, favoriteIds, activeBaby, prepTime]);
+  }, [meals, search, slot, age, tab, favoriteIds, activeBaby, prepTime]);
 
   const totalPages = Math.max(1, Math.ceil(filteredMeals.length / PAGE_SIZE));
   const pageMeals  = useMemo(() => {
@@ -121,7 +119,6 @@ function Meals() {
 
   const label = (s) => s === "all" ? (s === slot ? "All slots" : "All types") : s.charAt(0).toUpperCase() + s.slice(1);
   const slotLabel = (s) => s === "all" ? t("allSlots") : s.charAt(0).toUpperCase() + s.slice(1);
-  const typeLabel = (tp) => tp === "all" ? t("allTypes") : tp.charAt(0).toUpperCase() + tp.slice(1);
 
   return (
     <div className="page">
@@ -162,9 +159,6 @@ function Meals() {
           <select className="input" value={slot} onChange={(e) => setSlot(e.target.value)}>
             {SLOTS.map((s) => <option key={s} value={s}>{slotLabel(s)}</option>)}
           </select>
-          <select className="input" value={type} onChange={(e) => setType(e.target.value)}>
-            {TYPES.map((t) => <option key={t} value={t}>{typeLabel(t)}</option>)}
-          </select>
           <input
             className="input"
             type="number"
@@ -201,10 +195,9 @@ function Meals() {
       </div>
 
       {/* ── Active filter pills ── */}
-      {(slot !== "all" || type !== "all" || age) && (
+      {(slot !== "all" || age) && (
         <div className="filter-pills">
           {slot !== "all" && <span className="filter-pill" onClick={() => setSlot("all")}>{slotLabel(slot)} ✕</span>}
-          {type !== "all" && <span className="filter-pill" onClick={() => setType("all")}>{typeLabel(type)} ✕</span>}
           {age           && <span className="filter-pill" onClick={() => setAge("")}>{age} months ✕</span>}
         </div>
       )}
@@ -260,9 +253,6 @@ function Meals() {
                 />
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center", padding: "0 0.5rem" }}>
                   <span className="badge badge-slot">{meal.meal_slot}</span>
-                  <span className={`badge ${meal.meal_type === "quick" ? "badge-quick" : "badge-fancy"}`}>
-                    {meal.meal_type}
-                  </span>
                 </div>
                 <p className="food-card-name">{meal.title}</p>
                 <span className="badge badge-age">{meal.min_age_months}–{meal.max_age_months}m</span>
