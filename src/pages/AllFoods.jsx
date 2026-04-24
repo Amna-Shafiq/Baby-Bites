@@ -40,6 +40,7 @@ function AllFoods() {
   const [foods, setFoods]         = useState([]);
   const [error, setError]         = useState("");
   const [page, setPage]           = useState(1);
+  const [relatedMeals, setRelatedMeals] = useState([]);
 
   useEffect(() => {
     const loadFoods = async () => {
@@ -54,6 +55,29 @@ function AllFoods() {
   }, []);
 
   useEffect(() => { setPage(1); }, [query, age, tagFilter]);
+
+  useEffect(() => {
+    const searchText = query.trim().toLowerCase();
+    if (!searchText || foods.length === 0) { setRelatedMeals([]); return; }
+    const matchingIds = foods
+      .filter(f =>
+        f.name.toLowerCase().includes(searchText) ||
+        (f.search_aliases && f.search_aliases.toLowerCase().includes(searchText))
+      )
+      .map(f => f.id);
+    if (matchingIds.length === 0) { setRelatedMeals([]); return; }
+    supabase
+      .from("meal_foods")
+      .select("meals(*)")
+      .in("food_id", matchingIds)
+      .then(({ data }) => {
+        const seen = new Set();
+        const unique = (data || [])
+          .map(r => r.meals)
+          .filter(m => m && m.is_public && !seen.has(m.id) && seen.add(m.id));
+        setRelatedMeals(unique);
+      });
+  }, [query, foods]);
 
   const filteredFoods = useMemo(() => {
     const searchText  = query.trim().toLowerCase();
@@ -222,6 +246,37 @@ function AllFoods() {
           </button>
         )}
       </div>
+      {/* ── Related meals ── */}
+      {query.trim() && relatedMeals.length > 0 && (
+        <div style={{ marginTop: "2.5rem" }}>
+          <span className="eyebrow eo" style={{ display: "block", marginBottom: 6 }}>Also in meals</span>
+          <h3 style={{ fontSize: "1rem", margin: "0 0 1rem", color: "var(--dark)" }}>
+            Meals using "{query.trim()}"
+          </h3>
+          <div className="foods-grid">
+            {relatedMeals.map(meal => (
+              <div key={meal.id} className="food-card" onClick={() => navigate(`/meal/${meal.id}`)}>
+                <div className="food-card-front">
+                  <img
+                    src={meal.image_url}
+                    alt={meal.title}
+                    onError={e => { e.target.src = "https://placehold.co/80x80?text=🍽"; }}
+                    style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 12 }}
+                  />
+                  <p className="food-card-name">{meal.title}</p>
+                </div>
+                <div className="food-card-details">
+                  <p style={{ fontWeight: 700, fontSize: "0.9rem", margin: "0 0 6px", color: "var(--dark)", fontFamily: "Aileron, sans-serif" }}>{meal.title}</p>
+                  <p className="food-detail-row">Age: <strong>{meal.min_age_months}m+</strong></p>
+                  {meal.meal_slot && <p className="food-detail-row">Slot: <strong>{meal.meal_slot}</strong></p>}
+                  {meal.prep_time_minutes && <p className="food-detail-row">Prep: <strong>{meal.prep_time_minutes} min</strong></p>}
+                  <p style={{ fontSize: "0.75rem", color: "var(--orange-dark)", marginTop: 8, fontWeight: 700 }}>View meal →</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
