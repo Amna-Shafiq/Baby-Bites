@@ -6,6 +6,7 @@ import useActiveBaby from '../hooks/useActiveBaby';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
 import CTAFooter from '../components/CTAFooter';
+import BrandLogo from '../components/BrandLogo';
 
 const STRIP_ITEMS = [
   { emoji: '🍌', name: 'Banana',       color: 'si-y' },
@@ -526,7 +527,7 @@ function Home() {
       <nav className="lp-nav">
         <div className="lp-nav-inner">
           <Link to="/" className="lp-logo">
-            <img src="https://res.cloudinary.com/dr0ixt3za/image/upload/v1777020365/baby-bites-wordmark_nhiijh.svg" alt="Baby Bites" style={{ height: 30, display: "block" }} />
+            <BrandLogo size="1.3rem" />
           </Link>
           <ul className="nav-links">
             <li><Link to="/explore">{t("explore")}</Link></li>
@@ -802,9 +803,7 @@ function Home() {
 
       {/* ── Footer ── */}
       <footer className="lp-footer">
-        <div className="flogo">
-          <img src="https://res.cloudinary.com/dr0ixt3za/image/upload/v1777020365/baby-bites-wordmark_nhiijh.svg" alt="Baby Bites" style={{ height: 26, display: "block" }} />
-        </div>
+        <div className="flogo"><BrandLogo size="1.1rem" /></div>
         <div className="flinks">
           <a href="#features">{t("footerFeatures")}</a>
           <Link to="/meals">{t("meals")}</Link>

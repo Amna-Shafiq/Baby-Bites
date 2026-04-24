@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import BrandLogo from "./BrandLogo";
 import { supabase } from "../lib/supabaseClient";
 import useActiveBaby from "../hooks/useActiveBaby";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -56,7 +57,7 @@ function TopNav() {
     <nav className="top-nav">
       <div className="top-nav-inner">
         <NavLink to="/" end className="brand">
-          <img src="https://res.cloudinary.com/dr0ixt3za/image/upload/v1777020365/baby-bites-wordmark_nhiijh.svg" alt="Baby Bites" style={{ height: 28, display: "block" }} />
+          <BrandLogo size="1.15rem" />
         </NavLink>
 
         <div className="top-nav-links">
