@@ -133,7 +133,7 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url('/bg.png');
+  background-image: url('https://res.cloudinary.com/dr0ixt3za/image/upload/f_auto,q_auto/v1777020099/Gemini_Generated_Image_xqsfkixqsfkixqsf_rasskq.png');
   background-size: cover;
   background-repeat: no-repeat;
   opacity: 0.35;
