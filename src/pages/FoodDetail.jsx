@@ -104,6 +104,14 @@ const STAGES = [
 
 function ServingStages({ food }) {
   const hasAnyTip = STAGES.some((s) => food[s.key]);
+  if (!hasAnyTip && food.texture_tips) {
+    return (
+      <div style={{ marginBottom: "1.5rem" }}>
+        <h3 style={{ marginBottom: "0.5rem", fontSize: "1rem" }}>Serving Tips</h3>
+        <p style={{ fontSize: "0.88rem", color: "var(--text)", lineHeight: 1.7, margin: 0 }}>{food.texture_tips}</p>
+      </div>
+    );
+  }
   if (!hasAnyTip) return null;
   return (
     <div style={{ marginBottom: "1.5rem" }}>
