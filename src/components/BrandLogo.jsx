@@ -10,7 +10,7 @@ function BrandLogo({ size = "1.2rem" }) {
       alignItems: "center",
       gap: 0,
     }}>
-      Baby B<span style={{ display: "inline-block", fontSize: "1.05em", lineHeight: 1, transform: "rotate(45deg)", margin: "0 -1px 0 0" }}>🥄</span>tes
+      Baby B<span style={{ display: "inline-block", fontSize: "1.05em", lineHeight: 1, transform: "rotate(45deg)", margin: "0 -3px 0 -2px" }}>🥄</span>tes
     </span>
   );
 }
