@@ -20,6 +20,15 @@ const ALLERGEN_MAP = {
   is_gluten_free: ["gluten", "wheat", "barley", "rye"],
 };
 
+const ALLERGEN_PILLS = [
+  { flag: "is_dairy_free",  label: "Dairy-free",  icon: "🥛" },
+  { flag: "is_egg_free",    label: "Egg-free",    icon: "🥚" },
+  { flag: "is_nut_free",    label: "Nut-free",    icon: "🥜" },
+  { flag: "is_soy_free",    label: "Soy-free",    icon: "🫘" },
+  { flag: "is_fish_free",   label: "Fish-free",   icon: "🐟" },
+  { flag: "is_gluten_free", label: "Gluten-free", icon: "🌾" },
+];
+
 function Meals() {
   const navigate = useNavigate();
   const { session, favoriteIds, toggleFavorite, favoritesError, toastMessage } = useFavorites();
@@ -37,6 +46,17 @@ function Meals() {
   const [showAll, setShowAll]   = useState(false);
   const [prepTime, setPrepTime] = useState("any");
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+  const [activeAllergens, setActiveAllergens] = useState(new Set());
+
+  const babyAllergenPills = ALLERGEN_PILLS.filter(p => activeBaby?.[p.flag]);
+
+  const toggleAllergen = (flag) => {
+    setActiveAllergens(prev => {
+      const next = new Set(prev);
+      if (next.has(flag)) next.delete(flag); else next.add(flag);
+      return next;
+    });
+  };
 
   // Pre-fill age filter from active baby's DOB
   useEffect(() => {
@@ -69,11 +89,6 @@ function Meals() {
     const selectedAge = Number(age);
     // prepTime captured via closure — dependency tracked via useMemo deps below
 
-    // Build active dietary restrictions from baby profile
-    const activeAllergens = activeBaby
-      ? Object.entries(ALLERGEN_MAP).filter(([flag]) => activeBaby[flag])
-      : [];
-
     return meals.filter((meal) => {
       if (tab === "favorites" && !favoriteIds.includes(meal.id)) return false;
 
@@ -87,14 +102,13 @@ function Meals() {
       const byAge  = !age || (Number.isFinite(selectedAge) &&
         selectedAge >= meal.min_age_months && selectedAge <= meal.max_age_months);
 
-      // Exclude meals whose ingredients contain allergens flagged on baby's profile
-      const byDiet = activeAllergens.length === 0 || (() => {
+      const byDiet = activeAllergens.size === 0 || (() => {
         const allNotes = (meal.meal_foods || [])
           .map((mf) => mf.foods?.allergen_notes || "")
           .join(" ")
           .toLowerCase();
-        return activeAllergens.every(([, keywords]) =>
-          !keywords.some((kw) => allNotes.includes(kw))
+        return [...activeAllergens].every(flag =>
+          !(ALLERGEN_MAP[flag] || []).some(kw => allNotes.includes(kw))
         );
       })();
 
@@ -102,7 +116,7 @@ function Meals() {
 
       return bySearch && bySlot && byAge && byDiet && byPrep;
     });
-  }, [meals, search, slot, age, tab, favoriteIds, activeBaby, prepTime]);
+  }, [meals, search, slot, age, tab, favoriteIds, activeAllergens, prepTime]);
 
   const totalPages = Math.max(1, Math.ceil(filteredMeals.length / PAGE_SIZE));
   const pageMeals  = useMemo(() => {
@@ -193,6 +207,36 @@ function Meals() {
           ⚡ Quick &lt;15 min
         </button>
       </div>
+
+      {/* ── Allergen filter pills (shown only when baby has allergies set) ── */}
+      {babyAllergenPills.length > 0 && (
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: "0.6rem", alignItems: "center" }}>
+          <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--muted)", whiteSpace: "nowrap" }}>
+            {activeBaby.avatar} Filters for {activeBaby.name}:
+          </span>
+          {babyAllergenPills.map(pill => {
+            const active = activeAllergens.has(pill.flag);
+            return (
+              <button
+                key={pill.flag}
+                type="button"
+                onClick={() => toggleAllergen(pill.flag)}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 4,
+                  padding: "4px 11px", borderRadius: 100, fontSize: "0.75rem", fontWeight: 700,
+                  border: `1.5px solid ${active ? "var(--orange-dark)" : "var(--border)"}`,
+                  background: active ? "var(--orange-dark)" : "transparent",
+                  color: active ? "#fff" : "var(--muted)",
+                  cursor: "pointer", transition: "all 0.15s",
+                }}
+              >
+                {pill.icon} {pill.label}
+                {active && <span style={{ marginLeft: 2, opacity: 0.8 }}>✕</span>}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* ── Active filter pills ── */}
       {(slot !== "all" || age) && (

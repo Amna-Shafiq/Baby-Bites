@@ -4,6 +4,25 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
 import LoginPromptModal from "../components/LoginPromptModal";
 import { useLanguage } from "../contexts/LanguageContext";
+import useActiveBaby from "../hooks/useActiveBaby";
+
+const ALLERGEN_MAP = {
+  is_dairy_free:  ["dairy", "milk", "cheese", "butter", "cream", "lactose", "yogurt"],
+  is_egg_free:    ["egg"],
+  is_nut_free:    ["nut", "peanut", "almond", "cashew", "walnut", "pecan"],
+  is_soy_free:    ["soy", "tofu", "edamame"],
+  is_fish_free:   ["fish", "salmon", "tuna", "cod", "shellfish", "seafood"],
+  is_gluten_free: ["gluten", "wheat", "barley", "rye"],
+};
+
+const ALLERGEN_PILLS = [
+  { flag: "is_dairy_free",  label: "Dairy-free",  icon: "🥛" },
+  { flag: "is_egg_free",    label: "Egg-free",    icon: "🥚" },
+  { flag: "is_nut_free",    label: "Nut-free",    icon: "🥜" },
+  { flag: "is_soy_free",    label: "Soy-free",    icon: "🫘" },
+  { flag: "is_fish_free",   label: "Fish-free",   icon: "🐟" },
+  { flag: "is_gluten_free", label: "Gluten-free", icon: "🌾" },
+];
 
 const PAGE_SIZE = 12;
 
@@ -22,6 +41,7 @@ function AllFoods() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { activeBaby } = useActiveBaby();
 
   const [query, setQuery]           = useState("");
   const [age, setAge]               = useState("");
@@ -29,6 +49,17 @@ function AllFoods() {
   const [session, setSession]       = useState(null);
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
   const [showAll, setShowAll]       = useState(false);
+  const [activeAllergens, setActiveAllergens] = useState(new Set());
+
+  const babyAllergenPills = ALLERGEN_PILLS.filter(p => activeBaby?.[p.flag]);
+
+  const toggleAllergen = (flag) => {
+    setActiveAllergens(prev => {
+      const next = new Set(prev);
+      if (next.has(flag)) next.delete(flag); else next.add(flag);
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (!supabase) return;
@@ -84,16 +115,22 @@ function AllFoods() {
     const selectedAge = Number(age);
     return foods.filter((food) => {
       const byText =
-  !searchText ||
-  food.name.toLowerCase().includes(searchText) ||
-  (food.search_aliases && food.search_aliases.toLowerCase().includes(searchText));
+        !searchText ||
+        food.name.toLowerCase().includes(searchText) ||
+        (food.search_aliases && food.search_aliases.toLowerCase().includes(searchText));
       const byAge  = !age || (Number.isFinite(selectedAge) && selectedAge >= Number(food.safe_from_months || 0));
       const byTag  = tagFilter === "all" ||
         (tagFilter === "iron-rich" && !!food.is_iron_rich) ||
         food.food_group === tagFilter;
-      return byText && byAge && byTag;
+      const byAllergen = activeAllergens.size === 0 || (() => {
+        const notes = (food.allergen_notes || "").toLowerCase();
+        return [...activeAllergens].every(flag =>
+          !(ALLERGEN_MAP[flag] || []).some(kw => notes.includes(kw))
+        );
+      })();
+      return byText && byAge && byTag && byAllergen;
     });
-  }, [age, query, tagFilter, foods]);
+  }, [age, query, tagFilter, foods, activeAllergens]);
 
   const totalPages = Math.max(1, Math.ceil(filteredFoods.length / PAGE_SIZE));
   const pageFoods  = useMemo(() => {
@@ -149,6 +186,36 @@ function AllFoods() {
           </select>
         </div>
       </div>
+
+      {/* ── Allergen filter pills (shown only when baby has allergies set) ── */}
+      {babyAllergenPills.length > 0 && (
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: "0.6rem", alignItems: "center" }}>
+          <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--muted)", whiteSpace: "nowrap" }}>
+            {activeBaby.avatar} Filters for {activeBaby.name}:
+          </span>
+          {babyAllergenPills.map(pill => {
+            const active = activeAllergens.has(pill.flag);
+            return (
+              <button
+                key={pill.flag}
+                type="button"
+                onClick={() => toggleAllergen(pill.flag)}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 4,
+                  padding: "4px 11px", borderRadius: 100, fontSize: "0.75rem", fontWeight: 700,
+                  border: `1.5px solid ${active ? "var(--orange-dark)" : "var(--border)"}`,
+                  background: active ? "var(--orange-dark)" : "transparent",
+                  color: active ? "#fff" : "var(--muted)",
+                  cursor: "pointer", transition: "all 0.15s",
+                }}
+              >
+                {pill.icon} {pill.label}
+                {active && <span style={{ marginLeft: 2, opacity: 0.8 }}>✕</span>}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {error && <p className="muted">{error}</p>}
 
