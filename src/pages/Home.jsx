@@ -780,9 +780,6 @@ function Home() {
         )}
       </nav>
 
-      {/* ── Film tape strip ── */}
-      <FilmStrip />
-
       {/* ── Hero ── */}
       <div className="hero-bg">
         <div className="lp-hero">
@@ -812,6 +809,9 @@ function Home() {
           </div>
         </div>
       </div>
+
+      {/* ── Film tape strip ── */}
+      <FilmStrip />
 
       {/* ── Animated food strip ── */}
       <div className="lp-strip">

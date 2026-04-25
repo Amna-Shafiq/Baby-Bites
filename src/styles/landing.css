@@ -101,7 +101,6 @@
   background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -109,12 +108,11 @@
 .lp-hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2.5rem;
+  gap: 2rem;
   align-items: center;
-  padding: 3.5rem 2.5rem 3rem;
+  padding: 2rem 2.5rem 1.5rem;
   max-width: 1100px;
   margin: 0 auto;
-  flex: 1;
   width: 100%;
 }
 
@@ -122,23 +120,21 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  /* semi-transparent so the gradient hero bleeds through */
   background: rgba(213,245,227,0.35);
   color: var(--green-dark);
   font-size: 0.78rem;
   font-weight: 700;
-  padding: 0.35rem 0.9rem;
+  padding: 0.3rem 0.9rem;
   border-radius: 100px;
-  margin-bottom: 1.2rem;
-  /* border removed — liquid-glass ::before provides gradient border */
+  margin-bottom: 0.7rem;
 }
 
 .landing-page h1 {
-  font-size: 2.8rem;
+  font-size: 2.3rem;
   font-weight: 700;
   line-height: 1.1;
   color: var(--dark);
-  margin-bottom: 1rem;
+  margin-bottom: 0.7rem;
   letter-spacing: -0.02em;
 }
 
@@ -148,19 +144,19 @@
 }
 
 .hero-sub {
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   color: var(--text);
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
   max-width: 420px;
   font-weight: 500;
 }
 
 .hero-btns {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .btn-a {
@@ -201,20 +197,20 @@
 
 .lp-stats {
   display: flex;
-  gap: 2rem;
-  padding-top: 1rem;
+  gap: 1.5rem;
+  padding-top: 0.7rem;
   border-top: 2px dashed var(--border);
 }
 
 .sn {
   font-family: 'Aileron', sans-serif;
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--dark);
 }
 
 .sl {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--muted);
   font-weight: 700;
 }
@@ -402,8 +398,7 @@
   background: #0d0b07;
   position: relative;
   height: 186px;            /* 16px top holes + 154px frames + 16px bottom holes */
-  margin-top: 2.5rem;
-  opacity: 0.72;
+  opacity: 0.6;
   background-image:
     repeating-linear-gradient(90deg, transparent 0 7px, rgba(230,220,205,0.88) 7px 19px, transparent 19px 28px),
     repeating-linear-gradient(90deg, transparent 0 7px, rgba(230,220,205,0.88) 7px 19px, transparent 19px 28px);
