@@ -159,6 +159,23 @@ function EatStack() {
   );
 }
 
+// ── FilmStrip: circulating baby video tape ────────────────────────────────
+function FilmStrip() {
+  // 4 copies → seamless -50% translate loop
+  const FRAMES = [...EAT_VIDS, ...EAT_VIDS, ...EAT_VIDS, ...EAT_VIDS];
+  return (
+    <div className="film-strip-outer">
+      <div className="film-track">
+        {FRAMES.map((src, i) => (
+          <div key={i} className="film-frame">
+            <video src={src} autoPlay muted loop playsInline />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ── HeroPanel: featured meal card + action widgets ────────────────────────
 function HeroPanel({ activeBaby, session, navigate }) {
   const [featuredMeal, setFeaturedMeal] = useState(null);
@@ -763,6 +780,9 @@ function Home() {
         )}
       </nav>
 
+      {/* ── Film tape strip ── */}
+      <FilmStrip />
+
       {/* ── Hero ── */}
       <div className="hero-bg">
         <div className="lp-hero">
@@ -807,11 +827,6 @@ function Home() {
             </Link>
           ))}
         </div>
-      </div>
-
-      {/* ── Baby video strip ── */}
-      <div style={{ display: "flex", justifyContent: "center", padding: "2.5rem 1rem 1rem", overflow: "hidden" }}>
-        <EatStack />
       </div>
 
       {/* ── Features ── */}
