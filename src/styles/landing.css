@@ -402,6 +402,8 @@
   background: #0d0b07;
   position: relative;
   height: 186px;            /* 16px top holes + 154px frames + 16px bottom holes */
+  margin-top: 2.5rem;
+  opacity: 0.72;
   background-image:
     repeating-linear-gradient(90deg, transparent 0 7px, rgba(230,220,205,0.88) 7px 19px, transparent 19px 28px),
     repeating-linear-gradient(90deg, transparent 0 7px, rgba(230,220,205,0.88) 7px 19px, transparent 19px 28px);
