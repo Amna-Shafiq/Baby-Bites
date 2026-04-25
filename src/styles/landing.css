@@ -397,34 +397,36 @@
   overflow: hidden;
   background: #0d0b07;
   position: relative;
-  height: 186px;            /* 16px top holes + 154px frames + 16px bottom holes */
+  height: 148px;            /* 12px top holes + 124px frames + 12px bottom holes */
   opacity: 0.6;
   background-image:
-    repeating-linear-gradient(90deg, transparent 0 7px, rgba(230,220,205,0.88) 7px 19px, transparent 19px 28px),
-    repeating-linear-gradient(90deg, transparent 0 7px, rgba(230,220,205,0.88) 7px 19px, transparent 19px 28px);
-  background-size: 100% 15px, 100% 15px;
+    repeating-linear-gradient(90deg, transparent 0 7px, rgba(230,220,205,0.88) 7px 17px, transparent 17px 26px),
+    repeating-linear-gradient(90deg, transparent 0 7px, rgba(230,220,205,0.88) 7px 17px, transparent 17px 26px);
+  background-size: 100% 12px, 100% 12px;
   background-position: 0 0, 0 100%;
   background-repeat: no-repeat, no-repeat;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
 }
 
 .film-track {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   position: absolute;
-  top: 16px;
+  top: 12px;
   left: 0;
-  height: 154px;
+  height: 124px;
   align-items: center;
   padding: 0 4px;
-  animation: filmScroll 18s linear infinite;
+  animation: filmScroll 18s linear infinite reverse;
   will-change: transform;
 }
 
 .film-frame {
-  width: 220px;
-  height: 150px;
+  width: 180px;
+  height: 120px;
   flex-shrink: 0;
-  border-radius: 5px;
+  border-radius: 4px;
   overflow: hidden;
   border: 2px solid #2a2217;
 }
