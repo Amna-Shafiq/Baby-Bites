@@ -159,6 +159,118 @@ function EatStack() {
   );
 }
 
+// ── HeroPanel: featured meal card + action widgets ────────────────────────
+function HeroPanel({ activeBaby, session, navigate }) {
+  const [featuredMeal, setFeaturedMeal] = useState(null);
+
+  useEffect(() => {
+    if (!supabase) return;
+    supabase.from("meals").select("*").eq("is_public", true).then(({ data }) => {
+      if (!data?.length) return;
+      const dayIdx = Math.floor(Date.now() / 86400000) % data.length;
+      setFeaturedMeal(data[dayIdx]);
+    });
+  }, []);
+
+  const widgets = [
+    {
+      icon: "🍽️",
+      label: "Today's meal",
+      sub: activeBaby ? `Pick for ${activeBaby.name}` : "Find today's meal",
+      to: "/meals",
+    },
+    {
+      icon: "🛒",
+      label: "From my pantry",
+      sub: "See what you have",
+      to: "/pantry",
+    },
+    {
+      icon: "📓",
+      label: "Log a bite",
+      sub: "Track what baby ate",
+      to: session ? "/my-meals" : "/login",
+    },
+  ];
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%", maxWidth: 340 }}>
+      {/* Featured meal card */}
+      {featuredMeal && (
+        <div
+          onClick={() => navigate(`/meal/${featuredMeal.id}`)}
+          style={{
+            borderRadius: 18, overflow: "hidden", cursor: "pointer",
+            background: "var(--white)", border: "1.5px solid var(--border)",
+            boxShadow: "0 6px 24px rgba(45,36,22,0.10)",
+            position: "relative",
+          }}
+        >
+          <img
+            src={featuredMeal.image_url || "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776696906/Gemini_Generated_Image_y2myiqy2myiqy2my_sd3eov.png"}
+            alt={featuredMeal.title}
+            style={{ width: "100%", height: 160, objectFit: "cover", display: "block" }}
+            onError={e => { e.target.src = "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776696906/Gemini_Generated_Image_y2myiqy2myiqy2my_sd3eov.png"; }}
+          />
+          <div style={{
+            position: "absolute", top: 8, left: 8,
+            background: "rgba(255,255,255,0.9)", backdropFilter: "blur(6px)",
+            borderRadius: 20, padding: "2px 10px",
+            fontSize: "0.65rem", fontWeight: 800, color: "var(--orange-dark)",
+            textTransform: "uppercase", letterSpacing: "0.08em",
+          }}>
+            Today's pick
+          </div>
+          <div style={{ padding: "10px 14px 12px" }}>
+            <p style={{ margin: "0 0 4px", fontWeight: 700, fontSize: "0.9rem", color: "var(--dark)", fontFamily: "Aileron, sans-serif", lineHeight: 1.2 }}>
+              {featuredMeal.title}
+            </p>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+              <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "var(--muted)", background: "var(--cream)", borderRadius: 10, padding: "2px 8px" }}>
+                {featuredMeal.min_age_months}–{featuredMeal.max_age_months}m
+              </span>
+              {featuredMeal.meal_slot && (
+                <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "var(--muted)", background: "var(--cream)", borderRadius: 10, padding: "2px 8px" }}>
+                  {featuredMeal.meal_slot}
+                </span>
+              )}
+              {featuredMeal.nutrition_highlight && (
+                <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "var(--green-dark)" }}>
+                  ✓ {featuredMeal.nutrition_highlight}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Action widgets */}
+      {widgets.map((w) => (
+        <div
+          key={w.label}
+          onClick={() => navigate(w.to)}
+          style={{
+            display: "flex", alignItems: "center", gap: 12,
+            background: "var(--white)", border: "1.5px solid var(--border)",
+            borderRadius: 14, padding: "10px 14px", cursor: "pointer",
+            boxShadow: "0 2px 10px rgba(45,36,22,0.06)",
+            transition: "transform 0.15s, box-shadow 0.15s",
+          }}
+          onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(45,36,22,0.12)"; }}
+          onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 2px 10px rgba(45,36,22,0.06)"; }}
+        >
+          <span style={{ fontSize: "1.4rem", lineHeight: 1 }}>{w.icon}</span>
+          <div style={{ flex: 1 }}>
+            <p style={{ margin: 0, fontWeight: 700, fontSize: "0.85rem", color: "var(--dark)", fontFamily: "Aileron, sans-serif" }}>{w.label}</p>
+            <p style={{ margin: 0, fontSize: "0.72rem", color: "var(--muted)" }}>{w.sub}</p>
+          </div>
+          <span style={{ fontSize: "0.8rem", color: "var(--orange-dark)", fontWeight: 700 }}>→</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // ── LandingParticleTitle: "Feed your baby with confidence" as interactive particles ──
 const LP_REPEL_RADIUS = 90;
 const LP_REPEL_FORCE  = 7;
@@ -669,14 +781,14 @@ function Home() {
               </button>
             </div>
             <div className="lp-stats">
-              <div><div className="sn">100+</div><div className="sl">{t("statFoods")}</div></div>
-              <div><div className="sn">60+</div><div className="sl">{t("statRecipes")}</div></div>
+              <div><div className="sn">160+</div><div className="sl">{t("statFoods")}</div></div>
+              <div><div className="sn">50+</div><div className="sl">{t("statRecipes")}</div></div>
               <div><div className="sn">4–18m</div><div className="sl">{t("statAges")}</div></div>
             </div>
           </div>
 
           <div className="visual">
-            <EatStack />
+            <HeroPanel activeBaby={activeBaby} session={session} navigate={navigate} />
           </div>
         </div>
       </div>
@@ -695,6 +807,11 @@ function Home() {
             </Link>
           ))}
         </div>
+      </div>
+
+      {/* ── Baby video strip ── */}
+      <div style={{ display: "flex", justifyContent: "center", padding: "2.5rem 1rem 1rem", overflow: "hidden" }}>
+        <EatStack />
       </div>
 
       {/* ── Features ── */}
