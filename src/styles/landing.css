@@ -78,7 +78,7 @@
 /* Override the global .nav-btn style */
 .landing-page .nav-btn {
   background: var(--orange-mid);
-  color: var(--orange-dark);
+  color: #fff;
   border: none;
   padding: 0.55rem 1.3rem;
   border-radius: 100px;
