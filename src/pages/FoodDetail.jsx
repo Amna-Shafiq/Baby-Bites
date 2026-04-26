@@ -45,6 +45,15 @@ const FOOD_REFERENCES = {
   apple:          [SS("apple")],
   apricot:        [SS("apricot")],
   apricots:       [SS("apricot")],
+  avocado:        [SS("avocado")],
+  banana:         [SS("banana")],
+  // Vegetables
+  arbi:           [SS("taro")],
+  taro:           [SS("taro")],
+  // Grains
+  bajra:          [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
+  "bajra porridge": [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
+  millet:         [SS("millet")],
   // Other
   "french toast": [SS("french-toast")],
   "ice cream":    [SS("ice-cream")],
