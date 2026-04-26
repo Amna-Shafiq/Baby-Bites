@@ -43,6 +43,8 @@ const FOOD_REFERENCES = {
   turkey:         [SS("turkey")],
   // Fruits
   apple:          [SS("apple")],
+  apricot:        [SS("apricot")],
+  apricots:       [SS("apricot")],
   // Other
   "french toast": [SS("french-toast")],
   "ice cream":    [SS("ice-cream")],
