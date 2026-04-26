@@ -699,46 +699,46 @@ function MythBusters() {
           ))}
         </div>
 
-        {/* Statement + buttons side by side */}
-        <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
-          <p style={{
-            flex: 1, fontSize: "1.05rem", fontWeight: 700, lineHeight: 1.4,
-            fontFamily: "Aileron, sans-serif", color: "var(--dark)", margin: 0,
-          }}>
-            "{myth.statement}"
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, flexShrink: 0 }}>
-            {[
-              { choice: "myth",  label: "Myth",  icon: "🔴" },
-              { choice: "true",  label: "True",  icon: "✅" },
-            ].map(({ choice, label, icon }) => {
-              let bg = "transparent";
-              let border = "var(--border)";
-              let color = "var(--dark)";
-              if (picked) {
-                if (choice === myth.answer) { bg = "#e8f8ee"; border = "var(--green-dark)"; color = "var(--green-dark)"; }
-                else if (choice === picked) { bg = "#fdf0ef"; border = "#c0392b"; color = "#c0392b"; }
-              }
-              return (
-                <button
-                  key={choice}
-                  type="button"
-                  onClick={() => handlePick(choice)}
-                  disabled={!!picked}
-                  style={{
-                    width: 120, padding: "0.6rem 1rem",
-                    borderRadius: 12, border: `2px solid ${border}`,
-                    background: bg, color, fontWeight: 700,
-                    fontSize: "0.92rem", cursor: picked ? "default" : "pointer",
-                    transition: "all 0.2s", fontFamily: "Nunito, sans-serif",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {icon} {label}
-                </button>
-              );
-            })}
-          </div>
+        {/* Statement */}
+        <p style={{
+          fontSize: "1.05rem", fontWeight: 700, lineHeight: 1.4,
+          fontFamily: "Aileron, sans-serif", color: "var(--dark)",
+          margin: "0 0 1.1rem",
+        }}>
+          "{myth.statement}"
+        </p>
+
+        {/* Buttons — horizontal row */}
+        <div style={{ display: "flex", gap: 12 }}>
+          {[
+            { choice: "myth",  label: "Myth",  icon: "🔴" },
+            { choice: "true",  label: "True",  icon: "✅" },
+          ].map(({ choice, label, icon }) => {
+            let bg = "transparent";
+            let border = "var(--border)";
+            let color = "var(--dark)";
+            if (picked) {
+              if (choice === myth.answer) { bg = "#e8f8ee"; border = "var(--green-dark)"; color = "var(--green-dark)"; }
+              else if (choice === picked) { bg = "#fdf0ef"; border = "#c0392b"; color = "#c0392b"; }
+            }
+            return (
+              <button
+                key={choice}
+                type="button"
+                onClick={() => handlePick(choice)}
+                disabled={!!picked}
+                style={{
+                  flex: 1, padding: "0.6rem 1rem",
+                  borderRadius: 12, border: `2px solid ${border}`,
+                  background: bg, color, fontWeight: 700,
+                  fontSize: "0.92rem", cursor: picked ? "default" : "pointer",
+                  transition: "all 0.2s", fontFamily: "Nunito, sans-serif",
+                }}
+              >
+                {icon} {label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Explanation */}
