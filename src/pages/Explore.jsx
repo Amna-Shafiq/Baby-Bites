@@ -639,27 +639,50 @@ function ConfettiBurst({ active }) {
   );
 }
 
+const RESULT_GRADES = [
+  { min: 1.0, emoji: "🏆", label: "Perfect score!", msg: "You're a baby nutrition pro — not a single myth got past you." },
+  { min: 0.6, emoji: "⭐", label: "Great job!",     msg: "You've got solid instincts. A couple of myths snuck through — review the explanations above." },
+  { min: 0.3, emoji: "📚", label: "Keep learning!", msg: "Baby nutrition is full of surprises. Read through the explanations and try again!" },
+  { min: 0,   emoji: "🌱", label: "Room to grow!",  msg: "Don't worry — every parent starts somewhere. The explanations will set you straight." },
+];
+
 function MythBusters() {
-  const [idx, setIdx]       = useState(0);
-  const [picked, setPicked] = useState(null);
+  const [idx, setIdx]         = useState(0);
+  const [picked, setPicked]   = useState(null);
   const [shaking, setShaking] = useState(false);
+  const [score, setScore]     = useState(0);
+  const [finished, setFinished] = useState(false);
   const myth = MYTHS[idx];
 
   const handlePick = (choice) => {
     if (picked) return;
     setPicked(choice);
-    if (choice !== myth.answer) {
+    if (choice === myth.answer) {
+      setScore((s) => s + 1);
+    } else {
       setShaking(true);
       setTimeout(() => setShaking(false), 600);
     }
   };
 
   const next = () => {
+    if (idx === MYTHS.length - 1) {
+      setFinished(true);
+    } else {
+      setPicked(null);
+      setIdx((i) => i + 1);
+    }
+  };
+
+  const restart = () => {
+    setIdx(0);
     setPicked(null);
-    setIdx((i) => (i + 1) % MYTHS.length);
+    setScore(0);
+    setFinished(false);
   };
 
   const correct = picked === myth.answer;
+  const grade = RESULT_GRADES.find((g) => score / MYTHS.length >= g.min);
 
   return (
     <div style={{ marginBottom: "3.5rem" }}>
@@ -679,8 +702,50 @@ function MythBusters() {
         Myth or true?
       </h2>
 
+      {/* ── Results screen ── */}
+      {finished ? (
+        <div style={{
+          background: "transparent",
+          border: "1.5px solid var(--border)",
+          borderRadius: 20, padding: "2rem 1.75rem",
+          textAlign: "center", animation: "fadeSlideUp 0.4s ease",
+        }}>
+          <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>{grade.emoji}</div>
+          <p style={{
+            margin: "0 0 0.3rem", fontFamily: "Aileron, sans-serif",
+            fontWeight: 800, fontSize: "1.4rem", color: "var(--dark)",
+          }}>
+            {grade.label}
+          </p>
+          <p style={{
+            margin: "0 0 1.25rem", fontSize: "2rem", fontWeight: 900,
+            color: "var(--orange-dark)", fontFamily: "Aileron, sans-serif",
+          }}>
+            {score} / {MYTHS.length}
+          </p>
+          {/* Score bar */}
+          <div style={{
+            height: 10, borderRadius: 5, background: "var(--border)",
+            marginBottom: "1rem", overflow: "hidden",
+          }}>
+            <div style={{
+              height: "100%", borderRadius: 5,
+              width: `${(score / MYTHS.length) * 100}%`,
+              background: score === MYTHS.length ? "var(--green-dark)" : "var(--orange-dark)",
+              transition: "width 0.8s ease",
+            }} />
+          </div>
+          <p style={{ margin: "0 0 1.5rem", fontSize: "0.88rem", color: "var(--muted)", lineHeight: 1.6 }}>
+            {grade.msg}
+          </p>
+          <button type="button" onClick={restart} className="btn btn-primary" style={{ width: "100%" }}>
+            Play again →
+          </button>
+        </div>
+      ) : (
+
       <div style={{
-        background: "var(--surface, #fafaf8)",
+        background: "transparent",
         border: "1.5px solid var(--border)",
         borderRadius: 20, padding: "1.5rem 1.75rem",
         position: "relative", overflow: "hidden",
@@ -688,15 +753,20 @@ function MythBusters() {
       }}>
         <ConfettiBurst active={!!(picked && correct)} />
 
-        {/* Progress */}
-        <div style={{ display: "flex", gap: 6, marginBottom: "1.1rem" }}>
-          {MYTHS.map((_, i) => (
-            <div key={i} style={{
-              height: 4, flex: 1, borderRadius: 2,
-              background: i === idx ? "var(--orange-dark)" : i < idx ? "var(--green-dark)" : "var(--border)",
-              transition: "background 0.3s",
-            }} />
-          ))}
+        {/* Progress + live score */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: "1.1rem" }}>
+          <div style={{ display: "flex", gap: 6, flex: 1 }}>
+            {MYTHS.map((_, i) => (
+              <div key={i} style={{
+                height: 4, flex: 1, borderRadius: 2,
+                background: i < idx ? "var(--green-dark)" : i === idx ? "var(--orange-dark)" : "var(--border)",
+                transition: "background 0.3s",
+              }} />
+            ))}
+          </div>
+          <span style={{ fontSize: "0.78rem", fontWeight: 800, color: "var(--orange-dark)", flexShrink: 0 }}>
+            {score} / {idx + (picked ? 1 : 0)}
+          </span>
         </div>
 
         {/* Statement */}
@@ -775,10 +845,11 @@ function MythBusters() {
             className="btn btn-primary"
             style={{ marginTop: "0.85rem", width: "100%" }}
           >
-            {idx < MYTHS.length - 1 ? "Next myth →" : "Start over →"}
+            {idx < MYTHS.length - 1 ? "Next myth →" : "See my score →"}
           </button>
         )}
       </div>
+      )}
     </div>
   );
 }
