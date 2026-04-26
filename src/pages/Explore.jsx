@@ -552,6 +552,157 @@ function MealOfTheDay() {
   );
 }
 
+// ── Myth Busters data ──────────────────────────────────────
+const MYTHS = [
+  {
+    statement: "Allergenic foods should be delayed until after 12 months",
+    answer: "myth",
+    explanation: "Introducing common allergens early — from around 6 months — actually reduces the risk of developing allergies. UNICEF and leading paediatricians recommend offering eggs, peanuts, fish and other allergens one at a time in small amounts from the start of solids, while watching for reactions.",
+    source: "UNICEF / Dr Sabyasachi Das",
+  },
+  {
+    statement: "Babies should eat low-fat foods after 6 months",
+    answer: "myth",
+    explanation: "Fat is essential for babies! Between 6–12 months, fat should make up around 40% of a baby's diet. Full-fat foods like avocado, egg yolk, whole-milk yogurt, oily fish, and nut butters support brain development, vitamin absorption (A, D, E, K), and healthy weight gain. Never restrict fat for babies under 2.",
+    source: "NHS / WHO",
+  },
+];
+
+function MythBusters() {
+  const [idx, setIdx]     = useState(0);
+  const [picked, setPicked] = useState(null); // "myth" | "true" | null
+  const myth = MYTHS[idx];
+
+  const handlePick = (choice) => {
+    if (picked) return;
+    setPicked(choice);
+  };
+
+  const next = () => {
+    setPicked(null);
+    setIdx((i) => (i + 1) % MYTHS.length);
+  };
+
+  const correct = picked === myth.answer;
+
+  return (
+    <div style={{ marginBottom: "3.5rem" }}>
+      <span style={{
+        fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
+        letterSpacing: "0.12em", color: "var(--orange-dark)", display: "block",
+        marginBottom: "0.4rem",
+      }}>
+        Myth Busters
+      </span>
+      <h2 style={{
+        margin: "0 0 1.25rem",
+        fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
+        fontFamily: "Aileron, sans-serif", fontWeight: 700,
+        color: "var(--dark)", lineHeight: 1.1, letterSpacing: "-0.01em",
+      }}>
+        Myth or true?
+      </h2>
+
+      <div style={{
+        background: "var(--surface, #fafaf8)",
+        border: "1.5px solid var(--border)",
+        borderRadius: 20, padding: "1.75rem",
+        maxWidth: 540,
+      }}>
+        {/* Progress */}
+        <div style={{ display: "flex", gap: 6, marginBottom: "1.25rem" }}>
+          {MYTHS.map((_, i) => (
+            <div key={i} style={{
+              height: 4, flex: 1, borderRadius: 2,
+              background: i === idx ? "var(--orange-dark)" : i < idx ? "var(--green-dark)" : "var(--border)",
+              transition: "background 0.3s",
+            }} />
+          ))}
+        </div>
+
+        {/* Statement */}
+        <p style={{
+          fontSize: "1.15rem", fontWeight: 700, lineHeight: 1.4,
+          fontFamily: "Aileron, sans-serif", color: "var(--dark)",
+          margin: "0 0 1.5rem",
+        }}>
+          "{myth.statement}"
+        </p>
+
+        {/* Buttons */}
+        <div style={{ display: "flex", gap: 12, marginBottom: picked ? "1.25rem" : 0 }}>
+          {[
+            { choice: "myth",  label: "Myth",  icon: "🔴" },
+            { choice: "true",  label: "True",  icon: "✅" },
+          ].map(({ choice, label, icon }) => {
+            let bg = "transparent";
+            let border = "var(--border)";
+            let color = "var(--dark)";
+            if (picked) {
+              if (choice === myth.answer) { bg = "#e8f8ee"; border = "var(--green-dark)"; color = "var(--green-dark)"; }
+              else if (choice === picked) { bg = "#fdf0ef"; border = "#c0392b"; color = "#c0392b"; }
+            }
+            return (
+              <button
+                key={choice}
+                type="button"
+                onClick={() => handlePick(choice)}
+                disabled={!!picked}
+                style={{
+                  flex: 1, padding: "0.75rem 1rem",
+                  borderRadius: 12, border: `2px solid ${border}`,
+                  background: bg, color, fontWeight: 700,
+                  fontSize: "1rem", cursor: picked ? "default" : "pointer",
+                  transition: "all 0.2s", fontFamily: "Nunito, sans-serif",
+                }}
+              >
+                {icon} {label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Explanation */}
+        {picked && (
+          <div style={{
+            background: correct ? "#e8f8ee" : "#fdf0ef",
+            border: `1.5px solid ${correct ? "var(--green-dark)" : "#c0392b"}`,
+            borderRadius: 12, padding: "1rem 1.1rem",
+            animation: "fadeSlideUp 0.3s ease",
+          }}>
+            <p style={{
+              margin: "0 0 0.4rem", fontWeight: 800, fontSize: "0.92rem",
+              color: correct ? "var(--green-dark)" : "#c0392b",
+            }}>
+              {correct ? "✓ That's right!" : "✗ Actually…"} — This is a {myth.answer === "myth" ? "myth" : "true fact"}.
+            </p>
+            <p style={{ margin: "0 0 0.5rem", fontSize: "0.88rem", lineHeight: 1.65, color: "var(--dark)" }}>
+              {myth.explanation}
+            </p>
+            {myth.source && (
+              <p style={{ margin: 0, fontSize: "0.72rem", color: "var(--muted)", fontWeight: 700 }}>
+                Source: {myth.source}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Next button */}
+        {picked && (
+          <button
+            type="button"
+            onClick={next}
+            className="btn btn-primary"
+            style={{ marginTop: "1rem", width: "100%" }}
+          >
+            {idx < MYTHS.length - 1 ? "Next myth →" : "Start over →"}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function Explore() {
   const [input, setInput]       = useState("");
   const [cooldown, setCooldown] = useState(false);
@@ -925,6 +1076,9 @@ function Explore() {
             </div>
           </div>
         </div>
+
+        {/* ── MYTH BUSTERS ── */}
+        <MythBusters />
 
         {/* ── DISCOVER ── */}
         <div style={{ marginBottom: "2rem" }}>
