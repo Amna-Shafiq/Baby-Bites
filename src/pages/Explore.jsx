@@ -566,16 +566,92 @@ const MYTHS = [
     explanation: "Fat is essential for babies! Between 6–12 months, fat should make up around 40% of a baby's diet. Full-fat foods like avocado, egg yolk, whole-milk yogurt, oily fish, and nut butters support brain development, vitamin absorption (A, D, E, K), and healthy weight gain. Never restrict fat for babies under 2.",
     source: "NHS / WHO",
   },
+  {
+    statement: "You should combine spoon feeding and baby-led weaning (BLW)",
+    answer: "true",
+    explanation: "You can do both! BLW and spoon-feeding both have benefits and drawbacks, and using some combination of both feeding pathways brings out the best in each. BLW offers babies independence over their own feeding — often leading to less fussy eating, improved appetite regulation, and enhanced fine motor skills. Spoon-feeding has the advantage of exposing babies to a greater diversity of foods, textures, and flavors during early complementary feeding.",
+    source: null,
+  },
 ];
 
+function ConfettiBurst({ active }) {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    if (!active) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    const W = canvas.width;
+    const H = canvas.height;
+
+    const COLORS = ["#ff6b6b", "#ffd93d", "#6bcb77", "#4d96ff", "#ff922b", "#cc5de8", "#f783ac"];
+    const pieces = Array.from({ length: 90 }, () => ({
+      x:     Math.random() * W,
+      y:     Math.random() * -H * 0.3,
+      w:     Math.random() * 9 + 4,
+      h:     Math.random() * 5 + 3,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      vx:    (Math.random() - 0.5) * 5,
+      vy:    Math.random() * 4 + 2,
+      rot:   Math.random() * 360,
+      rotV:  (Math.random() - 0.5) * 10,
+    }));
+
+    let id;
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      let any = false;
+      for (const p of pieces) {
+        p.x  += p.vx;
+        p.y  += p.vy;
+        p.vy += 0.12;
+        p.rot += p.rotV;
+        if (p.y < H + 20) any = true;
+        const alpha = Math.max(0, 1 - p.y / (H * 1.1));
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rot * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      }
+      if (any) id = requestAnimationFrame(draw);
+    };
+    id = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(id);
+  }, [active]);
+
+  if (!active) return null;
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: "absolute", inset: 0,
+        width: "100%", height: "100%",
+        pointerEvents: "none", zIndex: 10,
+        borderRadius: 20,
+      }}
+    />
+  );
+}
+
 function MythBusters() {
-  const [idx, setIdx]     = useState(0);
-  const [picked, setPicked] = useState(null); // "myth" | "true" | null
+  const [idx, setIdx]       = useState(0);
+  const [picked, setPicked] = useState(null);
+  const [shaking, setShaking] = useState(false);
   const myth = MYTHS[idx];
 
   const handlePick = (choice) => {
     if (picked) return;
     setPicked(choice);
+    if (choice !== myth.answer) {
+      setShaking(true);
+      setTimeout(() => setShaking(false), 600);
+    }
   };
 
   const next = () => {
@@ -606,11 +682,14 @@ function MythBusters() {
       <div style={{
         background: "var(--surface, #fafaf8)",
         border: "1.5px solid var(--border)",
-        borderRadius: 20, padding: "1.75rem",
-        maxWidth: 540,
+        borderRadius: 20, padding: "1.5rem 1.75rem",
+        position: "relative", overflow: "hidden",
+        animation: shaking ? "shake 0.55s ease" : "none",
       }}>
+        <ConfettiBurst active={!!(picked && correct)} />
+
         {/* Progress */}
-        <div style={{ display: "flex", gap: 6, marginBottom: "1.25rem" }}>
+        <div style={{ display: "flex", gap: 6, marginBottom: "1.1rem" }}>
           {MYTHS.map((_, i) => (
             <div key={i} style={{
               height: 4, flex: 1, borderRadius: 2,
@@ -620,46 +699,46 @@ function MythBusters() {
           ))}
         </div>
 
-        {/* Statement */}
-        <p style={{
-          fontSize: "1.15rem", fontWeight: 700, lineHeight: 1.4,
-          fontFamily: "Aileron, sans-serif", color: "var(--dark)",
-          margin: "0 0 1.5rem",
-        }}>
-          "{myth.statement}"
-        </p>
-
-        {/* Buttons */}
-        <div style={{ display: "flex", gap: 12, marginBottom: picked ? "1.25rem" : 0 }}>
-          {[
-            { choice: "myth",  label: "Myth",  icon: "🔴" },
-            { choice: "true",  label: "True",  icon: "✅" },
-          ].map(({ choice, label, icon }) => {
-            let bg = "transparent";
-            let border = "var(--border)";
-            let color = "var(--dark)";
-            if (picked) {
-              if (choice === myth.answer) { bg = "#e8f8ee"; border = "var(--green-dark)"; color = "var(--green-dark)"; }
-              else if (choice === picked) { bg = "#fdf0ef"; border = "#c0392b"; color = "#c0392b"; }
-            }
-            return (
-              <button
-                key={choice}
-                type="button"
-                onClick={() => handlePick(choice)}
-                disabled={!!picked}
-                style={{
-                  flex: 1, padding: "0.75rem 1rem",
-                  borderRadius: 12, border: `2px solid ${border}`,
-                  background: bg, color, fontWeight: 700,
-                  fontSize: "1rem", cursor: picked ? "default" : "pointer",
-                  transition: "all 0.2s", fontFamily: "Nunito, sans-serif",
-                }}
-              >
-                {icon} {label}
-              </button>
-            );
-          })}
+        {/* Statement + buttons side by side */}
+        <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
+          <p style={{
+            flex: 1, fontSize: "1.05rem", fontWeight: 700, lineHeight: 1.4,
+            fontFamily: "Aileron, sans-serif", color: "var(--dark)", margin: 0,
+          }}>
+            "{myth.statement}"
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, flexShrink: 0 }}>
+            {[
+              { choice: "myth",  label: "Myth",  icon: "🔴" },
+              { choice: "true",  label: "True",  icon: "✅" },
+            ].map(({ choice, label, icon }) => {
+              let bg = "transparent";
+              let border = "var(--border)";
+              let color = "var(--dark)";
+              if (picked) {
+                if (choice === myth.answer) { bg = "#e8f8ee"; border = "var(--green-dark)"; color = "var(--green-dark)"; }
+                else if (choice === picked) { bg = "#fdf0ef"; border = "#c0392b"; color = "#c0392b"; }
+              }
+              return (
+                <button
+                  key={choice}
+                  type="button"
+                  onClick={() => handlePick(choice)}
+                  disabled={!!picked}
+                  style={{
+                    width: 120, padding: "0.6rem 1rem",
+                    borderRadius: 12, border: `2px solid ${border}`,
+                    background: bg, color, fontWeight: 700,
+                    fontSize: "0.92rem", cursor: picked ? "default" : "pointer",
+                    transition: "all 0.2s", fontFamily: "Nunito, sans-serif",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {icon} {label}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Explanation */}
@@ -667,16 +746,17 @@ function MythBusters() {
           <div style={{
             background: correct ? "#e8f8ee" : "#fdf0ef",
             border: `1.5px solid ${correct ? "var(--green-dark)" : "#c0392b"}`,
-            borderRadius: 12, padding: "1rem 1.1rem",
+            borderRadius: 12, padding: "0.9rem 1.1rem",
+            marginTop: "1.1rem",
             animation: "fadeSlideUp 0.3s ease",
           }}>
             <p style={{
-              margin: "0 0 0.4rem", fontWeight: 800, fontSize: "0.92rem",
+              margin: "0 0 0.35rem", fontWeight: 800, fontSize: "0.88rem",
               color: correct ? "var(--green-dark)" : "#c0392b",
             }}>
               {correct ? "✓ That's right!" : "✗ Actually…"} — This is a {myth.answer === "myth" ? "myth" : "true fact"}.
             </p>
-            <p style={{ margin: "0 0 0.5rem", fontSize: "0.88rem", lineHeight: 1.65, color: "var(--dark)" }}>
+            <p style={{ margin: "0 0 0.5rem", fontSize: "0.85rem", lineHeight: 1.65, color: "var(--dark)" }}>
               {myth.explanation}
             </p>
             {myth.source && (
@@ -693,7 +773,7 @@ function MythBusters() {
             type="button"
             onClick={next}
             className="btn btn-primary"
-            style={{ marginTop: "1rem", width: "100%" }}
+            style={{ marginTop: "0.85rem", width: "100%" }}
           >
             {idx < MYTHS.length - 1 ? "Next myth →" : "Start over →"}
           </button>

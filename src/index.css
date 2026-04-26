@@ -886,6 +886,16 @@ button { font-family: 'Nunito', sans-serif; }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes shake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  15%       { transform: translateX(-9px) rotate(-1.2deg); }
+  30%       { transform: translateX(8px)  rotate(1.2deg); }
+  45%       { transform: translateX(-7px) rotate(-0.9deg); }
+  60%       { transform: translateX(5px)  rotate(0.9deg); }
+  75%       { transform: translateX(-3px) rotate(-0.4deg); }
+  90%       { transform: translateX(2px); }
+}
+
 /* ── Urdu / RTL mode ───────────────────────────────── */
 .urdu-mode body,
 .urdu-mode .page,
