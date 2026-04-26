@@ -41,6 +41,8 @@ const FOOD_REFERENCES = {
   "ground beef":  [SS("ground-beef")],
   lamb:           [SS("lamb")],
   turkey:         [SS("turkey")],
+  // Fruits
+  apple:          [SS("apple")],
   // Other
   "french toast": [SS("french-toast")],
   "ice cream":    [SS("ice-cream")],
