@@ -8,9 +8,20 @@
     <meta name="theme-color" content="#e8813c" />
     <meta name="description" content="Age-appropriate meals and food guides for your baby" />
     <title>Baby Bites</title>
+    <!-- Preconnect to font origins so TCP/TLS is ready when the <link> fires -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin>
+
+    <!-- Aileron (used by h1/h2 — LCP element). Loaded as <link> so it's
+         discovered immediately, not after index.css is parsed. -->
+    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/aileron?display=swap">
+
+    <!-- Google Fonts: Nunito + Instrument Serif in one round-trip -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
+
+    <!-- Arabic (Urdu UI) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&display=swap">
   </head>
   <body>
     <div id="root"></div>
