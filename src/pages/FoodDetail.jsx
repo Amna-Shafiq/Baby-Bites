@@ -51,9 +51,10 @@ const FOOD_REFERENCES = {
   arbi:           [SS("taro")],
   taro:           [SS("taro")],
   // Grains
-  bajra:          [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
-  "bajra porridge": [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
-  millet:         [SS("millet")],
+  bajra:                  [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
+  "bajra(pearl millet)":  [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
+  "pearl millet":         [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
+  millet:                 [SS("millet")],
   // Other
   "french toast": [SS("french-toast")],
   "ice cream":    [SS("ice-cream")],
