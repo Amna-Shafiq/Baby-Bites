@@ -1,8 +1,8 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { supabase } from "../lib/supabaseClient";
 
-const FOOD_GROUPS = ["grain", "veggie", "fruit", "protein", "spice"];
-const MEAL_SLOTS  = ["breakfast", "lunch", "dinner"];
+const FOOD_GROUPS = ["grain", "veggie", "fruit", "protein", "spice", "dairy", "other"];
+const MEAL_SLOTS  = ["breakfast", "lunch", "dinner", "snack"];
 const MEAL_TYPES  = ["quick", "fancy"];
 
 const emptyFood = {
@@ -16,24 +16,29 @@ const emptyMeal = {
   title: "", min_age_months: "6", max_age_months: "18",
   meal_slot: "lunch", meal_type: "quick", prep_time_minutes: "10",
   steps: "", nutrition_highlight: "", description: "", image_url: "",
+  source_url: "",
 };
 
 function Admin() {
   const [tab, setTab] = useState("foods");
+  const foodFormRef   = useRef(null);
+  const mealFormRef   = useRef(null);
 
   // ── Foods state ──
-  const [foods, setFoods]       = useState([]);
-  const [food, setFood]         = useState(emptyFood);
+  const [foods, setFoods]           = useState([]);
+  const [food, setFood]             = useState(emptyFood);
+  const [editingFoodId, setEditingFoodId] = useState(null);
   const [foodStatus, setFoodStatus] = useState("");
   const [foodSearch, setFoodSearch] = useState("");
 
   // ── Meals state ──
-  const [meals, setMeals]       = useState([]);
-  const [meal, setMeal]         = useState(emptyMeal);
+  const [meals, setMeals]           = useState([]);
+  const [meal, setMeal]             = useState(emptyMeal);
+  const [editingMealId, setEditingMealId] = useState(null);
   const [mealStatus, setMealStatus] = useState("");
   const [mealSearch, setMealSearch] = useState("");
   const [selectedFoods, setSelectedFoods] = useState([]);
-  const [foodQuery, setFoodQuery] = useState("");
+  const [foodQuery, setFoodQuery]   = useState("");
 
   const loadFoods = useCallback(async () => {
     const { data } = await supabase.from("foods").select("*").order("name");
@@ -42,7 +47,7 @@ function Admin() {
 
   const loadMeals = useCallback(async () => {
     const { data } = await supabase
-      .from("meals").select("*, meal_foods(food_id, foods(name))")
+      .from("meals").select("*, meal_foods(food_id, foods(id, name))")
       .order("title");
     setMeals(data || []);
   }, []);
@@ -51,6 +56,30 @@ function Admin() {
 
   // ── Food handlers ──
   const setF = (k, v) => setFood((f) => ({ ...f, [k]: v }));
+
+  const startEditFood = (f) => {
+    setEditingFoodId(f.id);
+    setFood({
+      name:             f.name || "",
+      safe_from_months: String(f.safe_from_months ?? 6),
+      is_iron_rich:     f.is_iron_rich || false,
+      food_group:       f.food_group || "protein",
+      allergen_notes:   f.allergen_notes || "",
+      texture_tips:     f.texture_tips || "",
+      is_warning:       f.is_warning || false,
+      search_aliases:   f.search_aliases || "",
+      image_url:        f.image_url || "",
+      notes:            f.notes || "",
+      tip_puree:        f.tip_puree || "",
+      tip_finger_food:  f.tip_finger_food || "",
+      tip_self_feeding: f.tip_self_feeding || "",
+      tip_family_meal:  f.tip_family_meal || "",
+    });
+    setFoodStatus("");
+    foodFormRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const cancelEditFood = () => { setEditingFoodId(null); setFood(emptyFood); setFoodStatus(""); };
 
   const submitFood = async (e) => {
     e.preventDefault();
@@ -71,21 +100,58 @@ function Admin() {
       tip_self_feeding: food.tip_self_feeding.trim() || null,
       tip_family_meal:  food.tip_family_meal.trim() || null,
     };
-    const { error } = await supabase.from("foods").insert(payload);
-    if (error) { setFoodStatus(`Error: ${error.message}`); return; }
+
+    if (editingFoodId) {
+      const { error } = await supabase.from("foods").update(payload).eq("id", editingFoodId);
+      if (error) { setFoodStatus(`Error: ${error.message}`); return; }
+      setFoodStatus("Food updated!");
+      setEditingFoodId(null);
+    } else {
+      const { error } = await supabase.from("foods").insert(payload);
+      if (error) { setFoodStatus(`Error: ${error.message}`); return; }
+      setFoodStatus("Food added!");
+    }
     setFood(emptyFood);
-    setFoodStatus("Food added!");
     loadFoods();
   };
 
   const deleteFood = async (id) => {
     if (!confirm("Delete this food?")) return;
     await supabase.from("foods").delete().eq("id", id);
+    if (editingFoodId === id) cancelEditFood();
     loadFoods();
   };
 
   // ── Meal handlers ──
   const setM = (k, v) => setMeal((m) => ({ ...m, [k]: v }));
+
+  const startEditMeal = (m) => {
+    setEditingMealId(m.id);
+    setMeal({
+      title:               m.title || "",
+      min_age_months:      String(m.min_age_months ?? 6),
+      max_age_months:      String(m.max_age_months ?? 18),
+      meal_slot:           m.meal_slot || "lunch",
+      meal_type:           m.meal_type || "quick",
+      prep_time_minutes:   String(m.prep_time_minutes ?? 10),
+      steps:               m.steps || "",
+      nutrition_highlight: m.nutrition_highlight || "",
+      description:         m.description || "",
+      image_url:           m.image_url || "",
+      source_url:          m.source_url || "",
+    });
+    const existing = (m.meal_foods || [])
+      .map((mf) => mf.foods)
+      .filter(Boolean);
+    setSelectedFoods(existing);
+    setMealStatus("");
+    mealFormRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const cancelEditMeal = () => {
+    setEditingMealId(null); setMeal(emptyMeal);
+    setSelectedFoods([]); setFoodQuery(""); setMealStatus("");
+  };
 
   const toggleIngredient = (foodItem) => {
     setSelectedFoods((prev) =>
@@ -98,32 +164,44 @@ function Admin() {
   const submitMeal = async (e) => {
     e.preventDefault();
     setMealStatus("");
-    const { data: inserted, error } = await supabase.from("meals").insert({
-      title:             meal.title.trim(),
-      min_age_months:    Number(meal.min_age_months),
-      max_age_months:    Number(meal.max_age_months),
-      meal_slot:         meal.meal_slot,
-      meal_type:         meal.meal_type,
-      prep_time_minutes: Number(meal.prep_time_minutes),
-      steps:             meal.steps.trim(),
+    const payload = {
+      title:               meal.title.trim(),
+      min_age_months:      Number(meal.min_age_months),
+      max_age_months:      Number(meal.max_age_months),
+      meal_slot:           meal.meal_slot,
+      meal_type:           meal.meal_type,
+      prep_time_minutes:   Number(meal.prep_time_minutes),
+      steps:               meal.steps.trim(),
       nutrition_highlight: meal.nutrition_highlight.trim(),
-      description:       meal.description.trim() || null,
-      image_url:         meal.image_url.trim() || null,
-      is_public:         true,
-    }).select().single();
+      description:         meal.description.trim() || null,
+      image_url:           meal.image_url.trim() || null,
+      source_url:          meal.source_url.trim() || null,
+      is_public:           true,
+    };
 
-    if (error) { setMealStatus(`Error: ${error.message}`); return; }
-
-    if (selectedFoods.length > 0) {
-      await supabase.from("meal_foods").insert(
-        selectedFoods.map((f) => ({ meal_id: inserted.id, food_id: f.id }))
-      );
+    if (editingMealId) {
+      const { error } = await supabase.from("meals").update(payload).eq("id", editingMealId);
+      if (error) { setMealStatus(`Error: ${error.message}`); return; }
+      // Sync meal_foods: delete all then re-insert
+      await supabase.from("meal_foods").delete().eq("meal_id", editingMealId);
+      if (selectedFoods.length > 0) {
+        await supabase.from("meal_foods").insert(
+          selectedFoods.map((f) => ({ meal_id: editingMealId, food_id: f.id }))
+        );
+      }
+      setMealStatus("Meal updated!");
+      setEditingMealId(null);
+    } else {
+      const { data: inserted, error } = await supabase.from("meals").insert(payload).select().single();
+      if (error) { setMealStatus(`Error: ${error.message}`); return; }
+      if (selectedFoods.length > 0) {
+        await supabase.from("meal_foods").insert(
+          selectedFoods.map((f) => ({ meal_id: inserted.id, food_id: f.id }))
+        );
+      }
+      setMealStatus("Meal added!");
     }
-
-    setMeal(emptyMeal);
-    setSelectedFoods([]);
-    setFoodQuery("");
-    setMealStatus("Meal added!");
+    setMeal(emptyMeal); setSelectedFoods([]); setFoodQuery("");
     loadMeals();
   };
 
@@ -131,20 +209,13 @@ function Admin() {
     if (!confirm("Delete this meal?")) return;
     await supabase.from("meal_foods").delete().eq("meal_id", id);
     await supabase.from("meals").delete().eq("id", id);
+    if (editingMealId === id) cancelEditMeal();
     loadMeals();
   };
 
-  const filteredFoods = foods.filter((f) =>
-    f.name.toLowerCase().includes(foodSearch.toLowerCase())
-  );
-
-  const filteredMeals = meals.filter((m) =>
-    m.title.toLowerCase().includes(mealSearch.toLowerCase())
-  );
-
-  const ingredientMatches = foods.filter((f) =>
-    f.name.toLowerCase().includes(foodQuery.toLowerCase()) && foodQuery.length > 0
-  );
+  const filteredFoods     = foods.filter((f) => f.name.toLowerCase().includes(foodSearch.toLowerCase()));
+  const filteredMeals     = meals.filter((m) => m.title.toLowerCase().includes(mealSearch.toLowerCase()));
+  const ingredientMatches = foods.filter((f) => f.name.toLowerCase().includes(foodQuery.toLowerCase()) && foodQuery.length > 0);
 
   return (
     <div className="page" style={{ maxWidth: 720 }}>
@@ -159,8 +230,15 @@ function Admin() {
       {/* ══════════════ FOODS TAB ══════════════ */}
       {tab === "foods" && (
         <>
-          <section className="panel">
-            <h2 style={{ marginBottom: "1rem" }}>Add Food</h2>
+          <section className="panel" ref={foodFormRef}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+              <h2 style={{ margin: 0 }}>{editingFoodId ? "✏️ Edit Food" : "Add Food"}</h2>
+              {editingFoodId && (
+                <button type="button" className="btn" onClick={cancelEditFood} style={{ fontSize: "0.8rem" }}>
+                  ✕ Cancel edit
+                </button>
+              )}
+            </div>
             {foodStatus && (
               <p style={{ fontSize: "0.85rem", fontWeight: 700, color: foodStatus.startsWith("Error") ? "#c0392b" : "var(--green-dark)", marginBottom: 8 }}>
                 {foodStatus}
@@ -188,7 +266,9 @@ function Admin() {
               <textarea className="input" placeholder="Notes (e.g. variants, cultural context)" value={food.notes} onChange={(e) => setF("notes", e.target.value)} rows={2} style={{ resize: "vertical" }} />
               <textarea className="input" placeholder="Texture tips (legacy fallback)" value={food.texture_tips} onChange={(e) => setF("texture_tips", e.target.value)} rows={2} style={{ resize: "vertical" }} />
 
-              <p style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)", margin: "4px 0 0" }}>Serving stage tips (optional — shown on food detail page)</p>
+              <p style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)", margin: "4px 0 0" }}>
+                Serving stage tips (shown on food detail page)
+              </p>
               <textarea className="input" placeholder="🍼 Just Starting Solids (6m+) — puree & textured tips" value={food.tip_puree} onChange={(e) => setF("tip_puree", e.target.value)} rows={2} style={{ resize: "vertical" }} />
               <textarea className="input" placeholder="👅 Learning to Move Food (7–9m) — finger food tips" value={food.tip_finger_food} onChange={(e) => setF("tip_finger_food", e.target.value)} rows={2} style={{ resize: "vertical" }} />
               <textarea className="input" placeholder="🤲 Self-Feeding Stage (8–10m) — mixed texture tips" value={food.tip_self_feeding} onChange={(e) => setF("tip_self_feeding", e.target.value)} rows={2} style={{ resize: "vertical" }} />
@@ -205,7 +285,9 @@ function Admin() {
                 </label>
               </div>
 
-              <button type="submit" className="btn btn-primary">Add Food</button>
+              <button type="submit" className="btn btn-primary">
+                {editingFoodId ? "Save Changes" : "Add Food"}
+              </button>
             </form>
           </section>
 
@@ -214,13 +296,20 @@ function Admin() {
             <input className="input" placeholder="Search foods…" value={foodSearch} onChange={(e) => setFoodSearch(e.target.value)} style={{ marginBottom: 12 }} />
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {filteredFoods.map((f) => (
-                <div key={f.id} className="card" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, padding: "8px 12px" }}>
-                  <div>
+                <div key={f.id} className="card" style={{
+                  display: "flex", justifyContent: "space-between", alignItems: "center",
+                  gap: 8, padding: "8px 12px",
+                  background: editingFoodId === f.id ? "var(--orange)" : undefined,
+                }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
                     <strong style={{ fontSize: "0.9rem" }}>{f.name}</strong>
                     <span className="muted" style={{ fontSize: "0.75rem", marginLeft: 8 }}>{f.food_group} · {f.safe_from_months}m+</span>
                     {f.is_iron_rich && <span style={{ marginLeft: 6, fontSize: "0.7rem", color: "var(--green-dark)", fontWeight: 700 }}>⚡ iron</span>}
                   </div>
-                  <button type="button" onClick={() => deleteFood(f.id)} style={deleteBtnStyle}>✕</button>
+                  <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+                    <button type="button" onClick={() => startEditFood(f)} style={editBtnStyle}>✏️</button>
+                    <button type="button" onClick={() => deleteFood(f.id)} style={deleteBtnStyle}>✕</button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -231,8 +320,15 @@ function Admin() {
       {/* ══════════════ MEALS TAB ══════════════ */}
       {tab === "meals" && (
         <>
-          <section className="panel">
-            <h2 style={{ marginBottom: "1rem" }}>Add Meal</h2>
+          <section className="panel" ref={mealFormRef}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+              <h2 style={{ margin: 0 }}>{editingMealId ? "✏️ Edit Meal" : "Add Meal"}</h2>
+              {editingMealId && (
+                <button type="button" className="btn" onClick={cancelEditMeal} style={{ fontSize: "0.8rem" }}>
+                  ✕ Cancel edit
+                </button>
+              )}
+            </div>
             {mealStatus && (
               <p style={{ fontSize: "0.85rem", fontWeight: 700, color: mealStatus.startsWith("Error") ? "#c0392b" : "var(--green-dark)", marginBottom: 8 }}>
                 {mealStatus}
@@ -274,6 +370,7 @@ function Admin() {
               </div>
 
               <input className="input" placeholder="Nutrition highlight (e.g. Iron-rich + protein)" value={meal.nutrition_highlight} onChange={(e) => setM("nutrition_highlight", e.target.value)} />
+              <input className="input" placeholder="Source URL (recipe reference link)" value={meal.source_url} onChange={(e) => setM("source_url", e.target.value)} />
               <textarea className="input" placeholder={"Steps (one per line)\n1. Step one\n2. Step two"} value={meal.steps} onChange={(e) => setM("steps", e.target.value)} rows={4} style={{ resize: "vertical" }} />
 
               {/* Ingredient picker */}
@@ -308,7 +405,7 @@ function Admin() {
                           onClick={() => { toggleIngredient(f); setFoodQuery(""); }}
                           style={{
                             padding: "8px 12px", cursor: "pointer", fontSize: "0.85rem",
-                            background: selected ? "var(--cream)" : "#fff",
+                            background: selected ? "var(--cream)" : "var(--white)",
                             fontWeight: selected ? 700 : 400,
                             borderBottom: "1px solid var(--border)",
                           }}
@@ -321,7 +418,9 @@ function Admin() {
                 )}
               </div>
 
-              <button type="submit" className="btn btn-primary">Add Meal</button>
+              <button type="submit" className="btn btn-primary">
+                {editingMealId ? "Save Changes" : "Add Meal"}
+              </button>
             </form>
           </section>
 
@@ -330,7 +429,11 @@ function Admin() {
             <input className="input" placeholder="Search meals…" value={mealSearch} onChange={(e) => setMealSearch(e.target.value)} style={{ marginBottom: 12 }} />
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {filteredMeals.map((m) => (
-                <div key={m.id} className="card" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, padding: "8px 12px" }}>
+                <div key={m.id} className="card" style={{
+                  display: "flex", justifyContent: "space-between", alignItems: "flex-start",
+                  gap: 8, padding: "8px 12px",
+                  background: editingMealId === m.id ? "var(--orange)" : undefined,
+                }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <strong style={{ fontSize: "0.9rem" }}>{m.title}</strong>
                     <span className="muted" style={{ fontSize: "0.75rem", marginLeft: 8 }}>{m.meal_slot} · {m.min_age_months}–{m.max_age_months}m</span>
@@ -340,7 +443,10 @@ function Admin() {
                       </p>
                     )}
                   </div>
-                  <button type="button" onClick={() => deleteMeal(m.id)} style={deleteBtnStyle}>✕</button>
+                  <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+                    <button type="button" onClick={() => startEditMeal(m)} style={editBtnStyle}>✏️</button>
+                    <button type="button" onClick={() => deleteMeal(m.id)} style={deleteBtnStyle}>✕</button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -351,7 +457,8 @@ function Admin() {
   );
 }
 
-const labelStyle = { fontSize: "0.73rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 4 };
-const deleteBtnStyle = { background: "none", border: "none", cursor: "pointer", color: "var(--muted)", fontSize: "0.95rem", padding: 4, flexShrink: 0 };
+const labelStyle     = { fontSize: "0.73rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 4 };
+const deleteBtnStyle = { background: "none", border: "none", cursor: "pointer", color: "var(--muted)", fontSize: "0.95rem", padding: 4 };
+const editBtnStyle   = { background: "none", border: "none", cursor: "pointer", fontSize: "0.95rem", padding: 4 };
 
 export default Admin;

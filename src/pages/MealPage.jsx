@@ -199,6 +199,21 @@ function MealPage() {
           ))}
         </div>
       )}
+
+      {/* ── Source reference ── */}
+      {meal.source_url && (
+        <div className="card" style={{ marginBottom: "1rem" }}>
+          <h3 style={{ marginBottom: "0.5rem", fontSize: "0.9rem" }}>Recipe source</h3>
+          <a
+            href={meal.source_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ fontSize: "0.82rem", color: "var(--orange-dark)", fontWeight: 700, wordBreak: "break-all" }}
+          >
+            {meal.source_url}
+          </a>
+        </div>
+      )}
     </div>
   );
 }
