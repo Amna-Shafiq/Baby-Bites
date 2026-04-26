@@ -307,7 +307,7 @@ function ParticleTitle() {
   return (
     <canvas ref={canvasRef} style={{
       width: "100%", height: 230, display: "block",
-      cursor: "none", background: "transparent",
+      cursor: "none", background: "rgba(250, 250, 248, 0.5)",
     }} />
   );
 }
@@ -711,7 +711,7 @@ function MythBusters() {
       {/* ── Results screen ── */}
       {finished ? (
         <div style={{
-          background: "transparent",
+          background: "rgba(250, 250, 248, 0.5)",
           border: "1.5px solid var(--border)",
           borderRadius: 20, padding: "2rem 1.75rem",
           textAlign: "center", animation: "fadeSlideUp 0.4s ease",
@@ -751,7 +751,7 @@ function MythBusters() {
       ) : (
 
       <div style={{
-        background: "transparent",
+        background: "rgba(250, 250, 248, 0.5)",
         border: "1.5px solid var(--border)",
         borderRadius: 20, padding: "1.5rem 1.75rem",
         position: "relative", overflow: "hidden",
