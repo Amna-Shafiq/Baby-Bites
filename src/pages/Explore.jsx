@@ -572,6 +572,12 @@ const MYTHS = [
     explanation: "You can do both! BLW and spoon-feeding both have benefits and drawbacks, and using some combination of both feeding pathways brings out the best in each. BLW offers babies independence over their own feeding — often leading to less fussy eating, improved appetite regulation, and enhanced fine motor skills. Spoon-feeding has the advantage of exposing babies to a greater diversity of foods, textures, and flavors during early complementary feeding.",
     source: null,
   },
+  {
+    statement: "Caffeine while breastfeeding is a complete no-no",
+    answer: "myth",
+    explanation: "Women who enjoy a cup of coffee can rejoice — caffeine isn't off-limits while breastfeeding. Research has found that only about 1% of the caffeine you drink ends up in breast milk. You can safely consume up to 200 mg per day (about two 8-oz cups of coffee). Just be sure to count all sources of caffeine — tea, chocolate, and soft drinks — toward your daily total.",
+    source: null,
+  },
 ];
 
 function ConfettiBurst({ active }) {
