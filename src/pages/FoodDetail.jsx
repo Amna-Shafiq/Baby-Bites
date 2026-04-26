@@ -38,7 +38,8 @@ const FOOD_REFERENCES = {
   rosemary:       [SRN],
   // Meats
   chicken:        [SS("chicken")],
-  "ground beef":  [SS("ground-beef")],
+  "ground beef":  [SS("ground-beef"), { label: "Beef It's What's For Dinner — Beef in the Early Years", url: "https://www.beefitswhatsfordinner.com/nutrition/beef-in-the-early-years" }],
+  beef:           [SS("ground-beef"), { label: "Beef It's What's For Dinner — Beef in the Early Years", url: "https://www.beefitswhatsfordinner.com/nutrition/beef-in-the-early-years" }],
   lamb:           [SS("lamb")],
   turkey:         [SS("turkey")],
   // Fruits
@@ -55,6 +56,10 @@ const FOOD_REFERENCES = {
   "bajra (pearl millet)": [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
   "pearl millet":         [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
   millet:                 [SS("millet")],
+  barley:                 [SS("barley")],
+  // Vegetables (additional)
+  beetroot:               [SS("beet-beetroot")],
+  beet:                   [SS("beet-beetroot")],
   // Other
   "french toast": [SS("french-toast")],
   "ice cream":    [SS("ice-cream")],
