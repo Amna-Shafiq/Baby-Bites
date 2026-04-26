@@ -1263,13 +1263,20 @@ function Explore() {
               { to: "/my-meals",            emoji: "📋", title: "Saved meals",          desc: "Your personal collection of logged and saved baby meals." },
             ].map((item) => (
               <Link key={item.to} to={item.to} style={{ textDecoration: "none", display: "block" }}>
-                <span style={{ fontSize: "2rem", display: "block", marginBottom: "0.55rem" }}>{item.emoji}</span>
-                <p style={{ margin: "0 0 5px", fontWeight: 800, fontSize: "1rem", color: "var(--dark)", fontFamily: "Aileron, sans-serif" }}>
-                  {item.title}
-                </p>
-                <p className="muted" style={{ margin: 0, fontSize: "0.83rem", lineHeight: 1.55 }}>
-                  {item.desc}
-                </p>
+                <div style={{
+                  background: "rgba(250, 250, 248, 0.5)",
+                  border: "1.5px solid var(--border)",
+                  borderRadius: 16, padding: "1.1rem 1.25rem",
+                  height: "100%",
+                }}>
+                  <span style={{ fontSize: "2rem", display: "block", marginBottom: "0.55rem" }}>{item.emoji}</span>
+                  <p style={{ margin: "0 0 5px", fontWeight: 800, fontSize: "1rem", color: "var(--dark)", fontFamily: "Aileron, sans-serif" }}>
+                    {item.title}
+                  </p>
+                  <p className="muted" style={{ margin: 0, fontSize: "0.83rem", lineHeight: 1.55 }}>
+                    {item.desc}
+                  </p>
+                </div>
               </Link>
             ))}
           </div>
