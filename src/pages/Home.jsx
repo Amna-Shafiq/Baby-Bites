@@ -491,18 +491,22 @@ function MealsShowcase() {
       onMouseLeave={() => setPaused(false)}
     >
       {/* Image — zoom pans to each dish via transform-origin transition */}
-      <img
-        src="/food-spread.png"
-        alt={dish.name}
-        style={{
-          width: "100%", height: "100%",
-          objectFit: "cover",
-          display: "block",
-          transform: "scale(2.4)",
-          transformOrigin: dish.origin,
-          transition: "transform-origin 2s cubic-bezier(0.4, 0, 0.2, 1)",
-        }}
-      />
+      <picture>
+        <source srcSet="/food-spread.webp" type="image/webp" />
+        <img
+          src="/food-spread.png"
+          alt={dish.name}
+          fetchPriority="high"
+          style={{
+            width: "100%", height: "100%",
+            objectFit: "cover",
+            display: "block",
+            transform: "scale(2.4)",
+            transformOrigin: dish.origin,
+            transition: "transform-origin 2s cubic-bezier(0.4, 0, 0.2, 1)",
+          }}
+        />
+      </picture>
 
       {/* Dark gradient at bottom for text legibility */}
       <div style={{
@@ -941,7 +945,6 @@ function Home() {
           <Link to="/meals">{t("meals")}</Link>
           <Link to="/foods">{t("allFoods")}</Link>
           <Link to="/about">{t("footerAbout")}</Link>
-          <a href="#">{t("footerPrivacy")}</a>
         </div>
         <div className="fcopy">{t("footerCopy")}</div>
       </footer>
