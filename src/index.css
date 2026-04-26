@@ -579,6 +579,10 @@ button { font-family: 'Nunito', sans-serif; }
   border: 1.5px solid var(--border);
   min-height: 150px;
 }
+
+.foods-page .food-card {
+  background: rgba(250, 250, 248, 0.75);
+}
 .food-card:hover {
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   transform: translateY(-2px);

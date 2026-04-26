@@ -140,7 +140,7 @@ function AllFoods() {
   }, [filteredFoods, page, showAll]);
 
   return (
-    <div className="page">
+    <div className="page foods-page">
 
 
       {showAuthPrompt && (
