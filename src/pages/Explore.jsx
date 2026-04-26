@@ -307,7 +307,7 @@ function ParticleTitle() {
   return (
     <canvas ref={canvasRef} style={{
       width: "100%", height: 230, display: "block",
-      cursor: "none", background: "rgba(250, 250, 248, 0.5)",
+      cursor: "none", background: "transparent",
     }} />
   );
 }
