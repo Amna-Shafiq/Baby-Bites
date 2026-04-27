@@ -198,18 +198,29 @@ function MealPage() {
                 step.toLowerCase().includes("stovetop method") ||
                 step.toLowerCase().includes("pressure cooker method") ||
                 step.toLowerCase().includes("tawa method") ||
-                step.toLowerCase().includes("oven method");
+                step.toLowerCase().includes("oven method") ||
+                step.toLowerCase().startsWith("spices used");
 
               if (isHeading) {
+                const isSpiceNote = step.toLowerCase().startsWith("spices used");
                 stepCount = 0;
                 return (
-                  <p key={idx} style={{
-                    fontWeight: 700, fontSize: 13,
-                    color: "#c4622a", margin: "12px 0 6px",
-                    textTransform: "uppercase", letterSpacing: "0.05em",
+                  <div key={idx} style={{
+                    margin: "12px 0 8px",
+                    padding: "8px 12px",
+                    borderRadius: 8,
+                    background: isSpiceNote ? "#FFF8E1" : "#f5f5f5",
+                    borderLeft: `3px solid ${isSpiceNote ? "#F5A623" : "#c4622a"}`,
                   }}>
-                    {step.replace(":", "")}
-                  </p>
+                    <p style={{
+                      fontWeight: 700, fontSize: 12,
+                      color: isSpiceNote ? "#C4920A" : "#c4622a",
+                      margin: 0,
+                      textTransform: "uppercase", letterSpacing: "0.05em",
+                    }}>
+                      {step.replace(":", "")}
+                    </p>
+                  </div>
                 );
               }
 
