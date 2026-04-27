@@ -78,7 +78,7 @@ function MealPage() {
   );
 
   const steps = meal.steps
-    ? meal.steps.replace(/\\n/g, "\n").split("\n").filter((s) => s.trim())
+    ? meal.steps.split("\n").filter((s) => s.trim())
     : [];
   const hasAllergens = ingredients.some((i) => i.foods?.allergen_notes);
 
@@ -189,14 +189,47 @@ function MealPage() {
 
       {/* ── Steps ── */}
       {steps.length > 0 && (
-        <div className="card" style={{ marginBottom: "1rem" }}>
-          <h3 style={{ marginBottom: "1rem" }}>How to make it</h3>
-          {steps.map((step, idx) => (
-            <div key={idx} className="step-item">
-              <span className="step-num">{idx + 1}</span>
-              <p className="step-text">{step.replace(/^\d+\.\s*/, "")}</p>
-            </div>
-          ))}
+        <div className="card" style={{ marginBottom: 16 }}>
+          <h3 style={{ marginTop: 0 }}>How to make it</h3>
+          {(() => {
+            let stepCount = 0;
+            return steps.map((step, idx) => {
+              const isHeading =
+                step.toLowerCase().includes("stovetop method") ||
+                step.toLowerCase().includes("pressure cooker method") ||
+                step.toLowerCase().includes("tawa method") ||
+                step.toLowerCase().includes("oven method");
+
+              if (isHeading) {
+                stepCount = 0;
+                return (
+                  <p key={idx} style={{
+                    fontWeight: 700, fontSize: 13,
+                    color: "#c4622a", margin: "12px 0 6px",
+                    textTransform: "uppercase", letterSpacing: "0.05em",
+                  }}>
+                    {step.replace(":", "")}
+                  </p>
+                );
+              }
+
+              stepCount++;
+              return (
+                <div key={idx} style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "flex-start" }}>
+                  <span style={{
+                    minWidth: 24, height: 24, borderRadius: "50%",
+                    background: "#f5f5f5", display: "flex", alignItems: "center",
+                    justifyContent: "center", fontSize: 12, fontWeight: 600, color: "#555",
+                  }}>
+                    {stepCount}
+                  </span>
+                  <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: "#444" }}>
+                    {step.replace(/^\d+\.\s*/, "")}
+                  </p>
+                </div>
+              );
+            });
+          })()}
         </div>
       )}
 
