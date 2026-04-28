@@ -60,6 +60,8 @@ const FOOD_REFERENCES = {
   // Vegetables (additional)
   beetroot:               [SS("beet-beetroot")],
   beet:                   [SS("beet-beetroot")],
+  // Citrus
+  lemon:                  [SS("lemon")],
   // Other
   "french toast": [SS("french-toast")],
   "ice cream":    [SS("ice-cream")],
