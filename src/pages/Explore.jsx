@@ -867,6 +867,7 @@ const CATEGORY_META = {
   fruit:       { label: "First Fruits",       emoji: "🍎", color: "#FFF0F3", border: "#e74c3c" },
   protein:     { label: "First Proteins",     emoji: "🥩", color: "#FFF4EE", border: "#c4622a" },
   dairy:       { label: "First Dairy",        emoji: "🥛", color: "#F0F8FF", border: "#2980b9" },
+  spice:       { label: "First Spices",       emoji: "🌿", color: "#F0FFF8", border: "#16a085" },
   finger_food: { label: "First Finger Foods", emoji: "🤌", color: "#F5F0FF", border: "#8e44ad" },
 };
 
@@ -917,9 +918,9 @@ function FirstCard({ item }) {
       }}>
         {item.description}
       </p>
-      {item.safety_note && (
-        <p style={{ margin: "0 0 8px", fontSize: "0.75rem", color: "#c0392b", fontWeight: 600, lineHeight: 1.4 }}>
-          ⚠️ {item.safety_note}
+      {item.how_to_serve && (
+        <p style={{ margin: "0 0 8px", fontSize: "0.75rem", color: meta.border, fontWeight: 600, lineHeight: 1.4 }}>
+          🍴 {item.how_to_serve}
         </p>
       )}
       {clickable && (
