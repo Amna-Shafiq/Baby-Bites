@@ -862,13 +862,13 @@ function MythBusters() {
 
 // ── Firsts ────────────────────────────────────────────────
 const CATEGORY_META = {
-  grain:       { label: "First Grains",       emoji: "🌾", color: "#FFF8E1", border: "#F5A623" },
-  veggie:      { label: "First Vegetables",   emoji: "🥦", color: "#F0FFF4", border: "#27ae60" },
-  fruit:       { label: "First Fruits",       emoji: "🍎", color: "#FFF0F3", border: "#e74c3c" },
-  protein:     { label: "First Proteins",     emoji: "🥩", color: "#FFF4EE", border: "#c4622a" },
-  dairy:       { label: "First Dairy",        emoji: "🥛", color: "#F0F8FF", border: "#2980b9" },
-  spice:       { label: "First Spices",       emoji: "🌿", color: "#F0FFF8", border: "#16a085" },
-  finger_food: { label: "First Finger Foods", emoji: "🤌", color: "#F5F0FF", border: "#8e44ad" },
+  grain:       { label: "Baby's First Grains",       emoji: "🌾", color: "#FFF8E1", border: "#F5A623" },
+  veggie:      { label: "Baby's First Vegetables",   emoji: "🥦", color: "#F0FFF4", border: "#27ae60" },
+  fruit:       { label: "Baby's First Fruits",       emoji: "🍎", color: "#FFF0F3", border: "#e74c3c" },
+  protein:     { label: "Baby's First Proteins",     emoji: "🥩", color: "#FFF4EE", border: "#c4622a" },
+  dairy:       { label: "Baby's First Dairy",        emoji: "🥛", color: "#F0F8FF", border: "#2980b9" },
+  spice:       { label: "Baby's First Spices",       emoji: "🌿", color: "#F0FFF8", border: "#16a085" },
+  finger_food: { label: "Baby's First Finger Foods", emoji: "🤌", color: "#F5F0FF", border: "#8e44ad" },
 };
 
 function FirstCard({ item }) {
@@ -961,6 +961,29 @@ function Firsts() {
 
   return (
     <div>
+      {/* ── Intro ── */}
+      <div style={{ marginBottom: "2.5rem" }}>
+        <span style={{
+          fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
+          letterSpacing: "0.12em", color: "var(--orange-dark)", display: "block",
+          marginBottom: "0.4rem",
+        }}>
+          Starting solids
+        </span>
+        <h2 style={{
+          margin: "0 0 0.65rem",
+          fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
+          fontFamily: "Aileron, sans-serif", fontWeight: 700,
+          color: "var(--dark)", lineHeight: 1.1, letterSpacing: "-0.01em",
+        }}>
+          First foods for babies
+        </h2>
+        <p className="muted" style={{ margin: 0, fontSize: "0.92rem", lineHeight: 1.65, maxWidth: 520 }}>
+          A guide to introducing foods across every category — from the gentlest first grains to soft finger foods.
+          Each card shows what to offer, why it works, and how to serve it safely.
+        </p>
+      </div>
+
       {Object.entries(CATEGORY_META).map(([cat, meta]) => {
         const items = grouped[cat] || [];
         if (items.length === 0) return null;
@@ -1300,7 +1323,7 @@ function Explore() {
         <div style={{ display: "flex", gap: 8, marginBottom: "2.5rem" }}>
           {[
             { key: "explore", label: "Explore" },
-            { key: "firsts",  label: "🍼 Firsts" },
+            { key: "firsts",  label: "First Foods" },
           ].map(t => (
             <button
               key={t.key}
