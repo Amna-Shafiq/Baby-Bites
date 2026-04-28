@@ -1946,3 +1946,6 @@ USING (auth.uid() = user_id)
 WITH CHECK (auth.uid() = user_id);
 
 ALTER TABLE feeding_logs ADD COLUMN IF NOT EXISTS food_id UUID REFERENCES foods(id) ON DELETE SET NULL;
+SELECT name, allergen_notes FROM public.foods 
+WHERE allergen_notes IS NOT NULL 
+ORDER BY name;
