@@ -813,9 +813,10 @@ function Home() {
           </div>
         </div>
 
-        {/* ── Film tape strip — bottom of hero ── */}
-        <FilmStrip />
       </div>
+
+      {/* ── Film tape strip — between hero and food strip ── */}
+      <FilmStrip />
 
       {/* ── Animated food strip ── */}
       <div className="lp-strip">

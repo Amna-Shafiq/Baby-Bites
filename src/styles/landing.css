@@ -101,10 +101,10 @@
   background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-  height: calc(100vh - 66px);   /* fills viewport below the sticky nav */
+  min-height: calc(100vh - 66px);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .lp-hero {
