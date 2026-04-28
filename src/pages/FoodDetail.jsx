@@ -62,6 +62,8 @@ const FOOD_REFERENCES = {
   beet:                   [SS("beet-beetroot")],
   // Citrus
   lemon:                  [SS("lemon")],
+  // Oils
+  "olive oil":            [SS("olive-oil")],
   // Other
   "french toast": [SS("french-toast")],
   "ice cream":    [SS("ice-cream")],
