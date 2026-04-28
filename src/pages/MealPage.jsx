@@ -251,6 +251,30 @@ function MealPage() {
         </div>
       )}
 
+      {/* ── More photos ── */}
+      {Array.isArray(meal.extra_photos) && meal.extra_photos.length > 0 && (
+        <div className="card" style={{ marginBottom: 16 }}>
+          <h3 style={{ marginTop: 0, marginBottom: 12 }}>More photos</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: 10 }}>
+            {meal.extra_photos.map((photo, idx) => (
+              <div key={idx} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                <img
+                  src={photo.url}
+                  alt={photo.caption || `Photo ${idx + 1}`}
+                  onError={e => { e.target.src = "https://placehold.co/140x140?text=🍽"; }}
+                  style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", borderRadius: 10 }}
+                />
+                {photo.caption && (
+                  <p style={{ margin: 0, fontSize: 12, color: "var(--muted)", textAlign: "center", lineHeight: 1.4 }}>
+                    {photo.caption}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* ── Source reference ── */}
       {meal.source_url && (
         <div className="card" style={{ marginBottom: "1rem" }}>

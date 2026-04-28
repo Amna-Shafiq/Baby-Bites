@@ -18,6 +18,7 @@ const emptyMeal = {
   steps: "", nutrition_highlight: "", description: "", image_url: "",
   source_url: "",
 };
+const emptyPhoto = { url: "", caption: "" };
 
 function Admin() {
   const [tab, setTab] = useState("foods");
@@ -39,6 +40,7 @@ function Admin() {
   const [mealSearch, setMealSearch] = useState("");
   const [selectedFoods, setSelectedFoods] = useState([]);
   const [foodQuery, setFoodQuery]   = useState("");
+  const [extraPhotos, setExtraPhotos] = useState([]);
 
   const loadFoods = useCallback(async () => {
     const { data } = await supabase.from("foods").select("*").order("name");
@@ -144,6 +146,7 @@ function Admin() {
       .map((mf) => mf.foods)
       .filter(Boolean);
     setSelectedFoods(existing);
+    setExtraPhotos(Array.isArray(m.extra_photos) ? m.extra_photos : []);
     setMealStatus("");
     mealFormRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
@@ -151,6 +154,7 @@ function Admin() {
   const cancelEditMeal = () => {
     setEditingMealId(null); setMeal(emptyMeal);
     setSelectedFoods([]); setFoodQuery(""); setMealStatus("");
+    setExtraPhotos([]);
   };
 
   const toggleIngredient = (foodItem) => {
@@ -176,6 +180,9 @@ function Admin() {
       description:         meal.description.trim() || null,
       image_url:           meal.image_url.trim() || null,
       source_url:          meal.source_url.trim() || null,
+      extra_photos:        extraPhotos.filter(p => p.url.trim()).length > 0
+                             ? extraPhotos.filter(p => p.url.trim()).map(p => ({ url: p.url.trim(), caption: p.caption.trim() }))
+                             : null,
       is_public:           true,
     };
 
@@ -201,7 +208,7 @@ function Admin() {
       }
       setMealStatus("Meal added!");
     }
-    setMeal(emptyMeal); setSelectedFoods([]); setFoodQuery("");
+    setMeal(emptyMeal); setSelectedFoods([]); setFoodQuery(""); setExtraPhotos([]);
     loadMeals();
   };
 
@@ -416,6 +423,46 @@ function Admin() {
                     })}
                   </div>
                 )}
+              </div>
+
+              {/* ── Extra photos ── */}
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                  <label style={labelStyle}>More Photos (optional)</label>
+                  <button
+                    type="button"
+                    className="btn"
+                    style={{ fontSize: "0.75rem", padding: "3px 10px" }}
+                    onClick={() => setExtraPhotos(p => [...p, { ...emptyPhoto }])}
+                  >
+                    + Add photo
+                  </button>
+                </div>
+                {extraPhotos.map((photo, i) => (
+                  <div key={i} style={{ display: "flex", gap: 6, marginBottom: 6, alignItems: "center" }}>
+                    <input
+                      className="input"
+                      placeholder="Image URL"
+                      value={photo.url}
+                      onChange={e => setExtraPhotos(p => p.map((x, j) => j === i ? { ...x, url: e.target.value } : x))}
+                      style={{ flex: 2 }}
+                    />
+                    <input
+                      className="input"
+                      placeholder="Caption"
+                      value={photo.caption}
+                      onChange={e => setExtraPhotos(p => p.map((x, j) => j === i ? { ...x, caption: e.target.value } : x))}
+                      style={{ flex: 2 }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setExtraPhotos(p => p.filter((_, j) => j !== i))}
+                      style={{ ...deleteBtnStyle, fontSize: "1rem" }}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
               </div>
 
               <button type="submit" className="btn btn-primary">
