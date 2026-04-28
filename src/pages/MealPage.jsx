@@ -59,7 +59,7 @@ function MealPage() {
 
       const { data: mfData } = await supabase
         .from("meal_foods")
-        .select("quantity, foods(name, food_group, is_iron_rich, allergen_notes)")
+        .select("quantity, foods(id, name, food_group, is_iron_rich, allergen_notes)")
         .eq("meal_id", id);
 
       setIngredients(mfData || []);
@@ -179,8 +179,15 @@ function MealPage() {
         <div className="card" style={{ marginBottom: "1rem" }}>
           <h3 style={{ marginBottom: "0.75rem" }}>Ingredients</h3>
           {ingredients.map((item, idx) => (
-            <div key={idx} className="ingredient-row">
-              <span>{item.foods?.name}</span>
+            <div
+              key={idx}
+              className="ingredient-row"
+              onClick={() => item.foods?.id && navigate(`/foods/${item.foods.id}`)}
+              style={{ cursor: item.foods?.id ? "pointer" : undefined }}
+            >
+              <span style={{ color: item.foods?.id ? "var(--orange-dark)" : undefined, fontWeight: item.foods?.id ? 600 : undefined }}>
+                {item.foods?.name}
+              </span>
               <span className="muted">{item.quantity}</span>
             </div>
           ))}
