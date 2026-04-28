@@ -1,3 +1,150 @@
+/* ── Splash screen ── */
+.splash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  background: #1a0d04;
+  transition: opacity 0.55s ease;
+  pointer-events: all;
+}
+
+.splash-overlay.splash-fade {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Left and right door panels */
+.splash-panel {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(160deg, #7B4220 0%, #5C2F10 40%, #6B3818 100%);
+  overflow: hidden;
+  will-change: transform;
+}
+
+/* Subtle wood grain */
+.splash-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    175deg,
+    transparent 0px,
+    rgba(0,0,0,0.04) 2px,
+    transparent 5px,
+    rgba(255,255,255,0.015) 8px
+  );
+}
+
+.splash-left {
+  transform-origin: left center;
+  border-right: 4px solid #2e1506;
+  transition: transform 1.1s cubic-bezier(0.5, 0, 0.2, 1);
+}
+
+.splash-right {
+  transform-origin: right center;
+  border-left: 4px solid #2e1506;
+  transition: transform 1.1s cubic-bezier(0.5, 0, 0.2, 1);
+}
+
+.splash-open-left  { transform: perspective(1400px) rotateY(-105deg); }
+.splash-open-right { transform: perspective(1400px) rotateY(105deg);  }
+
+/* Panel inset decorations */
+.splash-inset {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  border: 2px solid rgba(255,200,130,0.18);
+  border-radius: 3px;
+}
+.splash-inset-top { top: 8%;    height: 28%; }
+.splash-inset-bot { bottom: 8%; height: 38%; }
+
+/* Door knob */
+.splash-knob {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #f5df80, #C8A820 55%, #8B6910);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.3);
+}
+
+/* Carrot container — floats centred above both panels */
+.splash-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+  gap: 16px;
+}
+
+.splash-carrot {
+  position: relative;
+  font-size: 88px;
+  line-height: 1;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.5));
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.splash-carrot.splash-biting {
+  animation: carrotChomp 0.35s ease;
+}
+
+.splash-carrot.splash-hiding {
+  opacity: 0;
+  transform: scale(0.7);
+}
+
+@keyframes carrotChomp {
+  0%   { transform: scale(1)    rotate(0deg); }
+  25%  { transform: scale(1.18) rotate(-8deg); }
+  55%  { transform: scale(0.92) rotate(4deg); }
+  80%  { transform: scale(1.05) rotate(-2deg); }
+  100% { transform: scale(1)    rotate(0deg); }
+}
+
+/* Bite mark — dark oval overlaid on carrot */
+.splash-bite {
+  position: absolute;
+  right: 2px;
+  top: 12px;
+  width: 30px;
+  height: 26px;
+  background: #1a0d04;
+  border-radius: 50%;
+  animation: biteIn 0.18s ease forwards;
+}
+
+@keyframes biteIn {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* Brand label on door */
+.splash-brand {
+  color: rgba(255, 210, 140, 0.75);
+  font-family: 'Aileron', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0;
+  transition: opacity 0.3s ease;
+}
+
+.splash-brand.splash-hiding { opacity: 0; }
+
 /* ── Root container ── */
 /* Variables and fonts are now global (index.css) */
 .landing-page {
