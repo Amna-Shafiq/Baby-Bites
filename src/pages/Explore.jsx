@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { supabase } from "../lib/supabaseClient";
 import useAIHelper from "../hooks/useAIHelper";
@@ -860,9 +860,141 @@ function MythBusters() {
   );
 }
 
+// ── Firsts ────────────────────────────────────────────────
+const CATEGORY_META = {
+  grain:       { label: "First Grains",       emoji: "🌾", color: "#FFF8E1", border: "#F5A623" },
+  veggie:      { label: "First Vegetables",   emoji: "🥦", color: "#F0FFF4", border: "#27ae60" },
+  fruit:       { label: "First Fruits",       emoji: "🍎", color: "#FFF0F3", border: "#e74c3c" },
+  protein:     { label: "First Proteins",     emoji: "🥩", color: "#FFF4EE", border: "#c4622a" },
+  dairy:       { label: "First Dairy",        emoji: "🥛", color: "#F0F8FF", border: "#2980b9" },
+  finger_food: { label: "First Finger Foods", emoji: "🤌", color: "#F5F0FF", border: "#8e44ad" },
+};
+
+function FirstCard({ item }) {
+  const navigate = useNavigate();
+  const meta = CATEGORY_META[item.category] || {};
+  const clickable = item.food_id || item.meal_id;
+
+  const handleClick = () => {
+    if (item.food_id) navigate(`/foods/${item.food_id}`);
+    else if (item.meal_id) navigate(`/meal/${item.meal_id}`);
+  };
+
+  return (
+    <div
+      onClick={clickable ? handleClick : undefined}
+      style={{
+        background: meta.color || "#fafaf8",
+        border: `1.5px solid ${meta.border || "var(--border)"}`,
+        borderRadius: 16,
+        padding: "1.1rem 1.25rem",
+        cursor: clickable ? "pointer" : "default",
+        transition: "transform 0.15s, box-shadow 0.15s",
+      }}
+      onMouseEnter={e => { if (clickable) { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.08)"; } }}
+      onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, marginBottom: 6 }}>
+        <p style={{ margin: 0, fontWeight: 800, fontSize: "0.95rem", color: "var(--dark)", fontFamily: "Aileron, sans-serif", lineHeight: 1.3 }}>
+          {item.title}
+        </p>
+        <span style={{
+          flexShrink: 0,
+          background: meta.border, color: "#fff",
+          borderRadius: 20, padding: "2px 9px",
+          fontSize: "0.68rem", fontWeight: 700,
+        }}>
+          {item.safe_from_months}m+
+        </span>
+      </div>
+      {item.subtitle && (
+        <p style={{ margin: "0 0 6px", fontSize: "0.78rem", color: meta.border, fontWeight: 700 }}>
+          {item.subtitle}
+        </p>
+      )}
+      <p style={{ margin: "0 0 8px", fontSize: "0.82rem", color: "var(--muted)", lineHeight: 1.55,
+        display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden",
+      }}>
+        {item.description}
+      </p>
+      {item.safety_note && (
+        <p style={{ margin: "0 0 8px", fontSize: "0.75rem", color: "#c0392b", fontWeight: 600, lineHeight: 1.4 }}>
+          ⚠️ {item.safety_note}
+        </p>
+      )}
+      {clickable && (
+        <p style={{ margin: 0, fontSize: "0.75rem", color: meta.border, fontWeight: 700 }}>
+          {item.food_id ? "View food →" : "View meal →"}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function Firsts() {
+  const [firsts, setFirsts]   = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase
+      .from("firsts")
+      .select("*")
+      .eq("is_published", true)
+      .order("category")
+      .order("order_in_category")
+      .then(({ data }) => { setFirsts(data || []); setLoading(false); });
+  }, []);
+
+  const grouped = Object.keys(CATEGORY_META).reduce((acc, cat) => {
+    acc[cat] = firsts.filter(f => f.category === cat);
+    return acc;
+  }, {});
+
+  if (loading) return (
+    <div style={{ padding: "2rem 0" }}>
+      {[1,2,3].map(i => (
+        <div key={i} style={{ height: 120, borderRadius: 16, background: "var(--border)", marginBottom: 16, opacity: 0.4, animation: "skeleton-pulse 1.5s ease-in-out infinite" }} />
+      ))}
+    </div>
+  );
+
+  return (
+    <div>
+      {Object.entries(CATEGORY_META).map(([cat, meta]) => {
+        const items = grouped[cat] || [];
+        if (items.length === 0) return null;
+        return (
+          <div key={cat} style={{ marginBottom: "2.5rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: "1rem" }}>
+              <span style={{
+                width: 36, height: 36, borderRadius: "50%",
+                background: meta.color, border: `2px solid ${meta.border}`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: "1.1rem", flexShrink: 0,
+              }}>
+                {meta.emoji}
+              </span>
+              <h3 style={{
+                margin: 0, fontFamily: "Aileron, sans-serif",
+                fontWeight: 800, fontSize: "1.15rem", color: "var(--dark)",
+              }}>
+                {meta.label}
+              </h3>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 14 }}>
+              {items.map(item => <FirstCard key={item.id} item={item} />)}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function Explore() {
   const [input, setInput]       = useState("");
   const [cooldown, setCooldown] = useState(false);
+  const [tab, setTab]           = useState("explore");
   const [articleScroll, setArticleScroll] = useState(0);
   const [dragging, setDragging] = useState(false);
   const articleRowRef = useRef(null);
@@ -1163,6 +1295,35 @@ function Explore() {
       {/* ── Below-the-fold sections (back to normal padding) ── */}
       <div style={{ padding: "3rem 2rem 3rem" }}>
 
+        {/* ── Tab switcher ── */}
+        <div style={{ display: "flex", gap: 8, marginBottom: "2.5rem" }}>
+          {[
+            { key: "explore", label: "Explore" },
+            { key: "firsts",  label: "🍼 Firsts" },
+          ].map(t => (
+            <button
+              key={t.key}
+              type="button"
+              onClick={() => setTab(t.key)}
+              style={{
+                padding: "7px 20px", borderRadius: 20, fontWeight: 700,
+                fontSize: "0.88rem", cursor: "pointer",
+                border: tab === t.key ? "none" : "1.5px solid var(--border)",
+                background: tab === t.key ? "var(--orange-dark)" : "transparent",
+                color: tab === t.key ? "#fff" : "var(--muted)",
+                transition: "all 0.15s",
+                fontFamily: "Nunito, sans-serif",
+              }}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {/* ── FIRSTS TAB ── */}
+        {tab === "firsts" && <Firsts />}
+
+        {tab === "explore" && <>
         {/* ── MEAL OF THE DAY ── */}
         <MealOfTheDay />
 
@@ -1281,6 +1442,7 @@ function Explore() {
             ))}
           </div>
         </div>
+        </>}
       </div>
     </div>
   );
