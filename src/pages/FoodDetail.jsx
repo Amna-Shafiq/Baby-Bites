@@ -61,9 +61,10 @@ const FOOD_REFERENCES = {
   "pearl millet":         [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
   millet:                 [SS("millet")],
   barley:                 [SS("barley")],
-  besan:                  [{ label: "Dalo Family Apps — Chickpea Flour for Babies", url: "https://dalofamilyapps.com/learn/food/chickpea-flour" }],
-  "chickpea flour":       [{ label: "Dalo Family Apps — Chickpea Flour for Babies", url: "https://dalofamilyapps.com/learn/food/chickpea-flour" }],
-  "gram flour":           [{ label: "Dalo Family Apps — Chickpea Flour for Babies", url: "https://dalofamilyapps.com/learn/food/chickpea-flour" }],
+  besan:                         [{ label: "Dalo Family Apps — Chickpea Flour for Babies", url: "https://dalofamilyapps.com/learn/food/chickpea-flour" }],
+  "besan (chickpea flour)":      [{ label: "Dalo Family Apps — Chickpea Flour for Babies", url: "https://dalofamilyapps.com/learn/food/chickpea-flour" }],
+  "chickpea flour":              [{ label: "Dalo Family Apps — Chickpea Flour for Babies", url: "https://dalofamilyapps.com/learn/food/chickpea-flour" }],
+  "gram flour":                  [{ label: "Dalo Family Apps — Chickpea Flour for Babies", url: "https://dalofamilyapps.com/learn/food/chickpea-flour" }],
   // Vegetables (additional)
   beetroot:               [SS("beet-beetroot")],
   beet:                   [SS("beet-beetroot")],
