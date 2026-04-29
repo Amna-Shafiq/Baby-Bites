@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 import { supabase } from "../lib/supabaseClient";
 import LoginPromptModal from "../components/LoginPromptModal";
@@ -141,7 +142,10 @@ function AllFoods() {
 
   return (
     <div className="page foods-page">
-
+      <Helmet>
+        <title>Baby-Safe Foods A–Z | Baby Bites</title>
+        <meta name="description" content="Browse 100+ baby-safe foods organised by food group and age. Filter by allergens, search by name, and find out when and how to introduce each food safely." />
+      </Helmet>
 
       {showAuthPrompt && (
         <LoginPromptModal

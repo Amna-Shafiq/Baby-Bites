@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 import { supabase } from "../lib/supabaseClient";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -251,7 +252,10 @@ function FoodDetail() {
 
   return (
     <div className="page">
-      
+      <Helmet>
+        <title>{food.name} for Babies | Baby Bites</title>
+        <meta name="description" content={`When can babies eat ${food.name}? Safe from ${food.safe_from_months} months. ${food.notes ? food.notes.slice(0, 120) + "…" : "Learn how to prepare and serve it safely at every stage."}`} />
+      </Helmet>
 
       {logOpen && food && (
         <LogMealModal

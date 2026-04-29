@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 import { supabase } from "../lib/supabaseClient";
 import useAIHelper from "../hooks/useAIHelper";
@@ -1085,7 +1086,10 @@ function Explore() {
 
   return (
     <div className="page" style={{ paddingTop: 0, paddingLeft: 0, paddingRight: 0 }}>
-
+      <Helmet>
+        <title>Explore Baby Foods & First Foods | Baby Bites</title>
+        <meta name="description" content="Explore age-appropriate foods for your baby, browse first foods by category, and get AI-powered meal suggestions. Everything you need for confident weaning." />
+      </Helmet>
 
       {/* ── HERO: full-bleed video background, content on top ── */}
       <div style={{

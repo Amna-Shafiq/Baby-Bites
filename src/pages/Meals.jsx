@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 import { supabase } from "../lib/supabaseClient";
 import useFavorites from "../hooks/useFavorites";
@@ -136,6 +137,10 @@ function Meals() {
 
   return (
     <div className="page">
+      <Helmet>
+        <title>Baby Meal Recipes | Baby Bites</title>
+        <meta name="description" content="Browse baby-friendly recipes filtered by age, meal slot, and prep time. Quick purees, finger foods, and family meals — all designed for babies 6–24 months." />
+      </Helmet>
 
       {toastMessage && <div className="toast">{toastMessage}</div>}
       {showAuthPrompt && (

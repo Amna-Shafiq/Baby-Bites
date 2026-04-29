@@ -1,5 +1,7 @@
 
 
+import { Helmet } from "react-helmet-async";
+
 const TEAM = [
   { name: "Amna Shafiq", role: "Co-founder & Product", avatar: "👩‍💻" },
   { name: "Team Member", role: "Co-founder & Design",  avatar: "🧑‍🎨" },
@@ -15,7 +17,10 @@ const VALUES = [
 function About() {
   return (
     <div className="page">
-
+      <Helmet>
+        <title>About Baby Bites | Our Story</title>
+        <meta name="description" content="Learn about Baby Bites — built by parents, for parents. Our mission is to make weaning less overwhelming with trusted food guides and simple recipes." />
+      </Helmet>
 
       {/* ── Hero ── */}
       <div style={{ margin: "2rem 0 2.5rem" }}>
