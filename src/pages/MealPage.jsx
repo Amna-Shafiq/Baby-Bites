@@ -23,6 +23,11 @@ function MealPage() {
     supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
   }, []);
 
+  useEffect(() => {
+    if (meal?.title) document.title = `${meal.title} | Baby Bites`;
+    return () => { document.title = "Baby Bites"; };
+  }, [meal]);
+
   const handleLogSubmit = async (reaction, notes) => {
     if (!session || !meal) return;
     await supabase.from("feeding_logs").insert({

@@ -208,6 +208,11 @@ function FoodDetail() {
     supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
   }, []);
 
+  useEffect(() => {
+    if (food?.name) document.title = `${food.name} for Babies | Baby Bites`;
+    return () => { document.title = "Baby Bites"; };
+  }, [food]);
+
   const handleLogSubmit = async (reaction, notes) => {
     if (!session || !food) return;
     await supabase.from("feeding_logs").insert({
