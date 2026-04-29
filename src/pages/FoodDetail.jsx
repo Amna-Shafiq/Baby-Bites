@@ -59,6 +59,11 @@ const FOOD_REFERENCES = {
   buckwheat:          [SS("buckwheat")],
   "butternut squash": [SS("butternut-squash")],
   cabbage:            [SS("cabbage")],
+  carrot:             [SS("carrots")],
+  carrots:            [SS("carrots")],
+  cauliflower:        [SS("cauliflower")],
+  chai:               [SS("tea")],
+  tea:                [SS("tea")],
   // Grains
   bajra:                  [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
   "bajra (pearl millet)": [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
