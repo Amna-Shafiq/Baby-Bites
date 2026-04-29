@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /profile
+Disallow: /pantry
+Disallow: /my-meals
+
+Sitemap: https://babybitee.netlify.app/sitemap.xml
