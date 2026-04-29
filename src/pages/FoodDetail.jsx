@@ -247,8 +247,8 @@ function FoodDetail() {
     load();
   }, [id]);
 
-  if (error) return <div className="page"><p className="muted" style={{ marginTop: "2rem" }}>{error}</p></div>;
-  if (!food)  return <div className="page"><p className="muted" style={{ marginTop: "2rem" }}>Loading...</p></div>;
+  if (error) return <div className="page"><Helmet><title>Food Not Found | Baby Bites</title></Helmet><p className="muted" style={{ marginTop: "2rem" }}>{error}</p></div>;
+  if (!food)  return <div className="page"><Helmet><title>Baby Bites</title></Helmet><p className="muted" style={{ marginTop: "2rem" }}>Loading...</p></div>;
 
   return (
     <div className="page">
