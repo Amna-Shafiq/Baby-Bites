@@ -137,6 +137,7 @@ function ServingStages({ food }) {
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {STAGES.map((stage) => {
           const tip = food[stage.key];
+          if (!tip) return null;
           return (
             <div key={stage.key} style={{ borderRadius: 14, border: `1.5px solid ${stage.border}`, background: stage.color, overflow: "hidden" }}>
               {/* Stage header */}
@@ -157,7 +158,7 @@ function ServingStages({ food }) {
                         👉 How to prepare
                       </p>
                       <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--dark)", lineHeight: 1.5 }}>
-                        {tip || stage.generic}
+                        {tip}
                       </p>
                     </div>
                   </div>
