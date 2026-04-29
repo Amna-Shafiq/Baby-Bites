@@ -51,12 +51,19 @@ const FOOD_REFERENCES = {
   // Vegetables
   arbi:           [SS("taro")],
   taro:           [SS("taro")],
+  "bell pepper":  [SS("bell-pepper")],
+  capsicum:       [SS("bell-pepper")],
+  "black beans":  [SS("black-beans")],
+  "black bean":   [SS("black-beans")],
   // Grains
   bajra:                  [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
   "bajra (pearl millet)": [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
   "pearl millet":         [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
   millet:                 [SS("millet")],
   barley:                 [SS("barley")],
+  besan:                  [{ label: "Dalo Family Apps — Chickpea Flour for Babies", url: "https://dalofamilyapps.com/learn/food/chickpea-flour" }],
+  "chickpea flour":       [{ label: "Dalo Family Apps — Chickpea Flour for Babies", url: "https://dalofamilyapps.com/learn/food/chickpea-flour" }],
+  "gram flour":           [{ label: "Dalo Family Apps — Chickpea Flour for Babies", url: "https://dalofamilyapps.com/learn/food/chickpea-flour" }],
   // Vegetables (additional)
   beetroot:               [SS("beet-beetroot")],
   beet:                   [SS("beet-beetroot")],
