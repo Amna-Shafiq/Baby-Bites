@@ -56,6 +56,8 @@ const FOOD_REFERENCES = {
   capsicum:           [SS("bell-pepper")],
   "black beans":      [SS("black-beans")],
   "black bean":       [SS("black-beans")],
+  "channa dal":       [{ label: "Happy Veggie Kitchen — Dal for Babies", url: "https://www.happyveggiekitchen.com/dal-for-babies/" }],
+  "chana dal":        [{ label: "Happy Veggie Kitchen — Dal for Babies", url: "https://www.happyveggiekitchen.com/dal-for-babies/" }],
   broccoli:           [SS("broccoli")],
   buckwheat:          [SS("buckwheat")],
   "butternut squash": [SS("butternut-squash")],
