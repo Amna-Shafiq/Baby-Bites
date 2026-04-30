@@ -39,7 +39,7 @@ function formatAge(months) {
 }
 
 function AllFoods() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { t } = useLanguage();
   const { activeBaby } = useActiveBaby();
@@ -71,8 +71,16 @@ function AllFoods() {
 
   const [foods, setFoods]         = useState([]);
   const [error, setError]         = useState("");
-  const [page, setPage]           = useState(1);
   const [relatedMeals, setRelatedMeals] = useState([]);
+
+  const page = Number(searchParams.get("page")) || 1;
+  const setPage = (newPage) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set("page", String(newPage));
+      return next;
+    }, { replace: true });
+  };
 
   useEffect(() => {
     const loadFoods = async () => {
