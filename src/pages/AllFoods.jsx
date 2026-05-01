@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
@@ -72,6 +72,7 @@ function AllFoods() {
   const [foods, setFoods]         = useState([]);
   const [error, setError]         = useState("");
   const [relatedMeals, setRelatedMeals] = useState([]);
+  const isFirstRender = useRef(true);
 
   const page = Number(searchParams.get("page")) || 1;
   const setPage = (newPage) => {
@@ -94,7 +95,10 @@ function AllFoods() {
     loadFoods();
   }, []);
 
-  useEffect(() => { setPage(1); }, [query, age, tagFilter]);
+  useEffect(() => {
+    if (isFirstRender.current) { isFirstRender.current = false; return; }
+    setPage(1);
+  }, [query, age, tagFilter]);
 
   useEffect(() => {
     const searchText = query.trim().toLowerCase();
