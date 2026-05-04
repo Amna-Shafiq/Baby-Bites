@@ -548,12 +548,12 @@
   overflow: hidden;
   background: #0d0b07;
   position: relative;
-  height: 148px;            /* 12px top holes + 124px frames + 12px bottom holes */
+  height: 96px;             /* 8px top holes + 80px frames + 8px bottom holes */
   opacity: 0.6;
   background-image:
-    repeating-linear-gradient(90deg, transparent 0 7px, rgba(230,220,205,0.88) 7px 17px, transparent 17px 26px),
-    repeating-linear-gradient(90deg, transparent 0 7px, rgba(230,220,205,0.88) 7px 17px, transparent 17px 26px);
-  background-size: 100% 12px, 100% 12px;
+    repeating-linear-gradient(90deg, transparent 0 5px, rgba(230,220,205,0.88) 5px 12px, transparent 12px 18px),
+    repeating-linear-gradient(90deg, transparent 0 5px, rgba(230,220,205,0.88) 5px 12px, transparent 12px 18px);
+  background-size: 100% 8px, 100% 8px;
   background-position: 0 0, 0 100%;
   background-repeat: no-repeat, no-repeat;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
@@ -562,11 +562,11 @@
 
 .film-track {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   position: absolute;
-  top: 12px;
+  top: 8px;
   left: 0;
-  height: 124px;
+  height: 80px;
   align-items: center;
   padding: 0 4px;
   animation: filmScroll 18s linear infinite reverse;
@@ -574,10 +574,10 @@
 }
 
 .film-frame {
-  width: 180px;
-  height: 120px;
+  width: 116px;
+  height: 76px;
   flex-shrink: 0;
-  border-radius: 4px;
+  border-radius: 3px;
   overflow: hidden;
   border: 2px solid #2a2217;
 }
