@@ -86,6 +86,7 @@ const FOOD_REFERENCES = {
   cauliflower:        [SS("cauliflower")],
   chai:               [SS("tea")],
   tea:                [SS("tea")],
+  coffee:             [SS("coffee")],
   // Grains
   bajra:                  [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
   "bajra (pearl millet)": [SS("millet"), { label: "My Little Moppet — Bajra Recipes", url: "https://www.mylittlemoppet.com/category/recipes/bajra-kambu-pearl-millet/" }],
