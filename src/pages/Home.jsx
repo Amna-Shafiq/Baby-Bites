@@ -29,50 +29,6 @@ const STRIP_ITEMS = [
 ];
 
 // ── Splash screen ─────────────────────────────────────
-function SplashScreen({ onDone }) {
-  const [phase, setPhase] = useState('show'); // show → bite → open → fade
-
-  useEffect(() => {
-    const timers = [
-      setTimeout(() => setPhase('bite'), 900),
-      setTimeout(() => setPhase('open'), 1650),
-      setTimeout(() => setPhase('fade'), 2850),
-      setTimeout(onDone, 3400),
-    ];
-    return () => timers.forEach(clearTimeout);
-  }, [onDone]);
-
-  const isOpen   = phase === 'open' || phase === 'fade';
-  const isBiting = phase === 'bite';
-  const isHiding = phase === 'open' || phase === 'fade';
-
-  return (
-    <div className={`splash-overlay${phase === 'fade' ? ' splash-fade' : ''}`}>
-      {/* Floating carrot + brand label centred over the seam */}
-      <div className="splash-center">
-        <div className={`splash-carrot${isBiting ? ' splash-biting' : ''}${isHiding ? ' splash-hiding' : ''}`}>
-          🥕
-          {!phase.includes('show') && <div className="splash-bite" />}
-        </div>
-        <p className={`splash-brand${isHiding ? ' splash-hiding' : ''}`}>Baby Bites</p>
-      </div>
-
-      {/* Left door panel */}
-      <div className={`splash-panel splash-left${isOpen ? ' splash-open-left' : ''}`}>
-        <div className="splash-inset splash-inset-top" />
-        <div className="splash-inset splash-inset-bot" />
-      </div>
-
-      {/* Right door panel */}
-      <div className={`splash-panel splash-right${isOpen ? ' splash-open-right' : ''}`}>
-        <div className="splash-inset splash-inset-top" />
-        <div className="splash-inset splash-inset-bot" />
-        <div className="splash-knob" />
-      </div>
-    </div>
-  );
-}
-
 // ── Scroll thread ──────────────────────────────────────
 const THREAD_NODES = [
   { label: "Welcome",  pct: 0   },
@@ -667,9 +623,6 @@ function Home() {
   const [session, setSession] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [showSplash, setShowSplash] = useState(
-    () => !sessionStorage.getItem('bb_splash_seen')
-  );
   const { activeBaby, babies, switchBaby } = useActiveBaby();
   const menuRef = useRef(null);
   const { lang, setLang, t } = useLanguage();
@@ -701,18 +654,12 @@ function Home() {
     setMenuOpen(false);
   };
 
-  const handleSplashDone = () => {
-    sessionStorage.setItem('bb_splash_seen', '1');
-    setShowSplash(false);
-  };
-
   return (
     <div className="landing-page">
       <Helmet>
         <title>Baby Bites — Age-Appropriate Meals & Food Guides for Babies</title>
         <meta name="description" content="Discover 100+ baby-safe recipes and food guides organised by age. From 6-month purees to 12-month family meals — Baby Bites makes weaning easy." />
       </Helmet>
-      {showSplash && <SplashScreen onDone={handleSplashDone} />}
       <ScrollThread />
 
       {/* ── Nav ── */}
