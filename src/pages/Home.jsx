@@ -213,7 +213,7 @@ function HeroPanel({ activeBaby, session, navigate }) {
   ];
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 8, width: "100%", maxWidth: 320 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 8, width: "100%", maxWidth: 320, marginBottom: "2.5rem" }}>
       {/* Featured meal card */}
       {featuredMeal && (
         <div
