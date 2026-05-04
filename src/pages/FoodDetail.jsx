@@ -87,6 +87,7 @@ const FOOD_REFERENCES = {
   chai:               [SS("tea")],
   tea:                [SS("tea")],
   coffee:             [SS("coffee")],
+  "cottage cheese":   [SS("cottage-cheese")],
   corn:               [SS("corn")],
   maize:              [SS("corn")],
   "sweet corn":       [SS("corn")],
