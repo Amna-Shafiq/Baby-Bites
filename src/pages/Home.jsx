@@ -9,24 +9,52 @@ import { useTheme } from '../contexts/ThemeContext';
 import CTAFooter from '../components/CTAFooter';
 import BrandLogo from '../components/BrandLogo';
 
-const STRIP_ITEMS = [
-  { emoji: '🍌', name: 'Banana',       color: 'si-y' },
-  { emoji: '🥕', name: 'Carrot',       color: 'si-o' },
-  { emoji: '🍃', name: 'Peas',         color: 'si-b' },
-  { emoji: '🥦', name: 'Broccoli',     color: 'si-g' },
-  { emoji: '🍠', name: 'Sweet Potato', color: 'si-y' },
-  { emoji: '🥑', name: 'Avocado',      color: 'si-o' },
-  { emoji: '🐟', name: 'Salmon',       color: 'si-b' },
-  { emoji: '🌾', name: 'Oatmeal',      color: 'si-g' },
-  { emoji: '🥭', name: 'Mango',        color: 'si-y' },
-  { emoji: '🌰', name: 'Lentils',      color: 'si-o' },
-  { emoji: '🍐', name: 'Pear',         color: 'si-b' },
-  { emoji: '🍇', name: 'Blueberry',    color: 'si-g' },
-  { emoji: '🍑', name: 'Peach',        color: 'si-y' },
-  { emoji: '🎃', name: 'Pumpkin',      color: 'si-o' },
-  { emoji: '🥬', name: 'Spinach',      color: 'si-b' },
-  { emoji: '🥚', name: 'Egg',          color: 'si-g' },
-];
+// ── Meal Slider ──────────────────────────────────────────
+function MealSlider() {
+  const navigate = useNavigate();
+  const [meals, setMeals] = useState([]);
+
+  useEffect(() => {
+    if (!supabase) return;
+    supabase
+      .from("meals")
+      .select("id, title, image_url, min_age_months, max_age_months, meal_slot")
+      .eq("is_public", true)
+      .limit(18)
+      .then(({ data }) => setMeals(data || []));
+  }, []);
+
+  if (meals.length === 0) return null;
+
+  const cards = [...meals, ...meals];
+
+  return (
+    <div className="lp-strip meal-strip">
+      <div className="strip-track meal-track">
+        {cards.map((meal, i) => (
+          <div
+            key={i}
+            className="meal-slide-card"
+            onClick={() => navigate(`/meal/${meal.id}`)}
+          >
+            <img
+              src={meal.image_url || "https://placehold.co/160x90?text=🍽"}
+              alt={meal.title}
+              onError={e => { e.target.src = "https://placehold.co/160x90?text=🍽"; }}
+            />
+            <div className="meal-slide-info">
+              <p className="meal-slide-title">{meal.title}</p>
+              <div className="meal-slide-badges">
+                <span className="msb-age">{meal.min_age_months}–{meal.max_age_months}m</span>
+                {meal.meal_slot && <span className="msb-slot">{meal.meal_slot}</span>}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 // ── Splash screen ─────────────────────────────────────
 // ── Scroll thread ──────────────────────────────────────
@@ -823,21 +851,8 @@ function Home() {
         <FilmStrip />
       </div>
 
-      {/* ── Animated food strip ── */}
-      <div className="lp-strip">
-        <div className="strip-track">
-          {[...STRIP_ITEMS, ...STRIP_ITEMS].map((item, i) => (
-            <Link
-              key={i}
-              to={`/foods/${item.name.toLowerCase().replace(/\s+/g, "-")}`}
-              className={`si ${item.color}`}
-              style={{ textDecoration: "none" }}
-            >
-              {item.emoji} {item.name}
-            </Link>
-          ))}
-        </div>
-      </div>
+      {/* ── Meal card slider ── */}
+      <MealSlider />
 
       {/* ── Features ── */}
       <section className="lp-sec" id="features">

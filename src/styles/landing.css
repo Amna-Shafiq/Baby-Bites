@@ -634,6 +634,84 @@
   100% { transform: translateX(-50%); }
 }
 
+/* ── Meal slider overrides ── */
+.meal-strip {
+  padding: 1.1rem 0;
+}
+
+.meal-track {
+  gap: 0.9rem;
+  animation-duration: 40s;
+}
+
+.meal-strip:hover .meal-track {
+  animation-play-state: paused;
+}
+
+.meal-slide-card {
+  width: 160px;
+  flex-shrink: 0;
+  background: var(--white);
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(45,36,22,0.07);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.meal-slide-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(45,36,22,0.12);
+}
+
+.meal-slide-card img {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  display: block;
+}
+
+.meal-slide-info {
+  padding: 7px 9px 9px;
+}
+
+.meal-slide-title {
+  font-size: 0.73rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin: 0 0 5px;
+  font-family: 'Aileron', sans-serif;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.meal-slide-badges {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.msb-age, .msb-slot {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 8px;
+}
+
+.msb-age {
+  background: var(--orange);
+  color: var(--orange-dark);
+}
+
+.msb-slot {
+  background: var(--green);
+  color: var(--green-dark);
+}
+
 /* ── Sections ── */
 .lp-sec {
   padding: 3.5rem 2.5rem;
