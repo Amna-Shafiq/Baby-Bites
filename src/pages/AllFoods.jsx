@@ -197,6 +197,7 @@ function AllFoods() {
             <option value="fruit">{t("fruit")}</option>
             <option value="veggie">{t("veggie")}</option>
             <option value="protein">{t("protein")}</option>
+            <option value="nut">Nuts & Seeds</option>
             <option value="spice">Herb / Spice</option>
             <option value="other">{t("other")}</option>
           </select>
