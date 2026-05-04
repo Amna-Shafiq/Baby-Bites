@@ -258,7 +258,7 @@ function Admin() {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                 <div>
                   <label style={labelStyle}>Safe from (months) *</label>
-                  <input className="input" type="number" min="0" max="36" value={food.safe_from_months} onChange={(e) => setF("safe_from_months", e.target.value)} required />
+                  <input className="input" type="number" min="0" value={food.safe_from_months} onChange={(e) => setF("safe_from_months", e.target.value)} required />
                 </div>
                 <div>
                   <label style={labelStyle}>Food group *</label>
