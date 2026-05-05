@@ -479,7 +479,8 @@
   text-transform: capitalize;
   color: var(--text);
   margin-bottom: 1rem;
-  max-width: 540px;
+  max-width: 720px;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -529,10 +530,11 @@
 
 .lp-stats {
   display: flex;
-  gap: 1.5rem;
   padding-top: 0.7rem;
   border-top: 2px dashed var(--border);
-  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 720px;
 }
 
 .sn {
