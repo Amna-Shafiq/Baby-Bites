@@ -248,7 +248,6 @@
   background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-  min-height: calc(100vh - 66px);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -261,7 +260,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 3.5rem 2.5rem 3rem;
+  padding: 1.5rem 2.5rem 1.5rem;
   max-width: 1100px;
   margin: 0 auto;
   width: 100%;
@@ -320,7 +319,7 @@
   gap: 1rem;
   width: 100%;
   max-width: 860px;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .hac {
@@ -344,7 +343,7 @@
 
 .hac-img-wrap {
   width: 100%;
-  height: 110px;
+  height: 88px;
   overflow: hidden;
   position: relative;
   background: var(--cream);
@@ -392,7 +391,7 @@
 }
 
 .hac-body {
-  padding: 9px 12px 26px;
+  padding: 7px 12px 20px;
   flex: 1;
 }
 
@@ -461,7 +460,7 @@
   text-align: center;
   text-transform: capitalize;
   color: var(--dark);
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.3rem;
 }
 
 .landing-page h1 em {
@@ -478,7 +477,7 @@
   text-align: center;
   text-transform: capitalize;
   color: var(--text);
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
   max-width: 720px;
   width: 100%;
   margin-left: auto;
@@ -489,7 +488,7 @@
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
 }
 
 .btn-a {
@@ -531,9 +530,10 @@
 .lp-stats {
   display: flex;
   gap: 2.5rem;
-  padding-top: 0.7rem;
+  padding-top: 0.4rem;
   border-top: 2px dashed var(--border);
   justify-content: center;
+  margin-bottom: 0;
 }
 
 .sn {
