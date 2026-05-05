@@ -275,7 +275,7 @@
 }
 
 .hero-carrot {
-  width: 130px;
+  width: 200px;
   top: 40px;
   left: 40px;
   transform: rotate(-12deg);
@@ -283,7 +283,7 @@
 }
 
 .hero-strawberry {
-  width: 220px;
+  width: 320px;
   top: 200px;
   right: 20px;
   filter: drop-shadow(0 8px 20px rgba(0,0,0,0.1));
