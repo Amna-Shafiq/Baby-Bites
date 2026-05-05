@@ -1067,6 +1067,8 @@
   border-radius: 24px;
   overflow: hidden;
   height: 460px;
+  background: #fff;
+  padding: 12px;
   /* entry animation: starts off-screen left, invisible */
   opacity: 0;
   transform: translateX(-50px);
@@ -1083,6 +1085,7 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: 16px;
 }
 
 /* fade bottom of video into dark bg */
