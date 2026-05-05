@@ -904,7 +904,7 @@
 
 #features {
   max-width: 100%;
-  background: linear-gradient(to bottom, #FFDACD, #ffffff);
+  background: linear-gradient(to left, #FFDACD, #ffffff);
   padding: 3.5rem calc((100% - 1100px) / 2 + 2.5rem);
 }
 
