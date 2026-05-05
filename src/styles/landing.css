@@ -1204,6 +1204,14 @@
   margin-right: auto;
 }
 
+.samples-heading {
+  font-family: 'General Sans', 'Aileron', sans-serif !important;
+  font-size: 32.2px !important;
+  font-weight: 600 !important;
+  line-height: 40.32px !important;
+  letter-spacing: -0.67px !important;
+}
+
 .samples-pineapple {
   position: absolute;
   left: 0;

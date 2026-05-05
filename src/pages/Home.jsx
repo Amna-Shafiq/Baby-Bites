@@ -857,7 +857,7 @@ function Home() {
       <section className="lp-sec samples-sec">
         <div className="samples-header">
           <img src="/pineapple.png" className="samples-pineapple" alt="" aria-hidden="true" />
-          <h2 style={{ fontWeight: 700 }}>{t("samplesHeading")}</h2>
+          <h2 className="samples-heading">{t("samplesHeading")}</h2>
           <p className="lp-sub">{t("samplesSub")}</p>
         </div>
         <MealsShowcase />
