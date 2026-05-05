@@ -454,9 +454,9 @@
 
 .landing-page h1 {
   font-family: 'General Sans', 'Aileron', sans-serif;
-  font-size: 60px;
+  font-size: clamp(1.75rem, 5vw + 0.5rem, 3.75rem);
   font-weight: 400;
-  line-height: 65px;
+  line-height: 1.15;
   letter-spacing: 0px;
   text-align: center;
   text-transform: capitalize;
@@ -471,9 +471,9 @@
 
 .hero-sub {
   font-family: 'General Sans', 'Aileron', sans-serif;
-  font-size: 20px;
+  font-size: clamp(0.95rem, 2.5vw + 0.3rem, 1.25rem);
   font-weight: 400;
-  line-height: 31px;
+  line-height: 1.6;
   letter-spacing: 0px;
   text-align: center;
   text-transform: capitalize;
@@ -905,7 +905,7 @@
 #features {
   max-width: 100%;
   background: linear-gradient(to left, #FFDACD, #ffffff);
-  padding: 3.5rem calc((100% - 1100px) / 2 + 2.5rem);
+  padding: 3.5rem max(1.5rem, calc((100% - 1100px) / 2 + 2.5rem));
 }
 
 .eyebrow {
@@ -1142,15 +1142,6 @@
   transition-delay: 0.49s;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .how-body {
-    grid-template-columns: 1fr;
-  }
-  .how-video-wrap {
-    height: 280px;
-  }
-}
 
 .snum {
   font-family: 'General Sans', 'Aileron', sans-serif;
@@ -1188,9 +1179,22 @@
 /* ── Samples section ── */
 .samples-sec {
   max-width: 100%;
-  padding: 2.5rem calc((100% - 1100px) / 2 + 2.5rem);
+  padding: 2.5rem max(1.5rem, calc((100% - 1100px) / 2 + 2.5rem));
   background: #fff;
   position: relative;
+}
+
+.meals-showcase-wrap {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  height: 440px;
+  width: 100%;
+  max-width: 1020px;
+  margin: 0 auto;
+  cursor: pointer;
+  user-select: none;
+  display: block;
 }
 
 .samples-header {
@@ -1232,10 +1236,6 @@
   pointer-events: none;
 }
 
-@media (max-width: 768px) {
-  .samples-pineapple, .samples-leaf { display: none; }
-  .samples-sec { padding: 2rem 1.5rem; }
-}
 
 /* ── Sample meal cards ── */
 .meals-grid {
@@ -1457,48 +1457,82 @@
 }
 
 /* ── Responsive ── */
+
+/* Large tablet / small desktop */
+@media (max-width: 1024px) {
+  .hero-cards-row { max-width: 100%; }
+}
+
+/* Tablet */
 @media (max-width: 768px) {
-  .lp-hero {
-    padding: 2.5rem 1.5rem 2rem;
-  }
-
-  .hero-float { display: none; }
-  .feat-raspberry { display: none; }
-
-  .hero-cards-row {
-    grid-template-columns: 1fr;
-    max-width: 360px;
-  }
-
-  .landing-page h1 { font-size: 2.2rem; line-height: 1.15; }
-
-  .feat-grid,
-  .lp-steps { grid-template-columns: 1fr 1fr; }
-
-  .meals-grid,
-  .age-grid  { grid-template-columns: 1fr; }
-
-  .lp-sec { padding: 2.5rem 1.5rem; }
-
+  /* Nav */
   .landing-page .lp-nav { padding: 0.5rem 0.75rem; }
-  .landing-page .lp-nav-inner { border-radius: 100px; padding: 0.5rem 1rem; }
-
+  .landing-page .lp-nav-inner { padding: 0.5rem 1rem; }
   .nav-links { display: none; }
   .lp-hamburger { display: flex; }
   .nav-btn-full { display: none; }
   .nav-btn-short { display: inline; }
 
-  .how-bg,
-  .age-bg,
-  .cta-bg { padding: 2.5rem 1.5rem; }
+  /* Hero */
+  .lp-hero { padding: 2.5rem 1.5rem 2rem; }
+  .hero-float { display: none; }
+  .hero-cards-row { grid-template-columns: repeat(3, 1fr); max-width: 100%; }
+  .lp-stats { gap: 1.5rem; }
 
+  /* Features */
+  .feat-raspberry { display: none; }
+  .feat-header-text { padding-right: 0; }
+  .feat-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* How it works */
+  .how-body { grid-template-columns: 1fr; }
+  .how-video-wrap { height: 280px; }
+  .how-bg, .age-bg, .cta-bg { padding: 2.5rem 1.5rem; }
+
+  /* Sections */
+  .lp-sec { padding: 2.5rem 1.5rem; }
+
+  /* Meals */
+  .samples-pineapple, .samples-leaf { display: none; }
+  .samples-sec { padding: 2rem 1.5rem; }
+  .meals-showcase-wrap { height: 320px; }
+  .meals-grid { grid-template-columns: 1fr; }
+
+  /* Age guide */
+  .age-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Footer */
   .lp-footer { flex-direction: column; text-align: center; }
+  .flinks { flex-wrap: wrap; justify-content: center; gap: 1rem; }
 }
 
+/* Small tablet / large mobile — hero cards go horizontal-row */
+@media (max-width: 640px) {
+  .hero-cards-row { grid-template-columns: 1fr; }
+  .hac { flex-direction: row; align-items: stretch; }
+  .hac-img-wrap { width: 100px; min-width: 100px; height: auto; min-height: 80px; flex-shrink: 0; }
+  .hac-body { padding: 10px 32px 10px 12px; display: flex; flex-direction: column; justify-content: center; }
+  .feat-grid { grid-template-columns: 1fr; }
+}
+
+/* Mobile */
 @media (max-width: 480px) {
-  .feat-grid,
-  .lp-steps { grid-template-columns: 1fr; }
-  .age-grid  { grid-template-columns: repeat(2, 1fr); }
+  .lp-sec { padding: 2rem 1rem; }
+  .how-bg, .age-bg, .cta-bg { padding: 2rem 1rem; }
+  .how-video-wrap { height: 220px; }
+  .hero-btns { justify-content: center; }
+  .lp-stats { gap: 1rem; }
+  .age-grid { grid-template-columns: repeat(2, 1fr); }
+  .meals-showcase-wrap { height: 240px; }
+}
+
+/* Smallest mobile */
+@media (max-width: 390px) {
+  .lp-nav-inner { padding: 0.4rem 0.75rem; }
+  .lp-stats { gap: 0.5rem; }
+  .lp-stats .sn { font-size: 1.1rem; }
+  .lp-stats .sl { font-size: 0.6rem; }
+  .hac-img-wrap { width: 80px; min-width: 80px; }
 }
 
 /* ── Hamburger + mobile nav ── */
@@ -1548,7 +1582,7 @@
 
 /* Hide scroll thread on small screens */
 @media (max-width: 760px) {
-  .scroll-thread { display: none; }
+  .scroll-thread { display: none !important; }
 }
 
 /* ── Dark mode overrides ── */

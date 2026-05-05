@@ -81,7 +81,7 @@ function ScrollThread() {
   }, []);
 
   return (
-    <div style={{
+    <div className="scroll-thread" style={{
       position: "fixed", left: 12, top: 0, bottom: 0,
       width: 30, zIndex: 50, pointerEvents: "none",
       display: "flex", flexDirection: "column", alignItems: "center",
@@ -470,7 +470,7 @@ function MealsShowcase() {
 
   return (
     <div
-      style={{ position: "relative", borderRadius: 24, overflow: "hidden", height: 440, width: "100%", maxWidth: 1020, margin: "0 auto", cursor: "pointer", userSelect: "none", display: "block" }}
+      className="meals-showcase-wrap"
       onClick={() => navigate(dish.link)}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
