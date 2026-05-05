@@ -1156,6 +1156,7 @@
 .sy { color: var(--yellow-mid) !important; }
 .so { color: var(--orange-mid) !important; }
 .sb { color: var(--blue-mid) !important; }
+.snum.sb { color: #E8906A !important; }
 .snum.so { color: #6ABCDC !important; }
 
 .stitle {
