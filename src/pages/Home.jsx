@@ -854,10 +854,12 @@ function Home() {
       <HowItWorks t={t} />
 
       {/* ── Sample meals ── */}
-      <section className="lp-sec">
-        <div className="eyebrow eg">{t("samplesEyebrow")}</div>
-        <h2>{t("samplesHeading")}</h2>
-        <p className="lp-sub">{t("samplesSub")}</p>
+      <section className="lp-sec samples-sec">
+        <div className="samples-header">
+          <img src="/pineapple.png" className="samples-pineapple" alt="" aria-hidden="true" />
+          <h2>{t("samplesHeading")}</h2>
+          <p className="lp-sub">{t("samplesSub")}</p>
+        </div>
         <MealsShowcase />
       </section>
 
