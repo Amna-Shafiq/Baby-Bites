@@ -1217,13 +1217,13 @@
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 130px;
+  width: 170px;
   filter: drop-shadow(0 6px 14px rgba(0,0,0,0.1));
 }
 
 .samples-leaf {
   position: absolute;
-  bottom: -20px;
+  bottom: 30px;
   right: 60px;
   width: 60px;
   transform: rotate(20deg);
