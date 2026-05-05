@@ -784,7 +784,7 @@ function Home() {
         <img src="/leaf1.png"      className="hero-float hero-leaf3"      alt="" aria-hidden="true" />
 
         <div className="lp-hero">
-          <h1>{t("heroHeading")} <em>{t("heroEm")}</em></h1>
+          <h1>{t("heroHeading")}<br /><em>{t("heroEm")}</em></h1>
           <p className="hero-sub">{t("heroSub")}</p>
           <div className="hero-btns">
             {!session && (
