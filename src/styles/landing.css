@@ -1030,9 +1030,6 @@
   color: #4C200E;
 }
 
-.how-bg .sy { color: #4C200E; }
-.how-bg .so { color: #4C200E; }
-.how-bg .sb { color: #4C200E; }
 
 .how-bg h2,
 .how-bg .lp-sub,
@@ -1159,13 +1156,13 @@
   font-family: 'Aileron', sans-serif;
   font-size: 1.05rem;
   font-weight: 600;
-  color: #4C200E;
+  color: var(--dark);
   margin-bottom: 0.4rem;
 }
 
 .sdesc {
   font-size: 0.84rem;
-  color: #4C200E;
+  color: var(--muted);
   line-height: 1.6;
   font-weight: 500;
   margin: 0;
