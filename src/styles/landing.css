@@ -1021,7 +1021,7 @@
 
 /* ── How it works ── */
 .how-bg {
-  background: var(--dark);
+  background: url('/peachrectangle.png') center center / cover no-repeat;
   padding: 3.5rem 2.5rem 4rem;
 }
 
@@ -1469,7 +1469,7 @@
 }
 
 [data-theme="dark"] .how-bg {
-  background: #0A0604;
+  background: url('/peachrectangle.png') center center / cover no-repeat;
 }
 
 [data-theme="dark"] .how-video-fade {
