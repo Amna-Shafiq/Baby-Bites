@@ -10,23 +10,22 @@ import CTAFooter from '../components/CTAFooter';
 import BrandLogo from '../components/BrandLogo';
 
 // ── Meal Slider ──────────────────────────────────────────
+const SLIDER_MEALS = [
+  { id: "09ff32bc-97a6-4157-ad74-0863b00e9227", title: "Avocado and Banana Rice",         image_url: "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776695966/Avocado_and_Banana_Rice_wz28qj.png",                               min_age_months: 6,  max_age_months: 10, meal_slot: "lunch"      },
+  { id: "4c064174-a26a-4c70-86f9-d7a8a3519b9b", title: "Millet Banana Porridge",           image_url: "https://res.cloudinary.com/dr0ixt3za/image/upload/v1777029746/Gemini_Generated_Image_dooo7ldooo7ldooo_rnnphh.png",               min_age_months: 6,  max_age_months: 12, meal_slot: "breakfast"  },
+  { id: "68660184-8b87-4c7c-8c27-99bfbcd40268", title: "Banana Oatmeal Mash",              image_url: "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776759324/Gemini_Generated_Image_huyxe5huyxe5huyx_uztj5o.png",               min_age_months: 4,  max_age_months: 8,  meal_slot: "breakfast"  },
+  { id: "b8420d44-70a8-415e-9900-2a287df87bdf", title: "Mango Yogurt Bowl",                image_url: "https://res.cloudinary.com/dr0ixt3za/image/upload/v1777037738/Gemini_Generated_Image_ditjlditjlditjld_rvkp1y.png",               min_age_months: 8,  max_age_months: 18, meal_slot: "breakfast"  },
+  { id: "6a27b4e1-23ad-4c68-870c-4e00ec9cf43e", title: "Egg and Vegetable Frittata",       image_url: "https://res.cloudinary.com/dr0ixt3za/image/upload/v1777042165/Gemini_Generated_Image_dxr87xdxr87xdxr8_gkaqn0.png",               min_age_months: 10, max_age_months: 18, meal_slot: "lunch"      },
+  { id: "75a3b396-8987-4ab0-b802-ed8eda84f39e", title: "Blueberry Oat Bake",               image_url: "https://res.cloudinary.com/dr0ixt3za/image/upload/v1777042448/Gemini_Generated_Image_t9juc6t9juc6t9ju_d9b3st.png",               min_age_months: 8,  max_age_months: 18, meal_slot: "breakfast"  },
+  { id: "64b73338-c619-4d71-a3b1-18bead97b637", title: "Butternut Squash Soup",            image_url: "https://res.cloudinary.com/dr0ixt3za/image/upload/v1777043652/Butternut_Squash_Soup_mfar7u.jpg",                                  min_age_months: 4,  max_age_months: 10, meal_slot: "lunch"      },
+  { id: "8de019fd-f0e8-4278-8c16-c31013347ed2", title: "Chicken and Sweet Potato Puree",   image_url: "https://res.cloudinary.com/dr0ixt3za/image/upload/v1777043584/bmbm_jtzlv0.jpg",                                                   min_age_months: 6,  max_age_months: 10, meal_slot: "lunch"      },
+  { id: "a4a0e667-040d-4fc7-8c79-ba1ab30a184f", title: "Beef and Vegetable Puree",         image_url: "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776696598/veg-beef-puree_henr5w.png",                                          min_age_months: 6,  max_age_months: 12, meal_slot: "lunch"      },
+  { id: "caf0ed8e-61fa-4dfe-99cf-8f10fbb3d98d", title: "Banana Slices",                    image_url: "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776756025/Gemini_Generated_Image_ar3fa8ar3fa8ar3f_wmonzb.png",                 min_age_months: 6,  max_age_months: 18, meal_slot: "snack"      },
+];
+
 function MealSlider() {
   const navigate = useNavigate();
-  const [meals, setMeals] = useState([]);
-
-  useEffect(() => {
-    if (!supabase) return;
-    supabase
-      .from("meals")
-      .select("id, title, image_url, min_age_months, max_age_months, meal_slot")
-      .eq("is_public", true)
-      .limit(18)
-      .then(({ data }) => setMeals(data || []));
-  }, []);
-
-  if (meals.length === 0) return null;
-
-  const cards = [...meals, ...meals];
+  const cards = [...SLIDER_MEALS, ...SLIDER_MEALS];
 
   return (
     <div className="lp-strip meal-strip">
