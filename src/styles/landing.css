@@ -1170,7 +1170,7 @@
 .sdesc {
   font-family: 'General Sans', 'Aileron', sans-serif;
   font-size: 0.86rem;
-  color: #A0754A;
+  color: #A0754A !important;
   line-height: 1.65;
   font-weight: 400;
   margin: 0;
