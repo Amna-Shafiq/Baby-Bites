@@ -1153,9 +1153,9 @@
   margin-bottom: 1.2rem;
 }
 
-.sy { color: var(--yellow-mid); }
-.so { color: var(--orange-mid); }
-.sb { color: var(--blue-mid); }
+.sy { color: var(--yellow-mid) !important; }
+.so { color: var(--orange-mid) !important; }
+.sb { color: var(--blue-mid) !important; }
 
 .stitle {
   font-family: 'Aileron', sans-serif;
