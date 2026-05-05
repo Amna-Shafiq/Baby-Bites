@@ -928,22 +928,28 @@
 .feat-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 2rem;
   margin-bottom: 2rem;
+  position: relative;
 }
 
 .feat-header-text {
-  flex: 1;
+  text-align: center;
 }
 
+.feat-header-text h2,
 .feat-header-text .lp-sub {
-  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0.4rem;
 }
 
 .feat-raspberry {
+  position: absolute;
+  right: 0;
+  top: 0;
   width: 110px;
-  flex-shrink: 0;
   filter: drop-shadow(0 6px 14px rgba(0,0,0,0.12));
 }
 
