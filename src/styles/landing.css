@@ -1029,7 +1029,7 @@
 /* ── How it works ── */
 .how-bg {
   background: url('/peachrectangle.png') center center / cover no-repeat;
-  padding: 1.5rem 2.5rem 2rem;
+  padding: 0.75rem 2.5rem 1rem;
 }
 
 .how-bg h2,
@@ -1057,7 +1057,7 @@
 }
 
 .how-header {
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
 }
 
 .how-header .lp-sub {
@@ -1121,7 +1121,7 @@
 .lp-step {
   background: #fff;
   border-radius: 1rem;
-  padding: 0.65rem 1rem;
+  padding: 0.45rem 0.9rem;
   box-shadow: 0 2px 16px rgba(45,36,22,0.07);
   border: 1px solid rgba(0,0,0,0.06);
   /* entry animation: starts right, invisible */
@@ -1163,12 +1163,12 @@
 
 .stitle {
   font-family: 'General Sans', 'Aileron', sans-serif;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
-  line-height: 26.88px;
+  line-height: 1.4;
   letter-spacing: 0;
   color: #505050;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.25rem;
 }
 
 .sdesc {
