@@ -1187,13 +1187,15 @@
 /* ── Samples section ── */
 .samples-sec {
   max-width: 100%;
-  padding: 3.5rem calc((100% - 1100px) / 2 + 2.5rem);
+  padding: 2.5rem calc((100% - 1100px) / 2 + 2.5rem);
+  background: #fff;
+  position: relative;
 }
 
 .samples-header {
   position: relative;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .samples-header h2,
@@ -1207,13 +1209,23 @@
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 90px;
+  width: 130px;
   filter: drop-shadow(0 6px 14px rgba(0,0,0,0.1));
 }
 
+.samples-leaf {
+  position: absolute;
+  bottom: -20px;
+  right: 60px;
+  width: 60px;
+  transform: rotate(20deg);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
 @media (max-width: 768px) {
-  .samples-pineapple { display: none; }
-  .samples-sec { padding: 2.5rem 1.5rem; }
+  .samples-pineapple, .samples-leaf { display: none; }
+  .samples-sec { padding: 2rem 1.5rem; }
 }
 
 /* ── Sample meal cards ── */
