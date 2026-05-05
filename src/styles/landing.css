@@ -453,7 +453,7 @@
 
 .landing-page h1 {
   font-family: 'General Sans', 'Aileron', sans-serif;
-  font-size: clamp(1.75rem, 5vw + 0.5rem, 3.75rem);
+  font-size: clamp(1.5rem, 4vw + 0.25rem, 2.5rem);
   font-weight: 400;
   line-height: 1.15;
   letter-spacing: 0px;
