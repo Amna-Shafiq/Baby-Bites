@@ -561,9 +561,9 @@ function HowItWorks({ t }) {
       <div className="how-in" ref={sectionRef}>
         {/* Header */}
         <div className="how-header">
-          <div className="eyebrow" style={{ color: "var(--yellow-mid)" }}>{t("howEyebrow")}</div>
-          <h2 style={{ color: "#fff" }}>{t("howHeading")}</h2>
-          <p className="lp-sub" style={{ color: "#C8B8A8" }}>{t("howSub")}</p>
+          <div className="eyebrow" style={{ color: "#4C200E" }}>{t("howEyebrow")}</div>
+          <h2 style={{ color: "#4C200E" }}>{t("howHeading")}</h2>
+          <p className="lp-sub" style={{ color: "#4C200E" }}>{t("howSub")}</p>
         </div>
 
         {/* Body: video left, steps right */}
