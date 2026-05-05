@@ -261,8 +261,8 @@ function HeroPanel({ activeBaby, session, navigate }) {
 
       {/* Log a bite */}
       <div className="hac" onClick={() => navigate(session ? '/my-meals' : '/login')}>
-        <div className="hac-img-wrap hac-icon-bg" style={{ background: "var(--blue)" }}>
-          <span className="hac-icon">📓</span>
+        <div className="hac-img-wrap">
+          <img src="/logabite.png" alt="Log a bite" />
         </div>
         <div className="hac-body">
           <p className="hac-eyebrow-label">Log a bite</p>
