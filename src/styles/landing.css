@@ -1161,9 +1161,11 @@
 
 .stitle {
   font-family: 'General Sans', 'Aileron', sans-serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--dark);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 26.88px;
+  letter-spacing: 0;
+  color: #505050;
   margin-bottom: 0.6rem;
 }
 
