@@ -1025,6 +1025,28 @@
   padding: 3.5rem 2.5rem 4rem;
 }
 
+.how-bg h2,
+.how-bg .lp-sub {
+  color: #4C200E;
+}
+
+.how-bg .sy { color: #4C200E; }
+.how-bg .so { color: #4C200E; }
+.how-bg .sb { color: #4C200E; }
+
+.how-bg h2,
+.how-bg .lp-sub,
+.how-bg .how-header p {
+  color: #4C200E;
+}
+
+.how-bg .sy,
+.how-bg .so,
+.how-bg .sb {
+  color: #4C200E;
+  opacity: 0.5;
+}
+
 .how-in {
   max-width: 1100px;
   margin: 0 auto;
@@ -1086,7 +1108,7 @@
 }
 
 .lp-step {
-  background: rgba(255, 255, 255, 0.06);
+  background: #fff;
   border-radius: 20px;
   padding: 1.4rem;
   /* entry animation: starts right, invisible */
@@ -1137,13 +1159,13 @@
   font-family: 'Aileron', sans-serif;
   font-size: 1.05rem;
   font-weight: 600;
-  color: #fff;
+  color: #4C200E;
   margin-bottom: 0.4rem;
 }
 
 .sdesc {
   font-size: 0.84rem;
-  color: #C8B8A8;
+  color: #4C200E;
   line-height: 1.6;
   font-weight: 500;
   margin: 0;
@@ -1477,8 +1499,7 @@
 }
 
 [data-theme="dark"] .lp-step {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: #fff;
 }
 
 [data-theme="dark"] .landing-page h1,
