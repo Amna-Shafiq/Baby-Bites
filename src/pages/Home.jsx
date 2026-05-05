@@ -810,9 +810,13 @@ function Home() {
 
       {/* ── Features ── */}
       <section className="lp-sec" id="features">
-        <div className="eyebrow eo">{t("featEyebrow")}</div>
-        <h2>{t("featHeading")}</h2>
-        <p className="lp-sub">{t("featSub")}</p>
+        <div className="feat-header">
+          <div className="feat-header-text">
+            <h2>{t("featHeading")} <em>{t("featHeadingEm")}</em></h2>
+            <p className="lp-sub">{t("featSub")}</p>
+          </div>
+          <img src="/raspberry.png" className="feat-raspberry" alt="" aria-hidden="true" />
+        </div>
         <div className="feat-grid">
           <div className="fc bo">
             <div className="ficon fo">🥕</div>

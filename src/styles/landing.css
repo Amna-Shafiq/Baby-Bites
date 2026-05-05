@@ -915,12 +915,36 @@
 .eg { color: var(--green-dark); }
 
 .landing-page h2 {
-  font-size: 2.1rem;
-  font-weight: 700;
+  font-family: 'General Sans', 'Aileron', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 500;
   color: var(--dark);
   line-height: 1.2;
   margin-bottom: 0.8rem;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
+}
+
+/* ── Features header ── */
+.feat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.feat-header-text {
+  flex: 1;
+}
+
+.feat-header-text .lp-sub {
+  margin-bottom: 0;
+}
+
+.feat-raspberry {
+  width: 110px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.12));
 }
 
 .lp-sub {
@@ -1345,6 +1369,7 @@
   }
 
   .hero-float { display: none; }
+  .feat-raspberry { display: none; }
 
   .hero-cards-row {
     grid-template-columns: 1fr;

@@ -122,7 +122,8 @@ const translations = {
 
     // Features section
     featEyebrow:   "Why Baby Bites",
-    featHeading:   "Everything you need for happy, healthy mealtimes",
+    featHeading:   "Everything you need for happy,",
+    featHeadingEm: "healthy mealtimes",
     featSub:       "No more guessing what's safe. Baby Bites guides you through every stage of your baby's food journey.",
     feat1Title:    "Age-safe food guide",
     feat1Desc:     "Browse 80+ foods with safe-from ages, texture tips, and allergen warnings all in one place.",
@@ -310,7 +311,8 @@ const translations = {
 
     // Features section
     featEyebrow:   "Baby Bites کیوں؟",
-    featHeading:   "خوش اور صحت مند کھانے کے لیے سب کچھ",
+    featHeading:   "خوش اور صحت مند کھانے کے لیے",
+    featHeadingEm: "سب کچھ",
     featSub:       "اب اندازہ لگانے کی ضرورت نہیں۔ Baby Bites آپ کو آپ کے بچے کے کھانے کے سفر میں رہنمائی کرتا ہے۔",
     feat1Title:    "عمر کے مطابق غذائی رہنما",
     feat1Desc:     "80 سے زیادہ غذائیں، محفوظ عمر، ساخت کی تجاویز اور الرجی کی وارننگ ایک جگہ۔",
