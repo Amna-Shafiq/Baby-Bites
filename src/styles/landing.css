@@ -1216,8 +1216,10 @@
   position: absolute;
   left: 0;
   top: 50%;
-  transform: translateY(-50%);
-  width: 170px;
+  transform: translateY(-50%) rotate(-19.35deg);
+  width: 164.82px;
+  height: 164.82px;
+  object-fit: contain;
   filter: drop-shadow(0 6px 14px rgba(0,0,0,0.1));
 }
 
