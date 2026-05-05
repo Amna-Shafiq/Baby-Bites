@@ -579,18 +579,18 @@ function HowItWorks({ t }) {
           </div>
 
           <div className="lp-steps">
-            <div className="lp-step liquid-glass-strong">
+            <div className="lp-step">
               <div className="snum sy">01</div>
               <div className="stitle">{t("step1Title")}</div>
               <p className="sdesc">{t("step1Desc")}</p>
             </div>
-            <div className="lp-step liquid-glass-strong">
-              <div className="snum so">02</div>
+            <div className="lp-step">
+              <div className="snum sb">02</div>
               <div className="stitle">{t("step2Title")}</div>
               <p className="sdesc">{t("step2Desc")}</p>
             </div>
-            <div className="lp-step liquid-glass-strong">
-              <div className="snum sb">03</div>
+            <div className="lp-step">
+              <div className="snum so">03</div>
               <div className="stitle">{t("step3Title")}</div>
               <p className="sdesc">{t("step3Desc")}</p>
             </div>
