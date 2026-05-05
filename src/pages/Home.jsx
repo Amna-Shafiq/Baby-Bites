@@ -249,8 +249,8 @@ function HeroPanel({ activeBaby, session, navigate }) {
 
       {/* From My Pantry */}
       <div className="hac" onClick={() => navigate('/pantry')}>
-        <div className="hac-img-wrap hac-icon-bg" style={{ background: "var(--green)" }}>
-          <span className="hac-icon">🛒</span>
+        <div className="hac-img-wrap">
+          <img src="/pantry.png" alt="From My Pantry" />
         </div>
         <div className="hac-body">
           <p className="hac-eyebrow-label">From My Pantry</p>
