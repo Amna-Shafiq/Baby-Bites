@@ -1146,7 +1146,7 @@
 }
 
 .snum {
-  font-family: 'Aileron', sans-serif;
+  font-family: 'General Sans', 'Aileron', sans-serif;
   font-size: 3rem;
   font-weight: 700;
   line-height: 1;
@@ -1159,7 +1159,7 @@
 .snum.so { color: #6ABCDC !important; }
 
 .stitle {
-  font-family: 'Aileron', sans-serif;
+  font-family: 'General Sans', 'Aileron', sans-serif;
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--dark);
@@ -1167,8 +1167,9 @@
 }
 
 .sdesc {
+  font-family: 'General Sans', 'Aileron', sans-serif;
   font-size: 0.86rem;
-  color: var(--muted);
+  color: #9A8878;
   line-height: 1.65;
   font-weight: 400;
   margin: 0;
