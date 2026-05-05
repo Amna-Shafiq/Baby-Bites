@@ -248,23 +248,195 @@
   background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-  height: calc(100vh - 66px);
+  min-height: calc(100vh - 66px);
   display: flex;
   flex-direction: column;
+  position: relative;
   overflow: hidden;
 }
 
 .lp-hero {
   flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  align-items: flex-start;
-  padding: 3rem 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3.5rem 2.5rem 3rem;
   max-width: 1100px;
   margin: 0 auto;
   width: 100%;
+}
+
+/* ── Floating hero illustrations ── */
+.hero-float {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hero-carrot {
+  width: 130px;
+  top: 40px;
+  left: 40px;
+  transform: rotate(-12deg);
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
+}
+
+.hero-strawberry {
+  width: 200px;
+  top: 0px;
+  right: 20px;
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.1));
+}
+
+.hero-leaf1 {
+  width: 42px;
+  top: 80px;
+  left: 210px;
+  transform: rotate(30deg);
+  opacity: 0.85;
+}
+
+.hero-leaf2 {
+  width: 30px;
+  top: 55px;
+  right: 260px;
+  transform: rotate(-25deg);
+  opacity: 0.75;
+}
+
+.hero-leaf3 {
+  width: 36px;
+  top: 170px;
+  right: 100px;
+  transform: rotate(15deg);
+  opacity: 0.65;
+}
+
+/* ── Hero action cards row ── */
+.hero-cards-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+  max-width: 860px;
+  margin-top: 2rem;
+}
+
+.hac {
+  background: var(--white);
+  border-radius: 16px;
+  border: 1.5px solid var(--border);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(45,36,22,0.07);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-align: left;
+}
+
+.hac:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(45,36,22,0.13);
+}
+
+.hac-img-wrap {
+  width: 100%;
+  height: 110px;
+  overflow: hidden;
+  position: relative;
+  background: var(--cream);
+}
+
+.hac-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hac-icon-bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hac-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+.hac-icon {
+  font-size: 2.5rem;
+}
+
+.hac-eyebrow-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+  padding: 2px 9px;
+  font-size: 0.58rem;
+  font-weight: 800;
+  color: var(--orange-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.hac-body {
+  padding: 9px 12px 26px;
+  flex: 1;
+}
+
+.hac-eyebrow-label {
+  font-size: 0.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--orange-dark);
+  margin: 0 0 3px;
+}
+
+.hac-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin: 0;
+  font-family: 'Aileron', sans-serif;
+  line-height: 1.3;
+}
+
+.hac-meta {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+
+.hac-meta span {
+  font-size: 0.58rem;
+  font-weight: 700;
+  background: var(--cream);
+  color: var(--muted);
+  padding: 1px 6px;
+  border-radius: 8px;
+}
+
+.hac-arrow {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--orange-dark);
 }
 
 .hero-pill {
@@ -299,8 +471,10 @@
   color: var(--text);
   line-height: 1.6;
   margin-bottom: 1rem;
-  max-width: 420px;
+  max-width: 480px;
   font-weight: 500;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hero-btns {
@@ -351,6 +525,7 @@
   gap: 1.5rem;
   padding-top: 0.7rem;
   border-top: 2px dashed var(--border);
+  justify-content: center;
 }
 
 .sn {
@@ -1158,11 +1333,15 @@
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .lp-hero {
-    grid-template-columns: 1fr;
     padding: 2.5rem 1.5rem 2rem;
   }
 
-  .visual { display: none; }
+  .hero-float { display: none; }
+
+  .hero-cards-row {
+    grid-template-columns: 1fr;
+    max-width: 360px;
+  }
 
   .landing-page h1 { font-size: 2rem; }
 

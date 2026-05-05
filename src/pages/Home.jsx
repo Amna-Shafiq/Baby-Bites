@@ -206,7 +206,7 @@ function FilmStrip() {
   );
 }
 
-// ── HeroPanel: featured meal card + action widgets ────────────────────────
+// ── HeroPanel: horizontal 3-card row ─────────────────────────────────────
 function HeroPanel({ activeBaby, session, navigate }) {
   const [featuredMeal, setFeaturedMeal] = useState(null);
 
@@ -219,101 +219,57 @@ function HeroPanel({ activeBaby, session, navigate }) {
     });
   }, []);
 
-  const widgets = [
-    {
-      icon: "🍽️",
-      label: "Today's meal",
-      sub: activeBaby ? `Pick for ${activeBaby.name}` : "Find today's meal",
-      to: "/meals",
-    },
-    {
-      icon: "🛒",
-      label: "From my pantry",
-      sub: "See what you have",
-      to: "/pantry",
-    },
-    {
-      icon: "📓",
-      label: "Log a bite",
-      sub: "Track what baby ate",
-      to: session ? "/my-meals" : "/login",
-    },
-  ];
-
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 8, width: "100%", maxWidth: 320, marginBottom: "2.5rem" }}>
-      {/* Featured meal card */}
-      {featuredMeal && (
-        <div
-          onClick={() => navigate(`/meal/${featuredMeal.id}`)}
-          style={{
-            borderRadius: 14, overflow: "hidden", cursor: "pointer",
-            background: "var(--white)", border: "1.5px solid var(--border)",
-            boxShadow: "0 4px 16px rgba(45,36,22,0.10)",
-            position: "relative",
-          }}
-        >
-          <img
-            src={featuredMeal.image_url || "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776696906/Gemini_Generated_Image_y2myiqy2myiqy2my_sd3eov.png"}
-            alt={featuredMeal.title}
-            style={{ width: "100%", height: 115, objectFit: "cover", display: "block" }}
-            onError={e => { e.target.src = "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776696906/Gemini_Generated_Image_y2myiqy2myiqy2my_sd3eov.png"; }}
-          />
-          <div style={{
-            position: "absolute", top: 6, left: 6,
-            background: "rgba(255,255,255,0.9)", backdropFilter: "blur(6px)",
-            borderRadius: 20, padding: "2px 8px",
-            fontSize: "0.6rem", fontWeight: 800, color: "var(--orange-dark)",
-            textTransform: "uppercase", letterSpacing: "0.08em",
-          }}>
-            Today's pick
-          </div>
-          <div style={{ padding: "7px 12px 9px" }}>
-            <p style={{ margin: "0 0 3px", fontWeight: 700, fontSize: "0.85rem", color: "var(--dark)", fontFamily: "Aileron, sans-serif", lineHeight: 1.2 }}>
-              {featuredMeal.title}
-            </p>
-            <div style={{ display: "flex", gap: 5, flexWrap: "wrap", alignItems: "center" }}>
-              <span style={{ fontSize: "0.6rem", fontWeight: 700, color: "var(--muted)", background: "var(--cream)", borderRadius: 10, padding: "1px 7px" }}>
-                {featuredMeal.min_age_months}–{featuredMeal.max_age_months}m
-              </span>
-              {featuredMeal.meal_slot && (
-                <span style={{ fontSize: "0.6rem", fontWeight: 700, color: "var(--muted)", background: "var(--cream)", borderRadius: 10, padding: "1px 7px" }}>
-                  {featuredMeal.meal_slot}
-                </span>
-              )}
-              {featuredMeal.nutrition_highlight && (
-                <span style={{ fontSize: "0.6rem", fontWeight: 700, color: "var(--green-dark)" }}>
-                  ✓ {featuredMeal.nutrition_highlight}
-                </span>
-              )}
-            </div>
+    <div className="hero-cards-row">
+      {/* Today's Pick */}
+      <div className="hac" onClick={() => featuredMeal && navigate(`/meal/${featuredMeal.id}`)}>
+        <div className="hac-img-wrap">
+          {featuredMeal ? (
+            <img
+              src={featuredMeal.image_url || "https://placehold.co/280x110?text=🍽"}
+              alt={featuredMeal.title}
+              onError={e => { e.target.src = "https://placehold.co/280x110?text=🍽"; }}
+            />
+          ) : (
+            <div className="hac-placeholder">🍽️</div>
+          )}
+          <span className="hac-eyebrow-badge">Today's pick</span>
+        </div>
+        <div className="hac-body">
+          <p className="hac-title">{featuredMeal?.title || "Loading…"}</p>
+          <div className="hac-meta">
+            {featuredMeal && <>
+              <span>{featuredMeal.min_age_months}–{featuredMeal.max_age_months}m</span>
+              {featuredMeal.meal_slot && <span>{featuredMeal.meal_slot}</span>}
+            </>}
           </div>
         </div>
-      )}
+        <span className="hac-arrow">→</span>
+      </div>
 
-      {/* Action widgets */}
-      {widgets.map((w) => (
-        <div
-          key={w.label}
-          onClick={() => navigate(w.to)}
-          style={{
-            display: "flex", alignItems: "center", gap: 10,
-            background: "var(--white)", border: "1.5px solid var(--border)",
-            borderRadius: 12, padding: "7px 12px", cursor: "pointer",
-            boxShadow: "0 2px 8px rgba(45,36,22,0.06)",
-            transition: "transform 0.15s, box-shadow 0.15s",
-          }}
-          onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 5px 16px rgba(45,36,22,0.12)"; }}
-          onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 2px 8px rgba(45,36,22,0.06)"; }}
-        >
-          <span style={{ fontSize: "1.2rem", lineHeight: 1 }}>{w.icon}</span>
-          <div style={{ flex: 1 }}>
-            <p style={{ margin: 0, fontWeight: 700, fontSize: "0.8rem", color: "var(--dark)", fontFamily: "Aileron, sans-serif" }}>{w.label}</p>
-            <p style={{ margin: 0, fontSize: "0.68rem", color: "var(--muted)" }}>{w.sub}</p>
-          </div>
-          <span style={{ fontSize: "0.75rem", color: "var(--orange-dark)", fontWeight: 700 }}>→</span>
+      {/* From My Pantry */}
+      <div className="hac" onClick={() => navigate('/pantry')}>
+        <div className="hac-img-wrap hac-icon-bg" style={{ background: "var(--green)" }}>
+          <span className="hac-icon">🛒</span>
         </div>
-      ))}
+        <div className="hac-body">
+          <p className="hac-eyebrow-label">From My Pantry</p>
+          <p className="hac-title">{activeBaby ? `Pick for ${activeBaby.name}` : "See what you can make"}</p>
+        </div>
+        <span className="hac-arrow">→</span>
+      </div>
+
+      {/* Log a bite */}
+      <div className="hac" onClick={() => navigate(session ? '/my-meals' : '/login')}>
+        <div className="hac-img-wrap hac-icon-bg" style={{ background: "var(--blue)" }}>
+          <span className="hac-icon">📓</span>
+        </div>
+        <div className="hac-body">
+          <p className="hac-eyebrow-label">Log a bite</p>
+          <p className="hac-title">Track what baby ate</p>
+        </div>
+        <span className="hac-arrow">→</span>
+      </div>
     </div>
   );
 }
@@ -820,35 +776,34 @@ function Home() {
 
       {/* ── Hero ── */}
       <div className="hero-bg">
+        {/* Floating illustrations */}
+        <img src="/carrot.png"     className="hero-float hero-carrot"     alt="" aria-hidden="true" />
+        <img src="/strawberry.png" className="hero-float hero-strawberry" alt="" aria-hidden="true" />
+        <img src="/leaf1.png"      className="hero-float hero-leaf1"      alt="" aria-hidden="true" />
+        <img src="/leaf2.png"      className="hero-float hero-leaf2"      alt="" aria-hidden="true" />
+        <img src="/leaf1.png"      className="hero-float hero-leaf3"      alt="" aria-hidden="true" />
+
         <div className="lp-hero">
-          <div>
-            <div className="hero-pill liquid-glass">{t("heroTag")}</div>
-            <h1>{t("heroHeading")} <em>{t("heroEm")}</em></h1>
-            <p className="hero-sub">{t("heroSub")}</p>
-            <div className="hero-btns">
-              {!session && (
-                <button className="btn-a" onClick={() => navigate('/login')}>
-                  {t("startFree")}
-                </button>
-              )}
-              <button className="btn-b" onClick={() => navigate('/meals')}>
-                {t("exploreMeals")}
+          <div className="hero-pill liquid-glass">{t("heroTag")}</div>
+          <h1>{t("heroHeading")} <em>{t("heroEm")}</em></h1>
+          <p className="hero-sub">{t("heroSub")}</p>
+          <div className="hero-btns">
+            {!session && (
+              <button className="btn-a" onClick={() => navigate('/login')}>
+                {t("startFree")}
               </button>
-            </div>
-            <div className="lp-stats">
-              <div><div className="sn">160+</div><div className="sl">{t("statFoods")}</div></div>
-              <div><div className="sn">100+</div><div className="sl">{t("statRecipes")}</div></div>
-              <div><div className="sn">4–18m</div><div className="sl">{t("statAges")}</div></div>
-            </div>
+            )}
+            <button className="btn-b" onClick={() => navigate('/meals')}>
+              {t("exploreMeals")}
+            </button>
           </div>
-
-          <div className="visual">
-            <HeroPanel activeBaby={activeBaby} session={session} navigate={navigate} />
+          <div className="lp-stats">
+            <div><div className="sn">160+</div><div className="sl">{t("statFoods")}</div></div>
+            <div><div className="sn">100+</div><div className="sl">{t("statRecipes")}</div></div>
+            <div><div className="sn">4–18m</div><div className="sl">{t("statAges")}</div></div>
           </div>
+          <HeroPanel activeBaby={activeBaby} session={session} navigate={navigate} />
         </div>
-
-        {/* ── Film tape strip — bottom of hero ── */}
-        <FilmStrip />
       </div>
 
       {/* ── Meal card slider ── */}
