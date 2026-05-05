@@ -470,7 +470,7 @@ function MealsShowcase() {
 
   return (
     <div
-      style={{ position: "relative", borderRadius: 24, overflow: "hidden", height: 440, cursor: "pointer", userSelect: "none" }}
+      style={{ position: "relative", borderRadius: 24, overflow: "hidden", height: 440, width: "100%", maxWidth: 1020, margin: "0 auto", cursor: "pointer", userSelect: "none", display: "block" }}
       onClick={() => navigate(dish.link)}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
