@@ -861,6 +861,7 @@ button { font-family: 'Nunito', sans-serif; }
   background: #7D3A23;
   color: #fff;
   border-color: #7D3A23;
+  border-radius: 100px;
 }
 
 .cta-footer-btn:hover {
