@@ -1067,7 +1067,7 @@
 /* Side-by-side: video | steps */
 .how-body {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 3fr;
   gap: 2rem;
   align-items: center;
 }
