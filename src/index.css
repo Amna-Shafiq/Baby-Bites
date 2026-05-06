@@ -862,12 +862,21 @@ button { font-family: 'Nunito', sans-serif; }
   color: #fff;
   border-color: #7D3A23;
   border-radius: 100px;
+  box-shadow: 0 0 14px 3px rgba(125, 58, 35, 0.45), 0 0 32px 6px rgba(255, 140, 80, 0.2);
+  animation: cta-btn-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes cta-btn-pulse {
+  0%, 100% { box-shadow: 0 0 14px 3px rgba(125, 58, 35, 0.45), 0 0 32px 6px rgba(255, 140, 80, 0.2); }
+  50%       { box-shadow: 0 0 22px 6px rgba(125, 58, 35, 0.65), 0 0 48px 12px rgba(255, 140, 80, 0.35); }
 }
 
 .cta-footer-btn:hover {
   background: #5c2a18;
   color: #fff;
   border-color: #5c2a18;
+  box-shadow: 0 0 28px 8px rgba(125, 58, 35, 0.7), 0 0 56px 16px rgba(255, 140, 80, 0.4);
+  animation: none;
 }
 
 .cta-footer-video-wrap {
