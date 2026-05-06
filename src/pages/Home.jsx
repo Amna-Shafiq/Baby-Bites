@@ -654,7 +654,7 @@ function Home() {
             <li><Link to="/pantry">{t("pantry")}</Link></li>
             <li><Link to="/my-meals">{t("myMeals")}</Link></li>
           </ul>
-        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <button
             type="button"
             onClick={toggleTheme}
@@ -675,7 +675,6 @@ function Home() {
             />
             {lang === "en" ? "اردو" : "EN"}
           </button>
-        </div>
 
         {session ? (
           <div ref={menuRef} style={{ position: "relative" }}>
@@ -756,6 +755,7 @@ function Home() {
           >
             {mobileNavOpen ? "✕" : "☰"}
           </button>
+        </div>
         </div>
 
         {mobileNavOpen && (
