@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { supabase } from "./lib/supabaseClient";
 import Home from "./pages/Home";
 import MealPage from "./pages/MealPage";
 import Login from "./pages/Login";
@@ -26,6 +27,14 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === "/";
+  const isMealsOrFoods = location.pathname === "/meals" || location.pathname === "/foods";
+
+  const [session, setSession] = useState(undefined);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
+    return () => subscription.unsubscribe();
+  }, []);
 
   // After email confirmation, Supabase redirects back with #type=signup in the hash.
   // Detect it on mount and send the user to the sign-in page.
@@ -59,7 +68,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
         </Routes>
-        {!isHome && <CTAFooter />}
+        {!isHome && isMealsOrFoods && !session && <CTAFooter />}
         {!isHome && <AppFooter />}
       </div>
     </div>
