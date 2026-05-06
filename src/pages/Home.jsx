@@ -802,7 +802,7 @@ function Home() {
       {/* ── Hero ── */}
       <div className="hero-bg">
         {/* Floating illustrations */}
-        <BreakableImage src="/carrot.png" wrapClass="hero-float hero-carrot-wrap" imgClass="hero-carrot" />
+        <BreakableImage src="/carrot.png" wrapClass="hero-carrot-wrap" imgClass="hero-carrot" />
         <img src="/strawberry.png" className="hero-float hero-strawberry" alt="" aria-hidden="true" />
         <img src="/leaf1.png"      className="hero-float hero-leaf1"      alt="" aria-hidden="true" />
         <img src="/leaf2.png"      className="hero-float hero-leaf2"      alt="" aria-hidden="true" />
