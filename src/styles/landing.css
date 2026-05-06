@@ -1453,7 +1453,7 @@
 /* ── Footer ── */
 .lp-footer {
   background: #7D3A23;
-  padding: 2.5rem;
+  padding: 1.25rem 2.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
