@@ -9,8 +9,8 @@ import { useTheme } from '../contexts/ThemeContext';
 import CTAFooter from '../components/CTAFooter';
 import BrandLogo from '../components/BrandLogo';
 
-// ── Raspberry break effect ────────────────────────────────
-function RaspberryBreak() {
+// ── Breakable image effect ────────────────────────────────
+function BreakableImage({ src, wrapClass, imgClass, brokenClass }) {
   const [broken, setBroken] = useState(false);
 
   useEffect(() => {
@@ -19,18 +19,20 @@ function RaspberryBreak() {
     return () => clearTimeout(t);
   }, [broken]);
 
+  const bc = brokenClass || 'is-broken';
+
   return (
     <div
-      className={`feat-raspberry-wrap${broken ? ' is-broken' : ''}`}
+      className={`${wrapClass}${broken ? ` ${bc}` : ''}`}
       onMouseEnter={() => { if (!broken) setBroken(true); }}
     >
-      <img src="/raspberry.png" className="feat-raspberry" alt="" aria-hidden="true" />
+      <img src={src} className={imgClass} alt="" aria-hidden="true" />
       {broken && (
         <>
-          <div className="rasp-shard rasp-shard-1" />
-          <div className="rasp-shard rasp-shard-2" />
-          <div className="rasp-shard rasp-shard-3" />
-          <div className="rasp-shard rasp-shard-4" />
+          <div className="img-shard img-shard-1" style={{ '--img': `url('${src}')` }} />
+          <div className="img-shard img-shard-2" style={{ '--img': `url('${src}')` }} />
+          <div className="img-shard img-shard-3" style={{ '--img': `url('${src}')` }} />
+          <div className="img-shard img-shard-4" style={{ '--img': `url('${src}')` }} />
         </>
       )}
     </div>
@@ -800,7 +802,7 @@ function Home() {
       {/* ── Hero ── */}
       <div className="hero-bg">
         {/* Floating illustrations */}
-        <img src="/carrot.png"     className="hero-float hero-carrot"     alt="" aria-hidden="true" />
+        <BreakableImage src="/carrot.png" wrapClass="hero-float hero-carrot-wrap" imgClass="hero-carrot" />
         <img src="/strawberry.png" className="hero-float hero-strawberry" alt="" aria-hidden="true" />
         <img src="/leaf1.png"      className="hero-float hero-leaf1"      alt="" aria-hidden="true" />
         <img src="/leaf2.png"      className="hero-float hero-leaf2"      alt="" aria-hidden="true" />
@@ -838,7 +840,7 @@ function Home() {
             <h2>{t("featHeading")} <em>{t("featHeadingEm")}</em></h2>
             <p className="lp-sub">{t("featSub")}</p>
           </div>
-          <RaspberryBreak />
+          <BreakableImage src="/raspberry.png" wrapClass="feat-raspberry-wrap" imgClass="feat-raspberry" />
         </div>
         <div className="feat-grid">
           <div className="fc bo">
@@ -880,7 +882,7 @@ function Home() {
       {/* ── Sample meals ── */}
       <section className="lp-sec samples-sec">
         <div className="samples-header">
-          <img src="/pineapple.png" className="samples-pineapple" alt="" aria-hidden="true" />
+          <BreakableImage src="/pineapple.png" wrapClass="samples-pineapple-wrap" imgClass="samples-pineapple" />
           <h2 className="samples-heading">{t("samplesHeading")}</h2>
           <p className="lp-sub">{t("samplesSub")}</p>
         </div>

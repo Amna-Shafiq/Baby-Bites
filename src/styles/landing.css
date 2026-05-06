@@ -275,8 +275,6 @@
 
 .hero-carrot {
   width: 200px;
-  top: 40px;
-  left: 40px;
   transform: rotate(-12deg);
   filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
 }
@@ -955,7 +953,7 @@
 .feat-raspberry-wrap {
   position: absolute;
   right: 0;
-  top: 0;
+  top: 20;
   width: 110px;
   cursor: pointer;
 }
@@ -967,32 +965,70 @@
   transition: opacity 0.05s;
 }
 
-.feat-raspberry-wrap.is-broken .feat-raspberry {
+.feat-raspberry-wrap.is-broken .feat-raspberry,
+.hero-carrot-wrap.is-broken .hero-carrot,
+.samples-pineapple-wrap.is-broken .samples-pineapple {
   opacity: 0;
 }
 
-.rasp-shard {
+/* ── Carrot wrap ── */
+.hero-carrot-wrap {
+  position: absolute;
+  width: 200px;
+  top: 40px;
+  left: 40px;
+  cursor: pointer;
+}
+
+.hero-carrot-wrap .hero-carrot {
+  position: relative;
+  width: 100%;
+  display: block;
+  transform: rotate(-12deg);
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
+  transition: opacity 0.05s;
+}
+
+/* ── Pineapple wrap ── */
+.samples-pineapple-wrap {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 170px;
+  cursor: pointer;
+}
+
+.samples-pineapple-wrap .samples-pineapple {
+  position: relative;
+  width: 100%;
+  display: block;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.1));
+  transition: opacity 0.05s;
+}
+
+.img-shard {
   position: absolute;
   inset: 0;
-  background: url('/raspberry.png') center / contain no-repeat;
+  background: var(--img) center / contain no-repeat;
   animation-duration: 0.75s;
   animation-fill-mode: forwards;
   animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.rasp-shard-1 {
+.img-shard-1 {
   clip-path: polygon(0 0, 58% 0, 42% 52%, 0 48%);
   animation-name: shard-fly-1;
 }
-.rasp-shard-2 {
+.img-shard-2 {
   clip-path: polygon(58% 0, 100% 0, 100% 48%, 48% 52%);
   animation-name: shard-fly-2;
 }
-.rasp-shard-3 {
+.img-shard-3 {
   clip-path: polygon(0 48%, 42% 52%, 52% 100%, 0 100%);
   animation-name: shard-fly-3;
 }
-.rasp-shard-4 {
+.img-shard-4 {
   clip-path: polygon(48% 52%, 100% 48%, 100% 100%, 52% 100%);
   animation-name: shard-fly-4;
 }
@@ -1276,10 +1312,6 @@
 }
 
 .samples-pineapple {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
   width: 170px;
   filter: drop-shadow(0 6px 14px rgba(0,0,0,0.1));
 }
@@ -1579,7 +1611,7 @@
   .lp-sec { padding: 2.5rem 1.5rem; }
 
   /* Meals */
-  .samples-pineapple, .samples-leaf, .age-meal-img, .feat-raspberry-wrap { display: none; }
+  .samples-pineapple, .samples-pineapple-wrap, .samples-leaf, .age-meal-img, .feat-raspberry-wrap, .hero-carrot-wrap { display: none; }
   .samples-sec { padding: 2rem 1.5rem; }
   .meals-showcase-wrap { height: 320px; }
   .meals-grid { grid-template-columns: 1fr; }
