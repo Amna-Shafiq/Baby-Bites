@@ -43,10 +43,6 @@ function MealSlider() {
             />
             <div className="meal-slide-info">
               <p className="meal-slide-title">{meal.title}</p>
-              <div className="meal-slide-badges">
-                <span className="msb-age">{meal.min_age_months}–{meal.max_age_months}m</span>
-                {meal.meal_slot && <span className="msb-slot">{meal.meal_slot}</span>}
-              </div>
             </div>
           </div>
         ))}

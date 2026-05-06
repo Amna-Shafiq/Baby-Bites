@@ -856,15 +856,15 @@
 }
 
 .meal-slide-info {
-  padding: 7px 9px 9px;
+  padding: 6px 9px 8px;
 }
 
 .meal-slide-title {
   font-size: 0.73rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--dark);
-  margin: 0 0 5px;
-  font-family: 'Aileron', sans-serif;
+  margin: 0;
+  font-family: 'General Sans', 'Aileron', sans-serif;
   line-height: 1.3;
   display: -webkit-box;
   -webkit-line-clamp: 2;
