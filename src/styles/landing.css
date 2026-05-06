@@ -224,7 +224,7 @@
 
 /* Override the global .nav-btn style */
 .landing-page .nav-btn {
-  background: var(--orange-mid);
+  background: var(--orange-dark);
   color: #fff;
   border: none;
   padding: 0.55rem 1.3rem;
@@ -1329,8 +1329,8 @@
 
 .age-meal-img {
   position: absolute;
-  bottom: 3rem;
-  right: -20px;
+  bottom: 15rem;
+  right: 80px;
   width: clamp(130px, 14vw, 200px);
   transform: rotate(16deg) translateX(30%);
   transform-origin: bottom right;
