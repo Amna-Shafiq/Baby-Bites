@@ -1329,10 +1329,10 @@
 
 .age-meal-img {
   position: absolute;
-  bottom: 4rem;
-  right: -8px;
+  bottom: 3rem;
+  right: -20px;
   width: clamp(130px, 14vw, 200px);
-  transform: rotate(16deg);
+  transform: rotate(16deg) translateX(30%);
   transform-origin: bottom right;
   filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
   pointer-events: none;
