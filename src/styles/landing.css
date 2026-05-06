@@ -1452,7 +1452,7 @@
 
 /* ── Footer ── */
 .lp-footer {
-  background: var(--dark);
+  background: #7D3A23;
   padding: 2.5rem;
   display: flex;
   justify-content: space-between;
@@ -1465,7 +1465,7 @@
   font-family: 'Aileron', sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--orange-mid);
+  color: #FFAE92;
 }
 
 .flinks {
@@ -1474,7 +1474,7 @@
 }
 
 .flinks a {
-  color: #7A6050;
+  color: rgba(255, 220, 200, 0.75);
   font-size: 0.85rem;
   font-weight: 600;
   transition: color 0.2s;
@@ -1483,7 +1483,7 @@
 .flinks a:hover { color: #fff; }
 
 .fcopy {
-  color: #5A4030;
+  color: rgba(255, 220, 200, 0.6);
   font-size: 0.8rem;
   font-weight: 600;
 }
