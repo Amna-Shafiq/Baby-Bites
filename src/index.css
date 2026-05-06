@@ -119,6 +119,10 @@
   background: #1C0E06;
 }
 
+[data-theme="dark"] .samples-sec {
+  background: #1C0E06;
+}
+
 [data-theme="dark"] #features h2,
 [data-theme="dark"] #features .lp-sub {
   color: var(--text);
