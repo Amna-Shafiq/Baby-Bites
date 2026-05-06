@@ -952,12 +952,66 @@
   margin-bottom: 0.4rem;
 }
 
-.feat-raspberry {
+.feat-raspberry-wrap {
   position: absolute;
   right: 0;
   top: 0;
   width: 110px;
+  cursor: pointer;
+}
+
+.feat-raspberry {
+  width: 100%;
+  display: block;
   filter: drop-shadow(0 6px 14px rgba(0,0,0,0.12));
+  transition: opacity 0.05s;
+}
+
+.feat-raspberry-wrap.is-broken .feat-raspberry {
+  opacity: 0;
+}
+
+.rasp-shard {
+  position: absolute;
+  inset: 0;
+  background: url('/raspberry.png') center / contain no-repeat;
+  animation-duration: 0.75s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.rasp-shard-1 {
+  clip-path: polygon(0 0, 58% 0, 42% 52%, 0 48%);
+  animation-name: shard-fly-1;
+}
+.rasp-shard-2 {
+  clip-path: polygon(58% 0, 100% 0, 100% 48%, 48% 52%);
+  animation-name: shard-fly-2;
+}
+.rasp-shard-3 {
+  clip-path: polygon(0 48%, 42% 52%, 52% 100%, 0 100%);
+  animation-name: shard-fly-3;
+}
+.rasp-shard-4 {
+  clip-path: polygon(48% 52%, 100% 48%, 100% 100%, 52% 100%);
+  animation-name: shard-fly-4;
+}
+
+@keyframes shard-fly-1 {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate(-55px, -45px) rotate(-40deg); opacity: 0; }
+}
+@keyframes shard-fly-2 {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate(55px, -45px) rotate(38deg); opacity: 0; }
+}
+@keyframes shard-fly-3 {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate(-50px, 55px) rotate(-34deg); opacity: 0; }
+}
+@keyframes shard-fly-4 {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate(55px, 55px) rotate(44deg); opacity: 0; }
 }
 
 .lp-sub {
@@ -1525,7 +1579,7 @@
   .lp-sec { padding: 2.5rem 1.5rem; }
 
   /* Meals */
-  .samples-pineapple, .samples-leaf, .age-meal-img { display: none; }
+  .samples-pineapple, .samples-leaf, .age-meal-img, .feat-raspberry-wrap { display: none; }
   .samples-sec { padding: 2rem 1.5rem; }
   .meals-showcase-wrap { height: 320px; }
   .meals-grid { grid-template-columns: 1fr; }

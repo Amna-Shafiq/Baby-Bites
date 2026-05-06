@@ -9,6 +9,34 @@ import { useTheme } from '../contexts/ThemeContext';
 import CTAFooter from '../components/CTAFooter';
 import BrandLogo from '../components/BrandLogo';
 
+// ── Raspberry break effect ────────────────────────────────
+function RaspberryBreak() {
+  const [broken, setBroken] = useState(false);
+
+  useEffect(() => {
+    if (!broken) return;
+    const t = setTimeout(() => setBroken(false), 900);
+    return () => clearTimeout(t);
+  }, [broken]);
+
+  return (
+    <div
+      className={`feat-raspberry-wrap${broken ? ' is-broken' : ''}`}
+      onMouseEnter={() => { if (!broken) setBroken(true); }}
+    >
+      <img src="/raspberry.png" className="feat-raspberry" alt="" aria-hidden="true" />
+      {broken && (
+        <>
+          <div className="rasp-shard rasp-shard-1" />
+          <div className="rasp-shard rasp-shard-2" />
+          <div className="rasp-shard rasp-shard-3" />
+          <div className="rasp-shard rasp-shard-4" />
+        </>
+      )}
+    </div>
+  );
+}
+
 // ── Meal Slider ──────────────────────────────────────────
 const SLIDER_MEALS = [
   { id: "09ff32bc-97a6-4157-ad74-0863b00e9227", title: "Avocado and Banana Rice",         image_url: "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776695966/Avocado_and_Banana_Rice_wz28qj.png",                               min_age_months: 6,  max_age_months: 10, meal_slot: "lunch"      },
@@ -810,7 +838,7 @@ function Home() {
             <h2>{t("featHeading")} <em>{t("featHeadingEm")}</em></h2>
             <p className="lp-sub">{t("featSub")}</p>
           </div>
-          <img src="/raspberry.png" className="feat-raspberry" alt="" aria-hidden="true" />
+          <RaspberryBreak />
         </div>
         <div className="feat-grid">
           <div className="fc bo">
