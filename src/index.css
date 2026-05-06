@@ -115,6 +115,31 @@
   color: var(--text);
 }
 
+[data-theme="dark"] #features {
+  background: #1C0E06;
+}
+
+[data-theme="dark"] #features h2,
+[data-theme="dark"] #features .lp-sub {
+  color: var(--text);
+}
+
+[data-theme="dark"] .cta-footer {
+  background: #1C0E06;
+}
+
+[data-theme="dark"] .cta-footer-heading {
+  color: var(--text);
+}
+
+[data-theme="dark"] .cta-footer-sub {
+  color: var(--muted);
+}
+
+[data-theme="dark"] .cta-footer-eyebrow {
+  color: var(--orange-mid);
+}
+
 /* ── Base ──────────────────────────────────────────── */
 * { box-sizing: border-box; }
 
