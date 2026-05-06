@@ -1230,6 +1230,14 @@
   filter: drop-shadow(0 6px 14px rgba(0,0,0,0.1));
 }
 
+.samples-meal {
+  position: absolute;
+  left: 80%;
+  top: 30%;
+  transform: translateY(-60%);
+  width: 170px;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.1));
+}
 .samples-leaf {
   position: absolute;
   bottom: 30px;
@@ -1315,11 +1323,31 @@
 .age-bg {
   background: var(--blue);
   padding: 3rem 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.age-meal-img {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  width: clamp(130px, 14vw, 210px);
+  transform: rotate(22deg);
+  transform-origin: bottom right;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
+  pointer-events: none;
+  user-select: none;
 }
 
 .age-in {
   max-width: 1100px;
   margin: 0 auto;
+  text-align: center;
+}
+
+.age-in .lp-sub {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .age-grid {
@@ -1497,7 +1525,7 @@
   .lp-sec { padding: 2.5rem 1.5rem; }
 
   /* Meals */
-  .samples-pineapple, .samples-leaf { display: none; }
+  .samples-pineapple, .samples-leaf, .age-meal-img { display: none; }
   .samples-sec { padding: 2rem 1.5rem; }
   .meals-showcase-wrap { height: 320px; }
   .meals-grid { grid-template-columns: 1fr; }

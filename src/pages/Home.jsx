@@ -866,6 +866,7 @@ function Home() {
 
       {/* ── Age guide ── */}
       <div className="age-bg">
+        <img src="/meal.png" className="age-meal-img" alt="" aria-hidden="true" />
         <div className="age-in">
           <div className="eyebrow eb">{t("ageEyebrow")}</div>
           <h2>{t("ageHeading")}</h2>
