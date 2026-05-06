@@ -1329,7 +1329,7 @@
 
 .age-meal-img {
   position: absolute;
-  bottom: 1.5rem;
+  bottom: 4rem;
   right: -8px;
   width: clamp(130px, 14vw, 200px);
   transform: rotate(16deg);
