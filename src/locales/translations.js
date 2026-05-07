@@ -2,7 +2,7 @@ const translations = {
   en: {
     // Nav
     explore:       "Explore",
-    allFoods:      "All Foods",
+    allFoods:      "Foods",
     meals:         "Meals",
     pantry:        "Pantry",
     myMeals:       "My Meals",
@@ -23,7 +23,7 @@ const translations = {
 
     // All Foods
     foodsEyebrow:  "Library",
-    foodsTitle:    "All Foods",
+    foodsTitle:    "Foods",
     searchFoods:   "Search foods...",
     babyAge:       "Baby age (months)",
     allCategories: "All categories",
@@ -212,7 +212,7 @@ const translations = {
 
     // All Foods
     foodsEyebrow:  "لائبریری",
-    foodsTitle:    "تمام غذائیں",
+    foodsTitle:    " غذائیں",
     searchFoods:   "غذائیں تلاش کریں...",
     babyAge:       "بچے کی عمر (مہینے)",
     allCategories: "تمام اقسام",
