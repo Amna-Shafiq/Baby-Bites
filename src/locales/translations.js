@@ -25,7 +25,7 @@ const translations = {
     foodsEyebrow:  "Library",
     foodsTitle:    "Foods",
     searchFoods:   "Search foods...",
-    babyAge:       "Baby age (months)",
+    babyAge:       "age (months)",
     allCategories: "All categories",
     ironRich:      "Iron-rich",
     grain:         "Grain",

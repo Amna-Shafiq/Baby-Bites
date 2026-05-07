@@ -225,7 +225,7 @@ function AllFoods() {
 
       {/* ── Search + age on one line ── */}
       <div style={{ display: "flex", gap: "0.75rem", alignItems: "center", marginBottom: "1rem" }}>
-        <div style={{ position: "relative", flex: 1 }}>
+        <div style={{ position: "relative", flex: "0 1 340px" }}>
           <span style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", fontSize: "1rem", pointerEvents: "none" }}>
             🔍
           </span>
@@ -246,7 +246,7 @@ function AllFoods() {
           placeholder={t("babyAge")}
           readOnly={!session}
           onClick={() => { if (!session) setShowAuthPrompt(true); }}
-          style={{ borderRadius: 100, padding: "12px 16px", width: 140, flexShrink: 0, border: "1.5px solid #FFB87A", background: "white", cursor: !session ? "pointer" : undefined }}
+          style={{ borderRadius: 100, padding: "12px 16px", width: 160, flexShrink: 0, border: "1.5px solid #FFB87A", background: "white", cursor: !session ? "pointer" : undefined }}
         />
       </div>
 
