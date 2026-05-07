@@ -655,6 +655,16 @@ function Home() {
     return () => document.removeEventListener("mousedown", handler);
   }, [menuOpen]);
 
+  const mobileNavRef = useRef(null);
+  useEffect(() => {
+    if (!mobileNavOpen) return;
+    const handler = (e) => {
+      if (mobileNavRef.current && !mobileNavRef.current.contains(e.target)) setMobileNavOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [mobileNavOpen]);
+
   const profileInitial = useMemo(() => {
     const src = (session?.user?.user_metadata?.full_name || session?.user?.email || "?").trim();
     return src.charAt(0).toUpperCase();
@@ -674,7 +684,7 @@ function Home() {
       <ScrollThread />
 
       {/* ── Nav ── */}
-      <nav className="lp-nav">
+      <nav className="lp-nav" ref={mobileNavRef}>
         <div className="lp-nav-inner">
           <Link to="/" className="lp-logo">
             <BrandLogo size="1.3rem" />

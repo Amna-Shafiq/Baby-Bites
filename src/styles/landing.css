@@ -1583,7 +1583,7 @@
 }
 
 /* Tablet */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   /* Nav */
   .landing-page .lp-nav { padding: 0.5rem 0.75rem; }
   .landing-page .lp-nav-inner { padding: 0.5rem 1rem; }
