@@ -10,7 +10,6 @@ import Meals from "./pages/Meals";
 import MyMeals from "./pages/MyMeals";
 import Pantry from "./pages/Pantry";
 import Profile from "./pages/Profile";
-import FallingVegetablesBackground from "./components/FallingVegetablesBackground";
 import AppFooter from "./components/AppFooter";
 import FoodDetail from "./pages/FoodDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -48,7 +47,6 @@ function App() {
 
   return (
     <div className="app-root">
-      {!isHome && <FallingVegetablesBackground />}
       {!isHome && <TopNav />}
       <InstallPrompt />
       <div className="app-content">
