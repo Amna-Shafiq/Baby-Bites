@@ -1136,7 +1136,7 @@ button { font-family: 'Nunito', sans-serif; }
   .top-nav-mobile-wrap {
     display: block;
     position: fixed;
-    top: 3rem;
+    top: 4.5rem;
     right: 0.85rem;
     z-index: 200;
   }
