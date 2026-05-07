@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import BrandLogo from "./BrandLogo";
+import { useLanguage } from "../contexts/LanguageContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 const IconInstagram = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -16,6 +18,9 @@ const IconYouTube = () => (
 );
 
 function AppFooter() {
+  const { lang, setLang } = useLanguage();
+  const { dark, toggleTheme } = useTheme();
+
   return (
     <footer className="app-footer">
       <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
@@ -32,6 +37,27 @@ function AppFooter() {
       <div className="app-footer-social">
         <a href="#" className="social-icon" aria-label="Instagram"><IconInstagram /></a>
         <a href="#" className="social-icon" aria-label="YouTube"><IconYouTube /></a>
+      </div>
+      <div className="app-footer-toggles">
+        <button
+          type="button"
+          onClick={toggleTheme}
+          title={dark ? "Switch to light mode" : "Switch to dark mode"}
+          className="footer-toggle-btn"
+        >
+          {dark ? "☀️" : "🌙"}
+        </button>
+        <button
+          className="lang-toggle footer-lang-toggle"
+          onClick={() => setLang(lang === "en" ? "ur" : "en")}
+        >
+          <img
+            src={lang === "en" ? "https://flagcdn.com/20x15/pk.png" : "https://flagcdn.com/20x15/us.png"}
+            alt={lang === "en" ? "Pakistan" : "USA"}
+            style={{ width: 20, height: 15, borderRadius: 2, objectFit: "cover" }}
+          />
+          {lang === "en" ? "اردو" : "EN"}
+        </button>
       </div>
       <div className="app-footer-copy">© 2026 Baby Bites</div>
     </footer>

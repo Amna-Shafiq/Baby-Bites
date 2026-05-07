@@ -10,8 +10,10 @@ function TopNav() {
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const { activeBaby, babies, switchBaby } = useActiveBaby();
   const menuRef = useRef(null);
+  const mobileRef = useRef(null);
   const { lang, setLang, t } = useLanguage();
   const { dark, toggleTheme } = useTheme();
 
@@ -30,7 +32,7 @@ function TopNav() {
     };
   }, []);
 
-  // Close dropdown when clicking outside
+  // Close dropdowns when clicking outside
   useEffect(() => {
     if (!menuOpen) return;
     const handler = (e) => {
@@ -39,6 +41,15 @@ function TopNav() {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, [menuOpen]);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const handler = (e) => {
+      if (mobileRef.current && !mobileRef.current.contains(e.target)) setMobileOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [mobileOpen]);
 
   const profileInitial = useMemo(() => {
     const fullName = session?.user?.user_metadata?.full_name;
@@ -170,6 +181,58 @@ function TopNav() {
             </button>
           )}
         </div>
+      </div>
+
+      {/* ── Mobile profile FAB ── */}
+      <div ref={mobileRef} className="top-nav-mobile-wrap">
+        <button
+          className="top-nav-fab"
+          onClick={() => setMobileOpen(o => !o)}
+          aria-label="Profile menu"
+        >
+          {session ? (activeBaby?.avatar || (session.user?.user_metadata?.full_name || session.user?.email || "?").charAt(0).toUpperCase()) : "👤"}
+        </button>
+
+        {mobileOpen && (
+          <div className="top-nav-mobile-menu">
+            {session ? (
+              <>
+                {babies.length > 0 && (
+                  <>
+                    <p className="tnmm-section-label">{t("switchBaby")}</p>
+                    {babies.map((baby) => {
+                      const isActive = baby.id === activeBaby?.id;
+                      return (
+                        <button
+                          key={baby.id}
+                          type="button"
+                          onClick={() => { if (!isActive) switchBaby(baby.id); setMobileOpen(false); }}
+                          className="tnmm-row"
+                          style={{ color: isActive ? "var(--orange-dark)" : "var(--dark)", background: isActive ? "var(--cream)" : "none" }}
+                        >
+                          <span>{baby.avatar || "🐣"}</span>
+                          <span style={{ flex: 1 }}>{baby.name}</span>
+                          {isActive && <span style={{ fontSize: "0.7rem" }}>✓</span>}
+                        </button>
+                      );
+                    })}
+                    <div style={{ borderTop: "1px solid var(--border)" }} />
+                  </>
+                )}
+                <NavLink to="/profile" className="tnmm-row" onClick={() => setMobileOpen(false)}>
+                  👤 {t("myProfile")}
+                </NavLink>
+                <button type="button" className="tnmm-row tnmm-signout" onClick={handleSignOut}>
+                  {t("signOut")}
+                </button>
+              </>
+            ) : (
+              <button type="button" className="tnmm-row tnmm-cta" onClick={() => { navigate("/login"); setMobileOpen(false); }}>
+                {t("getStarted")} →
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </nav>
   );
