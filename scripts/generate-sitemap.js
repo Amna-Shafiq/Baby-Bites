@@ -13,7 +13,7 @@ if (existsSync(".env")) {
   }
 }
 
-const SITE_URL = (process.env.SITE_URL || "https://babybitee.netlify.app").replace(/\/$/, "");
+const SITE_URL = (process.env.SITE_URL || "https://babybites.net").replace(/\/$/, "");
 
 const supabase = createClient(
   process.env.VITE_SUPABASE_URL,

@@ -5,4 +5,4 @@ Disallow: /profile
 Disallow: /pantry
 Disallow: /my-meals
 
-Sitemap: https://babybitee.netlify.app/sitemap.xml
+Sitemap: https://babybites.net/sitemap.xml
