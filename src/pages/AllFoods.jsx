@@ -278,6 +278,7 @@ function AllFoods() {
           value={tagFilter}
           onChange={(e) => setTagFilter(e.target.value)}
         >
+          <option value="" disabled>Food group</option>
           {TAG_CHIPS.map(({ value, label }) => (
             <option key={value} value={value}>{label}</option>
           ))}
@@ -316,17 +317,6 @@ function AllFoods() {
 
       {error && <p className="muted">{error}</p>}
 
-      {/* ── Results count ── */}
-      {!error && (
-        <p style={{ fontSize: "0.82rem", color: "var(--muted)", margin: "0 0 1rem", fontWeight: 600 }}>
-          {activeBaby && session ? `${activeBaby.avatar || "🍼"} Showing foods safe for ${activeBaby.name} · ` : ""}
-          {showAll
-            ? `Showing all ${filteredFoods.length} foods`
-            : filteredFoods.length === 0
-              ? "No foods found"
-              : `Showing ${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, filteredFoods.length)} of ${filteredFoods.length} foods`}
-        </p>
-      )}
 
       {/* ── Food grid ── */}
       <div className="foods-grid">
