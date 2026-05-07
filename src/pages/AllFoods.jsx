@@ -252,6 +252,7 @@ function AllFoods() {
 
       {/* ── Category: chips on desktop, dropdown on mobile ── */}
       <div style={{ marginBottom: "0.75rem" }}>
+        <p style={{ margin: "0 0 0.4rem", fontSize: "0.72rem", fontWeight: 700, color: "#c4622a", textTransform: "uppercase", letterSpacing: "0.08em" }}>Food group</p>
         <div className="foods-tag-chips">
           {TAG_CHIPS.map(({ value, label }) => {
             const active = tagFilter === value;
