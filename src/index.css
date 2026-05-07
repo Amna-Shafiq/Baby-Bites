@@ -147,8 +147,12 @@
 /* ── Base ──────────────────────────────────────────── */
 * { box-sizing: border-box; }
 
+/* CTA footer sits flush against app footer */
+.cta-footer + .app-footer { margin-top: 0; }
+
 body {
   margin: 0;
+  overflow-x: hidden;
   font-family: 'Nunito', sans-serif;
   background: var(--cream);
   color: var(--text);
@@ -510,7 +514,7 @@ button { font-family: 'Nunito', sans-serif; }
 
 /* ── App Footer ────────────────────────────────────── */
 .app-footer {
-  background: var(--dark);
+  background: #7D3A23;
   margin-top: 4rem;
   padding: 2rem 2.5rem;
   display: flex;
@@ -525,17 +529,17 @@ button { font-family: 'Nunito', sans-serif; }
   font-family: 'Aileron', sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--orange-mid);
+  color: #FFAE92;
   display: flex;
   align-items: center;
   gap: 7px;
 }
 .app-footer-links { display: flex; gap: 1.5rem; }
-.app-footer-links a { color: #7A6050; font-size: 0.85rem; font-weight: 600; transition: color 0.2s; }
+.app-footer-links a { color: rgba(255,220,200,0.75); font-size: 0.85rem; font-weight: 600; transition: color 0.2s; }
 .app-footer-links a:hover { color: #fff; }
-.app-footer-copy { color: #5A4030; font-size: 0.8rem; font-weight: 600; }
+.app-footer-copy { color: rgba(255,220,200,0.6); font-size: 0.8rem; font-weight: 600; }
 .app-footer-social { display: flex; gap: 0.75rem; align-items: center; }
-.social-icon { color: #7A6050; transition: color 0.2s; display: flex; }
+.social-icon { color: rgba(255,220,200,0.75); transition: color 0.2s; display: flex; }
 .social-icon:hover { color: #fff; }
 
 /* ── Toast ─────────────────────────────────────────── */
@@ -796,6 +800,7 @@ button { font-family: 'Nunito', sans-serif; }
 .pagination-btn:hover:not(:disabled) { background: var(--orange); border-color: var(--orange-mid); }
 .pagination-btn.active { background: var(--orange-dark); color: #fff; border-color: var(--orange-dark); }
 .pagination-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.pagination-gap { padding: 0 4px; color: var(--muted); font-size: 0.85rem; line-height: 1; align-self: center; }
 
 /* ── Skeleton ──────────────────────────────────────── */
 .skeleton-card {
@@ -1136,7 +1141,7 @@ button { font-family: 'Nunito', sans-serif; }
   .top-nav-mobile-wrap {
     display: block;
     position: fixed;
-    top: 4.5rem;
+    top: 2.5rem;
     right: 0.85rem;
     z-index: 200;
   }

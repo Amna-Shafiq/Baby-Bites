@@ -38,6 +38,20 @@ function formatAge(months) {
   return `${years} years old`;
 }
 
+function getPageRange(current, total) {
+  if (total <= 5) return Array.from({ length: total }, (_, i) => i + 1);
+  const set = new Set([1, total, current]);
+  if (current > 1) set.add(current - 1);
+  if (current < total) set.add(current + 1);
+  const sorted = [...set].sort((a, b) => a - b);
+  const result = [];
+  for (let i = 0; i < sorted.length; i++) {
+    if (i > 0 && sorted[i] - sorted[i - 1] > 1) result.push(null);
+    result.push(sorted[i]);
+  }
+  return result;
+}
+
 function AllFoods() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -298,19 +312,15 @@ function AllFoods() {
       {!showAll && totalPages > 1 && (
         <div className="pagination">
           <button className="pagination-btn" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
-            ← Prev
+            ←
           </button>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-            <button
-              key={p}
-              className={`pagination-btn${p === page ? " active" : ""}`}
-              onClick={() => setPage(p)}
-            >
-              {p}
-            </button>
-          ))}
+          {getPageRange(page, totalPages).map((p, i) =>
+            p === null
+              ? <span key={`gap-${i}`} className="pagination-gap">…</span>
+              : <button key={p} className={`pagination-btn${p === page ? " active" : ""}`} onClick={() => setPage(p)}>{p}</button>
+          )}
           <button className="pagination-btn" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages}>
-            Next →
+            →
           </button>
         </div>
       )}

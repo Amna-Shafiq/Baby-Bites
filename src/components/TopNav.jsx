@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { NavLink, useNavigate } from "react-router-dom";
 import BrandLogo from "./BrandLogo";
 import { supabase } from "../lib/supabaseClient";
@@ -63,6 +64,52 @@ function TopNav() {
     setMenuOpen(false);
     navigate("/");
   };
+
+  const fab = session ? createPortal(
+    <div ref={mobileRef} className="top-nav-mobile-wrap">
+      <button
+        className="top-nav-fab"
+        onClick={() => setMobileOpen(o => !o)}
+        aria-label="Profile menu"
+      >
+        {activeBaby?.avatar || profileInitial}
+      </button>
+
+      {mobileOpen && (
+        <div className="top-nav-mobile-menu">
+          {babies.length > 0 && (
+            <>
+              <p className="tnmm-section-label">{t("switchBaby")}</p>
+              {babies.map((baby) => {
+                const isActive = baby.id === activeBaby?.id;
+                return (
+                  <button
+                    key={baby.id}
+                    type="button"
+                    onClick={() => { if (!isActive) switchBaby(baby.id); setMobileOpen(false); }}
+                    className="tnmm-row"
+                    style={{ color: isActive ? "var(--orange-dark)" : "var(--dark)", background: isActive ? "var(--cream)" : "none" }}
+                  >
+                    <span>{baby.avatar || "🐣"}</span>
+                    <span style={{ flex: 1 }}>{baby.name}</span>
+                    {isActive && <span style={{ fontSize: "0.7rem" }}>✓</span>}
+                  </button>
+                );
+              })}
+              <div style={{ borderTop: "1px solid var(--border)" }} />
+            </>
+          )}
+          <NavLink to="/profile" className="tnmm-row" onClick={() => setMobileOpen(false)}>
+            👤 {t("myProfile")}
+          </NavLink>
+          <button type="button" className="tnmm-row tnmm-signout" onClick={handleSignOut}>
+            {t("signOut")}
+          </button>
+        </div>
+      )}
+    </div>,
+    document.body
+  ) : null;
 
   return (
     <>
@@ -185,52 +232,7 @@ function TopNav() {
       </div>
 
     </nav>
-
-    {/* ── Mobile profile FAB (signed-in only) — outside nav to ensure position:fixed works ── */}
-    {session && (
-      <div ref={mobileRef} className="top-nav-mobile-wrap">
-        <button
-          className="top-nav-fab"
-          onClick={() => setMobileOpen(o => !o)}
-          aria-label="Profile menu"
-        >
-          {activeBaby?.avatar || profileInitial}
-        </button>
-
-        {mobileOpen && (
-          <div className="top-nav-mobile-menu">
-            {babies.length > 0 && (
-              <>
-                <p className="tnmm-section-label">{t("switchBaby")}</p>
-                {babies.map((baby) => {
-                  const isActive = baby.id === activeBaby?.id;
-                  return (
-                    <button
-                      key={baby.id}
-                      type="button"
-                      onClick={() => { if (!isActive) switchBaby(baby.id); setMobileOpen(false); }}
-                      className="tnmm-row"
-                      style={{ color: isActive ? "var(--orange-dark)" : "var(--dark)", background: isActive ? "var(--cream)" : "none" }}
-                    >
-                      <span>{baby.avatar || "🐣"}</span>
-                      <span style={{ flex: 1 }}>{baby.name}</span>
-                      {isActive && <span style={{ fontSize: "0.7rem" }}>✓</span>}
-                    </button>
-                  );
-                })}
-                <div style={{ borderTop: "1px solid var(--border)" }} />
-              </>
-            )}
-            <NavLink to="/profile" className="tnmm-row" onClick={() => setMobileOpen(false)}>
-              👤 {t("myProfile")}
-            </NavLink>
-            <button type="button" className="tnmm-row tnmm-signout" onClick={handleSignOut}>
-              {t("signOut")}
-            </button>
-          </div>
-        )}
-      </div>
-    )}
+    {fab}
     </>
   );
 }
