@@ -1591,6 +1591,10 @@
   .lp-hamburger { display: flex; }
   .nav-btn-full { display: none; }
   .nav-btn-short { display: inline; }
+  .landing-page .lp-nav-inner .lang-toggle,
+  .landing-page .lp-nav-inner button[title*="mode"],
+  .landing-page .lp-nav-inner button[title*="light"],
+  .landing-page .lp-nav-inner button[title*="dark"] { display: none; }
 
   /* Hero */
   .lp-hero { padding: 2.5rem 1.5rem 2rem; }

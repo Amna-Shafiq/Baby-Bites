@@ -253,6 +253,8 @@ function HeroPanel({ activeBaby, session, navigate }) {
             <img
               src={featuredMeal.image_url || "https://placehold.co/280x110?text=🍽"}
               alt={featuredMeal.title}
+              loading="eager"
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               onError={e => { e.target.src = "https://placehold.co/280x110?text=🍽"; }}
             />
           ) : (
