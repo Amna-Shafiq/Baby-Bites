@@ -160,7 +160,7 @@ body {
 }
 
 body.page-foods {
-  background: linear-gradient(to bottom, #ffffff, #FFAE92);
+  background: linear-gradient(135deg, #FFF8F0 0%, #FFE8D6 50%, #E8F4FF 100%);
   background-attachment: fixed;
 }
 body.page-foods::before { display: none; }

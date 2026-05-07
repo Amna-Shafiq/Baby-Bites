@@ -25,6 +25,29 @@ const ALLERGEN_PILLS = [
   { flag: "is_gluten_free", label: "Gluten-free", icon: "🌾" },
 ];
 
+const TAG_CHIPS = [
+  { value: "all",       label: "All" },
+  { value: "grain",     label: "Grain" },
+  { value: "fruit",     label: "Fruit" },
+  { value: "veggie",    label: "Veggie" },
+  { value: "protein",   label: "Protein" },
+  { value: "dairy",     label: "Dairy" },
+  { value: "nut",       label: "Nuts" },
+  { value: "spice",     label: "Spice" },
+  { value: "iron-rich", label: "Iron-rich" },
+  { value: "other",     label: "Other" },
+];
+
+const GROUP_COLORS = {
+  grain:   { bg: "#FFF3C4", border: "#F5C340" },
+  veggie:  { bg: "#D5F5E3", border: "#52C490" },
+  fruit:   { bg: "#FFE4CC", border: "#FFB87A" },
+  protein: { bg: "#EAD5F5", border: "#C49AE8" },
+  dairy:   { bg: "#D6EAF8", border: "#6ABCDC" },
+  nut:     { bg: "#FFF3C4", border: "#F5C340" },
+  spice:   { bg: "#D5F5E3", border: "#52C490" },
+};
+
 const PAGE_SIZE = 12;
 
 function formatAge(months) {
@@ -186,46 +209,73 @@ function AllFoods() {
           icon="🥕"
         />
       )}
-      <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>{t("foodsEyebrow")}</span>
-      <h1>{t("foodsTitle")}</h1>
 
-      {/* ── Filters ── */}
-      <div className="filters" style={{ marginTop: "1rem" }}>
+      {/* ── Header ── */}
+      <div style={{ marginTop: "2rem", marginBottom: "2rem" }}>
+        <p style={{ color: "#c4622a", fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 0.5rem" }}>
+          LIBRARY
+        </p>
+        <h1 style={{ margin: "0 0 0.5rem", fontSize: "clamp(2rem, 5vw, 3rem)" }}>
+          {t("foodsTitle")}
+        </h1>
+        <p style={{ color: "var(--muted)", fontSize: "1rem", margin: 0, fontWeight: 500 }}>
+          Browse 100+ foods with safe-from ages, texture tips and allergen guidance
+        </p>
+      </div>
+
+      {/* ── Search bar ── */}
+      <div style={{ position: "relative", maxWidth: 600, marginBottom: "1.25rem" }}>
+        <span style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", fontSize: "1rem", pointerEvents: "none" }}>
+          🔍
+        </span>
         <input
           className="input"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t("searchFoods")}
+          style={{ borderRadius: 100, padding: "12px 20px 12px 44px", border: "1.5px solid #FFB87A", background: "white", width: "100%", boxSizing: "border-box" }}
         />
-        <div className="filters-row">
-          <input
-            className="input"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-            type="number"
-            min="4"
-            placeholder={t("babyAge")}
-            readOnly={!session}
-            onClick={() => { if (!session) setShowAuthPrompt(true); }}
-            style={{ cursor: !session ? "pointer" : undefined }}
-          />
-          <select className="input" value={tagFilter} onChange={(e) => setTagFilter(e.target.value)}>
-            <option value="all">{t("allCategories")}</option>
-            <option value="iron-rich">{t("ironRich")}</option>
-            <option value="grain">{t("grain")}</option>
-            <option value="fruit">{t("fruit")}</option>
-            <option value="veggie">{t("veggie")}</option>
-            <option value="protein">{t("protein")}</option>
-            <option value="nut">Nuts & Seeds</option>
-            <option value="spice">Herb / Spice</option>
-            <option value="other">{t("other")}</option>
-          </select>
+      </div>
+
+      {/* ── Age + category chips ── */}
+      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center", marginBottom: "0.75rem" }}>
+        <input
+          className="input"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+          type="number"
+          min="4"
+          placeholder={t("babyAge")}
+          readOnly={!session}
+          onClick={() => { if (!session) setShowAuthPrompt(true); }}
+          style={{ borderRadius: 100, padding: "8px 16px", maxWidth: 140, border: "1.5px solid #FFB87A", background: "white", cursor: !session ? "pointer" : undefined, flexShrink: 0 }}
+        />
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          {TAG_CHIPS.map(({ value, label }) => {
+            const active = tagFilter === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setTagFilter(value)}
+                style={{
+                  padding: "6px 14px", borderRadius: 100, fontSize: "0.8rem", fontWeight: 700,
+                  cursor: "pointer", transition: "all 0.15s",
+                  background: active ? "#FFE4CC" : "white",
+                  border: `1.5px solid ${active ? "#FFB87A" : "#eee"}`,
+                  color: active ? "#c4622a" : "#888",
+                }}
+              >
+                {label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* ── Allergen filter pills (shown only when baby has allergies set) ── */}
+      {/* ── Baby allergen filter pills ── */}
       {babyAllergenPills.length > 0 && (
-        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: "0.6rem", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: "0.75rem", alignItems: "center" }}>
           <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--muted)", whiteSpace: "nowrap" }}>
             {activeBaby.avatar} Filters for {activeBaby.name}:
           </span>
@@ -239,9 +289,9 @@ function AllFoods() {
                 style={{
                   display: "inline-flex", alignItems: "center", gap: 4,
                   padding: "4px 11px", borderRadius: 100, fontSize: "0.75rem", fontWeight: 700,
-                  border: `1.5px solid ${active ? "var(--orange-dark)" : "var(--border)"}`,
-                  background: active ? "var(--orange-dark)" : "transparent",
-                  color: active ? "#fff" : "var(--muted)",
+                  border: `1.5px solid ${active ? "#c4622a" : "#eee"}`,
+                  background: active ? "#c4622a" : "white",
+                  color: active ? "#fff" : "#888",
                   cursor: "pointer", transition: "all 0.15s",
                 }}
               >
@@ -255,96 +305,94 @@ function AllFoods() {
 
       {error && <p className="muted">{error}</p>}
 
+      {/* ── Results count ── */}
       {!error && (
-        <p className="results-count">
+        <p style={{ fontSize: "0.82rem", color: "var(--muted)", margin: "0 0 1rem", fontWeight: 600 }}>
+          {activeBaby && session ? `${activeBaby.avatar || "🍼"} Showing foods safe for ${activeBaby.name} · ` : ""}
           {showAll
-            ? t("showingAllFoods", filteredFoods.length)
-            : t("showingFoods", filteredFoods.length === 0 ? 0 : (page - 1) * PAGE_SIZE + 1, Math.min(page * PAGE_SIZE, filteredFoods.length), filteredFoods.length)}
+            ? `Showing all ${filteredFoods.length} foods`
+            : filteredFoods.length === 0
+              ? "No foods found"
+              : `Showing ${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, filteredFoods.length)} of ${filteredFoods.length} foods`}
         </p>
       )}
 
       {/* ── Food grid ── */}
       <div className="foods-grid">
-        {pageFoods.map((food) => (
-          <div key={food.id} className="food-card" onClick={() => navigate(`/foods/${food.id}`)}>
-
-            <div className="food-card-front">
-              <img
-                src={food.image_url}
-                alt={food.name}
-                onError={(e) => { e.target.src = "https://placehold.co/80x80?text=🍽"; }}
-                style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 12 }}
-              />
-              <p className="food-card-name">{food.name}</p>
-              {/* ── Badges row ── */}
-              {(food.is_warning || food.allergen_notes) && (
-                <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 6, width: "100%" }}>
-                  {food.is_warning && (
-                    <span style={{
-                      background: '#fdf0ef', border: '1.5px solid #c0392b',
-                      borderRadius: 6, padding: '3px 7px', fontSize: 10,
-                      color: '#c0392b', fontWeight: 700, textAlign: 'center',
-                    }}>
-                      ⚠️ Not safe before {formatAge(food.safe_from_months)}
-                    </span>
-                  )}
-                  {food.allergen_notes && (
-                    <span style={{
-                      background: '#eef4ff', border: '1.5px solid #2471a3',
-                      borderRadius: 6, padding: '3px 7px', fontSize: 10,
-                      color: '#2471a3', fontWeight: 700, textAlign: 'center',
-                    }}>
-                      🔵 Common allergen
-                    </span>
-                  )}
-                </div>
-              )}
+        {pageFoods.map((food) => {
+          const colors = GROUP_COLORS[food.food_group] || { bg: "#F5F5F5", border: "#ccc" };
+          return (
+            <div
+              key={food.id}
+              className="food-card"
+              onClick={() => navigate(`/foods/${food.id}`)}
+              style={{ background: colors.bg, borderTop: `4px solid ${colors.border}`, borderRadius: 20 }}
+            >
+              <div className="food-card-front">
+                <img
+                  src={food.image_url}
+                  alt={food.name}
+                  onError={(e) => { e.target.src = "https://placehold.co/80x80?text=🍽"; }}
+                  style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 12 }}
+                />
+                <p className="food-card-name">{food.name}</p>
+                {(food.is_warning || food.allergen_notes) && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 6, width: "100%" }}>
+                    {food.is_warning && (
+                      <span style={{
+                        background: '#fdf0ef', border: '1.5px solid #c0392b',
+                        borderRadius: 6, padding: '3px 7px', fontSize: 10,
+                        color: '#c0392b', fontWeight: 700, textAlign: 'center',
+                      }}>
+                        ⚠️ Not safe before {formatAge(food.safe_from_months)}
+                      </span>
+                    )}
+                    {food.allergen_notes && (
+                      <span style={{
+                        background: '#eef4ff', border: '1.5px solid #2471a3',
+                        borderRadius: 6, padding: '3px 7px', fontSize: 10,
+                        color: '#2471a3', fontWeight: 700, textAlign: 'center',
+                      }}>
+                        🔵 Common allergen
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className="food-card-details">
+                <p style={{ fontWeight: 700, fontSize: "0.9rem", margin: "0 0 6px", color: "var(--dark)", fontFamily: "Aileron, sans-serif" }}>{food.name}</p>
+                <p className="food-detail-row">Safe from: <strong>{food.safe_from_months}m+</strong></p>
+                <p className="food-detail-row">Iron rich: <strong>{food.is_iron_rich ? "✓ Yes" : "No"}</strong></p>
+                <p style={{ fontSize: "0.75rem", color: "var(--orange-dark)", marginTop: 8, fontWeight: 700 }}>
+                  Click for details →
+                </p>
+              </div>
             </div>
-
-            <div className="food-card-details">
-              <p style={{ fontWeight: 700, fontSize: "0.9rem", margin: "0 0 6px", color: "var(--dark)", fontFamily: "Aileron, sans-serif" }}>{food.name}</p>
-              <p className="food-detail-row">Safe from: <strong>{food.safe_from_months}m+</strong></p>
-              <p className="food-detail-row">Iron rich: <strong>{food.is_iron_rich ? "✓ Yes" : "No"}</strong></p>
-              <p style={{ fontSize: "0.75rem", color: "var(--orange-dark)", marginTop: 8, fontWeight: 700 }}>
-                Click for details →
-              </p>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* ── Pagination ── */}
       {!showAll && totalPages > 1 && (
         <div className="pagination">
-          <button className="pagination-btn" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
-            ←
-          </button>
+          <button className="pagination-btn" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>←</button>
           {getPageRange(page, totalPages).map((p, i) =>
             p === null
               ? <span key={`gap-${i}`} className="pagination-gap">…</span>
               : <button key={p} className={`pagination-btn${p === page ? " active" : ""}`} onClick={() => setPage(p)}>{p}</button>
           )}
-          <button className="pagination-btn" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages}>
-            →
-          </button>
+          <button className="pagination-btn" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages}>→</button>
         </div>
       )}
       <div style={{ textAlign: "center", marginTop: "1rem", display: "flex", gap: "0.5rem", justifyContent: "center" }}>
-        <button
-          className="pagination-btn"
-          onClick={() => { setShowAll((s) => !s); setPage(1); }}
-        >
+        <button className="pagination-btn" onClick={() => { setShowAll((s) => !s); setPage(1); }}>
           {showAll ? t("showPages") : t("showAll")}
         </button>
         {showAll && (
-          <button
-            className="pagination-btn"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          >
-            ↑ Top
-          </button>
+          <button className="pagination-btn" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>↑ Top</button>
         )}
       </div>
+
       {/* ── Related meals ── */}
       {query.trim() && relatedMeals.length > 0 && (
         <div style={{ marginTop: "2.5rem" }}>
