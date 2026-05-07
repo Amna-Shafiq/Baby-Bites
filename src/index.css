@@ -1101,8 +1101,8 @@ button { font-family: 'Nunito', sans-serif; }
 }
 
 @media (max-width: 824px) {
-  .top-nav-mobile-wrap { display: block; position: relative; }
-  .top-nav-actions { display: none; }
+  .top-nav-actions .baby-nav-name { display: none; }
+  .top-nav-links a { font-size: 0.82rem; padding: 0.35rem 0.65rem; }
 }
 
 @media (max-width: 760px) {
@@ -1132,16 +1132,17 @@ button { font-family: 'Nunito', sans-serif; }
   .meal-detail-header { grid-template-columns: 1fr !important; }
   .meal-detail-header img { aspect-ratio: 16/9 !important; }
 
-  /* FAB sits bottom-right above the tab bar */
+  /* FAB: fixed top-right, inline with page headings */
   .top-nav-mobile-wrap {
+    display: block;
     position: fixed;
-    bottom: 5.5rem;
-    right: 1rem;
+    top: 0.85rem;
+    right: 0.85rem;
     z-index: 200;
   }
   .top-nav-mobile-menu {
-    bottom: calc(100% + 8px);
-    top: auto;
+    top: calc(100% + 8px);
+    bottom: auto;
     right: 0;
   }
 }
