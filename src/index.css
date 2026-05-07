@@ -619,6 +619,24 @@ button { font-family: 'Nunito', sans-serif; }
   min-height: 150px;
 }
 
+.foods-tag-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.foods-tag-select {
+  display: none;
+  border-radius: 100px;
+  border: 1.5px solid #FFB87A;
+  background: white;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .foods-tag-chips { display: none; }
+  .foods-tag-select { display: block; }
+}
+
 .foods-page .food-card {
   background: rgba(250, 250, 248, 0.75);
 }

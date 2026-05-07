@@ -223,22 +223,20 @@ function AllFoods() {
         </p>
       </div>
 
-      {/* ── Search bar ── */}
-      <div style={{ position: "relative", maxWidth: 600, marginBottom: "1.25rem" }}>
-        <span style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", fontSize: "1rem", pointerEvents: "none" }}>
-          🔍
-        </span>
-        <input
-          className="input"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={t("searchFoods")}
-          style={{ borderRadius: 100, padding: "12px 20px 12px 44px", border: "1.5px solid #FFB87A", background: "white", width: "100%", boxSizing: "border-box" }}
-        />
-      </div>
-
-      {/* ── Age + category chips ── */}
-      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center", marginBottom: "0.75rem" }}>
+      {/* ── Search + age on one line ── */}
+      <div style={{ display: "flex", gap: "0.75rem", alignItems: "center", marginBottom: "1rem" }}>
+        <div style={{ position: "relative", flex: 1 }}>
+          <span style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", fontSize: "1rem", pointerEvents: "none" }}>
+            🔍
+          </span>
+          <input
+            className="input"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t("searchFoods")}
+            style={{ borderRadius: 100, padding: "12px 20px 12px 44px", border: "1.5px solid #FFB87A", background: "white", width: "100%", boxSizing: "border-box" }}
+          />
+        </div>
         <input
           className="input"
           value={age}
@@ -248,9 +246,13 @@ function AllFoods() {
           placeholder={t("babyAge")}
           readOnly={!session}
           onClick={() => { if (!session) setShowAuthPrompt(true); }}
-          style={{ borderRadius: 100, padding: "8px 16px", maxWidth: 140, border: "1.5px solid #FFB87A", background: "white", cursor: !session ? "pointer" : undefined, flexShrink: 0 }}
+          style={{ borderRadius: 100, padding: "12px 16px", width: 140, flexShrink: 0, border: "1.5px solid #FFB87A", background: "white", cursor: !session ? "pointer" : undefined }}
         />
-        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+      </div>
+
+      {/* ── Category: chips on desktop, dropdown on mobile ── */}
+      <div style={{ marginBottom: "0.75rem" }}>
+        <div className="foods-tag-chips">
           {TAG_CHIPS.map(({ value, label }) => {
             const active = tagFilter === value;
             return (
@@ -271,6 +273,15 @@ function AllFoods() {
             );
           })}
         </div>
+        <select
+          className="input foods-tag-select"
+          value={tagFilter}
+          onChange={(e) => setTagFilter(e.target.value)}
+        >
+          {TAG_CHIPS.map(({ value, label }) => (
+            <option key={value} value={value}>{label}</option>
+          ))}
+        </select>
       </div>
 
       {/* ── Baby allergen filter pills ── */}
