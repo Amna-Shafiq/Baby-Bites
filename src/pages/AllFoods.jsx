@@ -327,7 +327,7 @@ function AllFoods() {
             <div
               key={food.id}
               className="food-card"
-              onClick={() => navigate(`/foods/${food.id}`)}
+              onClick={() => navigate(`/foods/${food.name.toLowerCase().replace(/\s+/g, '-')}`)}
               style={{ background: colors.bg, borderTop: `4px solid ${colors.border}`, borderRadius: 20 }}
             >
               <div className="food-card-front">
