@@ -83,6 +83,11 @@ function AllFoods() {
     return () => data?.subscription?.unsubscribe?.();
   }, []);
 
+  useEffect(() => {
+    document.body.classList.add("page-foods");
+    return () => document.body.classList.remove("page-foods");
+  }, []);
+
   const [foods, setFoods]         = useState([]);
   const [error, setError]         = useState("");
   const [relatedMeals, setRelatedMeals] = useState([]);

@@ -159,6 +159,12 @@ body {
   line-height: 1.6;
 }
 
+body.page-foods {
+  background: linear-gradient(to bottom, #ffffff, #FFAE92);
+  background-attachment: fixed;
+}
+body.page-foods::before { display: none; }
+
 body::before {
   content: '';
   position: fixed;
@@ -611,16 +617,6 @@ button { font-family: 'Nunito', sans-serif; }
   background: var(--white);
   border: 1.5px solid var(--border);
   min-height: 150px;
-}
-
-.foods-page {
-  background: linear-gradient(to bottom, #ffffff, #FFAE92);
-  min-height: 100vh;
-  max-width: none;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  padding-left: max(2rem, calc((100vw - 1100px) / 2));
-  padding-right: max(2rem, calc((100vw - 1100px) / 2));
 }
 
 .foods-page .food-card {
