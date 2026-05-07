@@ -30,7 +30,7 @@ const STATIC_ROUTES = [
 
 async function generateSitemap() {
   const [{ data: foods }, { data: meals }] = await Promise.all([
-    supabase.from("foods").select("id"),
+    supabase.from("foods").select("id, name"),
     supabase.from("meals").select("id").eq("is_public", true),
   ]);
 
@@ -41,7 +41,7 @@ async function generateSitemap() {
       changefreq: r.changefreq,
     })),
     ...(foods || []).map((f) => ({
-      loc: `${SITE_URL}/foods/${f.id}`,
+      loc: `${SITE_URL}/foods/${f.name.toLowerCase().replace(/\s+/g, '-')}`,
       priority: "0.7",
       changefreq: "monthly",
     })),
