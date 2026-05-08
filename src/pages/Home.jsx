@@ -807,28 +807,6 @@ function Home() {
             <Link to="/meals" onClick={() => setMobileNavOpen(false)}>{t("meals")}</Link>
             <Link to="/pantry" onClick={() => setMobileNavOpen(false)}>{t("pantry")}</Link>
             <Link to="/my-meals" onClick={() => setMobileNavOpen(false)}>{t("myMeals")}</Link>
-            <div style={{ borderTop: "1px solid rgba(255,255,255,0.15)", margin: "0.25rem 0", display: "flex", gap: "0.5rem", padding: "0.5rem 0 0" }}>
-              <button
-                type="button"
-                onClick={toggleTheme}
-                title={dark ? "Switch to light mode" : "Switch to dark mode"}
-                style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.1rem", padding: "6px 10px", borderRadius: 8, color: "inherit" }}
-              >
-                {dark ? "☀️" : "🌙"}
-              </button>
-              <button
-                className="lang-toggle"
-                onClick={() => setLang(lang === "en" ? "ur" : "en")}
-                title={lang === "en" ? "Switch to Urdu" : "Switch to English"}
-              >
-                <img
-                  src={lang === "en" ? "https://flagcdn.com/20x15/pk.png" : "https://flagcdn.com/20x15/us.png"}
-                  alt={lang === "en" ? "Pakistan" : "USA"}
-                  style={{ width: 20, height: 15, borderRadius: 2, objectFit: "cover" }}
-                />
-                {lang === "en" ? "اردو" : "EN"}
-              </button>
-            </div>
           </div>
         )}
       </nav>
@@ -987,6 +965,28 @@ function Home() {
           <Link to="/meals">{t("meals")}</Link>
           <Link to="/foods">{t("allFoods")}</Link>
           <Link to="/about">{t("footerAbout")}</Link>
+        </div>
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            title={dark ? "Switch to light mode" : "Switch to dark mode"}
+            className="footer-toggle-btn"
+          >
+            {dark ? "☀️" : "🌙"}
+          </button>
+          <button
+            className="lang-toggle footer-lang-toggle"
+            onClick={() => setLang(lang === "en" ? "ur" : "en")}
+            title={lang === "en" ? "Switch to Urdu" : "Switch to English"}
+          >
+            <img
+              src={lang === "en" ? "https://flagcdn.com/20x15/pk.png" : "https://flagcdn.com/20x15/us.png"}
+              alt={lang === "en" ? "Pakistan" : "USA"}
+              style={{ width: 20, height: 15, borderRadius: 2, objectFit: "cover" }}
+            />
+            {lang === "en" ? "اردو" : "EN"}
+          </button>
         </div>
         <div className="fcopy">{t("footerCopy")}</div>
       </footer>
