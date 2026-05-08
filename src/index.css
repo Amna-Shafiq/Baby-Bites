@@ -1114,8 +1114,8 @@ button { font-family: 'Nunito', sans-serif; }
 }
 
 .footer-toggle-btn {
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.2);
+  background: none;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1.1rem;
@@ -1125,8 +1125,8 @@ button { font-family: 'Nunito', sans-serif; }
 }
 
 .footer-lang-toggle {
-  background: rgba(255,255,255,0.15) !important;
-  border: 1px solid rgba(255,255,255,0.2) !important;
+  background: none !important;
+  border: none !important;
 }
 
 @media (max-width: 824px) {
