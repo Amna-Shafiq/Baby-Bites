@@ -342,20 +342,22 @@ function FoodDetail() {
         </div>
       )}
 
-      {/* ── Stages + Allergen side by side ── */}
+      {/* ── Allergen + Stages ── */}
       {(() => {
         const hasStages = STAGES.some((s) => food[s.key]);
         if (!hasStages && !food.allergen_notes) return null;
         return (
-      <div style={{ display: "grid", gridTemplateColumns: hasStages && food.allergen_notes ? "1fr 300px" : "1fr", gap: 16, alignItems: "start", marginBottom: "1rem" }}>
-        <ServingStages food={food} />
-        {food.allergen_notes && (
-          <div className="card card-allergen" style={{ position: "sticky", top: 90 }}>
-            <h3 style={{ marginBottom: "0.5rem", color: "#c0392b", fontSize: "0.9rem" }}>{t("allergenNotes")}</h3>
-            <p style={{ color: "#c0392b", margin: 0, fontSize: "0.82rem", lineHeight: 1.6 }}>{food.allergen_notes}</p>
+          <div className={`food-detail-main${hasStages && food.allergen_notes ? " food-detail-two-col" : ""}`}>
+            {food.allergen_notes && (
+              <div className="card card-allergen food-detail-allergen">
+                <h3 style={{ marginBottom: "0.5rem", color: "#c0392b", fontSize: "0.9rem" }}>{t("allergenNotes")}</h3>
+                <p style={{ color: "#c0392b", margin: 0, fontSize: "0.82rem", lineHeight: 1.6 }}>{food.allergen_notes}</p>
+              </div>
+            )}
+            <div className="food-detail-stages">
+              <ServingStages food={food} />
+            </div>
           </div>
-        )}
-      </div>
         );
       })()}
 

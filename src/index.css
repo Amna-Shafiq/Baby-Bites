@@ -701,6 +701,31 @@ button { font-family: 'Nunito', sans-serif; }
 .food-detail-row { font-size: 0.8rem; color: var(--muted); margin: 0; }
 .food-detail-row strong { color: var(--dark); }
 
+/* ── Food Detail page layout ── */
+.food-detail-main {
+  margin-bottom: 1rem;
+}
+
+.food-detail-two-col {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 16px;
+  align-items: start;
+}
+
+/* On desktop: allergen goes in right column, stages in left */
+.food-detail-two-col .food-detail-allergen {
+  grid-column: 2;
+  grid-row: 1;
+  position: sticky;
+  top: 90px;
+}
+
+.food-detail-two-col .food-detail-stages {
+  grid-column: 1;
+  grid-row: 1;
+}
+
 .food-allergen {
   font-size: 0.75rem;
   color: #c0392b;
@@ -1177,6 +1202,19 @@ button { font-family: 'Nunito', sans-serif; }
   .cta-footer-video-wrap { aspect-ratio: 16/9; padding: 0.5rem; }
   .meal-detail-header { grid-template-columns: 1fr !important; }
   .meal-detail-header img { aspect-ratio: 16/9 !important; }
+
+  .food-detail-two-col {
+    grid-template-columns: 1fr;
+  }
+  .food-detail-two-col .food-detail-allergen {
+    grid-column: 1;
+    grid-row: auto;
+    position: static;
+  }
+  .food-detail-two-col .food-detail-stages {
+    grid-column: 1;
+    grid-row: auto;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
