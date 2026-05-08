@@ -86,6 +86,7 @@ function TopNav() {
         <div className="top-nav-actions">
           <button
             type="button"
+            className="top-nav-utility"
             onClick={toggleTheme}
             title={dark ? "Switch to light mode" : "Switch to dark mode"}
             style={{
@@ -98,7 +99,7 @@ function TopNav() {
           </button>
 
           <button
-            className="lang-toggle"
+            className="lang-toggle top-nav-utility"
             onClick={() => setLang(lang === "en" ? "ur" : "en")}
             title={lang === "en" ? "Switch to Urdu" : "Switch to English"}
           >
@@ -198,73 +199,10 @@ function TopNav() {
       {/* Hamburger dropdown — mobile only */}
       {hamburgerOpen && (
         <div className="top-nav-hamburger-menu">
-          <NavLink to="/explore" className="tnhm-link" onClick={closeHamburger}>{t("explore")}</NavLink>
           <NavLink to="/foods" className="tnhm-link" onClick={closeHamburger}>{t("allFoods")}</NavLink>
           <NavLink to="/meals" className="tnhm-link" onClick={closeHamburger}>{t("meals")}</NavLink>
           <NavLink to="/pantry" className="tnhm-link" onClick={closeHamburger}>{t("pantry")}</NavLink>
           <NavLink to="/my-meals" className="tnhm-link" onClick={closeHamburger}>{t("myMeals")}</NavLink>
-
-          <div className="tnhm-divider" />
-
-          {session ? (
-            <>
-              {babies.length > 0 && (
-                <>
-                  <p className="tnmm-section-label">{t("switchBaby")}</p>
-                  {babies.map((baby) => {
-                    const isActive = baby.id === activeBaby?.id;
-                    return (
-                      <button
-                        key={baby.id}
-                        type="button"
-                        onClick={() => { if (!isActive) switchBaby(baby.id); closeHamburger(); }}
-                        className="tnmm-row"
-                        style={{ color: isActive ? "var(--orange-dark)" : "var(--dark)", background: isActive ? "var(--cream)" : "none" }}
-                      >
-                        <span>{baby.avatar || "🐣"}</span>
-                        <span style={{ flex: 1 }}>{baby.name}</span>
-                        {isActive && <span style={{ fontSize: "0.7rem" }}>✓</span>}
-                      </button>
-                    );
-                  })}
-                  <div className="tnhm-divider" />
-                </>
-              )}
-              <NavLink to="/profile" className="tnmm-row" onClick={closeHamburger}>
-                👤 {t("myProfile")}
-              </NavLink>
-              <button type="button" className="tnmm-row tnmm-signout" onClick={handleSignOut}>
-                {t("signOut")}
-              </button>
-            </>
-          ) : (
-            <button
-              type="button"
-              className="tnmm-row tnmm-cta"
-              onClick={() => { navigate("/login"); closeHamburger(); }}
-            >
-              {t("getStarted")}
-            </button>
-          )}
-
-          <div className="tnhm-divider" />
-
-          <div className="tnhm-toggles">
-            <button type="button" onClick={toggleTheme} className="footer-toggle-btn">
-              {dark ? "☀️" : "🌙"}
-            </button>
-            <button
-              className="lang-toggle footer-lang-toggle"
-              onClick={() => setLang(lang === "en" ? "ur" : "en")}
-            >
-              <img
-                src={lang === "en" ? "https://flagcdn.com/20x15/pk.png" : "https://flagcdn.com/20x15/us.png"}
-                alt={lang === "en" ? "Pakistan" : "USA"}
-                style={{ width: 20, height: 15, borderRadius: 2, objectFit: "cover" }}
-              />
-              {lang === "en" ? "اردو" : "EN"}
-            </button>
-          </div>
         </div>
       )}
     </nav>

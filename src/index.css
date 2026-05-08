@@ -1164,8 +1164,9 @@ button { font-family: 'Nunito', sans-serif; }
     border-top: none;
   }
   .top-nav a.brand  { display: flex; }
-  .top-nav-links,
-  .top-nav-actions  { display: none; }
+  .top-nav-links    { display: none; }
+  .top-nav-actions  { display: flex; }
+  .top-nav-utility  { display: none; }
   .top-nav-hamburger-btn { display: flex; }
   .page             { padding-top: 4.5rem; padding-bottom: 2rem; }
   .app-footer       { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
