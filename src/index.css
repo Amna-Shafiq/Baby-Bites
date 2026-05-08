@@ -1211,6 +1211,7 @@ button { font-family: 'Nunito', sans-serif; }
     grid-column: 1;
     grid-row: auto;
     position: static;
+    margin-top: 0;
   }
   .food-detail-two-col .food-detail-stages {
     grid-column: 1;
