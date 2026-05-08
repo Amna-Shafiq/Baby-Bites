@@ -719,6 +719,7 @@ button { font-family: 'Nunito', sans-serif; }
   grid-row: 1;
   position: sticky;
   top: 90px;
+  margin-top: 2.75rem;
 }
 
 .food-detail-two-col .food-detail-stages {
