@@ -24,6 +24,11 @@ function MealPage() {
   const [logSaved, setLogSaved]   = useState(false);
   const [session, setSession]     = useState(null);
 
+  const { avgRating, ratingCount, userRating, submitRating } = useMealRating(
+    meal?.id,
+    session?.user?.id
+  );
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
   }, []);
@@ -108,11 +113,6 @@ function MealPage() {
     ? meal.steps.split("\n").filter((s) => s.trim())
     : [];
   const hasAllergens = ingredients.some((i) => i.foods?.allergen_notes);
-
-  const { avgRating, ratingCount, userRating, submitRating } = useMealRating(
-    meal.id,
-    session?.user?.id
-  );
 
   const mealSlugStr = mealSlug(meal);
   const pageUrl = `https://babybites.net/meal/${mealSlugStr}`;
