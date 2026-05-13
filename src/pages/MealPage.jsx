@@ -107,11 +107,45 @@ function MealPage() {
     : [];
   const hasAllergens = ingredients.some((i) => i.foods?.allergen_notes);
 
+  const mealSlugStr = mealSlug(meal);
+  const pageUrl = `https://babybites.net/meal/${mealSlugStr}`;
+
+  const recipeSchema = {
+    "@context": "https://schema.org",
+    "@type": "Recipe",
+    "name": meal.title,
+    "description": meal.description || `${meal.title} — a baby-friendly recipe for ${meal.min_age_months}–${meal.max_age_months} month olds.`,
+    "author": { "@type": "Organization", "name": "Baby Bites", "url": "https://babybites.net" },
+    "publisher": { "@type": "Organization", "name": "Baby Bites", "url": "https://babybites.net" },
+    "mainEntityOfPage": pageUrl,
+    ...(meal.image_url ? { "image": [meal.image_url] } : {}),
+    ...(meal.prep_time_minutes ? { "prepTime": `PT${meal.prep_time_minutes}M`, "totalTime": `PT${meal.prep_time_minutes}M` } : {}),
+    "recipeCategory": meal.meal_slot,
+    "suitableForDiet": "https://schema.org/LowSaltDiet",
+    "nutrition": {
+      "@type": "NutritionInformation",
+      "description": meal.nutrition_highlight || `Suitable for babies ${meal.min_age_months}–${meal.max_age_months} months`,
+    },
+    ...(ingredients.length > 0 ? {
+      "recipeIngredient": ingredients.map((i) =>
+        i.quantity ? `${i.quantity} ${i.foods?.name}` : i.foods?.name
+      ).filter(Boolean),
+    } : {}),
+    ...(steps.length > 0 ? {
+      "recipeInstructions": steps.map((step, idx) => ({
+        "@type": "HowToStep",
+        "position": idx + 1,
+        "text": step.replace(/^\d+[\.\)]\s*/, ""),
+      })),
+    } : {}),
+  };
+
   return (
     <div className="page">
       <Helmet>
         <title>{meal.title} | Baby Bites</title>
         <meta name="description" content={`${meal.description ? meal.description.slice(0, 140) + "…" : `${meal.title} — a baby-friendly recipe for ${meal.min_age_months}–${meal.max_age_months} month olds. Ready in ${meal.prep_time_minutes} minutes.`}`} />
+        <script type="application/ld+json">{JSON.stringify(recipeSchema)}</script>
       </Helmet>
 
       {logOpen && meal && (
