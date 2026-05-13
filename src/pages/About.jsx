@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 
 const TEAM = [
@@ -22,6 +23,11 @@ const STORY_PARAGRAPHS = [
 ];
 
 function About() {
+  useEffect(() => {
+    document.body.classList.add("page-foods");
+    return () => document.body.classList.remove("page-foods");
+  }, []);
+
   return (
     <div className="page">
       <Helmet>
