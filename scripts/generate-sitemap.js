@@ -75,11 +75,7 @@ async function generateSitemap() {
         .replace(/[^a-z0-9\s]/g, "")
         .trim()
         .replace(/\s+/g, "-");
-      return {
-        loc: `${SITE_URL}/meal/${slug}-${m.id}`,
-        priority: "0.7",
-        changefreq: "monthly",
-      };
+      return { loc: `${SITE_URL}/meal/${slug}`, priority: "0.7", changefreq: "monthly" };
     }),
   ];
 
