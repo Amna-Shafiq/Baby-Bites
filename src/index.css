@@ -159,11 +159,13 @@ body {
   line-height: 1.6;
 }
 
-body.page-foods {
+body.page-foods,
+body.page-warm-bg {
   background: linear-gradient(135deg, #FFF8F0 0%, #FFE8D6 50%, #E8F4FF 100%);
   background-attachment: fixed;
 }
-body.page-foods::before { display: none; }
+body.page-foods::before,
+body.page-warm-bg::before { display: none !important; }
 
 body::before {
   content: '';

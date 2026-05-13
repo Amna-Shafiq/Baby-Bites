@@ -24,8 +24,8 @@ const STORY_PARAGRAPHS = [
 
 function About() {
   useEffect(() => {
-    document.body.classList.add("page-foods");
-    return () => document.body.classList.remove("page-foods");
+    document.body.classList.add("page-warm-bg");
+    return () => document.body.classList.remove("page-warm-bg");
   }, []);
 
   return (
