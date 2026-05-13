@@ -51,7 +51,7 @@ async function generateSitemap() {
       const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
       const [foodsRes, mealsRes] = await Promise.all([
         supabase.from("foods").select("name"),
-        supabase.from("meals").select("id").eq("is_public", true),
+        supabase.from("meals").select("id, title").eq("is_public", true),
       ]);
       foods = foodsRes.data || [];
       meals = mealsRes.data || [];
@@ -69,11 +69,18 @@ async function generateSitemap() {
       priority: "0.7",
       changefreq: "monthly",
     })),
-    ...meals.map((m) => ({
-      loc: `${SITE_URL}/meal/${m.id}`,
-      priority: "0.7",
-      changefreq: "monthly",
-    })),
+    ...meals.map((m) => {
+      const slug = (m.title || "meal")
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, "")
+        .trim()
+        .replace(/\s+/g, "-");
+      return {
+        loc: `${SITE_URL}/meal/${slug}-${m.id}`,
+        priority: "0.7",
+        changefreq: "monthly",
+      };
+    }),
   ];
 
   // Ensure dist/ exists (in case script is run standalone)

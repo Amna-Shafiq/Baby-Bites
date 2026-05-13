@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { mealSlug } from "../lib/mealSlug";
 import { Helmet } from "react-helmet-async";
 
 import { supabase } from "../lib/supabaseClient";
@@ -404,7 +405,7 @@ function AllFoods() {
           </h3>
           <div className="foods-grid">
             {relatedMeals.map(meal => (
-              <div key={meal.id} className="food-card" onClick={() => navigate(`/meal/${meal.id}`)}>
+              <div key={meal.id} className="food-card" onClick={() => navigate(`/meal/${mealSlug(meal)}`)}>
                 <div className="food-card-front">
                   <img
                     src={meal.image_url}

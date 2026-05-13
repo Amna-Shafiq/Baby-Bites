@@ -5,10 +5,15 @@ import { useLanguage } from "../contexts/LanguageContext";
 
 import { supabase } from "../lib/supabaseClient";
 import LogMealModal from "../components/LogMealModal";
+import { mealSlug, extractMealId } from "../lib/mealSlug";
+
+const UUID_ONLY_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function MealPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const mealId = extractMealId(id);
+  const isPureUUID = UUID_ONLY_RE.test(id);
   const { t } = useLanguage();
   const [meal, setMeal]           = useState(null);
   const [ingredients, setIngredients] = useState([]);
@@ -49,12 +54,19 @@ function MealPage() {
     });
   };
 
+  // Redirect old pure-UUID URLs to the slug URL
+  useEffect(() => {
+    if (meal && isPureUUID) {
+      navigate(`/meal/${mealSlug(meal)}`, { replace: true });
+    }
+  }, [meal, isPureUUID]);
+
   useEffect(() => {
     const loadMeal = async () => {
       setLoading(true);
 
       const { data: mealData, error: mealError } = await supabase
-        .from("meals").select("*").eq("id", id).single();
+        .from("meals").select("*").eq("id", mealId).single();
 
       if (mealError || !mealData) {
         setError("Meal not found.");
@@ -66,13 +78,13 @@ function MealPage() {
       const { data: mfData } = await supabase
         .from("meal_foods")
         .select("quantity, foods(id, name, food_group, is_iron_rich, allergen_notes)")
-        .eq("meal_id", id);
+        .eq("meal_id", mealId);
 
       setIngredients(mfData || []);
       setLoading(false);
     };
     loadMeal();
-  }, [id]);
+  }, [mealId]);
 
   if (loading) return <div className="page"><Helmet><title>Baby Bites</title></Helmet><p className="muted" style={{ marginTop: "2rem" }}>Loading...</p></div>;
   if (error || !meal) return (

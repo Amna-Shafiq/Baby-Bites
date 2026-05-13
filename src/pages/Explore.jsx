@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { mealSlug } from "../lib/mealSlug";
 import { Helmet } from "react-helmet-async";
 
 import { supabase } from "../lib/supabaseClient";
@@ -469,7 +470,7 @@ function MealOfTheDay() {
       </h2>
 
       {/* Card */}
-      <Link to={`/meal/${meal.id}`} style={{ textDecoration: "none", display: "block" }}>
+      <Link to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none", display: "block" }}>
         <div style={{
           borderRadius: 20, overflow: "hidden",
           background: spotlight.bg,
@@ -1269,7 +1270,7 @@ function Explore() {
                   </p>
                   <HorizontalScroll>
                     {recommendedMeals.map((meal) => (
-                      <Link key={meal.id} to={`/meal/${meal.id}`} style={{ textDecoration: "none", flexShrink: 0, scrollSnapAlign: "start" }}>
+                      <Link key={meal.id} to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none", flexShrink: 0, scrollSnapAlign: "start" }}>
                         <div style={{
                           width: 180, cursor: "pointer",
                           background: "rgba(255,255,255,0.1)",

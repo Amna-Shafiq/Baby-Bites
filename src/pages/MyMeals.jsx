@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { mealSlug } from "../lib/mealSlug";
 import { supabase } from "../lib/supabaseClient";
 
 import useCustomMeals from "../hooks/useCustomMeals";
@@ -173,7 +174,7 @@ function MyMeals() {
             {favoriteMeals.map((meal) => (
               <div key={meal.id} className="card" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
                 <div>
-                  <Link to={`/meal/${meal.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+                  <Link to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none", color: "inherit" }}>
                     <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>
                   </Link>
                   <p className="muted" style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>

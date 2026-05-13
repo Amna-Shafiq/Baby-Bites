@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { Link } from "react-router-dom";
+import { mealSlug } from "../lib/mealSlug";
 
 import useCustomMeals from "../hooks/useCustomMeals";
 import LoginPromptModal from "../components/LoginPromptModal";
@@ -155,7 +156,7 @@ function Pantry() {
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {mealSuggestions.map((meal) => (
-              <Link key={meal.id} to={`/meal/${meal.id}`} style={{ textDecoration: "none" }}>
+              <Link key={meal.id} to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none" }}>
                 <div className="card" style={{ cursor: "pointer" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
                     <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>

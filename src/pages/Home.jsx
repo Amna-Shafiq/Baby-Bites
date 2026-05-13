@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { mealSlug } from '../lib/mealSlug';
 import { Helmet } from 'react-helmet-async';
 import '../styles/landing.css';
 import { supabase } from '../lib/supabaseClient';
@@ -64,7 +65,7 @@ function MealSlider() {
           <div
             key={i}
             className="meal-slide-card"
-            onClick={() => navigate(`/meal/${meal.id}`)}
+            onClick={() => navigate(`/meal/${mealSlug(meal)}`)}
           >
             <img
               src={meal.image_url || "https://placehold.co/160x90?text=🍽"}
@@ -247,7 +248,7 @@ function HeroPanel({ activeBaby, session, navigate }) {
   return (
     <div className="hero-cards-row">
       {/* Today's Pick */}
-      <div className="hac" onClick={() => featuredMeal && navigate(`/meal/${featuredMeal.id}`)}>
+      <div className="hac" onClick={() => featuredMeal && navigate(`/meal/${mealSlug(featuredMeal)}`)}>
         <div className="hac-img-wrap">
           {featuredMeal ? (
             <img

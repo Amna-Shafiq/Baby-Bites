@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { mealSlug } from "../lib/mealSlug";
 import { Helmet } from "react-helmet-async";
 
 import { supabase } from "../lib/supabaseClient";
@@ -289,7 +290,7 @@ function Meals() {
       {!loading && !error && (
         <div className="foods-grid">
           {pageMeals.map((meal) => (
-            <div key={meal.id} className="food-card" style={{ position: "relative" }} onClick={() => navigate(`/meal/${meal.id}`)}>
+            <div key={meal.id} className="food-card" style={{ position: "relative" }} onClick={() => navigate(`/meal/${mealSlug(meal)}`)}>
 
               {/* Favourite heart */}
               <button

@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { supabase } from "../lib/supabaseClient";
 import { useLanguage } from "../contexts/LanguageContext";
 import LogMealModal from "../components/LogMealModal";
+import { mealSlug } from "../lib/mealSlug";
 
 const SS  = (slug) => ({ label: "Solid Starts",  url: `https://solidstarts.com/foods/${slug}/` });
 const SRN = { label: "SR Nutrition — Herbs & Spices for Baby", url: "https://www.srnutrition.co.uk/2021/08/herbs-and-spices-for-baby/" };
@@ -372,7 +373,7 @@ function FoodDetail() {
         ) : (
           <div style={{ display: "flex", gap: 12, overflowX: "auto", paddingBottom: 8, scrollSnapType: "x mandatory" }}>
             {meals.map((meal) => (
-              <Link key={meal.id} to={`/meal/${meal.id}`} style={{ textDecoration: "none", flexShrink: 0, scrollSnapAlign: "start" }}>
+              <Link key={meal.id} to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none", flexShrink: 0, scrollSnapAlign: "start" }}>
                 <div style={{
                   width: 200,
                   background: "var(--cream)",
