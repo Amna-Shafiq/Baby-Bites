@@ -6,6 +6,8 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { supabase } from "../lib/supabaseClient";
 import LogMealModal from "../components/LogMealModal";
 import { mealSlug, extractLegacyId, slugToTitleSearch } from "../lib/mealSlug";
+import useMealRating from "../hooks/useMealRating";
+import StarRating from "../components/StarRating";
 
 function MealPage() {
   const { id } = useParams();
@@ -107,6 +109,11 @@ function MealPage() {
     : [];
   const hasAllergens = ingredients.some((i) => i.foods?.allergen_notes);
 
+  const { avgRating, ratingCount, userRating, submitRating } = useMealRating(
+    meal.id,
+    session?.user?.id
+  );
+
   const mealSlugStr = mealSlug(meal);
   const pageUrl = `https://babybites.net/meal/${mealSlugStr}`;
 
@@ -137,6 +144,15 @@ function MealPage() {
         "position": idx + 1,
         "text": step.replace(/^\d+[\.\)]\s*/, ""),
       })),
+    } : {}),
+    ...(avgRating && ratingCount > 0 ? {
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": avgRating,
+        "ratingCount": ratingCount,
+        "bestRating": 5,
+        "worstRating": 1,
+      },
     } : {}),
   };
 
@@ -206,7 +222,16 @@ function MealPage() {
               {meal.meal_type}
             </span>
           </div>
-          <h1 style={{ marginBottom: 8 }}>{meal.title}</h1>
+          <h1 style={{ marginBottom: 6 }}>{meal.title}</h1>
+          <div style={{ marginBottom: 10 }}>
+            <StarRating
+              avg={avgRating}
+              count={ratingCount}
+              userRating={userRating}
+              onRate={submitRating}
+              readonly={!session}
+            />
+          </div>
           <p className="muted" style={{ marginBottom: 10 }}>{meal.description}</p>
           <div style={{ display: "flex", gap: 16, fontSize: "0.88rem", color: "var(--muted)", flexWrap: "wrap" }}>
             <span>🕐 {meal.prep_time_minutes} min prep</span>
