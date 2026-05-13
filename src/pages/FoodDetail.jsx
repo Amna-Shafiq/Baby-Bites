@@ -279,11 +279,53 @@ function FoodDetail() {
   if (error) return <div className="page"><Helmet><title>Food Not Found | Baby Bites</title></Helmet><p className="muted" style={{ marginTop: "2rem" }}>{error}</p></div>;
   if (!food)  return <div className="page"><Helmet><title>Baby Bites</title></Helmet><p className="muted" style={{ marginTop: "2rem" }}>Loading...</p></div>;
 
+  const foodSlug = food.name.toLowerCase().replace(/\s+/g, "-");
+  const pageUrl  = `https://babybites.net/foods/${foodSlug}`;
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": `${food.name} for Babies — When to Introduce & How to Serve`,
+    "description": `When can babies eat ${food.name}? Safe from ${food.safe_from_months} months. ${food.notes ? food.notes.slice(0, 150) : "Learn how to prepare and serve it safely at every stage."}`,
+    "author":    { "@type": "Organization", "name": "Baby Bites", "url": "https://babybites.net" },
+    "publisher": { "@type": "Organization", "name": "Baby Bites", "url": "https://babybites.net" },
+    "mainEntityOfPage": pageUrl,
+  };
+
+  const faqItems = [
+    {
+      "@type": "Question",
+      "name": `When can babies eat ${food.name}?`,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": `${food.name} is safe to introduce from ${food.safe_from_months} months.${food.notes ? " " + food.notes : ""}`,
+      },
+    },
+    food.allergen_notes && {
+      "@type": "Question",
+      "name": `Is ${food.name} an allergen for babies?`,
+      "acceptedAnswer": { "@type": "Answer", "text": food.allergen_notes },
+    },
+    ...STAGES.filter((s) => food[s.key]).map((s) => ({
+      "@type": "Question",
+      "name": `How do I serve ${food.name} to a ${s.age} baby (${s.phase})?`,
+      "acceptedAnswer": { "@type": "Answer", "text": food[s.key] },
+    })),
+  ].filter(Boolean);
+
+  const faqSchema = faqItems.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems,
+  } : null;
+
   return (
     <div className="page">
       <Helmet>
         <title>{food.name} for Babies | Baby Bites</title>
         <meta name="description" content={`When can babies eat ${food.name}? Safe from ${food.safe_from_months} months. ${food.notes ? food.notes.slice(0, 120) + "…" : "Learn how to prepare and serve it safely at every stage."}`} />
+        <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
+        {faqSchema && <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>}
       </Helmet>
 
       {logOpen && food && (

@@ -91,12 +91,32 @@ function About() {
       </div>
 
       {/* ── Contact placeholder ── */}
-      <div className="panel" style={{ marginBottom: "2rem" }}>
+      <div className="panel" style={{ marginBottom: "1.25rem" }}>
         <span className="eyebrow eo">Get in touch</span>
         <h2 style={{ margin: "0.3rem 0 0.5rem" }}>Contact</h2>
         <p className="muted" style={{ fontSize: "0.9rem", lineHeight: 1.7 }}>
           Placeholder — add an email address, social links, or a contact form here.
         </p>
+      </div>
+
+      {/* ── Disclaimer ── */}
+      <div id="disclaimer" className="panel" style={{ marginBottom: "2rem", background: "#fffbf0", border: "1.5px solid #f5e0a0" }}>
+        <span className="eyebrow eo">Legal</span>
+        <h2 style={{ margin: "0.3rem 0 0.75rem" }}>Disclaimer</h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", fontSize: "0.88rem", color: "var(--muted)", lineHeight: 1.75 }}>
+          <p style={{ margin: 0 }}>
+            Baby Bites is designed to provide general educational information about baby nutrition, feeding, meals, allergens, and developmental milestones. The content in this app is <strong style={{ color: "var(--dark)" }}>not intended to replace professional medical advice, diagnosis, or treatment.</strong>
+          </p>
+          <p style={{ margin: 0 }}>
+            Always consult your pediatrician, healthcare provider, or qualified medical professional regarding your child's health, nutrition, allergies, feeding concerns, or developmental needs.
+          </p>
+          <p style={{ margin: 0 }}>
+            While we strive to provide accurate and up-to-date information, Baby Bites does not guarantee the completeness, reliability, or accuracy of any content within the app. Any actions you take based on the information provided are at your own discretion and responsibility.
+          </p>
+          <p style={{ margin: 0, fontWeight: 700, color: "#c0392b" }}>
+            ⚠️ If your child is experiencing a medical emergency or severe allergic reaction, seek immediate medical attention or contact emergency services right away.
+          </p>
+        </div>
       </div>
     </div>
   );
