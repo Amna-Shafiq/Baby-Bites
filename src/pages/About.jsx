@@ -7,10 +7,10 @@ const TEAM = [
 ];
 
 const VALUES = [
-  { emoji: "🔬", title: "Evidence-based", desc: "Every piece of guidance is grounded in current paediatric nutrition research — not trends or guesswork." },
+  { emoji: "🔬", title: "Evidence-based", desc: "Every piece of guidance is grounded in current paediatric nutrition research, not trends or guesswork." },
   { emoji: "🌍", title: "Inclusive",      desc: "Built for families across Pakistan and beyond — multilingual, culturally relevant, and accessible to all." },
-  { emoji: "❤️", title: "Parent-first",   desc: "We design for tired parents making fast decisions, not for nutritionists with unlimited time." },
-  { emoji: "🔒", title: "Safe by default", desc: "Age gating, allergen flags, and safety articles are built into the core — not bolted on as an afterthought." },
+  { emoji: "❤️", title: "Parent-first",   desc: "We design for tired parents making fast decisions." },
+  { emoji: "🔒", title: "Safe by default", desc: "Age gating, allergen flags, and safety articles are built into the core." },
 ];
 
 const STORY_PARAGRAPHS = [
@@ -95,15 +95,15 @@ function About() {
       </div>
 
       {/* ── Contact ── */}
-      <div className="panel" style={{ marginBottom: "1.25rem" }}>
+      <div className="panel" style={{ marginBottom: "1.25rem", textAlign: "center" }}>
         <span className="eyebrow eo">Get in touch</span>
         <h2 style={{ margin: "0.3rem 0 0.75rem" }}>Contact us</h2>
         <a
           href="mailto:contactus.babybites@gmail.com"
           style={{
-            display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+            display: "inline-flex", flexDirection: "column", alignItems: "center", gap: 4,
             color: "var(--orange-dark)", fontWeight: 700, fontSize: "0.95rem",
-            textDecoration: "none", textAlign: "center",
+            textDecoration: "none",
           }}
         >
           <span>✉️</span>
