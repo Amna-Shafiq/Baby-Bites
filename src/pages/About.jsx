@@ -36,7 +36,7 @@ function About() {
       </Helmet>
 
       {/* ── Our Story ── */}
-      <div style={{ margin: "2rem 0 2.5rem" }}>
+      <div style={{ margin: "2rem 0 2.5rem", textAlign: "center" }}>
         <span className="eyebrow eo">Our story</span>
         <p style={{ margin: "0.5rem 0 0.25rem", fontSize: "1.35rem", fontWeight: 800, color: "var(--dark)" }}>Hi, I'm Amna</p>
         <p style={{ margin: "0 0 1.5rem", fontSize: "1.05rem", fontWeight: 600, color: "var(--muted)", lineHeight: 1.6 }}>
@@ -95,13 +95,13 @@ function About() {
       </div>
 
       {/* ── Contact ── */}
-      <div className="panel" style={{ marginBottom: "1.25rem", textAlign: "center" }}>
+      <div className="panel" style={{ marginBottom: "1.25rem" }}>
         <span className="eyebrow eo">Get in touch</span>
         <h2 style={{ margin: "0.3rem 0 0.75rem" }}>Contact us</h2>
         <a
           href="mailto:contactus.babybites@gmail.com"
           style={{
-            display: "inline-flex", flexDirection: "column", alignItems: "center", gap: 4,
+            display: "inline-flex", flexDirection: "column", alignItems: "flex-start", gap: 4,
             color: "var(--orange-dark)", fontWeight: 700, fontSize: "0.95rem",
             textDecoration: "none",
           }}
