@@ -38,28 +38,10 @@ function About() {
       {/* ── Our Story ── */}
       <div style={{ margin: "2rem 0 2.5rem" }}>
         <span className="eyebrow eo">Our story</span>
-        <h1 style={{ marginBottom: "1.5rem" }}>Hi, I'm Amna</h1>
-
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "64px 1fr",
-          gap: "0 1.25rem",
-          alignItems: "start",
-          marginBottom: "1.5rem",
-        }}>
-          <div style={{
-            width: 64, height: 64, borderRadius: "50%",
-            background: "linear-gradient(135deg, var(--orange-mid), var(--orange-dark))",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "1.6rem", color: "#fff", fontWeight: 800,
-            flexShrink: 0,
-          }}>
-            AS
-          </div>
-          <p style={{ margin: 0, fontSize: "1.05rem", fontWeight: 600, color: "var(--dark)", lineHeight: 1.6 }}>
-            A software engineer, a mama, and the creator of Baby Bites.
-          </p>
-        </div>
+        <p style={{ margin: "0.5rem 0 0.25rem", fontSize: "1.35rem", fontWeight: 800, color: "var(--dark)" }}>Hi, I'm Amna</p>
+        <p style={{ margin: "0 0 1.5rem", fontSize: "1.05rem", fontWeight: 600, color: "var(--muted)", lineHeight: 1.6 }}>
+          A software engineer, a mama, and the creator of Baby Bites.
+        </p>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem", maxWidth: 680 }}>
           {STORY_PARAGRAPHS.map((p, i) => (
@@ -119,12 +101,13 @@ function About() {
         <a
           href="mailto:contactus.babybites@gmail.com"
           style={{
-            display: "inline-flex", alignItems: "center", gap: 8,
+            display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
             color: "var(--orange-dark)", fontWeight: 700, fontSize: "0.95rem",
-            textDecoration: "none",
+            textDecoration: "none", textAlign: "center",
           }}
         >
-          <span>✉️</span> contactus.babybites@gmail.com
+          <span>✉️</span>
+          <span>contactus.babybites@gmail.com</span>
         </a>
       </div>
 
