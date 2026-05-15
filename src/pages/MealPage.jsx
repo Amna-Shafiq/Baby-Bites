@@ -110,7 +110,7 @@ function MealPage() {
   );
 
   const steps = meal.steps
-    ? meal.steps.split("\n").filter((s) => s.trim())
+    ? meal.steps.split(/\n|\\n/).filter((s) => s.trim())
     : [];
   const hasAllergens = ingredients.some((i) => i.foods?.allergen_notes);
 
