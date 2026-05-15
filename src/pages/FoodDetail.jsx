@@ -197,7 +197,7 @@ function ServingStages({ food }) {
               {/* Textures */}
               <div style={{ padding: "10px 14px", display: "flex", flexDirection: "column", gap: 10 }}>
                 {(() => {
-                  const tipParts = tip.includes("||") ? tip.split("||").map(s => s.trim()) : null;
+                  const tipParts = tip.includes("[S]") ? tip.split("[S]").map(s => s.trim()) : null;
                   return stage.textures.map((tex, texIdx) => {
                     const texTip = tipParts ? (tipParts[texIdx] ?? tip) : tip;
                     return (
