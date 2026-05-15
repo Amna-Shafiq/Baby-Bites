@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 
 const TEAM = [
-  { name: "Amna Shafiq", role: "Co-Founder" },
+  { name: "Amna Shafiq", role: "Co-Founder", photo: "/AmnaShafiq.JPG" },
 ];
 
 const VALUES = [
@@ -67,27 +67,6 @@ function About() {
         </div>
       </div>
 
-      {/* ── Team ── */}
-      <div style={{ marginBottom: "2rem" }}>
-        <span className="eyebrow eo">The people</span>
-        <h2 style={{ margin: "0.3rem 0 1rem" }}>Who we are</h2>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          {TEAM.map((member) => (
-            <div key={member.name} className="card" style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 200, flex: 1 }}>
-              <img
-                src="/AmnaShafiq.JPG"
-                alt={member.name}
-                style={{ width: 52, height: 52, borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: "2px solid var(--border)" }}
-              />
-              <div>
-                <p style={{ margin: 0, fontWeight: 800, fontSize: "0.95rem", color: "var(--dark)" }}>{member.name}</p>
-                <p className="muted" style={{ margin: 0, fontSize: "0.8rem" }}>{member.role}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* ── Contact ── */}
       <div className="panel" style={{ marginBottom: "1.25rem" }}>
         <span className="eyebrow eo">Get in touch</span>
@@ -122,6 +101,33 @@ function About() {
           <p style={{ margin: 0, fontWeight: 700, color: "#c0392b" }}>
             ⚠️ If your child is experiencing a medical emergency or severe allergic reaction, seek immediate medical attention or contact emergency services right away.
           </p>
+        </div>
+      </div>
+
+      {/* ── Team ── */}
+      <div style={{ marginBottom: "2.5rem" }}>
+        <span className="eyebrow eo">The people</span>
+        <h2 style={{ margin: "0.3rem 0 1.25rem" }}>Who we are</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 20 }}>
+          {TEAM.map((member) => (
+            <div key={member.name} style={{ display: "flex", flexDirection: "column" }}>
+              <img
+                src={member.photo}
+                alt={member.name}
+                style={{
+                  width: "100%", aspectRatio: "1/1", objectFit: "cover",
+                  borderRadius: 12, display: "block",
+                  marginBottom: 10,
+                }}
+              />
+              <p style={{ margin: "0 0 2px", fontWeight: 800, fontSize: "0.95rem", color: "var(--dark)" }}>
+                {member.name}
+              </p>
+              <p style={{ margin: 0, fontSize: "0.82rem", color: "var(--muted)", fontWeight: 500 }}>
+                {member.role}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
