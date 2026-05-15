@@ -137,10 +137,20 @@ const STAGES = [
     color:    "#fff8f0",
     border:   "#f5cba7",
     textures: [
-      { icon: "🥣", name: "Smooth Purees",      desc: "Completely blended · No lumps" },
-      { icon: "🥄", name: "Slightly Textured",  desc: "Very soft tiny lumps" },
+      { icon: "🥣", name: "Smooth Purees", desc: "Completely blended · No lumps" },
     ],
-    generic: "Blend with breast milk, formula, or water until completely smooth. Strain if needed. Progress to a fork-mashed consistency with tiny soft lumps as baby gains confidence.",
+    generic: "Blend with breast milk, formula, or water until completely smooth. Strain if needed.",
+  },
+  {
+    key:      "tip_puree_textured",
+    phase:    "🍼 Just Starting Solids",
+    age:      "6–8 months",
+    color:    "#fff8f0",
+    border:   "#f5cba7",
+    textures: [
+      { icon: "🥄", name: "Slightly Textured", desc: "Very soft tiny lumps" },
+    ],
+    generic: "Mash or blend briefly — leave very small, very soft lumps for baby to practice moving food.",
   },
   {
     key:      "tip_finger_food",
@@ -196,28 +206,22 @@ function ServingStages({ food }) {
               </div>
               {/* Textures */}
               <div style={{ padding: "10px 14px", display: "flex", flexDirection: "column", gap: 10 }}>
-                {(() => {
-                  const tipParts = tip.includes("[S]") ? tip.split("[S]").map(s => s.trim()) : null;
-                  return stage.textures.map((tex, texIdx) => {
-                    const texTip = tipParts ? (tipParts[texIdx] ?? tip) : tip;
-                    return (
-                      <div key={tex.name}>
-                        <p style={{ margin: "0 0 2px", fontWeight: 700, fontSize: "0.82rem", color: "var(--dark)" }}>
-                          {tex.icon} {tex.name}
-                        </p>
-                        <p style={{ margin: "0 0 8px", fontSize: "0.72rem", color: "var(--muted)" }}>{tex.desc}</p>
-                        <div style={{ background: "rgba(255,255,255,0.7)", borderRadius: 8, padding: "8px 10px" }}>
-                          <p style={{ margin: "0 0 4px", fontSize: "0.7rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)" }}>
-                            👉 How to prepare
-                          </p>
-                          <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--dark)", lineHeight: 1.5 }}>
-                            {texTip}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  });
-                })()}
+                {stage.textures.map((tex) => (
+                  <div key={tex.name}>
+                    <p style={{ margin: "0 0 2px", fontWeight: 700, fontSize: "0.82rem", color: "var(--dark)" }}>
+                      {tex.icon} {tex.name}
+                    </p>
+                    <p style={{ margin: "0 0 8px", fontSize: "0.72rem", color: "var(--muted)" }}>{tex.desc}</p>
+                    <div style={{ background: "rgba(255,255,255,0.7)", borderRadius: 8, padding: "8px 10px" }}>
+                      <p style={{ margin: "0 0 4px", fontSize: "0.7rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)" }}>
+                        👉 How to prepare
+                      </p>
+                      <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--dark)", lineHeight: 1.5 }}>
+                        {tip}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           );
