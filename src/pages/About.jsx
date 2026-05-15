@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 
 const TEAM = [
-  { name: "Amna Shafiq",  role: "Co-Founder", initials: "AS" },
-  { name: "Mohsin Jalil", role: "Co-Founder", initials: "MJ" },
+  { name: "Amna Shafiq", role: "Co-Founder" },
 ];
 
 const VALUES = [
@@ -75,15 +74,11 @@ function About() {
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
           {TEAM.map((member) => (
             <div key={member.name} className="card" style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 200, flex: 1 }}>
-              <div style={{
-                width: 52, height: 52, borderRadius: "50%", flexShrink: 0,
-                background: "linear-gradient(135deg, var(--orange-mid), var(--orange-dark))",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: "0.85rem", fontWeight: 800, color: "#fff",
-                letterSpacing: "0.04em",
-              }}>
-                {member.initials}
-              </div>
+              <img
+                src="/AmnaShafiq.JPG"
+                alt={member.name}
+                style={{ width: 52, height: 52, borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: "2px solid var(--border)" }}
+              />
               <div>
                 <p style={{ margin: 0, fontWeight: 800, fontSize: "0.95rem", color: "var(--dark)" }}>{member.name}</p>
                 <p className="muted" style={{ margin: 0, fontSize: "0.8rem" }}>{member.role}</p>
