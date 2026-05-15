@@ -44,6 +44,8 @@ const FOOD_REFERENCES = {
   beef:           [SS("ground-beef"), { label: "Beef It's What's For Dinner — Beef in the Early Years", url: "https://www.beefitswhatsfordinner.com/nutrition/beef-in-the-early-years" }],
   lamb:           [SS("lamb")],
   turkey:         [SS("turkey")],
+  // Grains (additional)
+  quinoa:         [SS("quinoa")],
   // Fruits
   apple:          [SS("apple")],
   apricot:        [SS("apricot")],
