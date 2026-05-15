@@ -37,13 +37,12 @@ function About() {
 
       {/* ── Our Story ── */}
       <div style={{ margin: "2rem 0 2.5rem", textAlign: "center" }}>
-        <span className="eyebrow eo">Our story</span>
-        <p style={{ margin: "0.5rem 0 0.25rem", fontSize: "1.35rem", fontWeight: 800, color: "var(--dark)" }}>Hi, I'm Amna</p>
+        <p style={{ margin: "0 0 0.25rem", fontSize: "1.35rem", fontWeight: 800, color: "var(--dark)" }}>Hi, I'm Amna</p>
         <p style={{ margin: "0 0 1.5rem", fontSize: "1.05rem", fontWeight: 600, color: "var(--muted)", lineHeight: 1.6 }}>
           A software engineer, a mama, and the creator of Baby Bites.
         </p>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem", maxWidth: 680 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem", maxWidth: 680, margin: "0 auto" }}>
           {STORY_PARAGRAPHS.map((p, i) => (
             <p key={i} style={{ margin: 0, fontSize: "0.97rem", color: "var(--muted)", lineHeight: 1.8 }}>
               {p}

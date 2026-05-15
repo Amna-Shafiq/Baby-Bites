@@ -405,14 +405,12 @@ function FoodDetail() {
       })()}
 
       {/* ── Meals using this food ── */}
-      <div className="panel" style={{ marginTop: "1.5rem" }}>
-        <h2 style={{ marginBottom: "0.3rem" }}>{t("mealsWith")} {food.name}</h2>
-        <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1.2rem", lineHeight: 1.6 }}>
-          {t("mealsWithDesc")}
-        </p>
-        {meals.length === 0 ? (
-          <p className="muted">{t("noMealsFood")}</p>
-        ) : (
+      {meals.length > 0 && (
+        <div className="panel" style={{ marginTop: "1.5rem" }}>
+          <h2 style={{ marginBottom: "0.3rem" }}>{t("mealsWith")} {food.name}</h2>
+          <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1.2rem", lineHeight: 1.6 }}>
+            {t("mealsWithDesc")}
+          </p>
           <div style={{ display: "flex", gap: 12, overflowX: "auto", paddingBottom: 8, scrollSnapType: "x mandatory" }}>
             {meals.map((meal) => (
               <Link key={meal.id} to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none", flexShrink: 0, scrollSnapAlign: "start" }}>
@@ -440,8 +438,8 @@ function FoodDetail() {
               </Link>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* ── References ── */}
       {(() => {
