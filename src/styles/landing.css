@@ -1620,7 +1620,8 @@
 
   /* Meals */
   .samples-pineapple, .samples-pineapple-wrap, .samples-leaf, .age-meal-img, .feat-raspberry-wrap { display: none; }
-  .hero-carrot-wrap { width: 120px; }
+  .hero-carrot-wrap { width: 120px; z-index: 0; }
+  .lp-hero { position: relative; z-index: 1; }
   .samples-sec { padding: 2rem 1.5rem; }
   .meals-showcase-wrap { height: 320px; }
   .meals-grid { grid-template-columns: 1fr; }
