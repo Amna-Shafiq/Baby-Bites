@@ -81,6 +81,11 @@ function Profile() {
     if (!selectedBabyId && activeBaby) setSelectedBabyId(activeBaby.id);
   }, [activeBaby, selectedBabyId]);
 
+  // auto-open add form for new users with no babies
+  useEffect(() => {
+    if (!loading && babies.length === 0) setAddMode(true);
+  }, [loading, babies.length]);
+
   // pre-fill form from selected baby
   const selectedBaby = babies.find(b => b.id === selectedBabyId);
   useEffect(() => {
@@ -150,6 +155,7 @@ function Profile() {
   const handleSignOut = async () => { await supabase.auth.signOut(); navigate("/"); };
 
   const isActiveBaby = (b) => b.is_active || b.id === activeBaby?.id;
+  const isOAuthUser = session?.user?.app_metadata?.provider !== "email";
 
   // ── Shared styles ──
   const panelCard = { background: "var(--white)", border: "1.5px solid var(--border)", borderRadius: 18, padding: 16 };
@@ -436,34 +442,36 @@ function Profile() {
                   </div>
                 </div>
 
-                {/* Password */}
-                <div style={{ padding: "12px 4px", borderBottom: "1px solid var(--border)" }}>
-                  {!showPasswordForm ? (
-                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <span style={{ fontSize: 20 }}>🔑</span>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: ".9rem", color: "var(--dark)" }}>Change password</div>
-                        <div style={{ fontFamily: "Nunito, sans-serif", fontSize: ".78rem", color: "var(--muted)" }}>Update your login password</div>
+                {/* Password — hidden for OAuth users */}
+                {!isOAuthUser && (
+                  <div style={{ padding: "12px 4px", borderBottom: "1px solid var(--border)" }}>
+                    {!showPasswordForm ? (
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <span style={{ fontSize: 20 }}>🔑</span>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: ".9rem", color: "var(--dark)" }}>Change password</div>
+                          <div style={{ fontFamily: "Nunito, sans-serif", fontSize: ".78rem", color: "var(--muted)" }}>Update your login password</div>
+                        </div>
+                        <button className="btn" onClick={() => setShowPasswordForm(true)}>Change</button>
                       </div>
-                      <button className="btn" onClick={() => setShowPasswordForm(true)}>Change</button>
-                    </div>
-                  ) : (
-                    <form onSubmit={handleChangePassword} style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end" }}>
-                      <input
-                        className="input"
-                        type="password"
-                        value={newPassword}
-                        onChange={e => setNewPassword(e.target.value)}
-                        placeholder="New password (min 6 chars)"
-                        minLength={6}
-                        style={{ flex: 1, minWidth: 200 }}
-                      />
-                      <button type="submit" className="btn btn-primary">Update</button>
-                      <button type="button" className="btn btn-ghost" onClick={() => { setShowPasswordForm(false); setNewPassword(""); setPasswordStatus(""); }}>Cancel</button>
-                      {passwordStatus && <p style={{ width: "100%", fontSize: ".85rem", color: passwordStatus.includes("!") ? "var(--green-dark)" : "#c0392b", margin: 0 }}>{passwordStatus}</p>}
-                    </form>
-                  )}
-                </div>
+                    ) : (
+                      <form onSubmit={handleChangePassword} style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end" }}>
+                        <input
+                          className="input"
+                          type="password"
+                          value={newPassword}
+                          onChange={e => setNewPassword(e.target.value)}
+                          placeholder="New password (min 6 chars)"
+                          minLength={6}
+                          style={{ flex: 1, minWidth: 200 }}
+                        />
+                        <button type="submit" className="btn btn-primary">Update</button>
+                        <button type="button" className="btn btn-ghost" onClick={() => { setShowPasswordForm(false); setNewPassword(""); setPasswordStatus(""); }}>Cancel</button>
+                        {passwordStatus && <p style={{ width: "100%", fontSize: ".85rem", color: passwordStatus.includes("!") ? "var(--green-dark)" : "#c0392b", margin: 0 }}>{passwordStatus}</p>}
+                      </form>
+                    )}
+                  </div>
+                )}
 
                 {/* Share */}
                 <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 4px", borderBottom: "1px solid var(--border)" }}>
