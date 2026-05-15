@@ -46,6 +46,8 @@ const FOOD_REFERENCES = {
   turkey:         [SS("turkey")],
   // Grains (additional)
   quinoa:         [SS("quinoa")],
+  oatmeal:        [SS("oatmeal")],
+  oats:           [SS("oatmeal")],
   // Fruits
   apple:          [SS("apple")],
   apricot:        [SS("apricot")],
@@ -194,22 +196,28 @@ function ServingStages({ food }) {
               </div>
               {/* Textures */}
               <div style={{ padding: "10px 14px", display: "flex", flexDirection: "column", gap: 10 }}>
-                {stage.textures.map((tex) => (
-                  <div key={tex.name}>
-                    <p style={{ margin: "0 0 2px", fontWeight: 700, fontSize: "0.82rem", color: "var(--dark)" }}>
-                      {tex.icon} {tex.name}
-                    </p>
-                    <p style={{ margin: "0 0 8px", fontSize: "0.72rem", color: "var(--muted)" }}>{tex.desc}</p>
-                    <div style={{ background: "rgba(255,255,255,0.7)", borderRadius: 8, padding: "8px 10px" }}>
-                      <p style={{ margin: "0 0 4px", fontSize: "0.7rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)" }}>
-                        👉 How to prepare
-                      </p>
-                      <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--dark)", lineHeight: 1.5 }}>
-                        {tip}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                {(() => {
+                  const tipParts = tip.includes("||") ? tip.split("||").map(s => s.trim()) : null;
+                  return stage.textures.map((tex, texIdx) => {
+                    const texTip = tipParts ? (tipParts[texIdx] ?? tip) : tip;
+                    return (
+                      <div key={tex.name}>
+                        <p style={{ margin: "0 0 2px", fontWeight: 700, fontSize: "0.82rem", color: "var(--dark)" }}>
+                          {tex.icon} {tex.name}
+                        </p>
+                        <p style={{ margin: "0 0 8px", fontSize: "0.72rem", color: "var(--muted)" }}>{tex.desc}</p>
+                        <div style={{ background: "rgba(255,255,255,0.7)", borderRadius: 8, padding: "8px 10px" }}>
+                          <p style={{ margin: "0 0 4px", fontSize: "0.7rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)" }}>
+                            👉 How to prepare
+                          </p>
+                          <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--dark)", lineHeight: 1.5 }}>
+                            {texTip}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  });
+                })()}
               </div>
             </div>
           );
