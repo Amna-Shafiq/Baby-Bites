@@ -16,6 +16,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import CustomMealPage from "./pages/CustomMealPage";
 import ArticlePage from "./pages/ArticlePage";
 import About from "./pages/About";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import InstallPrompt from "./components/InstallPrompt";
 import TopNav from "./components/TopNav";
 import CTAFooter from "./components/CTAFooter";
@@ -64,6 +65,7 @@ function App() {
           <Route path="/foods/:id" element={<FoodDetail />} />
           <Route path="/articles/:slug" element={<ArticlePage />} />
           <Route path="/about" element={<About />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
         </Routes>
         {!isHome && isMealsOrFoods && !session && <CTAFooter />}

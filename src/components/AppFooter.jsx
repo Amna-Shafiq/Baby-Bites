@@ -34,6 +34,7 @@ function AppFooter() {
         <Link to="/foods">Foods</Link>
         <Link to="/about">About</Link>
         <Link to="/about#disclaimer">Disclaimer</Link>
+        <Link to="/privacy">Privacy Policy</Link>
       </div>
       <div className="app-footer-social">
         <a href="#" className="social-icon" aria-label="Instagram"><IconInstagram /></a>
