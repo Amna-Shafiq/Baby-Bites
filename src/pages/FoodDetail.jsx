@@ -6,6 +6,7 @@ import { supabase } from "../lib/supabaseClient";
 import { useLanguage } from "../contexts/LanguageContext";
 import LogMealModal from "../components/LogMealModal";
 import { mealSlug } from "../lib/mealSlug";
+import { cloudinaryUrl } from "../lib/cloudinaryUrl";
 
 const SS  = (slug) => ({ label: "Solid Starts",  url: `https://solidstarts.com/foods/${slug}/` });
 const SRN = { label: "SR Nutrition — Herbs & Spices for Baby", url: "https://www.srnutrition.co.uk/2021/08/herbs-and-spices-for-baby/" };
@@ -373,7 +374,7 @@ function FoodDetail() {
       {/* ── Food header ── */}
       <div style={{ display: "flex", gap: 24, alignItems: "flex-start", flexWrap: "wrap", margin: "1.5rem 0" }}>
         <img
-          src={food.image_url}
+          src={cloudinaryUrl(food.image_url, 300)}
           alt={food.name}
           onError={(e) => { e.target.src = "https://placehold.co/120x120?text=🍽"; }}
           style={{ width: 120, height: 120, objectFit: "cover", borderRadius: 16, border: "1.5px solid var(--border)" }}

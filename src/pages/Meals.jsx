@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { mealSlug } from "../lib/mealSlug";
+import { cloudinaryUrl } from "../lib/cloudinaryUrl";
 import { Helmet } from "react-helmet-async";
 
 import { supabase } from "../lib/supabaseClient";
@@ -311,9 +312,10 @@ function Meals() {
               {/* Front */}
               <div className="food-card-front">
                 <img
-                  src={meal.image_url || "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776696906/Gemini_Generated_Image_y2myiqy2myiqy2my_sd3eov.png"}
+                  src={cloudinaryUrl(meal.image_url || "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776696906/Gemini_Generated_Image_y2myiqy2myiqy2my_sd3eov.png", 400)}
                   alt={meal.title}
                   className="meal-card-img"
+                  loading="lazy"
                 />
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center", padding: "0 0.5rem" }}>
                   <span className="badge badge-slot">{meal.meal_slot}</span>

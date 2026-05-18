@@ -6,6 +6,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { supabase } from "../lib/supabaseClient";
 import LogMealModal from "../components/LogMealModal";
 import { mealSlug, extractLegacyId, slugToTitleSearch } from "../lib/mealSlug";
+import { cloudinaryUrl } from "../lib/cloudinaryUrl";
 import useMealRating from "../hooks/useMealRating";
 import StarRating from "../components/StarRating";
 
@@ -211,7 +212,7 @@ function MealPage() {
       {/* ── Header ── */}
       <div className="meal-detail-header">
         <img
-          src={meal.image_url || "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776696906/Gemini_Generated_Image_y2myiqy2myiqy2my_sd3eov.png"}
+          src={cloudinaryUrl(meal.image_url || "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776696906/Gemini_Generated_Image_y2myiqy2myiqy2my_sd3eov.png", 800)}
           alt={meal.title}
           style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", borderRadius: 16, display: "block" }}
         />
@@ -346,9 +347,10 @@ function MealPage() {
             {meal.extra_photos.map((photo, idx) => (
               <div key={idx} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 <img
-                  src={photo.url}
+                  src={cloudinaryUrl(photo.url, 600)}
                   alt={photo.caption || `Photo ${idx + 1}`}
                   onError={e => { e.target.src = "https://placehold.co/140x140?text=🍽"; }}
+                  loading="lazy"
                   style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", borderRadius: 10 }}
                 />
                 {photo.caption && (

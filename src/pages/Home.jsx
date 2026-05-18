@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { mealSlug } from '../lib/mealSlug';
+import { cloudinaryUrl } from '../lib/cloudinaryUrl';
 import { Helmet } from 'react-helmet-async';
 import '../styles/landing.css';
 import { supabase } from '../lib/supabaseClient';
@@ -68,8 +69,9 @@ function MealSlider() {
             onClick={() => navigate(`/meal/${mealSlug(meal)}`)}
           >
             <img
-              src={meal.image_url || "https://placehold.co/160x90?text=🍽"}
+              src={cloudinaryUrl(meal.image_url || "https://placehold.co/160x90?text=🍽", 400)}
               alt={meal.title}
+              loading="lazy"
               onError={e => { e.target.src = "https://placehold.co/160x90?text=🍽"; }}
             />
             <div className="meal-slide-info">
@@ -252,7 +254,7 @@ function HeroPanel({ activeBaby, session, navigate }) {
         <div className="hac-img-wrap">
           {featuredMeal ? (
             <img
-              src={featuredMeal.image_url || "https://placehold.co/280x110?text=🍽"}
+              src={cloudinaryUrl(featuredMeal.image_url || "https://placehold.co/280x110?text=🍽", 600)}
               alt={featuredMeal.title}
               loading="eager"
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}

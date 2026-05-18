@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { mealSlug } from "../lib/mealSlug";
+import { cloudinaryUrl } from "../lib/cloudinaryUrl";
 import { Helmet } from "react-helmet-async";
 
 import { supabase } from "../lib/supabaseClient";
@@ -333,9 +334,10 @@ function AllFoods() {
             >
               <div className="food-card-front">
                 <img
-                  src={food.image_url}
+                  src={cloudinaryUrl(food.image_url, 300)}
                   alt={food.name}
                   onError={(e) => { e.target.src = "https://placehold.co/80x80?text=🍽"; }}
+                  loading="lazy"
                   style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 12 }}
                 />
                 <p className="food-card-name">{food.name}</p>
@@ -408,9 +410,10 @@ function AllFoods() {
               <div key={meal.id} className="food-card" onClick={() => navigate(`/meal/${mealSlug(meal)}`)}>
                 <div className="food-card-front">
                   <img
-                    src={meal.image_url}
+                    src={cloudinaryUrl(meal.image_url, 300)}
                     alt={meal.title}
                     onError={e => { e.target.src = "https://placehold.co/80x80?text=🍽"; }}
+                    loading="lazy"
                     style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 12 }}
                   />
                   <p className="food-card-name">{meal.title}</p>

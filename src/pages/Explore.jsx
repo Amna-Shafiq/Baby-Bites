@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { mealSlug } from "../lib/mealSlug";
+import { cloudinaryUrl } from "../lib/cloudinaryUrl";
 import { Helmet } from "react-helmet-async";
 
 import { supabase } from "../lib/supabaseClient";
@@ -515,8 +516,9 @@ function MealOfTheDay() {
           {/* Image side */}
           <div style={{ position: "relative", minHeight: 200 }}>
             <img
-              src={meal.image_url || "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776696906/Gemini_Generated_Image_y2myiqy2myiqy2my_sd3eov.png"}
+              src={cloudinaryUrl(meal.image_url || "https://res.cloudinary.com/dr0ixt3za/image/upload/v1776696906/Gemini_Generated_Image_y2myiqy2myiqy2my_sd3eov.png", 600)}
               alt={meal.title}
+              loading="lazy"
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
             />
             {meal.nutrition_highlight && (
@@ -1301,9 +1303,10 @@ function Explore() {
                       <Link key={food.id} to={`/foods/${food.id}`} style={{ textDecoration: "none", flexShrink: 0, scrollSnapAlign: "start" }}>
                         <div style={{ width: 120, cursor: "pointer", textAlign: "center" }}>
                           <img
-                            src={food.image_url}
+                            src={cloudinaryUrl(food.image_url, 200)}
                             alt={food.name}
                             onError={(e) => { e.target.src = "https://placehold.co/60x60?text=🍽"; }}
+                            loading="lazy"
                             style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 10, marginBottom: 5 }}
                           />
                           <p style={{ fontWeight: 700, fontSize: "0.78rem", margin: "0 0 1px", color: "#fff", fontFamily: "Aileron, sans-serif" }}>
