@@ -49,6 +49,9 @@ const FOOD_REFERENCES = {
   quinoa:         [SS("quinoa")],
   oatmeal:        [SS("oatmeal")],
   oats:           [SS("oatmeal")],
+  // Dairy
+  yogurt:         [SS("yogurt"), { label: "The Bump — When Can Babies Have Yogurt?", url: "https://www.thebump.com/a/when-can-babies-have-yogurt" }],
+  "greek yogurt": [SS("yogurt"), { label: "The Bump — When Can Babies Have Yogurt?", url: "https://www.thebump.com/a/when-can-babies-have-yogurt" }],
   // Fruits
   apple:          [SS("apple")],
   apricot:        [SS("apricot")],
