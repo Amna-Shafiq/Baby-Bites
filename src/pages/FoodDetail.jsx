@@ -55,6 +55,8 @@ const FOOD_REFERENCES = {
   // Fruits (additional)
   dates:          [SS("dates"), { label: "Dolce Frutti — Can Babies Eat Dates?", url: "https://dolcefrutti.com/blogs/dates/babies-eat-dates-nutrition-best-varieties" }],
   date:           [SS("dates"), { label: "Dolce Frutti — Can Babies Eat Dates?", url: "https://dolcefrutti.com/blogs/dates/babies-eat-dates-nutrition-best-varieties" }],
+  falsa:          [{ label: "Marham — Falsa for Babies", url: "https://www.marham.pk" }],
+  phalsa:         [{ label: "Marham — Falsa for Babies", url: "https://www.marham.pk" }],
   // Fruits
   apple:          [SS("apple")],
   apricot:        [SS("apricot")],
