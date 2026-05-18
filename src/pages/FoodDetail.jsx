@@ -52,6 +52,9 @@ const FOOD_REFERENCES = {
   // Dairy
   yogurt:         [SS("yogurt"), { label: "The Bump — When Can Babies Have Yogurt?", url: "https://www.thebump.com/a/when-can-babies-have-yogurt" }],
   "greek yogurt": [SS("yogurt"), { label: "The Bump — When Can Babies Have Yogurt?", url: "https://www.thebump.com/a/when-can-babies-have-yogurt" }],
+  // Fruits (additional)
+  dates:          [SS("dates"), { label: "Dolce Frutti — Can Babies Eat Dates?", url: "https://dolcefrutti.com/blogs/dates/babies-eat-dates-nutrition-best-varieties" }],
+  date:           [SS("dates"), { label: "Dolce Frutti — Can Babies Eat Dates?", url: "https://dolcefrutti.com/blogs/dates/babies-eat-dates-nutrition-best-varieties" }],
   // Fruits
   apple:          [SS("apple")],
   apricot:        [SS("apricot")],
