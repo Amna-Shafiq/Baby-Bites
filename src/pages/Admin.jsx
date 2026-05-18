@@ -2,6 +2,29 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { supabase } from "../lib/supabaseClient";
 
 const FOOD_GROUPS = ["grain", "veggie", "fruit", "protein", "spice", "dairy", "other"];
+
+function detectCDN(url) {
+  if (!url) return null;
+  if (url.includes("res.cloudinary.com"))          return { label: "Cloudinary",     color: "#0066FF" };
+  if (url.includes("r2.dev") || url.includes("r2.cloudflarestorage") || url.includes("cloudflare")) return { label: "Cloudflare R2", color: "#F38020" };
+  if (url.includes("supabase.co/storage"))         return { label: "Supabase",        color: "#3ECF8E" };
+  if (url.startsWith("http"))                      return { label: "Other CDN",       color: "#888" };
+  return null;
+}
+
+function CDNBadge({ url }) {
+  const cdn = detectCDN(url);
+  if (!cdn) return null;
+  return (
+    <span style={{
+      fontSize: "0.7rem", fontWeight: 700, padding: "2px 8px",
+      borderRadius: 20, background: cdn.color + "18", color: cdn.color,
+      border: `1px solid ${cdn.color}40`,
+    }}>
+      {cdn.label}
+    </span>
+  );
+}
 const MEAL_SLOTS  = ["breakfast", "lunch", "dinner", "snack"];
 const MEAL_TYPES  = ["quick", "fancy"];
 
@@ -253,7 +276,10 @@ function Admin() {
             )}
             <form onSubmit={submitFood} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               <input className="input" placeholder="Name *" value={food.name} onChange={(e) => setF("name", e.target.value)} required />
-              <input className="input" placeholder="Image URL (Cloudinary)" value={food.image_url} onChange={(e) => setF("image_url", e.target.value)} />
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <input className="input" placeholder="Image URL" value={food.image_url} onChange={(e) => setF("image_url", e.target.value)} style={{ flex: 1 }} />
+                <CDNBadge url={food.image_url} />
+              </div>
 
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                 <div>
@@ -299,7 +325,7 @@ function Admin() {
           </section>
 
           <section className="panel">
-            <h2 style={{ marginBottom: "0.75rem" }}>All Foods ({foods.length})</h2>
+            <h2 style={{ marginBottom: "0.75rem" }}>Foods ({foods.length})</h2>
             <input className="input" placeholder="Search foods…" value={foodSearch} onChange={(e) => setFoodSearch(e.target.value)} style={{ marginBottom: 12 }} />
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {filteredFoods.map((f) => (
@@ -343,7 +369,10 @@ function Admin() {
             )}
             <form onSubmit={submitMeal} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               <input className="input" placeholder="Title *" value={meal.title} onChange={(e) => setM("title", e.target.value)} required />
-              <input className="input" placeholder="Image URL (Cloudinary)" value={meal.image_url} onChange={(e) => setM("image_url", e.target.value)} />
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <input className="input" placeholder="Image URL" value={meal.image_url} onChange={(e) => setM("image_url", e.target.value)} style={{ flex: 1 }} />
+                <CDNBadge url={meal.image_url} />
+              </div>
               <textarea className="input" placeholder="Description (optional)" value={meal.description} onChange={(e) => setM("description", e.target.value)} rows={2} style={{ resize: "vertical" }} />
 
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
@@ -447,6 +476,7 @@ function Admin() {
                       onChange={e => setExtraPhotos(p => p.map((x, j) => j === i ? { ...x, url: e.target.value } : x))}
                       style={{ flex: 2 }}
                     />
+                    <CDNBadge url={photo.url} />
                     <input
                       className="input"
                       placeholder="Caption"
