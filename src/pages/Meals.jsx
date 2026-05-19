@@ -61,7 +61,14 @@ function Meals() {
   const [tab, setTab]           = useState("all");
   const [page, setPage]         = useState(1);
   const [showAll, setShowAll]   = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const [prepTime, setPrepTime] = useState("any");
+
+  useEffect(() => {
+    const onScroll = () => setShowScrollTop(window.scrollY > 400);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
   const [activeAllergens, setActiveAllergens] = useState(new Set());
 
@@ -360,22 +367,42 @@ function Meals() {
         </div>
       )}
       {!loading && filteredMeals.length > PAGE_SIZE && (
-        <div style={{ textAlign: "center", marginTop: "1rem", display: "flex", gap: "0.5rem", justifyContent: "center" }}>
+        <div style={{ textAlign: "center", marginTop: "1rem" }}>
           <button
             className="pagination-btn"
             onClick={() => { setShowAll((s) => !s); setPage(1); }}
           >
             {showAll ? t("showPages") : t("showAll")}
           </button>
-          {showAll && (
-            <button
-              className="pagination-btn"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            >
-              ↑ Top
-            </button>
-          )}
         </div>
+      )}
+
+      {/* ── Floating scroll-to-top ── */}
+      {showAll && showScrollTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="Scroll to top"
+          style={{
+            position: "fixed",
+            right: 20,
+            bottom: 80,
+            zIndex: 999,
+            width: 44,
+            height: 44,
+            borderRadius: "50%",
+            background: "#c4622a",
+            color: "#fff",
+            border: "none",
+            fontSize: "1.2rem",
+            cursor: "pointer",
+            boxShadow: "0 4px 14px rgba(0,0,0,0.18)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          ↑
+        </button>
       )}
     </div>
   );
