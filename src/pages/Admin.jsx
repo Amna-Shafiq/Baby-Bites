@@ -33,6 +33,7 @@ const emptyFood = {
   food_group: "protein", allergen_notes: "", texture_tips: "",
   is_warning: false, search_aliases: "", image_url: "", notes: "",
   tip_puree: "", tip_finger_food: "", tip_self_feeding: "", tip_family_meal: "",
+  storage_tips: "",
 };
 
 const emptyMeal = {
@@ -99,6 +100,7 @@ function Admin() {
       tip_finger_food:  f.tip_finger_food || "",
       tip_self_feeding: f.tip_self_feeding || "",
       tip_family_meal:  f.tip_family_meal || "",
+      storage_tips:     f.storage_tips || "",
     });
     setFoodStatus("");
     foodFormRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -124,6 +126,7 @@ function Admin() {
       tip_finger_food:  food.tip_finger_food.trim() || null,
       tip_self_feeding: food.tip_self_feeding.trim() || null,
       tip_family_meal:  food.tip_family_meal.trim() || null,
+      storage_tips:     food.storage_tips.trim() || null,
     };
 
     if (editingFoodId) {
@@ -306,6 +309,7 @@ function Admin() {
               <textarea className="input" placeholder="👅 Learning to Move Food (7–9m) — finger food tips" value={food.tip_finger_food} onChange={(e) => setF("tip_finger_food", e.target.value)} rows={2} style={{ resize: "vertical" }} />
               <textarea className="input" placeholder="🤲 Self-Feeding Stage (8–10m) — mixed texture tips" value={food.tip_self_feeding} onChange={(e) => setF("tip_self_feeding", e.target.value)} rows={2} style={{ resize: "vertical" }} />
               <textarea className="input" placeholder="🍽️ Eating with Family (12m+) — family meal tips" value={food.tip_family_meal} onChange={(e) => setF("tip_family_meal", e.target.value)} rows={2} style={{ resize: "vertical" }} />
+              <textarea className="input" placeholder="🧊 Storing tips (optional)" value={food.storage_tips} onChange={(e) => setF("storage_tips", e.target.value)} rows={3} style={{ resize: "vertical" }} />
 
               <div style={{ display: "flex", gap: 20, fontSize: "0.85rem", fontWeight: 700 }}>
                 <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}>

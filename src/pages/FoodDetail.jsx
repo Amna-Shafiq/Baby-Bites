@@ -431,6 +431,14 @@ function FoodDetail() {
         );
       })()}
 
+      {/* ── Storage tips ── */}
+      {food.storage_tips && (
+        <div className="card" style={{ marginBottom: "1rem", background: "#f0f7ff", border: "1.5px solid #b3d4f5" }}>
+          <h3 style={{ marginBottom: "0.5rem", fontSize: "0.9rem", color: "#1a5276" }}>🧊 Storing Tips</h3>
+          <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--dark)", lineHeight: 1.7, whiteSpace: "pre-line" }}>{food.storage_tips}</p>
+        </div>
+      )}
+
       {/* ── Meals using this food ── */}
       {meals.length > 0 && (
         <div className="panel" style={{ marginTop: "1.5rem" }}>
