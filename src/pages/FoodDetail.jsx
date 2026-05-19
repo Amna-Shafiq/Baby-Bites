@@ -36,7 +36,7 @@ const FOOD_REFERENCES = {
   nutmeg:         [SS("nutmeg"),      SRN],
   coriander:      [SRN],
   "garam masala": [SRN],
-  fennel:         [SRN],
+  fennel:         [SS("fennel"), SRN],
   thyme:          [SRN],
   rosemary:       [SRN],
   // Meats
@@ -52,6 +52,7 @@ const FOOD_REFERENCES = {
   // Dairy
   yogurt:         [SS("yogurt"), { label: "The Bump — When Can Babies Have Yogurt?", url: "https://www.thebump.com/a/when-can-babies-have-yogurt" }],
   "greek yogurt": [SS("yogurt"), { label: "The Bump — When Can Babies Have Yogurt?", url: "https://www.thebump.com/a/when-can-babies-have-yogurt" }],
+  dahi:           [SS("yogurt")],
   "cow milk":     [{ label: "Solid Starts — Milk & Milk Alternatives", url: "https://solidstarts.com/en-US/milk-milk-alternatives-for-babies-toddlers/" }, { label: "MedlinePlus — Cow's Milk for Infants & Children", url: "https://medlineplus.gov/ency/article/002448.htm" }],
   "cow's milk":   [{ label: "Solid Starts — Milk & Milk Alternatives", url: "https://solidstarts.com/en-US/milk-milk-alternatives-for-babies-toddlers/" }, { label: "MedlinePlus — Cow's Milk for Infants & Children", url: "https://medlineplus.gov/ency/article/002448.htm" }],
   milk:           [{ label: "Solid Starts — Milk & Milk Alternatives", url: "https://solidstarts.com/en-US/milk-milk-alternatives-for-babies-toddlers/" }, { label: "MedlinePlus — Cow's Milk for Infants & Children", url: "https://medlineplus.gov/ency/article/002448.htm" }],
