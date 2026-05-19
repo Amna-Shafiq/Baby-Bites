@@ -52,6 +52,9 @@ const FOOD_REFERENCES = {
   // Dairy
   yogurt:         [SS("yogurt"), { label: "The Bump — When Can Babies Have Yogurt?", url: "https://www.thebump.com/a/when-can-babies-have-yogurt" }],
   "greek yogurt": [SS("yogurt"), { label: "The Bump — When Can Babies Have Yogurt?", url: "https://www.thebump.com/a/when-can-babies-have-yogurt" }],
+  "cow milk":     [{ label: "Solid Starts — Milk & Milk Alternatives", url: "https://solidstarts.com/en-US/milk-milk-alternatives-for-babies-toddlers/" }, { label: "MedlinePlus — Cow's Milk for Infants & Children", url: "https://medlineplus.gov/ency/article/002448.htm" }],
+  "cow's milk":   [{ label: "Solid Starts — Milk & Milk Alternatives", url: "https://solidstarts.com/en-US/milk-milk-alternatives-for-babies-toddlers/" }, { label: "MedlinePlus — Cow's Milk for Infants & Children", url: "https://medlineplus.gov/ency/article/002448.htm" }],
+  milk:           [{ label: "Solid Starts — Milk & Milk Alternatives", url: "https://solidstarts.com/en-US/milk-milk-alternatives-for-babies-toddlers/" }, { label: "MedlinePlus — Cow's Milk for Infants & Children", url: "https://medlineplus.gov/ency/article/002448.htm" }],
   // Fruits (additional)
   dates:          [SS("dates"), { label: "Dolce Frutti — Can Babies Eat Dates?", url: "https://dolcefrutti.com/blogs/dates/babies-eat-dates-nutrition-best-varieties" }],
   date:           [SS("dates"), { label: "Dolce Frutti — Can Babies Eat Dates?", url: "https://dolcefrutti.com/blogs/dates/babies-eat-dates-nutrition-best-varieties" }],
