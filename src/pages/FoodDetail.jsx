@@ -60,6 +60,9 @@ const FOOD_REFERENCES = {
   dates:          [SS("dates"), { label: "Dolce Frutti — Can Babies Eat Dates?", url: "https://dolcefrutti.com/blogs/dates/babies-eat-dates-nutrition-best-varieties" }],
   date:           [SS("dates"), { label: "Dolce Frutti — Can Babies Eat Dates?", url: "https://dolcefrutti.com/blogs/dates/babies-eat-dates-nutrition-best-varieties" }],
   falsa:          [{ label: "Marham — Falsa for Babies", url: "https://www.marham.pk" }],
+  // South Asian traditional foods
+  paya:           [SS("lamb"), { label: "Solid Starts — Bone Broth for Babies", url: "https://solidstarts.com/foods/bone-broth/" }],
+  trotters:       [SS("lamb"), { label: "Solid Starts — Bone Broth for Babies", url: "https://solidstarts.com/foods/bone-broth/" }],
   // Juice
   juice:          [SS("juice")],
   "fruit juice":  [SS("juice")],
