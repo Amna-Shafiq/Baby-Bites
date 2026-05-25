@@ -60,6 +60,9 @@ const FOOD_REFERENCES = {
   dates:          [SS("dates"), { label: "Dolce Frutti — Can Babies Eat Dates?", url: "https://dolcefrutti.com/blogs/dates/babies-eat-dates-nutrition-best-varieties" }],
   date:           [SS("dates"), { label: "Dolce Frutti — Can Babies Eat Dates?", url: "https://dolcefrutti.com/blogs/dates/babies-eat-dates-nutrition-best-varieties" }],
   falsa:          [{ label: "Marham — Falsa for Babies", url: "https://www.marham.pk" }],
+  // Juice
+  juice:          [SS("juice")],
+  "fruit juice":  [SS("juice")],
   // Drinks to avoid
   cola:           [{ label: "Johns Hopkins Medicine — Energy Drinks and Kids", url: "https://www.hopkinsmedicine.org/health/wellness-and-prevention/energy-drinks-and-kids" }],
   "energy drink": [{ label: "Johns Hopkins Medicine — Energy Drinks and Kids", url: "https://www.hopkinsmedicine.org/health/wellness-and-prevention/energy-drinks-and-kids" }],
