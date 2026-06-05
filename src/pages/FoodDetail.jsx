@@ -15,6 +15,8 @@ const FOOD_REFERENCES = {
   pistachio:      [SS("pistachios")],
   pistachios:     [SS("pistachios")],
   walnut:         [SS("walnuts")],
+  hazelnut:       [SS("hazelnut")],
+  hazelnuts:      [SS("hazelnut")],
   walnuts:        [SS("walnuts")],
   cashew:         [SS("cashew")],
   cashews:        [SS("cashew")],
