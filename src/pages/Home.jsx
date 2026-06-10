@@ -237,6 +237,7 @@ function FilmStrip() {
 // ── HeroPanel: horizontal 3-card row ─────────────────────────────────────
 function HeroPanel({ activeBaby, session, navigate }) {
   const [featuredMeal, setFeaturedMeal] = useState(null);
+  const [imgFailed, setImgFailed] = useState(false);
 
   useEffect(() => {
     if (!supabase) return;
@@ -252,13 +253,13 @@ function HeroPanel({ activeBaby, session, navigate }) {
       {/* Today's Pick */}
       <div className="hac" onClick={() => featuredMeal && navigate(`/meal/${mealSlug(featuredMeal)}`)}>
         <div className="hac-img-wrap">
-          {featuredMeal ? (
+          {featuredMeal && featuredMeal.image_url && !imgFailed ? (
             <img
-              src={cloudinaryUrl(featuredMeal.image_url || "https://placehold.co/280x110?text=🍽", 600)}
+              src={cloudinaryUrl(featuredMeal.image_url, 600)}
               alt={featuredMeal.title}
               loading="eager"
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-              onError={e => { e.target.src = "https://placehold.co/280x110?text=🍽"; }}
+              onError={() => setImgFailed(true)}
             />
           ) : (
             <div className="hac-placeholder">🍽️</div>
