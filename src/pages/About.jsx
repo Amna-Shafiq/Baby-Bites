@@ -22,7 +22,7 @@ const STORY_PARAGRAPHS = [
 ];
 
 // Replace YOUR_FORM_ID with the ID from formspree.io/f/YOUR_FORM_ID
-const FORMSPREE_URL = "https://formspree.io/f/YOUR_FORM_ID";
+const FORMSPREE_URL = "https://formspree.io/f/xbdekwlb";
 
 function ContactForm() {
   const [fields, setFields] = useState({ firstName: "", lastName: "", email: "", message: "" });
