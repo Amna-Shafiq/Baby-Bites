@@ -1598,7 +1598,7 @@
 
   /* Hero */
   .lp-hero { padding: 2.5rem 1.5rem 2rem; }
-  .hero-strawberry { width: 120px; top: 100px; }
+  .hero-strawberry { display: none; }
   .hero-leaf1 { width: 45px; }
   .hero-leaf2 { width: 35px; }
   .hero-leaf3 { width: 28px; }
@@ -1620,7 +1620,7 @@
 
   /* Meals */
   .samples-pineapple, .samples-pineapple-wrap, .samples-leaf, .age-meal-img, .feat-raspberry-wrap { display: none; }
-  .hero-carrot-wrap { width: 120px; z-index: 0; }
+  .hero-carrot-wrap { display: none; }
   .lp-hero { position: relative; z-index: 1; }
   .samples-sec { padding: 2rem 1.5rem; }
   .meals-showcase-wrap { height: 320px; }
