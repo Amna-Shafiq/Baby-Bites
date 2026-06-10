@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 
 const TEAM = [
@@ -20,6 +20,102 @@ const STORY_PARAGRAPHS = [
   "As both a software engineer and a mother, I've poured my heart into creating Baby Bites with care, intention, and empathy for real parents navigating real life. Every feature is designed with busy, tired parents in mind — because I am one too.",
   "Baby Bites is still growing and evolving alongside our own journey, and I'm so grateful you're here to be part of it. I truly hope this little corner of the internet helps make feeding your baby feel easier, more joyful, and a little less lonely. 🤍",
 ];
+
+// Replace YOUR_FORM_ID with the ID from formspree.io/f/YOUR_FORM_ID
+const FORMSPREE_URL = "https://formspree.io/f/YOUR_FORM_ID";
+
+function ContactForm() {
+  const [fields, setFields] = useState({ firstName: "", lastName: "", email: "", message: "" });
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+
+  const set = (key, val) => setFields(f => ({ ...f, [key]: val }));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("sending");
+    try {
+      const res = await fetch(FORMSPREE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          firstName: fields.firstName,
+          lastName:  fields.lastName,
+          email:     fields.email,
+          message:   fields.message,
+        }),
+      });
+      if (res.ok) {
+        setStatus("success");
+        setFields({ firstName: "", lastName: "", email: "", message: "" });
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  if (status === "success") {
+    return (
+      <div style={{ background: "#d5f5e3", border: "1.5px solid #52c490", borderRadius: 12, padding: "1rem 1.25rem" }}>
+        <p style={{ margin: 0, fontWeight: 700, color: "#1a7a45", fontSize: "0.95rem" }}>
+          Message sent! We'll get back to you soon.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+        <input
+          className="input"
+          placeholder="First name"
+          value={fields.firstName}
+          onChange={e => set("firstName", e.target.value)}
+          required
+        />
+        <input
+          className="input"
+          placeholder="Last name"
+          value={fields.lastName}
+          onChange={e => set("lastName", e.target.value)}
+          required
+        />
+      </div>
+      <input
+        className="input"
+        type="email"
+        placeholder="Email address"
+        value={fields.email}
+        onChange={e => set("email", e.target.value)}
+        required
+      />
+      <textarea
+        className="input"
+        placeholder="How can we help?"
+        value={fields.message}
+        onChange={e => set("message", e.target.value)}
+        rows={4}
+        style={{ resize: "vertical" }}
+        required
+      />
+      {status === "error" && (
+        <p style={{ margin: 0, fontSize: "0.82rem", color: "#c0392b", fontWeight: 600 }}>
+          Something went wrong — please try emailing us directly.
+        </p>
+      )}
+      <button
+        type="submit"
+        className="btn btn-primary"
+        disabled={status === "sending"}
+        style={{ alignSelf: "flex-start" }}
+      >
+        {status === "sending" ? "Sending…" : "Send message"}
+      </button>
+    </form>
+  );
+}
 
 function About() {
   useEffect(() => {
@@ -70,18 +166,15 @@ function About() {
       {/* ── Contact ── */}
       <div className="panel" style={{ marginBottom: "1.25rem" }}>
         <span className="eyebrow eo">Get in touch</span>
-        <h2 style={{ margin: "0.3rem 0 0.75rem" }}>Contact us</h2>
-        <a
-          href="mailto:contactus.babybites@gmail.com"
-          style={{
-            display: "inline-flex", flexDirection: "column", alignItems: "flex-start", gap: 4,
-            color: "var(--orange-dark)", fontWeight: 700, fontSize: "0.95rem",
-            textDecoration: "none",
-          }}
-        >
-          <span>✉️</span>
-          <span>contactus.babybites@gmail.com</span>
-        </a>
+        <h2 style={{ margin: "0.3rem 0 0.4rem" }}>Contact us</h2>
+        <p style={{ margin: "0 0 1.25rem", fontSize: "0.9rem", color: "var(--muted)", lineHeight: 1.6 }}>
+          Email us directly at{" "}
+          <a href="mailto:contactus.babybites@gmail.com" style={{ color: "var(--orange-dark)", fontWeight: 700 }}>
+            contactus.babybites@gmail.com
+          </a>{" "}
+          or fill in the form below and we'll get back to you.
+        </p>
+        <ContactForm />
       </div>
 
       {/* ── Disclaimer ── */}
