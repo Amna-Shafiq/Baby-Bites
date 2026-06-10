@@ -62,6 +62,8 @@ const FOOD_REFERENCES = {
   dates:          [SS("dates"), { label: "Dolce Frutti — Can Babies Eat Dates?", url: "https://dolcefrutti.com/blogs/dates/babies-eat-dates-nutrition-best-varieties" }],
   date:           [SS("dates"), { label: "Dolce Frutti — Can Babies Eat Dates?", url: "https://dolcefrutti.com/blogs/dates/babies-eat-dates-nutrition-best-varieties" }],
   falsa:          [{ label: "Marham — Falsa for Babies", url: "https://www.marham.pk" }],
+  // Sweeteners
+  jaggery:        [{ label: "FirstCry Parenting — Jaggery for Babies", url: "https://parenting.firstcry.com/articles/jaggery-gur-for-babies-benefits-risk-and-recipe/" }],
   // Grains / pasta / noodles
   noodles:        [SS("noodles")],
   pasta:          [SS("pasta")],
