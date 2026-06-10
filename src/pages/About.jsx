@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useForm, ValidationError } from "@formspree/react";
 import { Helmet } from "react-helmet-async";
 
 const TEAM = [
@@ -21,41 +22,10 @@ const STORY_PARAGRAPHS = [
   "Baby Bites is still growing and evolving alongside our own journey, and I'm so grateful you're here to be part of it. I truly hope this little corner of the internet helps make feeding your baby feel easier, more joyful, and a little less lonely. 🤍",
 ];
 
-// Replace YOUR_FORM_ID with the ID from formspree.io/f/YOUR_FORM_ID
-const FORMSPREE_URL = "https://formspree.io/f/xbdekwlb";
-
 function ContactForm() {
-  const [fields, setFields] = useState({ firstName: "", lastName: "", email: "", message: "" });
-  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const [state, handleSubmit] = useForm("xbdekwlb");
 
-  const set = (key, val) => setFields(f => ({ ...f, [key]: val }));
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus("sending");
-    try {
-      const res = await fetch(FORMSPREE_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          firstName: fields.firstName,
-          lastName:  fields.lastName,
-          email:     fields.email,
-          message:   fields.message,
-        }),
-      });
-      if (res.ok) {
-        setStatus("success");
-        setFields({ firstName: "", lastName: "", email: "", message: "" });
-      } else {
-        setStatus("error");
-      }
-    } catch {
-      setStatus("error");
-    }
-  };
-
-  if (status === "success") {
+  if (state.succeeded) {
     return (
       <div style={{ background: "#d5f5e3", border: "1.5px solid #52c490", borderRadius: 12, padding: "1rem 1.25rem" }}>
         <p style={{ margin: 0, fontWeight: 700, color: "#1a7a45", fontSize: "0.95rem" }}>
@@ -68,50 +38,27 @@ function ContactForm() {
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
-        <input
-          className="input"
-          placeholder="First name"
-          value={fields.firstName}
-          onChange={e => set("firstName", e.target.value)}
-          required
-        />
-        <input
-          className="input"
-          placeholder="Last name"
-          value={fields.lastName}
-          onChange={e => set("lastName", e.target.value)}
-          required
-        />
+        <input className="input" type="text" name="firstName" placeholder="First name" required />
+        <input className="input" type="text" name="lastName"  placeholder="Last name"  required />
       </div>
-      <input
-        className="input"
-        type="email"
-        placeholder="Email address"
-        value={fields.email}
-        onChange={e => set("email", e.target.value)}
-        required
-      />
+      <input className="input" type="email" name="email" placeholder="Email address" required />
+      <ValidationError field="email" errors={state.errors} style={{ fontSize: "0.8rem", color: "#c0392b" }} />
       <textarea
         className="input"
+        name="message"
         placeholder="How can we help?"
-        value={fields.message}
-        onChange={e => set("message", e.target.value)}
         rows={4}
         style={{ resize: "vertical" }}
         required
       />
-      {status === "error" && (
-        <p style={{ margin: 0, fontSize: "0.82rem", color: "#c0392b", fontWeight: 600 }}>
-          Something went wrong — please try emailing us directly.
-        </p>
-      )}
+      <ValidationError field="message" errors={state.errors} style={{ fontSize: "0.8rem", color: "#c0392b" }} />
       <button
         type="submit"
         className="btn btn-primary"
-        disabled={status === "sending"}
+        disabled={state.submitting}
         style={{ alignSelf: "flex-start" }}
       >
-        {status === "sending" ? "Sending…" : "Send message"}
+        {state.submitting ? "Sending…" : "Send message"}
       </button>
     </form>
   );
