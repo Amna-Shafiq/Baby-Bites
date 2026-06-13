@@ -37,7 +37,7 @@ function AppFooter() {
         <Link to="/privacy">Privacy Policy</Link>
       </div>
       <div className="app-footer-social">
-        <a href="#" className="social-icon" aria-label="Instagram"><IconInstagram /></a>
+        <a href="https://www.instagram.com/trybabybites/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram"><IconInstagram /></a>
         <a href="#" className="social-icon" aria-label="YouTube"><IconYouTube /></a>
       </div>
       <div className="app-footer-toggles">
