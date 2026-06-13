@@ -970,7 +970,20 @@ function Home() {
           <Link to="/foods">{t("allFoods")}</Link>
           <Link to="/about">{t("footerAbout")}</Link>
         </div>
-        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+          <a
+            href="https://www.instagram.com/trybabybites/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            style={{ color: "inherit", display: "flex", alignItems: "center" }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
           <button
             type="button"
             onClick={toggleTheme}
