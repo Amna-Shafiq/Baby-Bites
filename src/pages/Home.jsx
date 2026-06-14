@@ -168,9 +168,9 @@ function ScrollThread() {
 }
 
 const EAT_VIDS = [
-  "https://res.cloudinary.com/dr0ixt3za/video/upload/v1776673986/eat1_ehgf5d.mp4",
-  "https://res.cloudinary.com/dr0ixt3za/video/upload/v1776673972/eat2_pcpgrn.mp4",
-  "https://res.cloudinary.com/dr0ixt3za/video/upload/v1776673952/eat3_ro6i2c.mp4",
+  "https://pub-fa59902d9c914df3be6d8860cdc82704.r2.dev/babybites-assets/5135468-uhd_3840_2160_25fps.mp4",
+  "https://pub-fa59902d9c914df3be6d8860cdc82704.r2.dev/babybites-assets/5135468-uhd_3840_2160_25fps.mp4",
+  "https://pub-fa59902d9c914df3be6d8860cdc82704.r2.dev/babybites-assets/5135468-uhd_3840_2160_25fps.mp4",
 ];
 
 // Stacked cards that cycle front→back every 3 s
