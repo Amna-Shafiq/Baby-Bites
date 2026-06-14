@@ -1128,7 +1128,7 @@ function Explore() {
           <ParticleTitle />
 
           <p style={{
-            margin: "0 0 2rem",
+            margin: "0 0 1.25rem",
             fontSize: "1rem",
             color: "rgba(255,255,255,0.82)",
             lineHeight: 1.65,
@@ -1136,6 +1136,25 @@ function Explore() {
           }}>
             Discover age-appropriate foods, meal ideas, and trusted guides for your baby.
           </p>
+
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 10,
+            background: "rgba(255,255,255,0.1)",
+            backdropFilter: "blur(8px)",
+            border: "1.5px solid rgba(255,255,255,0.25)",
+            borderRadius: 24, padding: "8px 18px",
+            marginBottom: "2rem",
+          }}>
+            <span style={{ fontSize: "1rem" }}>✨</span>
+            <span style={{ fontWeight: 700, fontSize: "0.9rem", color: "#fff" }}>Ask Baby Bites AI</span>
+            <span style={{
+              background: "var(--orange-dark)", color: "#fff",
+              borderRadius: 12, padding: "2px 9px",
+              fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em",
+            }}>
+              Coming Soon
+            </span>
+          </div>
         </div></div>{/* end maxWidth:560 */}
       </div>
 
