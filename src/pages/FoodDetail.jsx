@@ -67,6 +67,9 @@ const FOOD_REFERENCES = {
   // Grains / pasta / noodles
   noodles:        [SS("noodles")],
   pasta:          [SS("pasta")],
+  // South Asian vegetables
+  lauki:          [{ label: "GK Food Diary — Bottle Gourd for Babies", url: "https://gkfooddiary.com/bottle-gourd-recipes-babies-kids-when-can-i-give-my-baby-bottle-gourd/" }],
+  "bottle gourd": [{ label: "GK Food Diary — Bottle Gourd for Babies", url: "https://gkfooddiary.com/bottle-gourd-recipes-babies-kids-when-can-i-give-my-baby-bottle-gourd/" }],
   // South Asian traditional foods
   paya:           [SS("lamb"), { label: "Solid Starts — Bone Broth for Babies", url: "https://solidstarts.com/foods/bone-broth/" }],
   trotters:       [SS("lamb"), { label: "Solid Starts — Bone Broth for Babies", url: "https://solidstarts.com/foods/bone-broth/" }],
