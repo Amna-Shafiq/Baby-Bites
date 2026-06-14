@@ -602,7 +602,7 @@ function HowItWorks({ t }) {
         <div className="how-body">
           <div className="how-video-wrap">
             <video
-              src="https://res.cloudinary.com/dr0ixt3za/video/upload/v1776674027/cooking_imctv7.mp4"
+              src="/cooking.mp4"
               autoPlay muted loop playsInline
               className="how-video"
             />
