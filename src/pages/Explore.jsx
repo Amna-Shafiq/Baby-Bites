@@ -5,7 +5,6 @@ import { cloudinaryUrl } from "../lib/cloudinaryUrl";
 import { Helmet } from "react-helmet-async";
 
 import { supabase } from "../lib/supabaseClient";
-import useAIHelper from "../hooks/useAIHelper";
 import useActiveBaby from "../hooks/useActiveBaby";
 import { useLanguage } from "../contexts/LanguageContext";
 import articles from "../data/articles";
@@ -14,26 +13,6 @@ import articles from "../data/articles";
 const VIDEO_URL = "https://res.cloudinary.com/dr0ixt3za/video/upload/v1776674045/7331655-hd_1920_1080_25fps_g8qi8l.mp4";
 // YouTube example: "https://www.youtube.com/embed/VIDEO_ID"
 // MP4 example:     "/videos/my-video.mp4"
-
-const SUGGESTIONS = [
-  "Iron rich meals for my baby",
-  "Quick breakfast ideas",
-  "Is honey safe?",
-  "What can I make with lentils and carrot?",
-  "Foods to avoid under 1 year",
-  "Protein ideas for 8 months",
-];
-
-function SkeletonLine({ w = "80%" }) {
-  return (
-    <div style={{
-      height: 11, borderRadius: 6,
-      background: "rgba(255,255,255,0.25)",
-      width: w, marginBottom: 8,
-      animation: "skeleton-pulse 1.5s ease-in-out infinite",
-    }} />
-  );
-}
 
 function ArticleCard({ article }) {
   return (
@@ -1020,15 +999,12 @@ function Firsts() {
 }
 
 function Explore() {
-  const [input, setInput]       = useState("");
-  const [cooldown, setCooldown] = useState(false);
   const [tab, setTab]           = useState("explore");
   const [articleScroll, setArticleScroll] = useState(0);
   const [dragging, setDragging] = useState(false);
   const articleRowRef = useRef(null);
   const trackRef      = useRef(null);
   const isDragging    = useRef(false);
-  const inputRef      = useRef(null);
 
   const onArticleScroll = () => {
     const el = articleRowRef.current;
@@ -1073,19 +1049,7 @@ function Explore() {
   }, []);
 
   const { activeBaby } = useActiveBaby();
-  const { ask, answer, recommendedMeals, recommendedFoods, safetyNote, loading, error } = useAIHelper();
   const { t } = useLanguage();
-
-  const submit = async (question) => {
-    if (!question.trim() || loading || cooldown) return;
-    await ask(question);
-    setCooldown(true);
-    setTimeout(() => setCooldown(false), 3000);
-  };
-
-  const handleChip = (chip) => { setInput(chip); submit(chip); };
-  const handleSubmit = (e) => { e.preventDefault(); submit(input); };
-  const hasResponse = answer || error;
 
   return (
     <div className="page" style={{ paddingTop: 0, paddingLeft: 0, paddingRight: 0 }}>
@@ -1158,7 +1122,7 @@ function Explore() {
             letterSpacing: "0.14em", color: "rgba(255,255,255,0.85)", display: "block",
             marginBottom: "0.75rem",
           }}>
-            {t("aiEyebrow")}
+            Explore Baby Foods
           </span>
 
           <ParticleTitle />
@@ -1170,157 +1134,8 @@ function Explore() {
             lineHeight: 1.65,
             maxWidth: 420,
           }}>
-            {t("aiSub")}
+            Discover age-appropriate foods, meal ideas, and trusted guides for your baby.
           </p>
-
-          {!activeBaby && (
-            <p style={{
-              fontSize: "0.82rem", fontWeight: 600,
-              color: "rgba(255,255,255,0.75)",
-              marginBottom: "1rem",
-            }}>
-              {t("addBabyNudge")}
-            </p>
-          )}
-
-          {/* Search input */}
-          <form onSubmit={handleSubmit} style={{ display: "flex", gap: 10, marginBottom: "1rem", maxWidth: 500 }}>
-            <input
-              ref={inputRef}
-              className="input input-glass"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder={t("aiPlaceholder")}
-              style={{
-                flex: 1,
-                background: "rgba(255,255,255,0.15)",
-                backdropFilter: "blur(8px)",
-                border: "1.5px solid rgba(255,255,255,0.35)",
-              }}
-              disabled={loading}
-            />
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={!input.trim() || loading || cooldown}
-              style={{ flexShrink: 0 }}
-            >
-              {loading ? "…" : t("askBtn")}
-            </button>
-          </form>
-
-          {/* Suggestion chips */}
-          {!input && !hasResponse && (
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: "1.5rem" }}>
-              {SUGGESTIONS.map((s) => (
-                <button
-                  key={s}
-                  onClick={() => handleChip(s)}
-                  disabled={loading}
-                  style={{
-                    background: "rgba(255,255,255,0.12)",
-                    backdropFilter: "blur(6px)",
-                    border: "1px solid rgba(255,255,255,0.28)",
-                    borderRadius: 20, padding: "5px 13px",
-                    fontSize: "0.78rem", fontWeight: 600,
-                    color: "rgba(255,255,255,0.9)",
-                    cursor: "pointer", fontFamily: "Nunito, sans-serif",
-                  }}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Loading */}
-          {loading && (
-            <div style={{ marginTop: "0.75rem" }}>
-              <SkeletonLine w="90%" />
-              <SkeletonLine w="70%" />
-              <SkeletonLine w="55%" />
-            </div>
-          )}
-
-          {/* Error */}
-          {!loading && error && (
-            <p style={{ color: "#ff8a80", fontSize: "0.9rem", marginTop: "0.75rem" }}>{error}</p>
-          )}
-
-          {/* Answer */}
-          {!loading && answer && (
-            <div style={{
-              marginTop: "1rem",
-              background: "rgba(0,0,0,0.35)",
-              backdropFilter: "blur(10px)",
-              borderRadius: 14,
-              padding: "1rem 1.25rem",
-              maxWidth: 500,
-            }}>
-              <p style={{ lineHeight: 1.7, fontSize: "0.92rem", color: "#fff", margin: "0 0 0.6rem" }}>
-                {answer}
-              </p>
-              {safetyNote && (
-                <p style={{ color: "#ff8a80", fontSize: "0.85rem", fontWeight: 600, margin: "0 0 0.75rem" }}>
-                  ⚠️ {safetyNote}
-                </p>
-              )}
-              {recommendedMeals.length > 0 && (
-                <div style={{ marginBottom: "0.85rem" }}>
-                  <p style={{ fontWeight: 700, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.6)", marginBottom: "0.4rem" }}>
-                    {t("suggestedMeals")}
-                  </p>
-                  <HorizontalScroll>
-                    {recommendedMeals.map((meal) => (
-                      <Link key={meal.id} to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none", flexShrink: 0, scrollSnapAlign: "start" }}>
-                        <div style={{
-                          width: 180, cursor: "pointer",
-                          background: "rgba(255,255,255,0.1)",
-                          borderRadius: 10, padding: "0.65rem 0.8rem",
-                        }}>
-                          <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 4 }}>
-                            <span className="badge badge-slot">{meal.meal_slot}</span>
-                          </div>
-                          <p style={{ fontWeight: 700, fontSize: "0.88rem", margin: "0 0 3px", color: "#fff", fontFamily: "Aileron, sans-serif", lineHeight: 1.3 }}>
-                            {meal.title}
-                          </p>
-                          <p style={{ fontSize: "0.72rem", margin: 0, color: "rgba(255,255,255,0.6)" }}>
-                            {meal.min_age_months}–{meal.max_age_months}m
-                          </p>
-                        </div>
-                      </Link>
-                    ))}
-                  </HorizontalScroll>
-                </div>
-              )}
-              {recommendedFoods.length > 0 && (
-                <div>
-                  <p style={{ fontWeight: 700, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.6)", marginBottom: "0.4rem" }}>
-                    {t("suggestedFoods")}
-                  </p>
-                  <HorizontalScroll>
-                    {recommendedFoods.map((food) => (
-                      <Link key={food.id} to={`/foods/${food.id}`} style={{ textDecoration: "none", flexShrink: 0, scrollSnapAlign: "start" }}>
-                        <div style={{ width: 120, cursor: "pointer", textAlign: "center" }}>
-                          <img
-                            src={cloudinaryUrl(food.image_url, 200)}
-                            alt={food.name}
-                            onError={(e) => { e.target.src = "https://placehold.co/60x60?text=🍽"; }}
-                            loading="lazy"
-                            style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 10, marginBottom: 5 }}
-                          />
-                          <p style={{ fontWeight: 700, fontSize: "0.78rem", margin: "0 0 1px", color: "#fff", fontFamily: "Aileron, sans-serif" }}>
-                            {food.name}
-                          </p>
-                          <p style={{ fontSize: "0.68rem", margin: 0, color: "rgba(255,255,255,0.6)" }}>{food.food_group}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </HorizontalScroll>
-                </div>
-              )}
-            </div>
-          )}
         </div></div>{/* end maxWidth:560 */}
       </div>
 
