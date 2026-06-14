@@ -20,7 +20,7 @@ function CTAFooter() {
         <div className="cta-footer-video-wrap">
           <video
             className="cta-footer-video"
-            src="https://res.cloudinary.com/dr0ixt3za/video/upload/v1776685676/eat4_bdzzp3.mp4"
+            src="https://pub-fa59902d9c914df3be6d8860cdc82704.r2.dev/babybites-assets/5135468-uhd_3840_2160_25fps.mp4"
             autoPlay
             muted
             loop
