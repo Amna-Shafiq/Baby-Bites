@@ -55,7 +55,25 @@ function useCustomMeals() {
     loadData();
   }, [loadData]);
 
-  // Recompute meal suggestions whenever pantry changes
+  // Common staples always assumed to be in any kitchen — excluded from match counting
+const STAPLES = new Set([
+  "salt", "pepper", "black pepper", "white pepper",
+  "oil", "olive oil", "coconut oil", "vegetable oil", "sunflower oil",
+  "butter", "ghee",
+  "water",
+  "sugar",
+  "cumin", "zeera", "jeera",
+  "coriander", "danya", "dhania", "coriander powder",
+  "turmeric", "haldi", "turmeric powder",
+  "ginger", "garlic",
+  "oregano", "cinnamon", "cardamom", "cloves", "bay leaf",
+  "baking powder", "baking soda",
+  "vinegar", "lemon juice", "lemon",
+]);
+
+const isStaple = (name) => name && STAPLES.has(name.toLowerCase().trim());
+
+// Recompute meal suggestions whenever pantry changes
   useEffect(() => {
     if (!supabase || !userId) { setMealSuggestions([]); return; }
 
@@ -69,9 +87,10 @@ function useCustomMeals() {
       .then(({ data }) => {
         const suggestions = (data || [])
           .map((meal) => {
-            const total   = meal.meal_foods.length;
-            const matched = meal.meal_foods.filter((mf) => pantryFoodIds.has(mf.food_id)).length;
-            const missing = meal.meal_foods
+            const mainIngredients = meal.meal_foods.filter((mf) => !isStaple(mf.foods?.name));
+            const total   = mainIngredients.length;
+            const matched = mainIngredients.filter((mf) => pantryFoodIds.has(mf.food_id)).length;
+            const missing = mainIngredients
               .filter((mf) => !pantryFoodIds.has(mf.food_id))
               .map((mf) => mf.foods?.name).filter(Boolean);
             return { ...meal, matchCount: matched, totalCount: total, missingIngredients: missing };
