@@ -188,6 +188,17 @@ function Pantry() {
         )}
       </section>
 
+      {/* ── Staples note ── */}
+      {mealSuggestions.length > 0 && (
+        <p style={{
+          fontSize: "0.78rem", color: "var(--muted)", lineHeight: 1.6,
+          background: "var(--cream)", border: "1px solid var(--border)",
+          borderRadius: 10, padding: "8px 14px", marginBottom: "0.5rem",
+        }}>
+          💡 We assume you always have basic staples like <strong>salt, oil, ghee, butter, cumin, coriander, turmeric, ginger, garlic</strong> and other common spices — so you only need to add your main ingredients above.
+        </p>
+      )}
+
       {/* ── Allergen filters ── */}
       {mealSuggestions.length > 0 && (
         <section className="panel" style={{ paddingBottom: "1rem" }}>
