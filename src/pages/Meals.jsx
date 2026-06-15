@@ -94,7 +94,7 @@ function Meals() {
       setLoading(true);
       const { data, error } = await supabase
         .from("meals")
-        .select("*, meal_foods(foods(name, allergen_notes))")
+        .select("*, meal_foods(foods(name, allergen_notes, search_aliases))")
         .eq("is_public", true)
         .order("title", { ascending: true });
 
@@ -117,7 +117,8 @@ function Meals() {
       if (tab === "favorites" && !favoriteIds.includes(meal.id)) return false;
 
       const ingredientNames = (meal.meal_foods || [])
-        .map((mf) => mf.foods?.name || "").join(" ").toLowerCase();
+        .map((mf) => `${mf.foods?.name || ""} ${mf.foods?.search_aliases || ""}`)
+        .join(" ").toLowerCase();
 
       const bySearch = !searchText ||
         meal.title.toLowerCase().includes(searchText) ||
