@@ -67,11 +67,14 @@ function useCustomMeals() {
       .select("id, title, meal_slot, meal_type, min_age_months, max_age_months, prep_time_minutes, nutrition_highlight, meal_foods(food_id)")
       .eq("is_public", true)
       .then(({ data }) => {
-        const suggestions = (data || []).filter(
-          (meal) =>
-            meal.meal_foods.length > 0 &&
-            meal.meal_foods.every((mf) => pantryFoodIds.has(mf.food_id))
-        );
+        const suggestions = (data || [])
+          .map((meal) => {
+            const total   = meal.meal_foods.length;
+            const matched = meal.meal_foods.filter((mf) => pantryFoodIds.has(mf.food_id)).length;
+            return { ...meal, matchCount: matched, totalCount: total };
+          })
+          .filter((meal) => meal.totalCount > 0 && meal.matchCount >= Math.ceil(meal.totalCount / 2))
+          .sort((a, b) => (b.matchCount / b.totalCount) - (a.matchCount / a.totalCount));
         setMealSuggestions(suggestions);
       });
   }, [userId, householdFoods]);

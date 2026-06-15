@@ -160,8 +160,14 @@ function Pantry() {
                 <div className="card" style={{ cursor: "pointer" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
                     <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>
-                    <span className={`badge badge-${meal.meal_type}`} style={{ flexShrink: 0 }}>
-                      {meal.meal_type}
+                    <span style={{
+                      flexShrink: 0, fontSize: "0.72rem", fontWeight: 700,
+                      background: meal.matchCount === meal.totalCount ? "var(--green-light)" : "var(--yellow)",
+                      color: meal.matchCount === meal.totalCount ? "var(--green-dark)" : "var(--yellow-dark)",
+                      border: `1px solid ${meal.matchCount === meal.totalCount ? "var(--green-mid, #a8e6c4)" : "var(--yellow-mid)"}`,
+                      borderRadius: 20, padding: "2px 9px",
+                    }}>
+                      {meal.matchCount}/{meal.totalCount} ingredients
                     </span>
                   </div>
                   <p className="muted" style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>
