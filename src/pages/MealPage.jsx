@@ -126,7 +126,7 @@ function MealPage() {
     "author": { "@type": "Organization", "name": "Baby Bites", "url": "https://babybites.net" },
     "publisher": { "@type": "Organization", "name": "Baby Bites", "url": "https://babybites.net" },
     "mainEntityOfPage": pageUrl,
-    ...(meal.image_url ? { "image": [meal.image_url] } : {}),
+    "image": [meal.image_url || "https://babybites.net/food-spread.webp"],
     ...(meal.prep_time_minutes ? { "prepTime": `PT${meal.prep_time_minutes}M`, "totalTime": `PT${meal.prep_time_minutes}M` } : {}),
     "recipeCategory": meal.meal_slot,
     "suitableForDiet": "https://schema.org/LowSaltDiet",
