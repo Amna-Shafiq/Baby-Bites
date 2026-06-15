@@ -94,7 +94,7 @@ function Meals() {
       setLoading(true);
       const { data, error } = await supabase
         .from("meals")
-        .select("*, meal_foods(foods(allergen_notes))")
+        .select("*, meal_foods(foods(name, allergen_notes))")
         .eq("is_public", true)
         .order("title", { ascending: true });
 
@@ -116,10 +116,14 @@ function Meals() {
     return meals.filter((meal) => {
       if (tab === "favorites" && !favoriteIds.includes(meal.id)) return false;
 
+      const ingredientNames = (meal.meal_foods || [])
+        .map((mf) => mf.foods?.name || "").join(" ").toLowerCase();
+
       const bySearch = !searchText ||
         meal.title.toLowerCase().includes(searchText) ||
         meal.description?.toLowerCase().includes(searchText) ||
-        meal.nutrition_highlight?.toLowerCase().includes(searchText);
+        meal.nutrition_highlight?.toLowerCase().includes(searchText) ||
+        ingredientNames.includes(searchText);
 
       const bySlot = slot === "all" || meal.meal_slot === slot;
 
