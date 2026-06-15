@@ -1055,7 +1055,17 @@ function Explore() {
     <div className="page" style={{ paddingTop: 0, paddingLeft: 0, paddingRight: 0 }}>
       <Helmet>
         <title>Explore Baby Foods & First Foods | Baby Bites</title>
-        <meta name="description" content="Explore age-appropriate foods for your baby, browse first foods by category, and get AI-powered meal suggestions. Everything you need for confident weaning." />
+        <meta name="description" content="Explore age-appropriate foods for your baby, browse first foods by category, and discover meal ideas. Everything you need for confident weaning." />
+        <meta property="og:type"        content="website" />
+        <meta property="og:site_name"   content="Baby Bites" />
+        <meta property="og:url"         content="https://babybites.net/explore" />
+        <meta property="og:title"       content="Explore Baby Foods & First Foods | Baby Bites" />
+        <meta property="og:description" content="Explore age-appropriate foods for your baby, browse first foods by category, and discover meal ideas. Everything you need for confident weaning." />
+        <meta property="og:image"       content="https://babybites.net/food-spread.webp" />
+        <meta name="twitter:card"        content="summary_large_image" />
+        <meta name="twitter:title"       content="Explore Baby Foods & First Foods | Baby Bites" />
+        <meta name="twitter:description" content="Explore age-appropriate foods for your baby, browse first foods by category, and discover meal ideas. Everything you need for confident weaning." />
+        <meta name="twitter:image"       content="https://babybites.net/food-spread.webp" />
       </Helmet>
 
       {/* ── HERO: full-bleed video background, content on top ── */}

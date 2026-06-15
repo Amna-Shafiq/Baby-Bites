@@ -3,7 +3,7 @@ import { useForm, ValidationError } from "@formspree/react";
 import { Helmet } from "react-helmet-async";
 
 const TEAM = [
-  { name: "Amna Shafiq", role: "Co-Founder", photo: "/AmnaShafiq.JPG" },
+  { name: "Amna Shafiq", role: "Founder and Lead Developer", photo: "/AmnaShafiq.JPG" },
 ];
 
 const VALUES = [
@@ -75,6 +75,16 @@ function About() {
       <Helmet>
         <title>About Baby Bites | Our Story</title>
         <meta name="description" content="Baby Bites was built by Amna — a software engineer and mama who wanted a calm, reliable space for parents navigating baby feeding." />
+        <meta property="og:type"        content="website" />
+        <meta property="og:site_name"   content="Baby Bites" />
+        <meta property="og:url"         content="https://babybites.net/about" />
+        <meta property="og:title"       content="About Baby Bites | Our Story" />
+        <meta property="og:description" content="Baby Bites was built by Amna — a software engineer and mama who wanted a calm, reliable space for parents navigating baby feeding." />
+        <meta property="og:image"       content="https://babybites.net/AmnaShafiq.JPG" />
+        <meta name="twitter:card"        content="summary_large_image" />
+        <meta name="twitter:title"       content="About Baby Bites | Our Story" />
+        <meta name="twitter:description" content="Baby Bites was built by Amna — a software engineer and mama who wanted a calm, reliable space for parents navigating baby feeding." />
+        <meta name="twitter:image"       content="https://babybites.net/AmnaShafiq.JPG" />
       </Helmet>
 
       {/* ── Our Story ── */}

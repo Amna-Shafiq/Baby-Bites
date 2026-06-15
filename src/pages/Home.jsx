@@ -618,6 +618,16 @@ function Home() {
       <Helmet>
         <title>Baby Bites — Age-Appropriate Meals & Food Guides for Babies</title>
         <meta name="description" content="Discover 100+ baby-safe recipes and food guides organised by age. From 6-month purees to 12-month family meals — Baby Bites makes weaning easy." />
+        <meta property="og:type"        content="website" />
+        <meta property="og:site_name"   content="Baby Bites" />
+        <meta property="og:url"         content="https://babybites.net/" />
+        <meta property="og:title"       content="Baby Bites — Age-Appropriate Meals & Food Guides for Babies" />
+        <meta property="og:description" content="Discover 100+ baby-safe recipes and food guides organised by age. From 6-month purees to 12-month family meals — Baby Bites makes weaning easy." />
+        <meta property="og:image"       content="https://babybites.net/food-spread.webp" />
+        <meta name="twitter:card"        content="summary_large_image" />
+        <meta name="twitter:title"       content="Baby Bites — Age-Appropriate Meals & Food Guides for Babies" />
+        <meta name="twitter:description" content="Discover 100+ baby-safe recipes and food guides organised by age. From 6-month purees to 12-month family meals — Baby Bites makes weaning easy." />
+        <meta name="twitter:image"       content="https://babybites.net/food-spread.webp" />
       </Helmet>
       <ScrollThread />
 

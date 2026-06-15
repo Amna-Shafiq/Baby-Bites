@@ -162,6 +162,16 @@ function MealPage() {
       <Helmet>
         <title>{meal.title} | Baby Bites</title>
         <meta name="description" content={`${meal.description ? meal.description.slice(0, 140) + "…" : `${meal.title} — a baby-friendly recipe for ${meal.min_age_months}–${meal.max_age_months} month olds. Ready in ${meal.prep_time_minutes} minutes.`}`} />
+        <meta property="og:type"        content="article" />
+        <meta property="og:site_name"   content="Baby Bites" />
+        <meta property="og:url"         content={pageUrl} />
+        <meta property="og:title"       content={`${meal.title} | Baby Bites`} />
+        <meta property="og:description" content={meal.description ? meal.description.slice(0, 140) + "…" : `${meal.title} — a baby-friendly recipe for ${meal.min_age_months}–${meal.max_age_months} month olds.`} />
+        <meta property="og:image"       content={meal.image_url || "https://babybites.net/food-spread.webp"} />
+        <meta name="twitter:card"        content="summary_large_image" />
+        <meta name="twitter:title"       content={`${meal.title} | Baby Bites`} />
+        <meta name="twitter:description" content={meal.description ? meal.description.slice(0, 140) + "…" : `${meal.title} — a baby-friendly recipe for ${meal.min_age_months}–${meal.max_age_months} month olds.`} />
+        <meta name="twitter:image"       content={meal.image_url || "https://babybites.net/food-spread.webp"} />
         <script type="application/ld+json">{JSON.stringify(recipeSchema)}</script>
       </Helmet>
 

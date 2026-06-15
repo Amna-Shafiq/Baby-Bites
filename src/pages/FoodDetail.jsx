@@ -372,6 +372,16 @@ function FoodDetail() {
       <Helmet>
         <title>{food.name} for Babies | Baby Bites</title>
         <meta name="description" content={`When can babies eat ${food.name}? Safe from ${food.safe_from_months} months. ${food.notes ? food.notes.slice(0, 120) + "…" : "Learn how to prepare and serve it safely at every stage."}`} />
+        <meta property="og:type"        content="article" />
+        <meta property="og:site_name"   content="Baby Bites" />
+        <meta property="og:url"         content={pageUrl} />
+        <meta property="og:title"       content={`${food.name} for Babies | Baby Bites`} />
+        <meta property="og:description" content={`When can babies eat ${food.name}? Safe from ${food.safe_from_months} months. ${food.notes ? food.notes.slice(0, 120) + "…" : "Learn how to prepare and serve it safely at every stage."}`} />
+        <meta property="og:image"       content={food.image_url || "https://babybites.net/food-spread.webp"} />
+        <meta name="twitter:card"        content="summary_large_image" />
+        <meta name="twitter:title"       content={`${food.name} for Babies | Baby Bites`} />
+        <meta name="twitter:description" content={`When can babies eat ${food.name}? Safe from ${food.safe_from_months} months. ${food.notes ? food.notes.slice(0, 120) + "…" : "Learn how to prepare and serve it safely at every stage."}`} />
+        <meta name="twitter:image"       content={food.image_url || "https://babybites.net/food-spread.webp"} />
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
         {faqSchema && <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>}
       </Helmet>
