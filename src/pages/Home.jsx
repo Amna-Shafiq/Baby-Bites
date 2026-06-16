@@ -192,7 +192,6 @@ function HeroPanel({ activeBaby, session, navigate }) {
               src={cloudinaryUrl(featuredMeal.image_url, 600)}
               alt={featuredMeal.title}
               loading="eager"
-              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               onError={() => setImgFailed(true)}
             />
           ) : (
