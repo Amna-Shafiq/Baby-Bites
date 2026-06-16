@@ -347,7 +347,7 @@ function AllFoods() {
               key={food.id}
               className="food-card"
               onClick={() => navigate(`/foods/${food.name.toLowerCase().replace(/\s+/g, '-')}`)}
-              style={{ background: colors.bg, borderTop: `4px solid ${colors.border}`, borderRadius: 20 }}
+              style={{ background: "var(--card-bg, #fff)", borderTop: `4px solid ${colors.border}`, borderRadius: 20 }}
             >
               <div className="food-card-front">
                 <img
