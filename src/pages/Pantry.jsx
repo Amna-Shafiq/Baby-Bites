@@ -21,7 +21,7 @@ const ALLERGEN_PILLS = [
   { flag: "is_dairy_free",  label: "Dairy-free",  icon: "🥛" },
   { flag: "is_egg_free",    label: "Egg-free",    icon: "🥚" },
   { flag: "is_nut_free",    label: "Nut-free",    icon: "🥜" },
-  { flag: "is_soy_free",    label: "Soy-free",    icon: "🫘" },
+  { flag: "is_soy_free",    label: "Soy-free",    icon: "🌱" },
   { flag: "is_fish_free",   label: "Fish-free",   icon: "🐟" },
   { flag: "is_gluten_free", label: "Gluten-free", icon: "🌾" },
 ];
@@ -221,7 +221,7 @@ function Pantry() {
             fontSize: "0.78rem", color: "var(--muted)", lineHeight: 1.6,
             marginBottom: "1rem",
           }}>
-            💡 We assume you always have <strong>salt, oil, ghee, butter, cumin, coriander, turmeric, ginger, garlic</strong> and other common spices — just add your main ingredients above.
+            💡 We assume you always have <strong>salt, oil, ghee, butter, cumin, coriander, turmeric, ginger, garlic</strong> and other common spices. Just add your main ingredients above.
           </p>
           <p style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.6rem" }}>
             Dietary filters
