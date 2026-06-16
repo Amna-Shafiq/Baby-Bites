@@ -93,13 +93,39 @@ function Pantry() {
     }
   };
 
+  const totalSuggestions = canMakeNow.length + almostThere.length;
+
   return (
     <div className="page">
 
       {showLoginModal && <LoginPromptModal onClose={() => setShowLoginModal(false)} />}
 
       <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>{t("pantryEyebrow")}</span>
-      <h1>{t("pantryTitle")}</h1>
+      <h1 style={{ marginBottom: householdFoods.length > 0 ? "0.5rem" : "1rem" }}>{t("pantryTitle")}</h1>
+
+      {/* ── Summary bar ── */}
+      {householdFoods.length > 0 && (
+        <div style={{
+          display: "flex", gap: 20, marginBottom: "1.25rem",
+          padding: "10px 16px", borderRadius: 12,
+          background: "var(--cream)", border: "1px solid var(--border)",
+        }}>
+          <div style={{ textAlign: "center" }}>
+            <p style={{ margin: 0, fontWeight: 800, fontSize: "1.3rem", color: "var(--dark)", lineHeight: 1 }}>{householdFoods.length}</p>
+            <p style={{ margin: "2px 0 0", fontSize: "0.7rem", fontWeight: 600, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>In pantry</p>
+          </div>
+          <div style={{ width: 1, background: "var(--border)" }} />
+          <div style={{ textAlign: "center" }}>
+            <p style={{ margin: 0, fontWeight: 800, fontSize: "1.3rem", color: "var(--green-dark)", lineHeight: 1 }}>{canMakeNow.length}</p>
+            <p style={{ margin: "2px 0 0", fontSize: "0.7rem", fontWeight: 600, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Ready to make</p>
+          </div>
+          <div style={{ width: 1, background: "var(--border)" }} />
+          <div style={{ textAlign: "center" }}>
+            <p style={{ margin: 0, fontWeight: 800, fontSize: "1.3rem", color: "var(--yellow-dark)", lineHeight: 1 }}>{almostThere.length}</p>
+            <p style={{ margin: "2px 0 0", fontSize: "0.7rem", fontWeight: 600, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Almost there</p>
+          </div>
+        </div>
+      )}
 
       {error && <p className="muted">{error}</p>}
 
@@ -188,20 +214,15 @@ function Pantry() {
         )}
       </section>
 
-      {/* ── Staples note ── */}
-      {mealSuggestions.length > 0 && (
-        <p style={{
-          fontSize: "0.78rem", color: "var(--muted)", lineHeight: 1.6,
-          background: "var(--cream)", border: "1px solid var(--border)",
-          borderRadius: 10, padding: "8px 14px", marginBottom: "0.5rem",
-        }}>
-          💡 We assume you always have basic staples like <strong>salt, oil, ghee, butter, cumin, coriander, turmeric, ginger, garlic</strong> and other common spices — so you only need to add your main ingredients above.
-        </p>
-      )}
-
-      {/* ── Allergen filters ── */}
+      {/* ── Staples note + allergen filters ── */}
       {mealSuggestions.length > 0 && (
         <section className="panel" style={{ paddingBottom: "1rem" }}>
+          <p style={{
+            fontSize: "0.78rem", color: "var(--muted)", lineHeight: 1.6,
+            marginBottom: "1rem",
+          }}>
+            💡 We assume you always have <strong>salt, oil, ghee, butter, cumin, coriander, turmeric, ginger, garlic</strong> and other common spices — just add your main ingredients above.
+          </p>
           <p style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.6rem" }}>
             Dietary filters
           </p>
@@ -231,30 +252,51 @@ function Pantry() {
         </section>
       )}
 
+      {/* ── Empty suggestions state ── */}
+      {householdFoods.length > 0 && totalSuggestions === 0 && (
+        <div style={{
+          textAlign: "center", padding: "2rem 1rem",
+          background: "var(--cream)", borderRadius: 16,
+          border: "1px solid var(--border)", marginBottom: "1rem",
+        }}>
+          <p style={{ fontSize: "2rem", margin: "0 0 0.5rem" }}>🍽️</p>
+          <p style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--dark)", margin: "0 0 0.3rem" }}>No meals found yet</p>
+          <p style={{ fontSize: "0.82rem", color: "var(--muted)", margin: 0, lineHeight: 1.6 }}>
+            Try adding more ingredients, or remove a dietary filter.
+          </p>
+        </div>
+      )}
+
       {/* ── Can make now ── */}
       {canMakeNow.length > 0 && (
         <section className="panel">
-          <h2 style={{ marginBottom: "0.25rem" }}>✅ You can make now</h2>
+          <h2 style={{ marginBottom: "0.25rem" }}>
+            ✅ You can make now
+            <span style={{
+              marginLeft: 10, fontSize: "0.75rem", fontWeight: 700,
+              background: "var(--green-light)", color: "var(--green-dark)",
+              border: "1px solid #a8e6c4", borderRadius: 20, padding: "2px 10px",
+              verticalAlign: "middle",
+            }}>{canMakeNow.length}</span>
+          </h2>
           <p className="muted" style={{ fontSize: "0.88rem", marginBottom: "1rem", lineHeight: 1.6 }}>
             You have all the ingredients for these meals.
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {canMakeNow.map((meal) => (
               <Link key={meal.id} to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none" }}>
-                <div className="card" style={{ cursor: "pointer" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
-                    <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>
-                    <span style={{
-                      flexShrink: 0, fontSize: "0.72rem", fontWeight: 700,
-                      background: "var(--green-light)", color: "var(--green-dark)",
-                      border: "1px solid #a8e6c4", borderRadius: 20, padding: "2px 9px",
-                    }}>
-                      {meal.matchCount}/{meal.totalCount} ingredients
+                <div className="card" style={{
+                  cursor: "pointer", borderLeft: "4px solid var(--green-dark)",
+                  paddingLeft: "0.85rem",
+                }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                    <strong style={{ fontSize: "0.95rem", color: "var(--dark)" }}>{meal.title}</strong>
+                    <span style={{ fontSize: "0.72rem", color: "var(--muted)", flexShrink: 0 }}>
+                      {meal.prep_time_minutes ? `${meal.prep_time_minutes} min` : ""}
                     </span>
                   </div>
-                  <p className="muted" style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>
+                  <p className="muted" style={{ margin: "3px 0 0", fontSize: "0.8rem" }}>
                     {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months}m
-                    {meal.prep_time_minutes ? ` · ${meal.prep_time_minutes} min` : ""}
                   </p>
                 </div>
               </Link>
@@ -266,30 +308,36 @@ function Pantry() {
       {/* ── Almost there ── */}
       {almostThere.length > 0 && (
         <section className="panel">
-          <h2 style={{ marginBottom: "0.25rem" }}>🛒 Almost there</h2>
+          <h2 style={{ marginBottom: "0.25rem" }}>
+            🛒 Almost there
+            <span style={{
+              marginLeft: 10, fontSize: "0.75rem", fontWeight: 700,
+              background: "var(--yellow)", color: "var(--yellow-dark)",
+              border: "1px solid var(--yellow-mid)", borderRadius: 20, padding: "2px 10px",
+              verticalAlign: "middle",
+            }}>{almostThere.length}</span>
+          </h2>
           <p className="muted" style={{ fontSize: "0.88rem", marginBottom: "1rem", lineHeight: 1.6 }}>
             Grab one more ingredient and you can make these.
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {almostThere.map((meal) => (
               <Link key={meal.id} to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none" }}>
-                <div className="card" style={{ cursor: "pointer" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
-                    <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>
-                    <span style={{
-                      flexShrink: 0, fontSize: "0.72rem", fontWeight: 700,
-                      background: "var(--yellow)", color: "var(--yellow-dark)",
-                      border: "1px solid var(--yellow-mid)", borderRadius: 20, padding: "2px 9px",
-                    }}>
-                      {meal.matchCount}/{meal.totalCount} ingredients
+                <div className="card" style={{
+                  cursor: "pointer", borderLeft: "4px solid var(--yellow-dark)",
+                  paddingLeft: "0.85rem",
+                }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                    <strong style={{ fontSize: "0.95rem", color: "var(--dark)" }}>{meal.title}</strong>
+                    <span style={{ fontSize: "0.72rem", color: "var(--muted)", flexShrink: 0 }}>
+                      {meal.prep_time_minutes ? `${meal.prep_time_minutes} min` : ""}
                     </span>
                   </div>
-                  <p className="muted" style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>
+                  <p className="muted" style={{ margin: "3px 0 0", fontSize: "0.8rem" }}>
                     {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months}m
-                    {meal.prep_time_minutes ? ` · ${meal.prep_time_minutes} min` : ""}
                   </p>
                   {meal.missingIngredients?.length > 0 && (
-                    <p style={{ margin: "6px 0 0", fontSize: "0.78rem", color: "var(--orange-dark)", fontWeight: 700 }}>
+                    <p style={{ margin: "5px 0 0", fontSize: "0.76rem", color: "var(--orange-dark)", fontWeight: 700 }}>
                       Missing: {meal.missingIngredients.join(", ")}
                     </p>
                   )}
