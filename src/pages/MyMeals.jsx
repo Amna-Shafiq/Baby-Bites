@@ -8,6 +8,184 @@ import useFavorites from "../hooks/useFavorites";
 import { useLanguage } from "../contexts/LanguageContext";
 import useFeedingLog, { REACTION_EMOJI, relativeDate } from "../hooks/useFeedingLog";
 
+const FREE_MEAL_LIMIT = 5;
+
+const SLOT_COLORS = {
+  breakfast: { bg: "var(--yellow)", color: "var(--yellow-dark)" },
+  lunch:     { bg: "var(--green)",  color: "var(--green-dark)"  },
+  dinner:    { bg: "var(--blue)",   color: "var(--blue-dark)"   },
+  snack:     { bg: "var(--orange)", color: "var(--orange-dark)" },
+};
+
+function MealBoxCard({ meal, onDelete, linkTo }) {
+  const slot = SLOT_COLORS[meal.meal_slot] || SLOT_COLORS.lunch;
+  return (
+    <Link to={linkTo} style={{ textDecoration: "none", color: "inherit" }}>
+      <div style={{
+        background: "var(--card-bg, #fff)",
+        borderRadius: 14,
+        border: "1.5px solid var(--border)",
+        borderTop: "3px solid var(--green-mid)",
+        overflow: "hidden",
+        position: "relative",
+        cursor: "pointer",
+        transition: "transform 0.15s, box-shadow 0.15s",
+      }}
+        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 18px rgba(45,36,22,0.1)"; }}
+        onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}
+      >
+        {meal.image_url ? (
+          <img src={meal.image_url} alt={meal.title} style={{ width: "100%", height: 90, objectFit: "cover", display: "block" }} />
+        ) : (
+          <div style={{ width: "100%", height: 90, background: "var(--cream)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.8rem" }}>
+            🍽️
+          </div>
+        )}
+        {onDelete && (
+          <button
+            type="button"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(meal.id); }}
+            title="Delete meal"
+            style={{
+              position: "absolute", top: 6, right: 6,
+              background: "rgba(255,255,255,0.88)", backdropFilter: "blur(4px)",
+              border: "none", cursor: "pointer", color: "var(--muted)",
+              fontSize: "0.7rem", width: 22, height: 22, borderRadius: "50%",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontWeight: 900, lineHeight: 1,
+            }}
+            onMouseEnter={e => e.currentTarget.style.color = "#c0392b"}
+            onMouseLeave={e => e.currentTarget.style.color = "var(--muted)"}
+          >
+            ✕
+          </button>
+        )}
+        <div style={{ padding: "8px 10px 10px" }}>
+          <p style={{ margin: "0 0 5px", fontSize: "0.82rem", fontWeight: 700, color: "var(--dark)", lineHeight: 1.3,
+            display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+            {meal.title}
+          </p>
+          <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+            {meal.meal_slot && (
+              <span style={{ fontSize: "0.6rem", fontWeight: 700, padding: "2px 7px", borderRadius: 8, background: slot.bg, color: slot.color }}>
+                {meal.meal_slot}
+              </span>
+            )}
+            <span style={{ fontSize: "0.6rem", fontWeight: 700, padding: "2px 7px", borderRadius: 8, background: "var(--cream)", color: "var(--muted)" }}>
+              {meal.min_age_months}m+
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function FavBoxCard({ meal, onUnfav }) {
+  const slot = SLOT_COLORS[meal.meal_slot] || SLOT_COLORS.lunch;
+  return (
+    <Link to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none", color: "inherit" }}>
+      <div style={{
+        background: "var(--card-bg, #fff)",
+        borderRadius: 14,
+        border: "1.5px solid var(--border)",
+        borderTop: "3px solid #e74c3c",
+        overflow: "hidden",
+        position: "relative",
+        cursor: "pointer",
+        transition: "transform 0.15s, box-shadow 0.15s",
+      }}
+        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 18px rgba(45,36,22,0.1)"; }}
+        onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}
+      >
+        {meal.image_url ? (
+          <img src={meal.image_url} alt={meal.title} style={{ width: "100%", height: 90, objectFit: "cover", display: "block" }} />
+        ) : (
+          <div style={{ width: "100%", height: 90, background: "var(--cream)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.8rem" }}>
+            🍽️
+          </div>
+        )}
+        <button
+          type="button"
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onUnfav(meal.id); }}
+          title="Remove from favourites"
+          style={{
+            position: "absolute", top: 6, right: 6,
+            background: "rgba(255,255,255,0.88)", backdropFilter: "blur(4px)",
+            border: "none", cursor: "pointer", color: "#e74c3c",
+            fontSize: "0.75rem", width: 22, height: 22, borderRadius: "50%",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            lineHeight: 1,
+          }}
+        >
+          ♥
+        </button>
+        <div style={{ padding: "8px 10px 10px" }}>
+          <p style={{ margin: "0 0 5px", fontSize: "0.82rem", fontWeight: 700, color: "var(--dark)", lineHeight: 1.3,
+            display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+            {meal.title}
+          </p>
+          <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+            {meal.meal_slot && (
+              <span style={{ fontSize: "0.6rem", fontWeight: 700, padding: "2px 7px", borderRadius: 8, background: slot.bg, color: slot.color }}>
+                {meal.meal_slot}
+              </span>
+            )}
+            <span style={{ fontSize: "0.6rem", fontWeight: 700, padding: "2px 7px", borderRadius: 8, background: "var(--cream)", color: "var(--muted)" }}>
+              {meal.min_age_months}m+
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function ProUpgradeCard({ used, limit }) {
+  return (
+    <div style={{
+      border: "2px dashed var(--border)",
+      borderRadius: 16,
+      padding: "1.5rem",
+      textAlign: "center",
+      background: "var(--cream)",
+    }}>
+      <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>🔒</div>
+      <p style={{ fontWeight: 800, fontSize: "0.95rem", color: "var(--dark)", margin: "0 0 4px" }}>
+        You have used all {limit} free recipe slots
+      </p>
+      <p style={{ fontSize: "0.82rem", color: "var(--muted)", margin: "0 0 1.1rem", lineHeight: 1.6 }}>
+        Upgrade to Baby Bites Pro to unlock unlimited custom recipes and more.
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6, textAlign: "left", marginBottom: "1.2rem" }}>
+        {[
+          "Unlimited custom recipes",
+          "AI meal suggestions (coming soon)",
+          "Weekly meal schedule planner",
+          "Export shopping list as PDF",
+          "Allergy-safe ingredient swaps",
+        ].map((f) => (
+          <div key={f} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ color: "var(--green-dark)", fontWeight: 800, fontSize: "0.8rem" }}>✓</span>
+            <span style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--dark)" }}>{f}</span>
+          </div>
+        ))}
+      </div>
+      <button
+        type="button"
+        onClick={() => alert("Pro plan coming soon! We will notify you when it launches.")}
+        style={{
+          background: "var(--orange-dark)", color: "#fff", border: "none",
+          borderRadius: 100, padding: "0.6rem 1.5rem",
+          fontSize: "0.88rem", fontWeight: 700, cursor: "pointer", width: "100%",
+        }}
+      >
+        Upgrade to Pro
+      </button>
+    </div>
+  );
+}
+
 function MyMeals() {
   const { t } = useLanguage();
   const { session, userId, customMeals, addCustomMeal, deleteCustomMeal, error, loading } = useCustomMeals();
@@ -27,6 +205,8 @@ function MyMeals() {
   const [uploading, setUploading]             = useState(false);
   const fileRef                               = useRef(null);
 
+  const atLimit = customMeals.length >= FREE_MEAL_LIMIT;
+
   const handleImagePick = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -36,6 +216,7 @@ function MyMeals() {
 
   const submitMeal = async (e) => {
     e.preventDefault();
+    if (atLimit) return;
     setStatus("");
     setUploading(true);
 
@@ -67,8 +248,6 @@ function MyMeals() {
 
   return (
     <div className="page">
-
-
       <span className="eyebrow eo" style={{ marginTop: "1.5rem", display: "block" }}>{t("recipesEyebrow")}</span>
       <h1>{t("myMealsTitle")}</h1>
 
@@ -77,127 +256,97 @@ function MyMeals() {
 
       {/* ── Add custom meal ── */}
       <section className="panel">
-        <h2 style={{ marginBottom: "1rem" }}>{t("addCustomMealTitle")}</h2>
-        <form onSubmit={submitMeal} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-
-          {/* Image picker */}
-          <div
-            onClick={() => fileRef.current?.click()}
-            style={{
-              width: "100%", height: 120, borderRadius: 12, cursor: "pointer",
-              border: imagePreview ? "none" : "2px dashed var(--border)",
-              background: imagePreview ? "none" : "var(--cream)",
-              overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center",
-              position: "relative",
-            }}
-          >
-            {imagePreview ? (
-              <>
-                <img src={imagePreview} alt="preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                <span style={{ position: "absolute", bottom: 6, right: 8, background: "rgba(0,0,0,0.5)", color: "#fff", fontSize: "0.72rem", fontWeight: 700, padding: "3px 8px", borderRadius: 6 }}>
-                  📷 Change
-                </span>
-              </>
-            ) : (
-              <div style={{ textAlign: "center", color: "var(--muted)" }}>
-                <p style={{ margin: 0, fontSize: "1.5rem" }}>📷</p>
-                <p style={{ margin: "4px 0 0", fontSize: "0.8rem", fontWeight: 700 }}>Add photo (optional)</p>
-              </div>
-            )}
-          </div>
-          <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleImagePick} />
-
-          {/* Title */}
-          <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("mealTitlePlaceholder")} required />
-
-          {/* Starting month + meal slot */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-            <div>
-              <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 4 }}>
-                Starting month
-              </label>
-              <input
-                className="input" type="number" min="0" max="36"
-                value={startingMonth} onChange={(e) => setStartingMonth(e.target.value)}
-                placeholder="e.g. 6" required
-              />
-            </div>
-            <div>
-              <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 4 }}>
-                Meal slot
-              </label>
-              <select className="input" value={mealSlot} onChange={(e) => setMealSlot(e.target.value)}>
-                <option value="breakfast">{t("slotBreakfast")}</option>
-                <option value="lunch">{t("slotLunch")}</option>
-                <option value="dinner">{t("slotDinner")}</option>
-              </select>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
+          <h2 style={{ margin: 0 }}>{t("addCustomMealTitle")}</h2>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontSize: "0.72rem", fontWeight: 700, color: atLimit ? "#c0392b" : "var(--muted)" }}>
+              {customMeals.length}/{FREE_MEAL_LIMIT} used
+            </span>
+            <div style={{ width: 56, height: 6, borderRadius: 3, background: "var(--border)", overflow: "hidden" }}>
+              <div style={{
+                height: "100%",
+                width: `${(customMeals.length / FREE_MEAL_LIMIT) * 100}%`,
+                background: atLimit ? "#c0392b" : "var(--orange-dark)",
+                borderRadius: 3,
+                transition: "width 0.3s",
+              }} />
             </div>
           </div>
+        </div>
 
-          {/* Ingredients */}
-          <input
-            className="input" value={ingredientsText}
-            onChange={(e) => setIngredientsText(e.target.value)}
-            placeholder={t("ingredientsPlaceholder")}
-          />
-
-          {/* Steps */}
-          <textarea
-            className="input" value={steps}
-            onChange={(e) => setSteps(e.target.value)}
-            placeholder={t("stepsPlaceholder")} rows={3} style={{ resize: "vertical" }}
-          />
-
-          {/* Nutrition */}
-          <input
-            className="input" value={nutritionHighlight}
-            onChange={(e) => setNutritionHighlight(e.target.value)}
-            placeholder={t("nutritionPlaceholder")}
-          />
-
-          <button type="submit" className="btn btn-primary" disabled={!session || loading || uploading}>
-            {uploading ? "Saving…" : t("saveMeal")}
-          </button>
-        </form>
-      </section>
-
-      {/* ── Favourites ── */}
-      <section className="panel">
-        <h2 style={{ marginBottom: "0.3rem" }}>{t("savedFavsTitle")}</h2>
-        <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1.2rem", lineHeight: 1.6 }}>
-          {t("savedFavsDesc")}
-        </p>
-        {favoriteMeals.length === 0 ? (
-          <p className="muted">{t("noFavsMyMeals")}</p>
+        {atLimit ? (
+          <ProUpgradeCard used={customMeals.length} limit={FREE_MEAL_LIMIT} />
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {favoriteMeals.map((meal) => (
-              <div key={meal.id} className="card" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
-                <div>
-                  <Link to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none", color: "inherit" }}>
-                    <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>
-                  </Link>
-                  <p className="muted" style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>
-                    {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months} {t("monthsLabel")}
-                  </p>
+          <form onSubmit={submitMeal} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {/* Image picker */}
+            <div
+              onClick={() => fileRef.current?.click()}
+              style={{
+                width: "100%", height: 120, borderRadius: 12, cursor: "pointer",
+                border: imagePreview ? "none" : "2px dashed var(--border)",
+                background: imagePreview ? "none" : "var(--cream)",
+                overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center",
+                position: "relative",
+              }}
+            >
+              {imagePreview ? (
+                <>
+                  <img src={imagePreview} alt="preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <span style={{ position: "absolute", bottom: 6, right: 8, background: "rgba(0,0,0,0.5)", color: "#fff", fontSize: "0.72rem", fontWeight: 700, padding: "3px 8px", borderRadius: 6 }}>
+                    📷 Change
+                  </span>
+                </>
+              ) : (
+                <div style={{ textAlign: "center", color: "var(--muted)" }}>
+                  <p style={{ margin: 0, fontSize: "1.5rem" }}>📷</p>
+                  <p style={{ margin: "4px 0 0", fontSize: "0.8rem", fontWeight: 700 }}>Add photo (optional)</p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => toggleFavorite(meal.id)}
-                  title={t("savedFavsTitle")}
-                  style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.1rem", color: "#e74c3c", flexShrink: 0, padding: 4 }}
-                >
-                  ♥
-                </button>
+              )}
+            </div>
+            <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleImagePick} />
+
+            <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("mealTitlePlaceholder")} required />
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              <div>
+                <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 4 }}>Starting month</label>
+                <input className="input" type="number" min="0" max="36" value={startingMonth} onChange={(e) => setStartingMonth(e.target.value)} placeholder="e.g. 6" required />
               </div>
-            ))}
-          </div>
+              <div>
+                <label style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--muted)", display: "block", marginBottom: 4 }}>Meal slot</label>
+                <select className="input" value={mealSlot} onChange={(e) => setMealSlot(e.target.value)}>
+                  <option value="breakfast">{t("slotBreakfast")}</option>
+                  <option value="lunch">{t("slotLunch")}</option>
+                  <option value="dinner">{t("slotDinner")}</option>
+                </select>
+              </div>
+            </div>
+
+            <input className="input" value={ingredientsText} onChange={(e) => setIngredientsText(e.target.value)} placeholder={t("ingredientsPlaceholder")} />
+            <textarea className="input" value={steps} onChange={(e) => setSteps(e.target.value)} placeholder={t("stepsPlaceholder")} rows={3} style={{ resize: "vertical" }} />
+            <input className="input" value={nutritionHighlight} onChange={(e) => setNutritionHighlight(e.target.value)} placeholder={t("nutritionPlaceholder")} />
+
+            <button type="submit" className="btn btn-primary" disabled={!session || loading || uploading}>
+              {uploading ? "Saving…" : t("saveMeal")}
+            </button>
+          </form>
         )}
       </section>
 
-      {/* ── My added meals ── */}
+      {/* ── Your added meals ── */}
       <section className="panel">
-        <h2 style={{ marginBottom: "1rem" }}>{t("yourMealsTitle")}</h2>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "1rem" }}>
+          <h2 style={{ margin: 0 }}>{t("yourMealsTitle")}</h2>
+          {customMeals.length > 0 && (
+            <span style={{
+              background: "var(--green)", color: "var(--green-dark)",
+              fontSize: "0.65rem", fontWeight: 800, padding: "2px 8px", borderRadius: 8,
+            }}>
+              {customMeals.length}
+            </span>
+          )}
+        </div>
+
         {customMeals.length === 0 ? (
           <div>
             <p className="muted" style={{ marginBottom: "0.75rem" }}>{t("noCustomMeals")}</p>
@@ -215,47 +364,48 @@ function MyMeals() {
               style={{
                 background: "var(--cream)", border: "1.5px solid var(--border)",
                 borderRadius: 12, padding: "8px 16px",
-                fontSize: "0.85rem", fontWeight: 700, color: "var(--orange-dark)",
-                cursor: "pointer",
+                fontSize: "0.85rem", fontWeight: 700, color: "var(--orange-dark)", cursor: "pointer",
               }}
             >
               Try a sample recipe →
             </button>
           </div>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 10 }}>
             {customMeals.map((meal) => (
-              <Link key={meal.id} to={`/my-meals/${meal.id}`} style={{ textDecoration: "none", color: "inherit" }}>
-                <div className="card" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, cursor: "pointer" }}>
-                  {meal.image_url && (
-                    <img
-                      src={meal.image_url}
-                      alt={meal.title}
-                      style={{ width: 52, height: 52, borderRadius: 10, objectFit: "cover", flexShrink: 0, border: "1.5px solid var(--border)" }}
-                    />
-                  )}
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <strong style={{ fontSize: "0.97rem" }}>{meal.title}</strong>
-                    <p className="muted" style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>
-                      {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months} {t("monthsLabel")}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={(e) => { e.preventDefault(); deleteCustomMeal(meal.id); }}
-                    title="Delete meal"
-                    style={{
-                      background: "none", border: "none", cursor: "pointer",
-                      color: "var(--muted)", fontSize: "1rem", padding: 4, flexShrink: 0,
-                      lineHeight: 1,
-                    }}
-                    onMouseOver={(e) => e.currentTarget.style.color = "#c0392b"}
-                    onMouseOut={(e) => e.currentTarget.style.color = "var(--muted)"}
-                  >
-                    ✕
-                  </button>
-                </div>
-              </Link>
+              <MealBoxCard
+                key={meal.id}
+                meal={meal}
+                linkTo={`/my-meals/${meal.id}`}
+                onDelete={deleteCustomMeal}
+              />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* ── Favourites ── */}
+      <section className="panel">
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "1rem" }}>
+          <h2 style={{ margin: 0 }}>{t("savedFavsTitle")}</h2>
+          {favoriteMeals.length > 0 && (
+            <span style={{
+              background: "#fde8e8", color: "#c0392b",
+              fontSize: "0.65rem", fontWeight: 800, padding: "2px 8px", borderRadius: 8,
+            }}>
+              {favoriteMeals.length}
+            </span>
+          )}
+        </div>
+        <p className="muted" style={{ fontSize: "0.9rem", marginBottom: "1.2rem", lineHeight: 1.6 }}>
+          {t("savedFavsDesc")}
+        </p>
+        {favoriteMeals.length === 0 ? (
+          <p className="muted">{t("noFavsMyMeals")}</p>
+        ) : (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 10 }}>
+            {favoriteMeals.map((meal) => (
+              <FavBoxCard key={meal.id} meal={meal} onUnfav={toggleFavorite} />
             ))}
           </div>
         )}
@@ -298,8 +448,8 @@ function MyMeals() {
                 type="button"
                 onClick={() => deleteLog(log.id)}
                 style={{ background: "none", border: "none", cursor: "pointer", color: "var(--muted)", fontSize: "0.7rem", padding: "2px", flexShrink: 0, lineHeight: 1 }}
-                onMouseOver={(e) => e.currentTarget.style.color = "#c0392b"}
-                onMouseOut={(e) => e.currentTarget.style.color = "var(--muted)"}
+                onMouseEnter={e => e.currentTarget.style.color = "#c0392b"}
+                onMouseLeave={e => e.currentTarget.style.color = "var(--muted)"}
               >✕</button>
             </div>
           );
@@ -307,7 +457,6 @@ function MyMeals() {
           return (
             <>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                {/* Meals column */}
                 <div>
                   <p style={{ fontSize: "0.68rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--muted)", marginBottom: "0.4rem" }}>
                     Meals fed
@@ -317,7 +466,6 @@ function MyMeals() {
                     : visibleMeals.map((log) => <LogEntry key={log.id} log={log} />)
                   }
                 </div>
-                {/* Foods column */}
                 <div>
                   <p style={{ fontSize: "0.68rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--muted)", marginBottom: "0.4rem" }}>
                     Foods tried
