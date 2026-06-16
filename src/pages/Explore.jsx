@@ -1052,7 +1052,7 @@ function Explore() {
   const { t } = useLanguage();
 
   return (
-    <div className="page" style={{ paddingTop: 0, paddingLeft: 0, paddingRight: 0 }}>
+    <div className="page" style={{ paddingLeft: 0, paddingRight: 0 }}>
       <Helmet>
         <title>Explore Baby Foods & First Foods | Baby Bites</title>
         <meta name="description" content="Explore age-appropriate foods for your baby, browse first foods by category, and discover meal ideas. Everything you need for confident weaning." />
@@ -1068,90 +1068,8 @@ function Explore() {
         <meta name="twitter:image"       content="https://babybites.net/food-spread.webp" />
       </Helmet>
 
-      {/* ── HERO: full-bleed video background, content on top ── */}
-      <div style={{
-        position: "relative", overflow: "hidden", minHeight: "92vh",
-        marginLeft: "calc(-50vw + 50%)",
-        width: "100vw",
-        /* Fade top and bottom edges into the page background */
-        WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 6%, black 90%, transparent 100%)",
-        maskImage: "linear-gradient(to bottom, transparent 0%, black 6%, black 90%, transparent 100%)",
-      }}>
-
-        {/* Background video */}
-        {VIDEO_URL ? (
-          VIDEO_URL.includes("youtube.com") || VIDEO_URL.includes("youtu.be") ? (
-            <iframe
-              src={VIDEO_URL}
-              style={{
-                position: "absolute", inset: 0,
-                width: "100%", height: "100%",
-                border: "none", objectFit: "cover",
-                pointerEvents: "none",
-              }}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              title="Background video"
-            />
-          ) : (
-            <video
-              src={VIDEO_URL}
-              autoPlay muted loop playsInline
-              style={{
-                position: "absolute", inset: 0,
-                width: "100%", height: "100%",
-                objectFit: "cover",
-              }}
-            />
-          )
-        ) : (
-          <div style={{
-            position: "absolute", inset: 0,
-            background: "linear-gradient(135deg, #2c3e50 0%, #3d5a47 100%)",
-          }} />
-        )}
-
-        {/* Gradient overlay — dark on left, fades right */}
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(to right, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.15) 100%)",
-        }} />
-
-        {/* Floating dust particles */}
-        <ParticleCanvas />
-
-        {/* Content on top */}
-        <div style={{
-          position: "relative", zIndex: 3,
-          padding: "3.5rem calc(50vw - 50%) 4rem calc(50vw - 50%)",
-          paddingLeft: "max(2rem, calc(50vw - 530px))",
-          paddingRight: "max(2rem, calc(50vw - 530px))",
-          maxWidth: "none",
-        }}><div style={{ maxWidth: 560 }}>
-          <span style={{
-            fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
-            letterSpacing: "0.14em", color: "rgba(255,255,255,0.85)", display: "block",
-            marginBottom: "0.75rem",
-          }}>
-            Explore Baby Foods
-          </span>
-
-          <ParticleTitle />
-
-          <p style={{
-            margin: "0 0 1.25rem",
-            fontSize: "1rem",
-            color: "rgba(255,255,255,0.82)",
-            lineHeight: 1.65,
-            maxWidth: 420,
-          }}>
-            Discover age-appropriate foods, meal ideas, and trusted guides for your baby.
-          </p>
-
-        </div></div>{/* end maxWidth:560 */}
-      </div>
-
-      {/* ── Below-the-fold sections (back to normal padding) ── */}
-      <div style={{ padding: "3rem 2rem 3rem" }}>
+      {/* ── Main sections ── */}
+      <div style={{ padding: "3rem 2rem 0" }}>
 
         {/* ── Tab switcher ── */}
         <div style={{ display: "flex", gap: 8, marginBottom: "2.5rem" }}>
@@ -1301,48 +1219,83 @@ function Explore() {
           </div>
         </div>
         </>}
-
-        {/* ── Ask Baby Bites AI teaser ── */}
-        <div style={{
-          marginTop: "3rem",
-          background: "linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%)",
-          borderRadius: 20, padding: "2rem",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          gap: "1.5rem", flexWrap: "wrap",
-        }}>
-          <div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: "0.5rem" }}>
-              <span style={{ fontSize: "1.2rem" }}>✨</span>
-              <span style={{
-                fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
-                letterSpacing: "0.12em", color: "rgba(255,255,255,0.6)",
-              }}>
-                Coming Soon
-              </span>
-            </div>
-            <h3 style={{
-              margin: "0 0 0.4rem", fontSize: "1.25rem",
-              fontFamily: "Aileron, sans-serif", fontWeight: 800,
-              color: "#fff", lineHeight: 1.2,
-            }}>
-              Ask Baby Bites AI
-            </h3>
-            <p style={{ margin: 0, fontSize: "0.88rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, maxWidth: 380 }}>
-              Get personalised meal and food ideas for your baby. Ask anything about weaning, allergens, or age-appropriate foods.
-            </p>
-          </div>
-          <div style={{
-            background: "rgba(255,255,255,0.08)",
-            border: "1.5px solid rgba(255,255,255,0.15)",
-            borderRadius: 14, padding: "0.75rem 1.25rem",
-            color: "rgba(255,255,255,0.4)", fontSize: "0.88rem",
-            fontWeight: 600, flexShrink: 0,
-          }}>
-            Ask anything about baby food...
-          </div>
-        </div>
-
       </div>
+
+      {/* ── Ask Baby Bites AI: full-bleed hero at bottom ── */}
+      <div style={{
+        position: "relative", overflow: "hidden", minHeight: "70vh",
+        marginLeft: "calc(-50vw + 50%)",
+        width: "100vw",
+        WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)",
+        maskImage: "linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)",
+      }}>
+        {VIDEO_URL ? (
+          <video
+            src={VIDEO_URL}
+            autoPlay muted loop playsInline
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        ) : (
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #2c3e50 0%, #3d5a47 100%)" }} />
+        )}
+
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "linear-gradient(to right, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.15) 100%)",
+        }} />
+
+        <ParticleCanvas />
+
+        <div style={{
+          position: "relative", zIndex: 3,
+          padding: "3.5rem calc(50vw - 50%) 4rem calc(50vw - 50%)",
+          paddingLeft: "max(2rem, calc(50vw - 530px))",
+          paddingRight: "max(2rem, calc(50vw - 530px))",
+          maxWidth: "none",
+        }}><div style={{ maxWidth: 560 }}>
+          <span style={{
+            fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
+            letterSpacing: "0.14em", color: "rgba(255,255,255,0.85)", display: "block",
+            marginBottom: "0.75rem",
+          }}>
+            Coming Soon
+          </span>
+
+          <ParticleTitle />
+
+          <p style={{
+            margin: "0 0 1.75rem",
+            fontSize: "1rem",
+            color: "rgba(255,255,255,0.82)",
+            lineHeight: 1.65,
+            maxWidth: 420,
+          }}>
+            Get personalised meal and food ideas for your baby. Ask anything about weaning, allergens, or age-appropriate foods.
+          </p>
+
+          <div style={{
+            display: "flex", alignItems: "center", gap: 10,
+            background: "rgba(255,255,255,0.1)",
+            backdropFilter: "blur(8px)",
+            border: "1.5px solid rgba(255,255,255,0.25)",
+            borderRadius: 24, padding: "10px 18px",
+            maxWidth: 400,
+          }}>
+            <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.35)", flex: 1 }}>
+              Ask anything about baby food...
+            </span>
+            <span style={{
+              background: "var(--orange-dark)", color: "#fff",
+              borderRadius: 12, padding: "3px 10px",
+              fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em",
+              flexShrink: 0,
+            }}>
+              Coming Soon
+            </span>
+          </div>
+        </div></div>
+      </div>
+
     </div>
   );
 }
