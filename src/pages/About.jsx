@@ -73,22 +73,24 @@ function About() {
   return (
     <div className="page">
       <Helmet>
-        <title>About Baby Bites | Our Story</title>
-        <meta name="description" content="Baby Bites was built by Amna — a software engineer and mama who wanted a calm, reliable space for parents navigating baby feeding." />
+        <title>About Baby Bites | Baby Food and Weaning Guides for Parents</title>
+        <meta name="description" content="Baby Bites was built by Amna, a software engineer and mama who created a calm, reliable space for parents navigating baby food, weaning, and first foods." />
         <meta property="og:type"        content="website" />
         <meta property="og:site_name"   content="Baby Bites" />
         <meta property="og:url"         content="https://babybites.net/about" />
-        <meta property="og:title"       content="About Baby Bites | Our Story" />
-        <meta property="og:description" content="Baby Bites was built by Amna — a software engineer and mama who wanted a calm, reliable space for parents navigating baby feeding." />
+        <meta property="og:title"       content="About Baby Bites | Baby Food and Weaning Guides for Parents" />
+        <meta property="og:description" content="Baby Bites was built by Amna, a software engineer and mama who created a calm, reliable space for parents navigating baby food, weaning, and first foods." />
         <meta property="og:image"       content="https://babybites.net/AmnaShafiq.JPG" />
         <meta name="twitter:card"        content="summary_large_image" />
-        <meta name="twitter:title"       content="About Baby Bites | Our Story" />
-        <meta name="twitter:description" content="Baby Bites was built by Amna — a software engineer and mama who wanted a calm, reliable space for parents navigating baby feeding." />
+        <meta name="twitter:title"       content="About Baby Bites | Baby Food and Weaning Guides for Parents" />
+        <meta name="twitter:description" content="Baby Bites was built by Amna, a software engineer and mama who created a calm, reliable space for parents navigating baby food, weaning, and first foods." />
         <meta name="twitter:image"       content="https://babybites.net/AmnaShafiq.JPG" />
       </Helmet>
 
       {/* ── Our Story ── */}
       <div style={{ margin: "2rem 0 2.5rem", textAlign: "center" }}>
+        <span className="eyebrow eo">Our story</span>
+        <h1 style={{ marginBottom: "1rem" }}>About Baby Bites</h1>
         <p style={{ margin: "0 0 0.25rem", fontSize: "1.35rem", fontWeight: 800, color: "var(--dark)" }}>Hi, I'm Amna</p>
         <p style={{ margin: "0 0 1.5rem", fontSize: "1.05rem", fontWeight: 600, color: "var(--muted)", lineHeight: 1.6 }}>
           A software engineer, a mama, and the creator of Baby Bites.

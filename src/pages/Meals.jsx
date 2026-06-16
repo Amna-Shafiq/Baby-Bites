@@ -166,17 +166,17 @@ function Meals() {
   return (
     <div className="page">
       <Helmet>
-        <title>Baby Meal Recipes | Baby Bites</title>
-        <meta name="description" content="Browse baby-friendly recipes filtered by age, meal slot, and prep time. Quick purees, finger foods, and family meals — all designed for babies 6–24 months." />
+        <title>Baby Recipes | Purees, Finger Foods and Family Meals | Baby Bites</title>
+        <meta name="description" content="Browse baby-friendly recipes filtered by age, meal slot, and prep time. Quick purees, finger foods, and family meals, all designed for babies 6 to 24 months." />
         <meta property="og:type"        content="website" />
         <meta property="og:site_name"   content="Baby Bites" />
         <meta property="og:url"         content="https://babybites.net/meals" />
-        <meta property="og:title"       content="Baby Meal Recipes | Baby Bites" />
-        <meta property="og:description" content="Browse baby-friendly recipes filtered by age, meal slot, and prep time. Quick purees, finger foods, and family meals — all designed for babies 6–24 months." />
+        <meta property="og:title"       content="Baby Recipes | Purees, Finger Foods and Family Meals | Baby Bites" />
+        <meta property="og:description" content="Browse baby-friendly recipes filtered by age, meal slot, and prep time. Quick purees, finger foods, and family meals, all designed for babies 6 to 24 months." />
         <meta property="og:image"       content="https://babybites.net/food-spread.webp" />
         <meta name="twitter:card"        content="summary_large_image" />
-        <meta name="twitter:title"       content="Baby Meal Recipes | Baby Bites" />
-        <meta name="twitter:description" content="Browse baby-friendly recipes filtered by age, meal slot, and prep time. Quick purees, finger foods, and family meals — all designed for babies 6–24 months." />
+        <meta name="twitter:title"       content="Baby Recipes | Purees, Finger Foods and Family Meals | Baby Bites" />
+        <meta name="twitter:description" content="Browse baby-friendly recipes filtered by age, meal slot, and prep time. Quick purees, finger foods, and family meals, all designed for babies 6 to 24 months." />
         <meta name="twitter:image"       content="https://babybites.net/food-spread.webp" />
       </Helmet>
 
