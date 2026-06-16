@@ -282,27 +282,26 @@ function Pantry() {
           <p className="muted" style={{ fontSize: "0.88rem", marginBottom: "1rem", lineHeight: 1.6 }}>
             You have all the ingredients for these meals.
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 10 }}>
             {canMakeNow.map((meal) => (
               <Link key={meal.id} to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none" }}>
                 <div className="card" style={{
-                  cursor: "pointer", borderLeft: "4px solid var(--green-dark)",
-                  paddingLeft: "0.85rem",
+                  cursor: "pointer", height: "100%",
+                  borderTop: "3px solid var(--green-dark)",
+                  display: "flex", flexDirection: "column", gap: 6,
                 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
-                    <strong style={{ fontSize: "0.95rem", color: "var(--dark)" }}>{meal.title}</strong>
-                    <span style={{
-                      flexShrink: 0, fontSize: "0.72rem", fontWeight: 700,
-                      background: "var(--green-light)", color: "var(--green-dark)",
-                      border: "1px solid #a8e6c4", borderRadius: 20, padding: "2px 9px",
-                    }}>
-                      {meal.matchCount}/{meal.totalCount} ingredients
-                    </span>
-                  </div>
-                  <p className="muted" style={{ margin: "3px 0 0", fontSize: "0.8rem" }}>
+                  <strong style={{ fontSize: "0.88rem", color: "var(--dark)", lineHeight: 1.3 }}>{meal.title}</strong>
+                  <p className="muted" style={{ margin: 0, fontSize: "0.75rem" }}>
                     {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months}m
-                    {meal.prep_time_minutes ? ` · ${meal.prep_time_minutes} min` : ""}
                   </p>
+                  <span style={{
+                    marginTop: "auto", alignSelf: "flex-start",
+                    fontSize: "0.68rem", fontWeight: 700,
+                    background: "var(--green-light)", color: "var(--green-dark)",
+                    border: "1px solid #a8e6c4", borderRadius: 20, padding: "2px 8px",
+                  }}>
+                    {meal.matchCount}/{meal.totalCount} ingredients
+                  </span>
                 </div>
               </Link>
             ))}
@@ -325,32 +324,31 @@ function Pantry() {
           <p className="muted" style={{ fontSize: "0.88rem", marginBottom: "1rem", lineHeight: 1.6 }}>
             Grab one more ingredient and you can make these.
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 10 }}>
             {almostThere.map((meal) => (
               <Link key={meal.id} to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none" }}>
                 <div className="card" style={{
-                  cursor: "pointer", borderLeft: "4px solid var(--yellow-dark)",
-                  paddingLeft: "0.85rem",
+                  cursor: "pointer", height: "100%",
+                  borderTop: "3px solid var(--yellow-dark)",
+                  display: "flex", flexDirection: "column", gap: 6,
                 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
-                    <strong style={{ fontSize: "0.95rem", color: "var(--dark)" }}>{meal.title}</strong>
-                    <span style={{
-                      flexShrink: 0, fontSize: "0.72rem", fontWeight: 700,
-                      background: "var(--yellow)", color: "var(--yellow-dark)",
-                      border: "1px solid var(--yellow-mid)", borderRadius: 20, padding: "2px 9px",
-                    }}>
-                      {meal.matchCount}/{meal.totalCount} ingredients
-                    </span>
-                  </div>
-                  <p className="muted" style={{ margin: "3px 0 0", fontSize: "0.8rem" }}>
+                  <strong style={{ fontSize: "0.88rem", color: "var(--dark)", lineHeight: 1.3 }}>{meal.title}</strong>
+                  <p className="muted" style={{ margin: 0, fontSize: "0.75rem" }}>
                     {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months}m
-                    {meal.prep_time_minutes ? ` · ${meal.prep_time_minutes} min` : ""}
                   </p>
                   {meal.missingIngredients?.length > 0 && (
-                    <p style={{ margin: "5px 0 0", fontSize: "0.76rem", color: "var(--orange-dark)", fontWeight: 700 }}>
+                    <p style={{ margin: 0, fontSize: "0.72rem", color: "var(--orange-dark)", fontWeight: 700 }}>
                       Missing: {meal.missingIngredients.join(", ")}
                     </p>
                   )}
+                  <span style={{
+                    marginTop: "auto", alignSelf: "flex-start",
+                    fontSize: "0.68rem", fontWeight: 700,
+                    background: "var(--yellow)", color: "var(--yellow-dark)",
+                    border: "1px solid var(--yellow-mid)", borderRadius: 20, padding: "2px 8px",
+                  }}>
+                    {meal.matchCount}/{meal.totalCount} ingredients
+                  </span>
                 </div>
               </Link>
             ))}
