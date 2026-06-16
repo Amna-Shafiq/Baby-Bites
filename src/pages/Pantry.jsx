@@ -215,7 +215,7 @@ function Pantry() {
       </section>
 
       {/* ── Staples note + allergen filters ── */}
-      {mealSuggestions.length > 0 && (
+      {householdFoods.length > 0 && (
         <section className="panel" style={{ paddingBottom: "1rem" }}>
           <p style={{
             fontSize: "0.78rem", color: "var(--muted)", lineHeight: 1.6,
