@@ -289,14 +289,19 @@ function Pantry() {
                   cursor: "pointer", borderLeft: "4px solid var(--green-dark)",
                   paddingLeft: "0.85rem",
                 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
                     <strong style={{ fontSize: "0.95rem", color: "var(--dark)" }}>{meal.title}</strong>
-                    <span style={{ fontSize: "0.72rem", color: "var(--muted)", flexShrink: 0 }}>
-                      {meal.prep_time_minutes ? `${meal.prep_time_minutes} min` : ""}
+                    <span style={{
+                      flexShrink: 0, fontSize: "0.72rem", fontWeight: 700,
+                      background: "var(--green-light)", color: "var(--green-dark)",
+                      border: "1px solid #a8e6c4", borderRadius: 20, padding: "2px 9px",
+                    }}>
+                      {meal.matchCount}/{meal.totalCount} ingredients
                     </span>
                   </div>
                   <p className="muted" style={{ margin: "3px 0 0", fontSize: "0.8rem" }}>
                     {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months}m
+                    {meal.prep_time_minutes ? ` · ${meal.prep_time_minutes} min` : ""}
                   </p>
                 </div>
               </Link>
@@ -327,14 +332,19 @@ function Pantry() {
                   cursor: "pointer", borderLeft: "4px solid var(--yellow-dark)",
                   paddingLeft: "0.85rem",
                 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
                     <strong style={{ fontSize: "0.95rem", color: "var(--dark)" }}>{meal.title}</strong>
-                    <span style={{ fontSize: "0.72rem", color: "var(--muted)", flexShrink: 0 }}>
-                      {meal.prep_time_minutes ? `${meal.prep_time_minutes} min` : ""}
+                    <span style={{
+                      flexShrink: 0, fontSize: "0.72rem", fontWeight: 700,
+                      background: "var(--yellow)", color: "var(--yellow-dark)",
+                      border: "1px solid var(--yellow-mid)", borderRadius: 20, padding: "2px 9px",
+                    }}>
+                      {meal.matchCount}/{meal.totalCount} ingredients
                     </span>
                   </div>
                   <p className="muted" style={{ margin: "3px 0 0", fontSize: "0.8rem" }}>
                     {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months}m
+                    {meal.prep_time_minutes ? ` · ${meal.prep_time_minutes} min` : ""}
                   </p>
                   {meal.missingIngredients?.length > 0 && (
                     <p style={{ margin: "5px 0 0", fontSize: "0.76rem", color: "var(--orange-dark)", fontWeight: 700 }}>
