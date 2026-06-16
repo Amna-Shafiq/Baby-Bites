@@ -1147,24 +1147,6 @@ function Explore() {
             Discover age-appropriate foods, meal ideas, and trusted guides for your baby.
           </p>
 
-          <div style={{
-            display: "inline-flex", alignItems: "center", gap: 10,
-            background: "rgba(255,255,255,0.1)",
-            backdropFilter: "blur(8px)",
-            border: "1.5px solid rgba(255,255,255,0.25)",
-            borderRadius: 24, padding: "8px 18px",
-            marginBottom: "2rem",
-          }}>
-            <span style={{ fontSize: "1rem" }}>✨</span>
-            <span style={{ fontWeight: 700, fontSize: "0.9rem", color: "#fff" }}>Ask Baby Bites AI</span>
-            <span style={{
-              background: "var(--orange-dark)", color: "#fff",
-              borderRadius: 12, padding: "2px 9px",
-              fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em",
-            }}>
-              Coming Soon
-            </span>
-          </div>
         </div></div>{/* end maxWidth:560 */}
       </div>
 
@@ -1319,6 +1301,47 @@ function Explore() {
           </div>
         </div>
         </>}
+
+        {/* ── Ask Baby Bites AI teaser ── */}
+        <div style={{
+          marginTop: "3rem",
+          background: "linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%)",
+          borderRadius: 20, padding: "2rem",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          gap: "1.5rem", flexWrap: "wrap",
+        }}>
+          <div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: "0.5rem" }}>
+              <span style={{ fontSize: "1.2rem" }}>✨</span>
+              <span style={{
+                fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase",
+                letterSpacing: "0.12em", color: "rgba(255,255,255,0.6)",
+              }}>
+                Coming Soon
+              </span>
+            </div>
+            <h3 style={{
+              margin: "0 0 0.4rem", fontSize: "1.25rem",
+              fontFamily: "Aileron, sans-serif", fontWeight: 800,
+              color: "#fff", lineHeight: 1.2,
+            }}>
+              Ask Baby Bites AI
+            </h3>
+            <p style={{ margin: 0, fontSize: "0.88rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, maxWidth: 380 }}>
+              Get personalised meal and food ideas for your baby. Ask anything about weaning, allergens, or age-appropriate foods.
+            </p>
+          </div>
+          <div style={{
+            background: "rgba(255,255,255,0.08)",
+            border: "1.5px solid rgba(255,255,255,0.15)",
+            borderRadius: 14, padding: "0.75rem 1.25rem",
+            color: "rgba(255,255,255,0.4)", fontSize: "0.88rem",
+            fontWeight: 600, flexShrink: 0,
+          }}>
+            Ask anything about baby food...
+          </div>
+        </div>
+
       </div>
     </div>
   );
