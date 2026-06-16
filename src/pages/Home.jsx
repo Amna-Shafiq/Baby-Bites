@@ -189,7 +189,9 @@ function HeroPanel({ activeBaby, session, navigate }) {
         <div className="hac-img-wrap">
           {featuredMeal && featuredMeal.image_url && !imgFailed ? (
             <img
-              src={cloudinaryUrl(featuredMeal.image_url, 600)}
+              src={featuredMeal.image_url?.includes('res.cloudinary.com')
+                ? featuredMeal.image_url.replace('/upload/', '/upload/w_600,h_280,c_fill,q_auto,f_auto/')
+                : featuredMeal.image_url}
               alt={featuredMeal.title}
               loading="eager"
               onError={() => setImgFailed(true)}
