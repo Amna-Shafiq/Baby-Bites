@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 
 import { supabase } from "../lib/supabaseClient";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useTheme } from "../contexts/ThemeContext";
 import LogMealModal from "../components/LogMealModal";
 import { mealSlug } from "../lib/mealSlug";
 import { cloudinaryUrl } from "../lib/cloudinaryUrl";
@@ -163,72 +164,75 @@ function getReferences(food) {
   return food.references || FOOD_REFERENCES[key] || null;
 }
 
-const STAGES = [
-  {
-    key:      "tip_puree",
-    phase:    "🍼 Just Starting Solids",
-    age:      "6+ months",
-    color:    "#fff8f0",
-    border:   "#f5cba7",
-    textures: [
-      { icon: "🥣", name: "Smooth Purees", desc: "Completely blended · No lumps" },
-    ],
-    generic: "Blend with breast milk, formula, or water until completely smooth. Strain if needed.",
-  },
-  {
-    key:      "tip_puree_textured",
-    phase:    "🍼 Just Starting Solids",
-    age:      "6–8 months",
-    color:    "#fff8f0",
-    border:   "#f5cba7",
-    textures: [
-      { icon: "🥄", name: "Slightly Textured", desc: "Very soft tiny lumps" },
-    ],
-    generic: "Mash or blend briefly — leave very small, very soft lumps for baby to practice moving food.",
-  },
-  {
-    key:      "tip_finger_food",
-    phase:    "👅 Learning to Move Food",
-    age:      "7–9 months",
-    color:    "#f0fff4",
-    border:   "#a9dfbf",
-    textures: [
-      { icon: "🍌", name: "Soft Finger Foods", desc: "Easy to squish · Large enough to hold" },
-    ],
-    generic: "Cut into finger-length strips baby can grip. Steam or cook until soft enough to squish between fingers. Soft enough to gum without teeth.",
-  },
-  {
-    key:      "tip_self_feeding",
-    phase:    "🤲 Self-Feeding Stage",
-    age:      "8–10 months",
-    color:    "#f0f4ff",
-    border:   "#a9c4f5",
-    textures: [
-      { icon: "🧩", name: "Mixed Textures", desc: "Soft + small chunks" },
-    ],
-    generic: "Combine mashed base with small soft pieces. Encourages chewing practice. Pieces should still be soft enough to squish easily.",
-  },
-  {
-    key:      "tip_family_meal",
-    phase:    "🍽️ Eating with Family",
-    age:      "12+ months",
-    color:    "#fdf0ff",
-    border:   "#d7a9f5",
-    textures: [
-      { icon: "🍛", name: "Modified Family Meals", desc: "Same food, adjusted" },
-    ],
-    generic: "Serve the same food the family eats. Reduce salt and strong spices. Cut into safe bite-sized pieces. Avoid honey, whole nuts, and hard raw vegetables.",
-  },
-];
+function getStages(dark) {
+  return [
+    {
+      key:      "tip_puree",
+      phase:    "🍼 Just Starting Solids",
+      age:      "6+ months",
+      color:    dark ? "#2A1408" : "#fff8f0",
+      border:   dark ? "#4A2410" : "#f5cba7",
+      textures: [
+        { icon: "🥣", name: "Smooth Purees", desc: "Completely blended · No lumps" },
+      ],
+      generic: "Blend with breast milk, formula, or water until completely smooth. Strain if needed.",
+    },
+    {
+      key:      "tip_puree_textured",
+      phase:    "🍼 Just Starting Solids",
+      age:      "6–8 months",
+      color:    dark ? "#2A1408" : "#fff8f0",
+      border:   dark ? "#4A2410" : "#f5cba7",
+      textures: [
+        { icon: "🥄", name: "Slightly Textured", desc: "Very soft tiny lumps" },
+      ],
+      generic: "Mash or blend briefly — leave very small, very soft lumps for baby to practice moving food.",
+    },
+    {
+      key:      "tip_finger_food",
+      phase:    "👅 Learning to Move Food",
+      age:      "7–9 months",
+      color:    dark ? "#071A10" : "#f0fff4",
+      border:   dark ? "#1A4A28" : "#a9dfbf",
+      textures: [
+        { icon: "🍌", name: "Soft Finger Foods", desc: "Easy to squish · Large enough to hold" },
+      ],
+      generic: "Cut into finger-length strips baby can grip. Steam or cook until soft enough to squish between fingers. Soft enough to gum without teeth.",
+    },
+    {
+      key:      "tip_self_feeding",
+      phase:    "🤲 Self-Feeding Stage",
+      age:      "8–10 months",
+      color:    dark ? "#0A1020" : "#f0f4ff",
+      border:   dark ? "#1A2A4A" : "#a9c4f5",
+      textures: [
+        { icon: "🧩", name: "Mixed Textures", desc: "Soft + small chunks" },
+      ],
+      generic: "Combine mashed base with small soft pieces. Encourages chewing practice. Pieces should still be soft enough to squish easily.",
+    },
+    {
+      key:      "tip_family_meal",
+      phase:    "🍽️ Eating with Family",
+      age:      "12+ months",
+      color:    dark ? "#180A20" : "#fdf0ff",
+      border:   dark ? "#3A1A4A" : "#d7a9f5",
+      textures: [
+        { icon: "🍛", name: "Modified Family Meals", desc: "Same food, adjusted" },
+      ],
+      generic: "Serve the same food the family eats. Reduce salt and strong spices. Cut into safe bite-sized pieces. Avoid honey, whole nuts, and hard raw vegetables.",
+    },
+  ];
+}
 
-function ServingStages({ food }) {
-  const hasAnyTip = STAGES.some((s) => food[s.key]);
+function ServingStages({ food, dark }) {
+  const stages = getStages(dark);
+  const hasAnyTip = stages.some((s) => food[s.key]);
   if (!hasAnyTip) return null;
   return (
     <div style={{ marginBottom: "1.5rem" }}>
       <h3 style={{ marginBottom: "1rem", fontSize: "1rem" }}>How to Serve by Stage</h3>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {STAGES.map((stage) => {
+        {stages.map((stage) => {
           const tip = food[stage.key];
           if (!tip) return null;
           return (
@@ -246,7 +250,7 @@ function ServingStages({ food }) {
                       {tex.icon} {tex.name}
                     </p>
                     <p style={{ margin: "0 0 8px", fontSize: "0.72rem", color: "var(--muted)" }}>{tex.desc}</p>
-                    <div style={{ background: "rgba(255,255,255,0.7)", borderRadius: 8, padding: "8px 10px" }}>
+                    <div style={{ background: dark ? "rgba(0,0,0,0.25)" : "rgba(255,255,255,0.7)", borderRadius: 8, padding: "8px 10px" }}>
                       <p style={{ margin: "0 0 4px", fontSize: "0.7rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--muted)" }}>
                         👉 How to prepare
                       </p>
@@ -269,6 +273,7 @@ function FoodDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { dark } = useTheme();
   const [food, setFood]     = useState(null);
   const [meals, setMeals]   = useState([]);
   const [error, setError]   = useState("");
@@ -434,7 +439,7 @@ function FoodDetail() {
 
       {/* ── Notes ── */}
       {(food.notes || food.texture_tips) && (
-        <div className="card" style={{ marginBottom: "1rem", background: "#fffbf0", border: "1.5px solid #f5e0a0" }}>
+        <div className="card" style={{ marginBottom: "1rem", background: dark ? "var(--cream)" : "#fffbf0", border: `1.5px solid ${dark ? "var(--border)" : "#f5e0a0"}` }}>
           <h3 style={{ marginBottom: "0.5rem", fontSize: "0.9rem" }}>📝 Notes</h3>
           {food.notes && <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--dark)", lineHeight: 1.6 }}>{food.notes}</p>}
           {food.texture_tips && (
@@ -456,7 +461,7 @@ function FoodDetail() {
               </div>
             )}
             <div className="food-detail-stages">
-              <ServingStages food={food} />
+              <ServingStages food={food} dark={dark} />
             </div>
           </div>
         );
@@ -464,8 +469,8 @@ function FoodDetail() {
 
       {/* ── Storage tips ── */}
       {food.storage_tips && (
-        <div className="card" style={{ marginBottom: "1rem", background: "#f0f7ff", border: "1.5px solid #b3d4f5" }}>
-          <h3 style={{ marginBottom: "0.5rem", fontSize: "0.9rem", color: "#1a5276" }}>🧊 Storing Tips</h3>
+        <div className="card" style={{ marginBottom: "1rem", background: dark ? "var(--cream)" : "#f0f7ff", border: `1.5px solid ${dark ? "var(--border)" : "#b3d4f5"}` }}>
+          <h3 style={{ marginBottom: "0.5rem", fontSize: "0.9rem", color: dark ? "var(--blue-dark)" : "#1a5276" }}>🧊 Storing Tips</h3>
           <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--dark)", lineHeight: 1.7, whiteSpace: "pre-line" }}>{food.storage_tips}</p>
         </div>
       )}
