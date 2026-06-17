@@ -358,7 +358,7 @@ function AllFoods() {
                   style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 12 }}
                 />
                 <p className="food-card-name">{food.name}</p>
-                {(food.is_warning || food.allergen_notes) && (
+                {(food.is_warning || food.is_common_allergen) && (
                   <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 6, width: "100%" }}>
                     {food.is_warning && (
                       <span style={{
@@ -369,7 +369,7 @@ function AllFoods() {
                         ⚠️ Not safe before {formatAge(food.safe_from_months)}
                       </span>
                     )}
-                    {food.allergen_notes && (
+                    {food.is_common_allergen && (
                       <span style={{
                         background: '#eef4ff', border: '1.5px solid #2471a3',
                         borderRadius: 6, padding: '3px 7px', fontSize: 10,

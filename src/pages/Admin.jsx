@@ -31,7 +31,7 @@ const MEAL_TYPES  = ["quick", "fancy"];
 const emptyFood = {
   name: "", safe_from_months: "6", is_iron_rich: false,
   food_group: "protein", allergen_notes: "", texture_tips: "",
-  is_warning: false, search_aliases: "", image_url: "", notes: "",
+  is_warning: false, is_common_allergen: false, search_aliases: "", image_url: "", notes: "",
   tip_puree: "", tip_finger_food: "", tip_self_feeding: "", tip_family_meal: "",
   storage_tips: "",
 };
@@ -92,8 +92,9 @@ function Admin() {
       food_group:       f.food_group || "protein",
       allergen_notes:   f.allergen_notes || "",
       texture_tips:     f.texture_tips || "",
-      is_warning:       f.is_warning || false,
-      search_aliases:   f.search_aliases || "",
+      is_warning:          f.is_warning || false,
+      is_common_allergen:  f.is_common_allergen || false,
+      search_aliases:      f.search_aliases || "",
       image_url:        f.image_url || "",
       notes:            f.notes || "",
       tip_puree:        f.tip_puree || "",
@@ -118,8 +119,9 @@ function Admin() {
       food_group:       food.food_group,
       allergen_notes:   food.allergen_notes.trim() || null,
       texture_tips:     food.texture_tips.trim() || null,
-      is_warning:       food.is_warning,
-      search_aliases:   food.search_aliases.trim() || null,
+      is_warning:          food.is_warning,
+      is_common_allergen:  food.is_common_allergen,
+      search_aliases:      food.search_aliases.trim() || null,
       image_url:        food.image_url.trim() || null,
       notes:            food.notes.trim() || null,
       tip_puree:        food.tip_puree.trim() || null,
@@ -311,7 +313,7 @@ function Admin() {
               <textarea className="input" placeholder="🍽️ Eating with Family (12m+) — family meal tips" value={food.tip_family_meal} onChange={(e) => setF("tip_family_meal", e.target.value)} rows={2} style={{ resize: "vertical" }} />
               <textarea className="input" placeholder="🧊 Storing tips (optional)" value={food.storage_tips} onChange={(e) => setF("storage_tips", e.target.value)} rows={3} style={{ resize: "vertical" }} />
 
-              <div style={{ display: "flex", gap: 20, fontSize: "0.85rem", fontWeight: 700 }}>
+              <div style={{ display: "flex", gap: 20, fontSize: "0.85rem", fontWeight: 700, flexWrap: "wrap" }}>
                 <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}>
                   <input type="checkbox" checked={food.is_iron_rich} onChange={(e) => setF("is_iron_rich", e.target.checked)} />
                   Iron rich
@@ -319,6 +321,10 @@ function Admin() {
                 <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}>
                   <input type="checkbox" checked={food.is_warning} onChange={(e) => setF("is_warning", e.target.checked)} />
                   Show age warning
+                </label>
+                <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}>
+                  <input type="checkbox" checked={food.is_common_allergen} onChange={(e) => setF("is_common_allergen", e.target.checked)} />
+                  🔵 Common allergen
                 </label>
               </div>
 
