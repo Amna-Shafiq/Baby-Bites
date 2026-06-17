@@ -285,23 +285,38 @@ function Pantry() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 10 }}>
             {canMakeNow.map((meal) => (
               <Link key={meal.id} to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none" }}>
-                <div className="card" style={{
-                  cursor: "pointer", height: "100%",
-                  borderTop: "3px solid var(--green-dark)",
-                  display: "flex", flexDirection: "column", gap: 6,
-                }}>
-                  <strong style={{ fontSize: "0.88rem", color: "var(--dark)", lineHeight: 1.3 }}>{meal.title}</strong>
-                  <p className="muted" style={{ margin: 0, fontSize: "0.75rem" }}>
-                    {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months}m
-                  </p>
-                  <span style={{
-                    marginTop: "auto", alignSelf: "flex-start",
-                    fontSize: "0.68rem", fontWeight: 700,
-                    background: "var(--green-light)", color: "var(--green-dark)",
-                    border: "1px solid #a8e6c4", borderRadius: 20, padding: "2px 8px",
-                  }}>
-                    {meal.matchCount}/{meal.totalCount} ingredients
-                  </span>
+                <div style={{
+                  background: "var(--card-bg, #fff)", borderRadius: 14,
+                  border: "1.5px solid var(--border)", borderTop: "3px solid var(--green-dark)",
+                  overflow: "hidden", cursor: "pointer", height: "100%",
+                  display: "flex", flexDirection: "column",
+                  transition: "transform 0.15s, box-shadow 0.15s",
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 18px rgba(45,36,22,0.1)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}
+                >
+                  {meal.image_url ? (
+                    <img src={meal.image_url} alt={meal.title} style={{ width: "100%", height: 90, objectFit: "cover", display: "block" }} />
+                  ) : (
+                    <div style={{ width: "100%", height: 90, background: "var(--cream)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.8rem" }}>🍽️</div>
+                  )}
+                  <div style={{ padding: "8px 10px 10px", display: "flex", flexDirection: "column", gap: 5, flex: 1 }}>
+                    <strong style={{ fontSize: "0.82rem", color: "var(--dark)", lineHeight: 1.3,
+                      display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                      {meal.title}
+                    </strong>
+                    <p className="muted" style={{ margin: 0, fontSize: "0.72rem" }}>
+                      {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months}m
+                    </p>
+                    <span style={{
+                      marginTop: "auto", alignSelf: "flex-start",
+                      fontSize: "0.68rem", fontWeight: 700,
+                      background: "var(--green-light)", color: "var(--green-dark)",
+                      border: "1px solid #a8e6c4", borderRadius: 20, padding: "2px 8px",
+                    }}>
+                      {meal.matchCount}/{meal.totalCount} ingredients
+                    </span>
+                  </div>
                 </div>
               </Link>
             ))}
@@ -327,28 +342,43 @@ function Pantry() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 10 }}>
             {almostThere.map((meal) => (
               <Link key={meal.id} to={`/meal/${mealSlug(meal)}`} style={{ textDecoration: "none" }}>
-                <div className="card" style={{
-                  cursor: "pointer", height: "100%",
-                  borderTop: "3px solid var(--yellow-dark)",
-                  display: "flex", flexDirection: "column", gap: 6,
-                }}>
-                  <strong style={{ fontSize: "0.88rem", color: "var(--dark)", lineHeight: 1.3 }}>{meal.title}</strong>
-                  <p className="muted" style={{ margin: 0, fontSize: "0.75rem" }}>
-                    {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months}m
-                  </p>
-                  {meal.missingIngredients?.length > 0 && (
-                    <p style={{ margin: 0, fontSize: "0.72rem", color: "var(--orange-dark)", fontWeight: 700 }}>
-                      Missing: {meal.missingIngredients.join(", ")}
-                    </p>
+                <div style={{
+                  background: "var(--card-bg, #fff)", borderRadius: 14,
+                  border: "1.5px solid var(--border)", borderTop: "3px solid var(--yellow-dark)",
+                  overflow: "hidden", cursor: "pointer", height: "100%",
+                  display: "flex", flexDirection: "column",
+                  transition: "transform 0.15s, box-shadow 0.15s",
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 18px rgba(45,36,22,0.1)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}
+                >
+                  {meal.image_url ? (
+                    <img src={meal.image_url} alt={meal.title} style={{ width: "100%", height: 90, objectFit: "cover", display: "block" }} />
+                  ) : (
+                    <div style={{ width: "100%", height: 90, background: "var(--cream)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.8rem" }}>🍽️</div>
                   )}
-                  <span style={{
-                    marginTop: "auto", alignSelf: "flex-start",
-                    fontSize: "0.68rem", fontWeight: 700,
-                    background: "var(--yellow)", color: "var(--yellow-dark)",
-                    border: "1px solid var(--yellow-mid)", borderRadius: 20, padding: "2px 8px",
-                  }}>
-                    {meal.matchCount}/{meal.totalCount} ingredients
-                  </span>
+                  <div style={{ padding: "8px 10px 10px", display: "flex", flexDirection: "column", gap: 5, flex: 1 }}>
+                    <strong style={{ fontSize: "0.82rem", color: "var(--dark)", lineHeight: 1.3,
+                      display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                      {meal.title}
+                    </strong>
+                    <p className="muted" style={{ margin: 0, fontSize: "0.72rem" }}>
+                      {meal.meal_slot} · {meal.min_age_months}–{meal.max_age_months}m
+                    </p>
+                    {meal.missingIngredients?.length > 0 && (
+                      <p style={{ margin: 0, fontSize: "0.72rem", color: "var(--orange-dark)", fontWeight: 700 }}>
+                        Missing: {meal.missingIngredients.join(", ")}
+                      </p>
+                    )}
+                    <span style={{
+                      marginTop: "auto", alignSelf: "flex-start",
+                      fontSize: "0.68rem", fontWeight: 700,
+                      background: "var(--yellow)", color: "var(--yellow-dark)",
+                      border: "1px solid var(--yellow-mid)", borderRadius: 20, padding: "2px 8px",
+                    }}>
+                      {meal.matchCount}/{meal.totalCount} ingredients
+                    </span>
+                  </div>
                 </div>
               </Link>
             ))}

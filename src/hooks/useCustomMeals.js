@@ -82,7 +82,7 @@ const isStaple = (name) => name && STAPLES.has(name.toLowerCase().trim());
 
     supabase
       .from("meals")
-      .select("id, title, meal_slot, meal_type, min_age_months, max_age_months, prep_time_minutes, nutrition_highlight, meal_foods(food_id, foods(name, allergen_notes))")
+      .select("id, title, meal_slot, meal_type, min_age_months, max_age_months, prep_time_minutes, nutrition_highlight, image_url, meal_foods(food_id, foods(name, allergen_notes))")
       .eq("is_public", true)
       .then(({ data }) => {
         const suggestions = (data || [])
