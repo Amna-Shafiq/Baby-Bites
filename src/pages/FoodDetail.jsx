@@ -449,7 +449,7 @@ function FoodDetail() {
 
       {/* ── Allergen + Stages ── */}
       {(() => {
-        const hasStages = STAGES.some((s) => food[s.key]);
+        const hasStages = getStages(dark).some((s) => food[s.key]);
         if (!hasStages && !food.allergen_notes) return null;
         return (
           <div className={`food-detail-main${hasStages && food.allergen_notes ? " food-detail-two-col" : ""}`}>
