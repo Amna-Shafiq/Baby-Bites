@@ -37,7 +37,7 @@ function useFeedingLog(userId) {
       .select("*")
       .eq("user_id", userId)
       .order("fed_at", { ascending: false })
-      .limit(50);
+      .limit(500);
     setLogs(data || []);
     setLoading(false);
   }, [userId]);
