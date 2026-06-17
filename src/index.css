@@ -169,6 +169,12 @@ body.page-warm-bg {
 body.page-foods::before,
 body.page-warm-bg::before { display: none !important; }
 
+[data-theme="dark"] body.page-foods,
+[data-theme="dark"] body.page-warm-bg {
+  background: linear-gradient(135deg, #0E0602 0%, #120A04 50%, #080E18 100%);
+  background-attachment: fixed;
+}
+
 body::before {
   content: '';
   position: fixed;
