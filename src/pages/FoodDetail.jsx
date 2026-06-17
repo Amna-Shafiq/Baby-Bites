@@ -107,7 +107,6 @@ const FOOD_REFERENCES = {
   "brown lentil":     [SS("brown-lentils")],
   popcorn:            [SS("popcorn")],
   "chicken feet":     [SS("chicken-feet")],
-  pasta:              [SS("pasta")],
   chickpeas:          [SS("chickpea")],
   chickpea:           [SS("chickpea")],
   chana:              [SS("chickpea")],
@@ -359,7 +358,7 @@ function FoodDetail() {
       "name": `Is ${food.name} an allergen for babies?`,
       "acceptedAnswer": { "@type": "Answer", "text": food.allergen_notes },
     },
-    ...STAGES.filter((s) => food[s.key]).map((s) => ({
+    ...getStages(dark).filter((s) => food[s.key]).map((s) => ({
       "@type": "Question",
       "name": `How do I serve ${food.name} to a ${s.age} baby (${s.phase})?`,
       "acceptedAnswer": { "@type": "Answer", "text": food[s.key] },
