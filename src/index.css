@@ -28,6 +28,7 @@
   --text:        #2A1810;
   --muted:       #8A6A58;
   --border:      #E8D0BC;
+  --card-bg:     #FFFAF7;
 }
 
 /* ── Dark mode tokens ──────────────────────────────── */
@@ -54,6 +55,7 @@
   --text:        #EDD5C0;
   --muted:       #9A7A65;
   --border:      #3A2214;
+  --card-bg:     #1E0E06;
 }
 
 [data-theme="dark"] body {
@@ -640,7 +642,7 @@ button { font-family: 'Nunito', sans-serif; }
 }
 
 .foods-page .food-card {
-  background: rgba(250, 250, 248, 0.75);
+  background: var(--card-bg);
 }
 .food-card:hover {
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
