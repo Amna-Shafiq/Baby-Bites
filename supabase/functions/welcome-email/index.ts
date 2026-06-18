@@ -19,77 +19,99 @@ Deno.serve(async (req) => {
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#FFFAF7;padding:40px 16px;">
     <tr>
       <td align="center">
-        <table width="100%" style="max-width:560px;background:#fff;border-radius:20px;overflow:hidden;border:1.5px solid #f0e0d0;">
+        <table width="100%" style="max-width:580px;background:#ffffff;border-radius:20px;overflow:hidden;border:1.5px solid #f0e0d0;">
 
           <!-- Header -->
           <tr>
-            <td style="background:linear-gradient(135deg,#FF8C42,#E8623A);padding:36px 32px;text-align:center;">
-              <p style="margin:0;font-size:2.2rem;">🍼</p>
-              <h1 style="margin:10px 0 4px;color:#fff;font-size:1.6rem;font-weight:800;letter-spacing:-0.5px;">Baby Bites</h1>
-              <p style="margin:0;color:rgba(255,255,255,0.88);font-size:0.95rem;font-weight:500;">Your baby food companion</p>
+            <td style="background:linear-gradient(135deg,#FF8C42,#E8623A);padding:40px 32px;text-align:center;">
+              <p style="margin:0;font-size:2.4rem;">🥕</p>
+              <h1 style="margin:10px 0 4px;color:#fff;font-size:1.7rem;font-weight:800;letter-spacing:-0.5px;">Baby Bites</h1>
+              <p style="margin:0;color:rgba(255,255,255,0.9);font-size:0.95rem;font-weight:500;">Let's feed your little one with confidence</p>
             </td>
           </tr>
 
-          <!-- Body -->
+          <!-- Greeting -->
           <tr>
-            <td style="padding:32px;">
-              <h2 style="margin:0 0 12px;font-size:1.25rem;color:#2d1a0e;font-weight:800;">Welcome! So glad you're here 🧡</h2>
-              <p style="margin:0 0 16px;color:#5a3e2b;font-size:0.95rem;line-height:1.7;">
-                Baby Bites is a calm, reliable space built for parents navigating first foods, weaning, and everything in between.
+            <td style="padding:36px 36px 0;">
+              <h2 style="margin:0 0 16px;font-size:1.2rem;color:#2d1a0e;font-weight:800;">Hi there, welcome to Baby Bites! 🎉</h2>
+              <p style="margin:0 0 16px;color:#5a3e2b;font-size:0.95rem;line-height:1.75;">
+                We're so glad you're here. To get the most personalised experience, make sure you've completed your baby's profile — including their date of birth, any allergies and dietary preferences. The more we know about your little one, the better we can tailor meal suggestions, food safety guidance and age-appropriate recipes just for them.
               </p>
-              <p style="margin:0 0 24px;color:#5a3e2b;font-size:0.95rem;line-height:1.7;">
-                Here's what you can do straight away:
-              </p>
+            </td>
+          </tr>
 
-              <!-- Feature list -->
+          <!-- Divider -->
+          <tr>
+            <td style="padding:20px 36px 0;">
+              <hr style="border:none;border-top:1.5px solid #f5ece4;margin:0;" />
+            </td>
+          </tr>
+
+          <!-- A few things to know -->
+          <tr>
+            <td style="padding:24px 36px 0;">
+              <p style="margin:0 0 16px;font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#b07040;">A few things to know</p>
+
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="padding:10px 0;border-bottom:1px solid #f5ece4;">
-                    <span style="font-size:1.1rem;">🥦</span>
-                    <strong style="color:#2d1a0e;margin-left:8px;">Browse 100+ foods</strong>
-                    <p style="margin:2px 0 0 28px;color:#7a5a44;font-size:0.85rem;">Safe-from ages, texture tips and allergen guidance</p>
+                  <td style="padding:10px 0;border-bottom:1px solid #f5ece4;vertical-align:top;">
+                    <span style="font-size:1rem;">📚</span>
+                    <span style="color:#2d1a0e;font-size:0.92rem;font-weight:700;margin-left:8px;">Always up to date</span>
+                    <p style="margin:4px 0 0 26px;color:#7a5a44;font-size:0.85rem;line-height:1.6;">Our food and meal database is updated regularly with new recipes, safety information and Pakistani-specific guidance reviewed by feeding specialists.</p>
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding:10px 0;border-bottom:1px solid #f5ece4;">
-                    <span style="font-size:1.1rem;">🍛</span>
-                    <strong style="color:#2d1a0e;margin-left:8px;">Explore baby meals</strong>
-                    <p style="margin:2px 0 0 28px;color:#7a5a44;font-size:0.85rem;">Purees, finger foods and family-friendly recipes</p>
+                  <td style="padding:10px 0;border-bottom:1px solid #f5ece4;vertical-align:top;">
+                    <span style="font-size:1rem;">✅</span>
+                    <span style="color:#2d1a0e;font-size:0.92rem;font-weight:700;margin-left:8px;">WHO-aligned guidance</span>
+                    <p style="margin:4px 0 0 26px;color:#7a5a44;font-size:0.85rem;line-height:1.6;">All content follows WHO guidelines. We take accuracy seriously because your baby's health matters.</p>
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding:10px 0;border-bottom:1px solid #f5ece4;">
-                    <span style="font-size:1.1rem;">🛒</span>
-                    <strong style="color:#2d1a0e;margin-left:8px;">Check your Pantry</strong>
-                    <p style="margin:2px 0 0 28px;color:#7a5a44;font-size:0.85rem;">See which meals you can make with what you have</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:10px 0;">
-                    <span style="font-size:1.1rem;">📋</span>
-                    <strong style="color:#2d1a0e;margin-left:8px;">Log what your baby eats</strong>
-                    <p style="margin:2px 0 0 28px;color:#7a5a44;font-size:0.85rem;">Track reactions and build a feeding history</p>
+                  <td style="padding:10px 0;vertical-align:top;">
+                    <span style="font-size:1rem;">💬</span>
+                    <span style="color:#2d1a0e;font-size:0.92rem;font-weight:700;margin-left:8px;">We want to hear from you</span>
+                    <p style="margin:4px 0 0 26px;color:#7a5a44;font-size:0.85rem;line-height:1.6;">We're still growing and improving every day. If something looks off or you have a suggestion, reach us through the Contact Us section on the website. We read every message.</p>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
 
-              <!-- CTA -->
-              <div style="text-align:center;margin:28px 0 8px;">
-                <a href="https://babybites.net" style="display:inline-block;background:linear-gradient(135deg,#FF8C42,#E8623A);color:#fff;font-weight:800;font-size:0.95rem;padding:14px 32px;border-radius:50px;text-decoration:none;letter-spacing:0.02em;">
-                  Get started →
+          <!-- CTA -->
+          <tr>
+            <td style="padding:28px 36px;">
+              <div style="text-align:center;">
+                <a href="https://babybites.net" style="display:inline-block;background:linear-gradient(135deg,#FF8C42,#E8623A);color:#fff;font-weight:800;font-size:0.95rem;padding:14px 36px;border-radius:50px;text-decoration:none;letter-spacing:0.02em;">
+                  Open Baby Bites →
                 </a>
               </div>
             </td>
           </tr>
 
+          <!-- Sign-off -->
+          <tr>
+            <td style="padding:0 36px 32px;">
+              <hr style="border:none;border-top:1.5px solid #f5ece4;margin:0 0 24px;" />
+              <p style="margin:0 0 4px;color:#5a3e2b;font-size:0.95rem;line-height:1.75;">
+                Thank you for trusting Baby Bites with something as important as your baby's first foods. We're honoured to be part of this journey with you. 🧡
+              </p>
+              <p style="margin:16px 0 0;color:#5a3e2b;font-size:0.92rem;line-height:1.6;">
+                With love,<br />
+                <strong style="color:#2d1a0e;">Amna</strong><br />
+                <span style="color:#a07860;font-size:0.85rem;">Founder, Baby Bites</span>
+              </p>
+            </td>
+          </tr>
+
           <!-- Footer -->
           <tr>
-            <td style="background:#fff8f3;padding:20px 32px;border-top:1.5px solid #f0e0d0;text-align:center;">
+            <td style="background:#fff8f3;padding:18px 36px;border-top:1.5px solid #f0e0d0;text-align:center;">
               <p style="margin:0;color:#a07860;font-size:0.78rem;line-height:1.6;">
-                Made with love by Amna · <a href="https://babybites.net" style="color:#E8623A;text-decoration:none;">babybites.net</a>
+                <a href="https://babybites.net" style="color:#E8623A;text-decoration:none;font-weight:700;">babybites.net</a>
               </p>
-              <p style="margin:6px 0 0;color:#c0a090;font-size:0.72rem;">
-                You're receiving this because you signed up to Baby Bites.
+              <p style="margin:6px 0 0;color:#c0a090;font-size:0.72rem;line-height:1.5;">
+                You're receiving this because you created an account on Baby Bites.<br />This is a no-reply email — please use the Contact Us page to reach us.
               </p>
             </td>
           </tr>
@@ -110,7 +132,7 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         from: FROM,
         to: [email],
-        subject: "Welcome to Baby Bites 🍼",
+        subject: "Welcome to Baby Bites 🥕 — Let's feed your little one with confidence",
         html,
       }),
     });
