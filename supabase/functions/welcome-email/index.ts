@@ -51,30 +51,18 @@ Deno.serve(async (req) => {
           <tr>
             <td style="padding:24px 36px 0;">
               <p style="margin:0 0 16px;font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#b07040;">A few things to know</p>
-
-              <table width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="padding:10px 0;border-bottom:1px solid #f5ece4;vertical-align:top;">
-                    <span style="font-size:1rem;">📚</span>
-                    <span style="color:#2d1a0e;font-size:0.92rem;font-weight:700;margin-left:8px;">Always up to date</span>
-                    <p style="margin:4px 0 0 26px;color:#7a5a44;font-size:0.85rem;line-height:1.6;">Our food and meal database is updated regularly with new recipes, safety information and Pakistani-specific guidance reviewed by feeding specialists.</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:10px 0;border-bottom:1px solid #f5ece4;vertical-align:top;">
-                    <span style="font-size:1rem;">✅</span>
-                    <span style="color:#2d1a0e;font-size:0.92rem;font-weight:700;margin-left:8px;">WHO-aligned guidance</span>
-                    <p style="margin:4px 0 0 26px;color:#7a5a44;font-size:0.85rem;line-height:1.6;">All content follows WHO guidelines. We take accuracy seriously because your baby's health matters.</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:10px 0;vertical-align:top;">
-                    <span style="font-size:1rem;">💬</span>
-                    <span style="color:#2d1a0e;font-size:0.92rem;font-weight:700;margin-left:8px;">We want to hear from you</span>
-                    <p style="margin:4px 0 0 26px;color:#7a5a44;font-size:0.85rem;line-height:1.6;">We're still growing and improving every day. If something looks off or you have a suggestion, reach us through the Contact Us section on the website. We read every message.</p>
-                  </td>
-                </tr>
-              </table>
+              <p style="margin:0 0 12px;color:#5a3e2b;font-size:0.92rem;line-height:1.75;">
+                <span style="color:#E8623A;font-weight:700;">→</span> Our food and meal database is updated regularly with new recipes, safety information and Pakistani-specific guidance reviewed by feeding specialists.
+              </p>
+              <p style="margin:0 0 12px;color:#5a3e2b;font-size:0.92rem;line-height:1.75;">
+                <span style="color:#E8623A;font-weight:700;">→</span> All content follows WHO guidelines. We take accuracy seriously because your baby's health matters.
+              </p>
+              <p style="margin:0 0 12px;color:#5a3e2b;font-size:0.92rem;line-height:1.75;">
+                <span style="color:#E8623A;font-weight:700;">→</span> We're still growing and improving every day. If something looks off or you have a suggestion, we genuinely want to hear it.
+              </p>
+              <p style="margin:0;color:#5a3e2b;font-size:0.92rem;line-height:1.75;">
+                This is a no-reply email, but you can always reach us through the <strong style="color:#2d1a0e;">Contact Us</strong> section on the website. We read every message and will get back to you.
+              </p>
             </td>
           </tr>
 
