@@ -912,6 +912,12 @@ function Home() {
             location: "Karachi",
             context: "Mum of an 8 month old",
           },
+          {
+              quote: "Amazing initiative! 👏 Building a solution from a real parenting challenge is what makes products truly valuable.",
+              name: "Usama Y.",
+              location: "",
+              context: "",
+            },
           // ADD MORE QUOTES HERE
         ];
         const [tIdx, setTIdx] = useState(0);
@@ -928,8 +934,8 @@ function Home() {
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
                 <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--orange)", display: "grid", placeItems: "center", fontSize: "1rem", flexShrink: 0 }}>🧡</div>
                 <div style={{ textAlign: "left" }}>
-                  <p style={{ margin: 0, fontWeight: 800, fontSize: "0.85rem", color: "var(--dark)" }}>{t.name}, {t.location}</p>
-                  <p style={{ margin: 0, fontSize: "0.75rem", color: "var(--muted)" }}>{t.context}</p>
+                  <p style={{ margin: 0, fontWeight: 800, fontSize: "0.85rem", color: "var(--dark)" }}>{t.name}{t.location ? `, ${t.location}` : ""}</p>
+                  {t.context && <p style={{ margin: 0, fontSize: "0.75rem", color: "var(--muted)" }}>{t.context}</p>}
                 </div>
               </div>
             </div>
