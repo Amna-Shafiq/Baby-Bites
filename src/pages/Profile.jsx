@@ -161,12 +161,8 @@ function Profile() {
     if (deleteConfirmText !== "DELETE") return;
     setDeletingAccount(true);
     setDeleteAccountStatus("");
-    const { data: { session: s } } = await supabase.auth.getSession();
-    const res = await fetch(
-      `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-account`,
-      { method: "POST", headers: { Authorization: `Bearer ${s?.access_token}` } }
-    );
-    if (!res.ok) {
+    const { error } = await supabase.rpc("delete_own_account");
+    if (error) {
       setDeleteAccountStatus("Something went wrong. Please try again.");
       setDeletingAccount(false);
       return;
