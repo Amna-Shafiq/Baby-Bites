@@ -925,7 +925,7 @@ function Home() {
         return (
           <div style={{ padding: "3rem 0 1rem", textAlign: "center" }}>
             <p style={{ fontSize: "0.75rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--orange-dark)", marginBottom: "0.5rem" }}>From parents</p>
-            <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", marginBottom: "2rem", color: "var(--dark)" }}>What mamas are saying</h2>
+            <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", marginBottom: "2rem", color: "var(--dark)" }}>What parents are saying</h2>
 
             <div style={{ maxWidth: 520, margin: "0 auto 1.5rem", background: "var(--card-bg)", border: "1.5px solid var(--border)", borderRadius: 20, padding: "28px 28px 24px" }}>
               <p style={{ margin: "0 0 20px", fontSize: "1rem", lineHeight: 1.75, color: "var(--dark)", fontStyle: "italic" }}>
