@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 import { supabase } from "../lib/supabaseClient";
 import LogMealModal from "../components/LogMealModal";
@@ -16,6 +17,7 @@ function MealPage() {
   const legacyId = extractLegacyId(id);   // UUID if old URL, null if clean slug
   const isLegacy = legacyId !== null;
   const { t } = useLanguage();
+  const { dark } = useTheme();
   const [meal, setMeal]           = useState(null);
   const [ingredients, setIngredients] = useState([]);
   const [loading, setLoading]     = useState(true);
@@ -314,12 +316,14 @@ function MealPage() {
                     margin: "12px 0 8px",
                     padding: "8px 12px",
                     borderRadius: 8,
-                    background: isSpiceNote ? "#FFF8E1" : "#f5f5f5",
+                    background: dark
+                      ? (isSpiceNote ? "#2A1E00" : "#1a0e06")
+                      : (isSpiceNote ? "#FFF8E1" : "#f5f5f5"),
                     borderLeft: `3px solid ${isSpiceNote ? "#F5A623" : "#c4622a"}`,
                   }}>
                     <p style={{
                       fontWeight: 700, fontSize: 12,
-                      color: isSpiceNote ? "#C4920A" : "#c4622a",
+                      color: isSpiceNote ? "#F5A623" : "#c4622a",
                       margin: 0,
                       textTransform: "uppercase", letterSpacing: "0.05em",
                     }}>
@@ -334,12 +338,14 @@ function MealPage() {
                 <div key={idx} style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "flex-start" }}>
                   <span style={{
                     minWidth: 24, height: 24, borderRadius: "50%",
-                    background: "#f5f5f5", display: "flex", alignItems: "center",
-                    justifyContent: "center", fontSize: 12, fontWeight: 600, color: "#555",
+                    background: dark ? "#2a1408" : "#f5f5f5",
+                    display: "flex", alignItems: "center",
+                    justifyContent: "center", fontSize: 12, fontWeight: 600,
+                    color: dark ? "#c4a070" : "#555",
                   }}>
                     {stepCount}
                   </span>
-                  <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: "#444" }}>
+                  <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: "var(--dark)" }}>
                     {step.replace(/^\d+\.\s*/, "")}
                   </p>
                 </div>
