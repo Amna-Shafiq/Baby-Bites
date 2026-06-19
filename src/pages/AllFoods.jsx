@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet-async";
 import { supabase } from "../lib/supabaseClient";
 import LoginPromptModal from "../components/LoginPromptModal";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useTheme } from "../contexts/ThemeContext";
 import useActiveBaby from "../hooks/useActiveBaby";
 
 const ALLERGEN_MAP = {
@@ -81,6 +82,7 @@ function AllFoods() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { dark } = useTheme();
   const { activeBaby } = useActiveBaby();
 
   const [query, setQuery]           = useState("");
@@ -253,7 +255,7 @@ function AllFoods() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t("searchFoods")}
-            style={{ borderRadius: 100, padding: "12px 20px 12px 44px", border: "1.5px solid #FFB87A", background: "white", width: "100%", boxSizing: "border-box" }}
+            style={{ borderRadius: 100, padding: "12px 20px 12px 44px", border: "1.5px solid #FFB87A", background: "var(--card-bg)", color: "var(--dark)", width: "100%", boxSizing: "border-box" }}
           />
         </div>
         <input
@@ -265,7 +267,7 @@ function AllFoods() {
           placeholder={t("babyAge")}
           readOnly={!session}
           onClick={() => { if (!session) setShowAuthPrompt(true); }}
-          style={{ borderRadius: 100, padding: "12px 16px", width: 160, flexShrink: 0, border: "1.5px solid #FFB87A", background: "white", cursor: !session ? "pointer" : undefined }}
+          style={{ borderRadius: 100, padding: "12px 16px", width: 160, flexShrink: 0, border: "1.5px solid #FFB87A", background: "var(--card-bg)", color: "var(--dark)", cursor: !session ? "pointer" : undefined }}
         />
       </div>
 
@@ -283,9 +285,9 @@ function AllFoods() {
                 style={{
                   padding: "6px 14px", borderRadius: 100, fontSize: "0.8rem", fontWeight: 700,
                   cursor: "pointer", transition: "all 0.15s",
-                  background: active ? "#FFE4CC" : "white",
-                  border: `1.5px solid ${active ? "#FFB87A" : "#eee"}`,
-                  color: active ? "#c4622a" : "#888",
+                  background: active ? "#FFE4CC" : "var(--card-bg)",
+                  border: `1.5px solid ${active ? "#FFB87A" : "var(--border)"}`,
+                  color: active ? "#c4622a" : "var(--muted)",
                 }}
               >
                 {label}
@@ -321,9 +323,9 @@ function AllFoods() {
                 style={{
                   display: "inline-flex", alignItems: "center", gap: 4,
                   padding: "4px 11px", borderRadius: 100, fontSize: "0.75rem", fontWeight: 700,
-                  border: `1.5px solid ${active ? "#c4622a" : "#eee"}`,
-                  background: active ? "#c4622a" : "white",
-                  color: active ? "#fff" : "#888",
+                  border: `1.5px solid ${active ? "#c4622a" : "var(--border)"}`,
+                  background: active ? "#c4622a" : "var(--card-bg)",
+                  color: active ? "#fff" : "var(--muted)",
                   cursor: "pointer", transition: "all 0.15s",
                 }}
               >
