@@ -68,6 +68,9 @@ function Profile() {
   const [newPassword, setNewPassword]             = useState("");
   const [passwordStatus, setPasswordStatus]       = useState("");
   const [showDeleteAccount, setShowDeleteAccount] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [deleteAccountStatus, setDeleteAccountStatus] = useState("");
+  const [deletingAccount, setDeletingAccount]     = useState(false);
 
   useEffect(() => {
     if (!supabase) return;
@@ -153,6 +156,24 @@ function Profile() {
   };
 
   const handleSignOut = async () => { await supabase.auth.signOut(); navigate("/"); };
+
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmText !== "DELETE") return;
+    setDeletingAccount(true);
+    setDeleteAccountStatus("");
+    const { data: { session: s } } = await supabase.auth.getSession();
+    const res = await fetch(
+      `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-account`,
+      { method: "POST", headers: { Authorization: `Bearer ${s?.access_token}` } }
+    );
+    if (!res.ok) {
+      setDeleteAccountStatus("Something went wrong. Please try again.");
+      setDeletingAccount(false);
+      return;
+    }
+    await supabase.auth.signOut();
+    navigate("/");
+  };
 
   const isActiveBaby = (b) => b.is_active || b.id === activeBaby?.id;
   const isOAuthUser = session?.user?.app_metadata?.provider !== "email";
@@ -498,16 +519,41 @@ function Profile() {
                   <span style={{ fontSize: 20 }}>🗑️</span>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: ".9rem", color: "#C0392B" }}>Delete account</div>
-                    <div style={{ fontFamily: "Nunito, sans-serif", fontSize: ".78rem", color: "var(--muted)" }}>Permanently remove your data</div>
+                    <div style={{ fontFamily: "Nunito, sans-serif", fontSize: ".78rem", color: "var(--muted)" }}>Permanently remove your account and all data</div>
                   </div>
-                  <button className="btn btn-ghost" style={{ color: "#c0392b", borderColor: "#c0392b" }} onClick={() => setShowDeleteAccount(!showDeleteAccount)}>Delete</button>
+                  {!showDeleteAccount && (
+                    <button className="btn btn-ghost" style={{ color: "#c0392b", borderColor: "#c0392b" }} onClick={() => setShowDeleteAccount(true)}>Delete</button>
+                  )}
                 </div>
                 {showDeleteAccount && (
-                  <div style={{ background: "var(--cream)", border: "1.5px solid #c0392b", borderRadius: 12, padding: "1rem", marginTop: 8 }}>
-                    <p style={{ fontSize: ".88rem", marginBottom: 10 }}>
-                      To permanently delete your account and all data, email <strong>support@babybites.app</strong> from your registered address.
+                  <div style={{ background: "#FDF0EF", border: "1.5px solid #c0392b", borderRadius: 12, padding: "1rem", marginTop: 4 }}>
+                    <p style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: ".88rem", color: "#C0392B", margin: "0 0 6px" }}>
+                      This cannot be undone.
                     </p>
-                    <button className="btn btn-ghost" onClick={() => setShowDeleteAccount(false)}>Cancel</button>
+                    <p style={{ fontFamily: "Nunito, sans-serif", fontSize: ".82rem", color: "var(--muted)", margin: "0 0 12px" }}>
+                      Your account, baby profiles, meal logs, and all saved data will be permanently deleted. Type <strong>DELETE</strong> below to confirm.
+                    </p>
+                    <input
+                      className="input"
+                      value={deleteConfirmText}
+                      onChange={e => setDeleteConfirmText(e.target.value)}
+                      placeholder="Type DELETE to confirm"
+                      style={{ marginBottom: 10, fontFamily: "Nunito, sans-serif" }}
+                    />
+                    {deleteAccountStatus && (
+                      <p style={{ fontSize: ".82rem", color: "#c0392b", margin: "0 0 8px" }}>{deleteAccountStatus}</p>
+                    )}
+                    <div style={{ display: "flex", gap: 8 }}>
+                      <button
+                        className="btn"
+                        style={{ background: "#c0392b", color: "#fff", borderColor: "#c0392b", opacity: deleteConfirmText !== "DELETE" || deletingAccount ? 0.4 : 1 }}
+                        disabled={deleteConfirmText !== "DELETE" || deletingAccount}
+                        onClick={handleDeleteAccount}
+                      >
+                        {deletingAccount ? "Deleting…" : "Yes, delete my account"}
+                      </button>
+                      <button className="btn btn-ghost" onClick={() => { setShowDeleteAccount(false); setDeleteConfirmText(""); setDeleteAccountStatus(""); }}>Cancel</button>
+                    </div>
                   </div>
                 )}
               </div>
