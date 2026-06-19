@@ -190,7 +190,7 @@ function Profile() {
     );
   }
 
-  const visibleTabs = addMode ? TABS.filter(t => t.k !== "account") : TABS;
+  const visibleTabs = TABS;
 
   return (
     <div className="page" style={{ paddingBottom: 40 }}>
@@ -448,7 +448,7 @@ function Profile() {
             )}
 
             {/* ── Tab: Account ── */}
-            {tab === "account" && !addMode && (
+            {tab === "account" && (
               <div style={panelCard}>
                 {/* Email */}
                 <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 4px 12px", marginBottom: 4, borderBottom: "1px solid var(--border)" }}>
