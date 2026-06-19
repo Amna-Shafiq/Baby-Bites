@@ -568,6 +568,79 @@ function HowItWorks({ t }) {
   );
 }
 
+const TESTIMONIALS = [
+  {
+    quote: "Finally an app that has almost all desi foods! I always wondered if I was giving the right foods at the right time.",
+    name: "Sana R.",
+    location: "Karachi",
+    context: "Mum of an 8 month old",
+  },
+  {
+    quote: "Amazing initiative! 👏 Building a solution from a real parenting challenge is what makes products truly valuable.",
+    name: "Usama Y.",
+    location: "",
+    context: "",
+  },
+  // ADD MORE QUOTES HERE
+];
+
+function TestimonialsSection() {
+  const [tIdx, setTIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (TESTIMONIALS.length <= 1 || paused) return;
+    const timer = setInterval(() => {
+      setTIdx((i) => (i + 1) % TESTIMONIALS.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [paused]);
+
+  const goTo = (i) => { setTIdx(i); setPaused(true); setTimeout(() => setPaused(false), 8000); };
+  const t = TESTIMONIALS[tIdx];
+
+  return (
+    <div style={{ padding: "3rem 0 1rem", textAlign: "center" }} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+      <p style={{ fontSize: "0.75rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--orange-dark)", marginBottom: "0.5rem" }}>From parents</p>
+      <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", marginBottom: "2rem", color: "var(--dark)" }}>What parents are saying</h2>
+
+      <div style={{ maxWidth: 520, margin: "0 auto 1.5rem", background: "var(--card-bg)", border: "1.5px solid var(--border)", borderRadius: 20, padding: "28px 28px 24px", transition: "all 0.3s" }}>
+        <p style={{ margin: "0 0 20px", fontSize: "1rem", lineHeight: 1.75, color: "var(--dark)", fontStyle: "italic" }}>
+          "{t.quote}"
+        </p>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
+          <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--orange)", display: "grid", placeItems: "center", fontSize: "1rem", flexShrink: 0 }}>🧡</div>
+          <div style={{ textAlign: "left" }}>
+            <p style={{ margin: 0, fontWeight: 800, fontSize: "0.85rem", color: "var(--dark)" }}>{t.name}{t.location ? `, ${t.location}` : ""}</p>
+            {t.context && <p style={{ margin: 0, fontSize: "0.75rem", color: "var(--muted)" }}>{t.context}</p>}
+          </div>
+        </div>
+      </div>
+
+      {TESTIMONIALS.length > 1 && (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: "1.5rem" }}>
+          {TESTIMONIALS.map((_, i) => (
+            <span key={i} onClick={() => goTo(i)} style={{ width: i === tIdx ? 20 : 8, height: 8, borderRadius: 4, background: i === tIdx ? "var(--orange-dark)" : "var(--border)", display: "inline-block", cursor: "pointer", transition: "all 0.3s" }} />
+          ))}
+        </div>
+      )}
+
+      <Link
+        to="/about#contact"
+        style={{
+          display: "inline-flex", alignItems: "center", gap: 6,
+          border: "1.5px solid var(--border)", borderRadius: 50,
+          padding: "10px 22px", fontSize: "0.88rem", fontWeight: 700,
+          color: "var(--orange-dark)", textDecoration: "none",
+          background: "var(--card-bg)",
+        }}
+      >
+        💬 Give feedback
+      </Link>
+    </div>
+  );
+}
+
 function Home() {
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
@@ -904,67 +977,7 @@ function Home() {
       </div>
 
       {/* ── Testimonials ── */}
-      {(() => {
-        const TESTIMONIALS = [
-          {
-            quote: "Finally an app that has almost all desi foods! I always wondered if I was giving the right foods at the right time.",
-            name: "Sana R.",
-            location: "Karachi",
-            context: "Mum of an 8 month old",
-          },
-          {
-              quote: "Amazing initiative! 👏 Building a solution from a real parenting challenge is what makes products truly valuable.",
-              name: "Usama Y.",
-              location: "",
-              context: "",
-            },
-          // ADD MORE QUOTES HERE
-        ];
-        const [tIdx, setTIdx] = useState(0);
-        const t = TESTIMONIALS[tIdx];
-        return (
-          <div style={{ padding: "3rem 0 1rem", textAlign: "center" }}>
-            <p style={{ fontSize: "0.75rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--orange-dark)", marginBottom: "0.5rem" }}>From parents</p>
-            <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", marginBottom: "2rem", color: "var(--dark)" }}>What parents are saying</h2>
-
-            <div style={{ maxWidth: 520, margin: "0 auto 1.5rem", background: "var(--card-bg)", border: "1.5px solid var(--border)", borderRadius: 20, padding: "28px 28px 24px" }}>
-              <p style={{ margin: "0 0 20px", fontSize: "1rem", lineHeight: 1.75, color: "var(--dark)", fontStyle: "italic" }}>
-                "{t.quote}"
-              </p>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
-                <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--orange)", display: "grid", placeItems: "center", fontSize: "1rem", flexShrink: 0 }}>🧡</div>
-                <div style={{ textAlign: "left" }}>
-                  <p style={{ margin: 0, fontWeight: 800, fontSize: "0.85rem", color: "var(--dark)" }}>{t.name}{t.location ? `, ${t.location}` : ""}</p>
-                  {t.context && <p style={{ margin: 0, fontSize: "0.75rem", color: "var(--muted)" }}>{t.context}</p>}
-                </div>
-              </div>
-            </div>
-
-            {TESTIMONIALS.length > 1 && (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: "1.5rem" }}>
-                <button onClick={() => setTIdx((tIdx - 1 + TESTIMONIALS.length) % TESTIMONIALS.length)} style={{ background: "none", border: "1.5px solid var(--border)", borderRadius: "50%", width: 32, height: 32, cursor: "pointer", color: "var(--muted)", fontSize: "0.9rem" }}>←</button>
-                {TESTIMONIALS.map((_, i) => (
-                  <span key={i} onClick={() => setTIdx(i)} style={{ width: 8, height: 8, borderRadius: "50%", background: i === tIdx ? "var(--orange-dark)" : "var(--border)", display: "inline-block", cursor: "pointer" }} />
-                ))}
-                <button onClick={() => setTIdx((tIdx + 1) % TESTIMONIALS.length)} style={{ background: "none", border: "1.5px solid var(--border)", borderRadius: "50%", width: 32, height: 32, cursor: "pointer", color: "var(--muted)", fontSize: "0.9rem" }}>→</button>
-              </div>
-            )}
-
-            <Link
-              to="/about#contact"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 6,
-                border: "1.5px solid var(--border)", borderRadius: 50,
-                padding: "10px 22px", fontSize: "0.88rem", fontWeight: 700,
-                color: "var(--orange-dark)", textDecoration: "none",
-                background: "var(--card-bg)",
-              }}
-            >
-              💬 Give feedback
-            </Link>
-          </div>
-        );
-      })()}
+      <TestimonialsSection />
 
       {/* ── CTA ── */}
       <CTAFooter />
