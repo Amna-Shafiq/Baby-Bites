@@ -123,7 +123,7 @@ function About() {
       </div>
 
       {/* ── Contact ── */}
-      <div className="panel" style={{ marginBottom: "1.25rem" }}>
+      <div id="contact" className="panel" style={{ marginBottom: "1.25rem" }}>
         <span className="eyebrow eo">Get in touch</span>
         <h2 style={{ margin: "0.3rem 0 0.4rem" }}>Contact us</h2>
         <p style={{ margin: "0 0 1.25rem", fontSize: "0.9rem", color: "var(--muted)", lineHeight: 1.6 }}>
@@ -137,7 +137,7 @@ function About() {
       </div>
 
       {/* ── Disclaimer ── */}
-      <div id="disclaimer" className="panel" style={{ marginBottom: "2rem", background: "#fffbf0", border: "1.5px solid #f5e0a0" }}>
+      <div id="disclaimer" className="panel" style={{ marginBottom: "2rem", background: "var(--card-bg)", border: "1.5px solid var(--border)" }}>
         <span className="eyebrow eo">Legal</span>
         <h2 style={{ margin: "0.3rem 0 0.75rem" }}>Disclaimer</h2>
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", fontSize: "0.88rem", color: "var(--muted)", lineHeight: 1.75 }}>
