@@ -903,6 +903,60 @@ function Home() {
         </div>
       </div>
 
+      {/* ── Testimonials ── */}
+      <div style={{ padding: "3rem 0 1rem" }}>
+        <p style={{ textAlign: "center", fontSize: "0.75rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--orange-dark)", marginBottom: "0.5rem" }}>From parents</p>
+        <h2 style={{ textAlign: "center", fontSize: "clamp(1.4rem, 3vw, 2rem)", marginBottom: "2rem", color: "var(--dark)" }}>What mamas are saying</h2>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16, marginBottom: "2rem" }}>
+          {[
+            {
+              quote: "Finally an app that has almost all desi foods! I always wondered if I was giving the right foods at the right time.",
+              name: "Sana R.",
+              location: "Karachi",
+              context: "Mum of an 8 month old",
+            },
+            // ADD MORE QUOTES HERE
+          ].map((t, i) => (
+            <div key={i} style={{
+              background: "var(--card-bg)",
+              border: "1.5px solid var(--border)",
+              borderRadius: 18,
+              padding: "20px 22px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 14,
+            }}>
+              <p style={{ margin: 0, fontSize: "0.95rem", lineHeight: 1.7, color: "var(--dark)", fontStyle: "italic" }}>
+                "{t.quote}"
+              </p>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--orange)", display: "grid", placeItems: "center", fontSize: "1rem", flexShrink: 0 }}>🧡</div>
+                <div>
+                  <p style={{ margin: 0, fontWeight: 800, fontSize: "0.85rem", color: "var(--dark)" }}>{t.name}, {t.location}</p>
+                  <p style={{ margin: 0, fontSize: "0.75rem", color: "var(--muted)" }}>{t.context}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: "center" }}>
+          <Link
+            to="/about#contact"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: 6,
+              border: "1.5px solid var(--border)", borderRadius: 50,
+              padding: "10px 22px", fontSize: "0.88rem", fontWeight: 700,
+              color: "var(--orange-dark)", textDecoration: "none",
+              background: "var(--card-bg)",
+            }}
+          >
+            💬 Give feedback
+          </Link>
+        </div>
+      </div>
+
       {/* ── CTA ── */}
       <CTAFooter />
 
