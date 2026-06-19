@@ -1203,7 +1203,7 @@ function Explore() {
             ].map((item) => (
               <Link key={item.to} to={item.to} style={{ textDecoration: "none", display: "block" }}>
                 <div style={{
-                  background: "rgba(250, 250, 248, 0.5)",
+                  background: "var(--card-bg)",
                   border: "1.5px solid var(--border)",
                   borderRadius: 16, padding: "1.1rem 1.25rem",
                   height: "100%",
