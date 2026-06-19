@@ -35,7 +35,7 @@ Deno.serve(async (req) => {
             <td style="padding:36px 36px 0;">
               <h2 style="margin:0 0 16px;font-size:1.2rem;color:#2d1a0e;font-weight:800;">Hi there, welcome to Baby Bites! 🎉</h2>
               <p style="margin:0 0 16px;color:#5a3e2b;font-size:0.95rem;line-height:1.75;">
-                We're so glad you're here. To get the most personalised experience, make sure you've completed your baby's profile — including their date of birth, any allergies and dietary preferences. The more we know about your little one, the better we can tailor meal suggestions, food safety guidance and age-appropriate recipes just for them.
+                We're so glad you're here. To get the most personalised experience, make sure you've completed your baby's profile, including their date of birth, any allergies and dietary preferences. The more we know about your little one, the better we can tailor meal suggestions, food safety guidance and age-appropriate recipes just for them.
               </p>
             </td>
           </tr>
