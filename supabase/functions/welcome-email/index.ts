@@ -40,13 +40,6 @@ Deno.serve(async (req) => {
             </td>
           </tr>
 
-          <!-- Divider -->
-          <tr>
-            <td style="padding:20px 36px 0;">
-              <hr style="border:none;border-top:1.5px solid #f5ece4;margin:0;" />
-            </td>
-          </tr>
-
           <!-- A few things to know -->
           <tr>
             <td style="padding:24px 36px 0;">
@@ -79,8 +72,7 @@ Deno.serve(async (req) => {
 
           <!-- Sign-off -->
           <tr>
-            <td style="padding:0 36px 32px;">
-              <hr style="border:none;border-top:1.5px solid #f5ece4;margin:0 0 24px;" />
+            <td style="padding:24px 36px 32px;">
               <p style="margin:0 0 4px;color:#5a3e2b;font-size:0.95rem;line-height:1.75;">
                 Thank you for trusting Baby Bites with something as important as your baby's first foods. We're honoured to be part of this journey with you. 🧡
               </p>
