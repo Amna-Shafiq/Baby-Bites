@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet-async";
 import { supabase } from "../lib/supabaseClient";
 import useActiveBaby from "../hooks/useActiveBaby";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useTheme } from "../contexts/ThemeContext";
 import articles from "../data/articles";
 
 // ── Paste your video URL here (YouTube embed or direct .mp4) ──
@@ -636,6 +637,7 @@ const RESULT_GRADES = [
 ];
 
 function MythBusters() {
+  const { dark } = useTheme();
   const [idx, setIdx]         = useState(0);
   const [picked, setPicked]   = useState(null);
   const [shaking, setShaking] = useState(false);
@@ -694,7 +696,7 @@ function MythBusters() {
       {/* ── Results screen ── */}
       {finished ? (
         <div style={{
-          background: "rgba(250, 250, 248, 0.5)",
+          background: "var(--card-bg)",
           border: "1.5px solid var(--border)",
           borderRadius: 20, padding: "2rem 1.75rem",
           textAlign: "center", animation: "fadeSlideUp 0.4s ease",
@@ -734,7 +736,7 @@ function MythBusters() {
       ) : (
 
       <div style={{
-        background: "rgba(250, 250, 248, 0.5)",
+        background: "var(--card-bg)",
         border: "1.5px solid var(--border)",
         borderRadius: 20, padding: "1.5rem 1.75rem",
         position: "relative", overflow: "hidden",
@@ -777,8 +779,8 @@ function MythBusters() {
             let border = "var(--border)";
             let color = "var(--dark)";
             if (picked) {
-              if (choice === myth.answer) { bg = "#e8f8ee"; border = "var(--green-dark)"; color = "var(--green-dark)"; }
-              else if (choice === picked) { bg = "#fdf0ef"; border = "#c0392b"; color = "#c0392b"; }
+              if (choice === myth.answer) { bg = dark ? "#0a2010" : "#e8f8ee"; border = "var(--green-dark)"; color = "var(--green-dark)"; }
+              else if (choice === picked) { bg = dark ? "#200808" : "#fdf0ef"; border = "#c0392b"; color = "#c0392b"; }
             }
             return (
               <button
@@ -803,7 +805,7 @@ function MythBusters() {
         {/* Explanation */}
         {picked && (
           <div style={{
-            background: correct ? "#e8f8ee" : "#fdf0ef",
+            background: correct ? (dark ? "#0a2010" : "#e8f8ee") : (dark ? "#200808" : "#fdf0ef"),
             border: `1.5px solid ${correct ? "var(--green-dark)" : "#c0392b"}`,
             borderRadius: 12, padding: "0.9rem 1.1rem",
             marginTop: "1.1rem",
