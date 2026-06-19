@@ -170,8 +170,8 @@ function Pantry() {
                     onClick={() => removeHouseholdFood(food.id)}
                     title={t("removeFromPantry")}
                     style={{
-                      background: "var(--yellow-mid)", border: "none", cursor: "pointer",
-                      color: "var(--yellow-dark)", fontSize: "0.7rem", lineHeight: 1,
+                      background: "rgba(0,0,0,0.18)", border: "none", cursor: "pointer",
+                      color: "var(--dark)", fontSize: "0.7rem", lineHeight: 1,
                       width: 18, height: 18, borderRadius: "50%",
                       display: "flex", alignItems: "center", justifyContent: "center",
                       fontWeight: 900,
