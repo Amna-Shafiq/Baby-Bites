@@ -152,9 +152,13 @@
 /* CTA footer sits flush against app footer */
 .cta-footer + .app-footer { margin-top: 0; }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
-  overflow-x: clip;
+  overflow-x: hidden;
   font-family: 'Nunito', sans-serif;
   background: var(--cream);
   color: var(--text);
@@ -538,8 +542,8 @@ button { font-family: 'Nunito', sans-serif; }
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: calc(100% + 4rem);
+  margin-left: -2rem;
 }
 .app-footer-logo {
   font-family: 'Aileron', sans-serif;

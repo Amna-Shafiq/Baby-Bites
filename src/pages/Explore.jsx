@@ -1228,7 +1228,7 @@ function Explore() {
       <div style={{
         position: "relative", overflow: "hidden", minHeight: "70vh",
         marginLeft: "calc(-50vw + 50%)",
-        width: "100vw",
+        width: "100dvw",
         WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)",
         maskImage: "linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)",
       }}>
