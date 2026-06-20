@@ -847,17 +847,18 @@ function MythBusters() {
 
 // ── Firsts ────────────────────────────────────────────────
 const CATEGORY_META = {
-  grain:       { label: "Baby's First Grains",       emoji: "🌾", color: "#FFF8E1", border: "#F5A623" },
-  veggie:      { label: "Baby's First Vegetables",   emoji: "🥦", color: "#F0FFF4", border: "#27ae60" },
-  fruit:       { label: "Baby's First Fruits",       emoji: "🍎", color: "#FFF0F3", border: "#e74c3c" },
-  protein:     { label: "Baby's First Proteins",     emoji: "🥩", color: "#FFF4EE", border: "#c4622a" },
-  dairy:       { label: "Baby's First Dairy",        emoji: "🥛", color: "#F0F8FF", border: "#2980b9" },
-  spice:       { label: "Baby's First Spices",       emoji: "🌿", color: "#F0FFF8", border: "#16a085" },
-  finger_food: { label: "Baby's First Finger Foods", emoji: "🤌", color: "#F5F0FF", border: "#8e44ad" },
+  grain:       { label: "Baby's First Grains",       emoji: "🌾", color: "#FFF8E1", darkColor: "#1A1400", border: "#F5A623" },
+  veggie:      { label: "Baby's First Vegetables",   emoji: "🥦", color: "#F0FFF4", darkColor: "#001A08", border: "#27ae60" },
+  fruit:       { label: "Baby's First Fruits",       emoji: "🍎", color: "#FFF0F3", darkColor: "#1A0006", border: "#e74c3c" },
+  protein:     { label: "Baby's First Proteins",     emoji: "🥩", color: "#FFF4EE", darkColor: "#1A0800", border: "#c4622a" },
+  dairy:       { label: "Baby's First Dairy",        emoji: "🥛", color: "#F0F8FF", darkColor: "#001018", border: "#2980b9" },
+  spice:       { label: "Baby's First Spices",       emoji: "🌿", color: "#F0FFF8", darkColor: "#001810", border: "#16a085" },
+  finger_food: { label: "Baby's First Finger Foods", emoji: "🤌", color: "#F5F0FF", darkColor: "#0E0018", border: "#8e44ad" },
 };
 
 function FirstCard({ item }) {
   const navigate = useNavigate();
+  const { dark } = useTheme();
   const meta = CATEGORY_META[item.category] || {};
   const clickable = item.food_id || item.meal_id;
 
@@ -870,7 +871,7 @@ function FirstCard({ item }) {
     <div
       onClick={clickable ? handleClick : undefined}
       style={{
-        background: meta.color || "#fafaf8",
+        background: dark ? (meta.darkColor || "var(--card-bg)") : (meta.color || "#fafaf8"),
         border: `1.5px solid ${meta.border || "var(--border)"}`,
         borderRadius: 16,
         padding: "1.1rem 1.25rem",
