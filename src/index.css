@@ -149,8 +149,9 @@
 /* ── Base ──────────────────────────────────────────── */
 * { box-sizing: border-box; }
 
-/* CTA footer sits flush against app footer */
+/* CTA footer / landing page sit flush against app footer */
 .cta-footer + .app-footer { margin-top: 0; }
+.landing-page + .app-footer { margin-top: 0; }
 
 html {
   overflow-x: hidden;
@@ -1208,7 +1209,7 @@ button { font-family: 'Nunito', sans-serif; }
   .top-nav-hamburger-btn { display: flex; }
   .page             { padding-top: 4.5rem; padding-bottom: 2rem; }
   .app-footer       { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
-  .app-footer-links { justify-content: center; }
+  .app-footer-links { justify-content: center; flex-wrap: wrap; max-width: 260px; }
   .app-footer-toggles { display: flex; justify-content: center; }
   .cta-footer       { padding: 2.5rem 1.5rem; }
   .cta-footer-inner { grid-template-columns: 1fr; gap: 1.5rem; }

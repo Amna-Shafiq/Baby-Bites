@@ -69,7 +69,7 @@ function App() {
           <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
         </Routes>
         {!isHome && isMealsOrFoods && !session && <CTAFooter />}
-        {!isHome && <AppFooter />}
+        <AppFooter />
       </div>
     </div>
   );

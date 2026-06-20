@@ -982,53 +982,6 @@ function Home() {
       {/* ── CTA ── */}
       <CTAFooter />
 
-      {/* ── Footer ── */}
-      <footer className="lp-footer">
-        <div className="flogo"><BrandLogo size="1.1rem" /></div>
-        <div className="flinks">
-          <a href="#features">{t("footerFeatures")}</a>
-          <Link to="/meals">{t("meals")}</Link>
-          <Link to="/foods">{t("allFoods")}</Link>
-          <Link to="/about">{t("footerAbout")}</Link>
-        </div>
-        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
-          <a
-            href="https://www.instagram.com/trybabybites/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram"
-            style={{ color: "inherit", display: "flex", alignItems: "center" }}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-              <circle cx="12" cy="12" r="4"/>
-              <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
-            </svg>
-          </a>
-          <button
-            type="button"
-            onClick={toggleTheme}
-            title={dark ? "Switch to light mode" : "Switch to dark mode"}
-            className="footer-toggle-btn"
-          >
-            {dark ? "☀️" : "🌙"}
-          </button>
-          <button
-            className="lang-toggle footer-lang-toggle"
-            onClick={() => setLang(lang === "en" ? "ur" : "en")}
-            title={lang === "en" ? "Switch to Urdu" : "Switch to English"}
-          >
-            <img
-              src={lang === "en" ? "https://flagcdn.com/20x15/pk.png" : "https://flagcdn.com/20x15/us.png"}
-              alt={lang === "en" ? "Pakistan" : "USA"}
-              style={{ width: 20, height: 15, borderRadius: 2, objectFit: "cover" }}
-            />
-            {lang === "en" ? "اردو" : "EN"}
-          </button>
-        </div>
-        <div className="fcopy">{t("footerCopy")}</div>
-      </footer>
-
     </div>
   );
 }

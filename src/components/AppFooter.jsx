@@ -29,7 +29,6 @@ function AppFooter() {
         </div>
       </Link>
       <div className="app-footer-links">
-        <Link to="/explore">Explore</Link>
         <Link to="/meals">Meals</Link>
         <Link to="/foods">Foods</Link>
         <Link to="/about">About</Link>
