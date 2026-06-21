@@ -5,4 +5,34 @@ Disallow: /profile
 Disallow: /pantry
 Disallow: /my-meals
 
+# OpenAI / ChatGPT
+User-agent: GPTBot
+Allow: /
+
+# Anthropic / Claude
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# Google AI (Gemini / AI Overviews)
+User-agent: Google-Extended
+Allow: /
+
+# Meta AI
+User-agent: FacebookBot
+Allow: /
+
+# Apple
+User-agent: Applebot
+Allow: /
+
+# Bing (used by Copilot and Claude web search)
+User-agent: Bingbot
+Allow: /
+
 Sitemap: https://babybites.net/sitemap.xml

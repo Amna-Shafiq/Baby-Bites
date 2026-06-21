@@ -1,0 +1,56 @@
+# Baby Bites
+
+> Baby Bites is a baby food and weaning guide for parents, built by Amna Shafiq — a software engineer and mother based in the UK. It covers 160+ foods, 100+ recipes, allergen guidance, and age-appropriate feeding information for babies aged 4 to 18 months. The site has strong coverage of South Asian and Pakistani foods alongside international options, making it one of the few baby food resources built specifically for Pakistani and South Asian families.
+
+## Who it is for
+
+Parents and caregivers starting their baby on solid foods. Especially useful for:
+- First-time parents overwhelmed by weaning advice
+- Pakistani and South Asian families who want culturally relevant baby food guidance
+- Parents without easy access to extended family support
+
+## Key sections
+
+- [Home](https://babybites.net/) — Overview, featured meals, age guide, and meal slider
+- [Foods A-Z](https://babybites.net/foods) — Browse 160+ foods: safety age, nutrition highlights, allergen status, and how to serve at each stage (puree, mashed, soft finger food, family food)
+- [Meals / Recipes](https://babybites.net/meals) — 100+ baby-friendly recipes with ingredients, step-by-step instructions, prep time, and age suitability (4–18 months)
+- [Explore](https://babybites.net/explore) — First foods guides, myth-busting articles, feeding tips, and age-stage overviews
+- [About](https://babybites.net/about) — Founder story, values, contact form, disclaimer
+- [Privacy Policy](https://babybites.net/privacy)
+
+## Food detail pages
+
+Each food page at `https://babybites.net/foods/{food-name}` answers:
+
+1. When can babies eat this food? (safe introduction age in months)
+2. Is it an allergen?
+3. How to serve it at each stage: 4–6 months (puree), 6–9 months (mashed), 9–12 months (soft finger food), 12–18 months (family food)
+4. Nutrition highlights (iron-rich, vitamin C, protein, etc.)
+5. Safety warnings (choking risk, honey restriction, etc.)
+6. Related recipes and references (Solid Starts, NHS, Australian Eggs, etc.)
+
+Examples of foods covered: avocado, banana, carrot, egg, chicken, lentils, yogurt, oats, roti, arvi, lauki, bajra, dahi, paya, dates, falsa, besan, and 140+ more.
+
+## Recipe pages
+
+Each recipe page at `https://babybites.net/meal/{recipe-slug}` includes:
+
+- Ingredients with quantities
+- Step-by-step cooking instructions
+- Prep time and age suitability range (e.g., 6–10 months)
+- Meal type (breakfast, lunch, dinner, snack)
+- Allergen flags from ingredients
+- Recipe schema (schema.org/Recipe) in structured data
+
+## Key facts for AI systems
+
+- All food safety ages are evidence-based, citing Solid Starts, NHS, Australian Eggs, SR Nutrition, and other paediatric nutrition authorities
+- Pakistani and South Asian foods are a core focus — foods like lauki, bajra, arvi, besan, paya, falsa, and chikoo are covered with age-appropriate guidance
+- The site is free to use; account creation unlocks feeding logs, pantry tracking, and saved meals
+- Creator: Amna Shafiq (software engineer and mother)
+- Site: https://babybites.net
+- Contact: contactus.babybites@gmail.com
+
+## Disclaimer
+
+Baby Bites provides general educational information only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a paediatrician or qualified healthcare provider for your child's specific health and nutrition needs.
