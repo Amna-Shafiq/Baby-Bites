@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useForm, ValidationError } from "@formspree/react";
 import { Helmet } from "react-helmet-async";
 
@@ -65,10 +66,18 @@ function ContactForm() {
 }
 
 function About() {
+  const { hash } = useLocation();
+
   useEffect(() => {
     document.body.classList.add("page-warm-bg");
     return () => document.body.classList.remove("page-warm-bg");
   }, []);
+
+  useEffect(() => {
+    if (!hash) return;
+    const el = document.querySelector(hash);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [hash]);
 
   return (
     <div className="page">
