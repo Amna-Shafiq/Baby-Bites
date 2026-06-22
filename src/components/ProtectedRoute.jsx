@@ -7,8 +7,8 @@ function ProtectedRoute({ children }) {
   const location = useLocation();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session ?? null);
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setSession(user ?? null);
     });
   }, []);
 
