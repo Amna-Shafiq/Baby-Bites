@@ -139,7 +139,7 @@ function Profile() {
 
   const handleChangePassword = async (e) => {
     e.preventDefault(); setPasswordStatus("");
-    if (!newPassword || newPassword.length < 6) { setPasswordStatus("Password must be at least 6 characters."); return; }
+    if (!newPassword || newPassword.length < 8) { setPasswordStatus("Password must be at least 8 characters."); return; }
     const { error } = await supabase.auth.updateUser({ password: newPassword });
     if (error) { setPasswordStatus(error.message); return; }
     setPasswordStatus("Password updated!"); setNewPassword("");
@@ -478,8 +478,8 @@ function Profile() {
                           type="password"
                           value={newPassword}
                           onChange={e => setNewPassword(e.target.value)}
-                          placeholder="New password (min 6 chars)"
-                          minLength={6}
+                          placeholder="New password (min 8 chars)"
+                          minLength={8}
                           style={{ flex: 1, minWidth: 200 }}
                         />
                         <button type="submit" className="btn btn-primary">Update</button>
