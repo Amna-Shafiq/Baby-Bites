@@ -690,6 +690,7 @@ function Home() {
   return (
     <div className="landing-page">
       <Helmet>
+        <link rel="preload" as="image" href="/food-spread.webp" type="image/webp" />
         <title>Baby Bites — Age-Appropriate Meals & Food Guides for Babies</title>
         <meta name="description" content="Discover 100+ baby-safe recipes and food guides organised by age. From 6-month purees to 12-month family meals — Baby Bites makes weaning easy." />
         <meta property="og:type"        content="website" />
