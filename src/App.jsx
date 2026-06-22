@@ -22,6 +22,7 @@ import TopNav from "./components/TopNav";
 import CTAFooter from "./components/CTAFooter";
 import Admin from "./pages/Admin";
 import AdminRoute from "./components/AdminRoute";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const location = useLocation();
@@ -67,6 +68,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         {!isHome && isMealsOrFoods && !session && <CTAFooter />}
         <AppFooter />
