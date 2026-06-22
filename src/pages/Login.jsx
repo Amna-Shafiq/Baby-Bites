@@ -16,12 +16,13 @@ function Login({ redirectTo = "/" }) {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // modes: "signIn" | "signUp" | "forgotPassword" | "resetPassword"
   const [mode, setMode]               = useState("signIn");
   const [email, setEmail]             = useState("");
   const [password, setPassword]       = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [fullName, setFullName]       = useState("");
   const [babyName, setBabyName]       = useState("");
-  const [babyAgeMonths, setBabyAgeMonths] = useState("");
   const [babyDob, setBabyDob]         = useState("");
   const [error, setError]             = useState("");
   const [message, setMessage]         = useState("");
@@ -30,12 +31,23 @@ function Login({ redirectTo = "/" }) {
 
   const finalRedirectTo = location.state?.redirectTo || redirectTo;
 
-  // Show success message when redirected back after email verification
   useEffect(() => {
     if (location.state?.verified) {
       setMessage("✅ Email verified! You can now sign in.");
     }
   }, [location.state]);
+
+  // Supabase fires PASSWORD_RECOVERY when the user lands via a reset link
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        setMode("resetPassword");
+        setError("");
+        setMessage("");
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleGoogleSignIn = async () => {
     setError("");
@@ -47,10 +59,44 @@ function Login({ redirectTo = "/" }) {
     if (error) { setError(error.message); setGoogleLoading(false); }
   };
 
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    setError(""); setMessage("");
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/login`,
+      });
+      if (error) throw error;
+      setMessage("Check your email for a password reset link.");
+    } catch (err) {
+      setError(err?.message || "Failed to send reset email. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    setError(""); setMessage("");
+    if (newPassword.length < 8) { setError("Password must be at least 8 characters."); return; }
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) throw error;
+      setMessage("Password updated! You can now sign in.");
+      await supabase.auth.signOut();
+      setTimeout(() => { setMode("signIn"); setNewPassword(""); setMessage(""); }, 2000);
+    } catch (err) {
+      setError(err?.message || "Failed to update password. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setMessage("");
+    setError(""); setMessage("");
 
     if (!supabase) {
       setError("Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.");
@@ -60,9 +106,10 @@ function Login({ redirectTo = "/" }) {
     setLoading(true);
     try {
       if (mode === "signUp") {
-        if (!fullName.trim())                        throw new Error("Please enter your full name.");
-        if (!babyName.trim())                        throw new Error("Please enter your baby's name.");
-        if (!babyDob)                                throw new Error("Please select baby date of birth.");
+        if (!fullName.trim())        throw new Error("Please enter your full name.");
+        if (!babyName.trim())        throw new Error("Please enter your baby's name.");
+        if (!babyDob)                throw new Error("Please select baby date of birth.");
+        if (password.length < 8)     throw new Error("Password must be at least 8 characters.");
 
         const { data, error } = await supabase.auth.signUp({
           email,
@@ -76,7 +123,6 @@ function Login({ redirectTo = "/" }) {
           },
         });
         if (error) throw error;
-        // Supabase silently "succeeds" for existing emails — identities array is empty
         if (data?.user?.identities?.length === 0) {
           throw new Error("An account with this email already exists. Please sign in instead.");
         }
@@ -94,16 +140,86 @@ function Login({ redirectTo = "/" }) {
     }
   };
 
+  const switchMode = (next) => { setError(""); setMessage(""); setMode(next); };
+
+  // ── Reset password (after clicking email link) ──
+  if (mode === "resetPassword") {
+    return (
+      <div className="page">
+        <div className="login-wrapper">
+          <div className="login-card">
+            <span className="eyebrow eo">Reset password</span>
+            <h2>Set a new password</h2>
+            <form onSubmit={handleResetPassword} className="login-form">
+              <input
+                className="input"
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="New password (min 8 chars)"
+                minLength={8}
+                required
+              />
+              <button type="submit" className="btn btn-primary" disabled={loading}>
+                {loading ? "Updating…" : "Set new password"}
+              </button>
+            </form>
+            {error   && <p style={{ color: "#c0392b", marginTop: 12, fontSize: "0.88rem" }}>{error}</p>}
+            {message && <p style={{ color: "var(--green-dark)", marginTop: 12, fontSize: "0.88rem" }}>{message}</p>}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Forgot password ──
+  if (mode === "forgotPassword") {
+    return (
+      <div className="page">
+        <div className="login-wrapper">
+          <div className="login-card">
+            <span className="eyebrow eo">Forgot password</span>
+            <h2>Reset your password</h2>
+            <p style={{ color: "var(--muted)", fontSize: "0.88rem", marginBottom: 12 }}>
+              Enter your email and we'll send you a reset link.
+            </p>
+            <form onSubmit={handleForgotPassword} className="login-form">
+              <input
+                className="input"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                required
+              />
+              <button type="submit" className="btn btn-primary" disabled={loading}>
+                {loading ? "Sending…" : "Send reset link"}
+              </button>
+            </form>
+            {error   && <p style={{ color: "#c0392b", marginTop: 12, fontSize: "0.88rem" }}>{error}</p>}
+            {message && <p style={{ color: "var(--green-dark)", marginTop: 12, fontSize: "0.88rem" }}>{message}</p>}
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => switchMode("signIn")}
+              style={{ marginTop: 12, width: "100%" }}
+            >
+              Back to sign in
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Sign in / Sign up ──
   return (
     <div className="page">
-
-
       <div className="login-wrapper">
         <div className="login-card">
           <span className="eyebrow eo">{mode === "signIn" ? "Welcome back" : "Join Baby Bites"}</span>
           <h2>{mode === "signIn" ? "Sign in" : "Create account"}</h2>
 
-          {/* Google OAuth */}
           <button
             type="button"
             onClick={handleGoogleSignIn}
@@ -141,10 +257,25 @@ function Login({ redirectTo = "/" }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               type="password"
-              placeholder="Password"
+              placeholder={mode === "signUp" ? "Password (min 8 chars)" : "Password"}
               required
-              minLength={6}
+              minLength={mode === "signUp" ? 8 : undefined}
             />
+
+            {mode === "signIn" && (
+              <button
+                type="button"
+                onClick={() => switchMode("forgotPassword")}
+                style={{
+                  alignSelf: "flex-end", background: "none", border: "none",
+                  color: "var(--orange-dark)", fontFamily: "Nunito, sans-serif",
+                  fontWeight: 700, fontSize: "0.8rem", cursor: "pointer", padding: 0,
+                  marginTop: -4,
+                }}
+              >
+                Forgot password?
+              </button>
+            )}
 
             {mode === "signUp" && (
               <>
@@ -189,7 +320,7 @@ function Login({ redirectTo = "/" }) {
           <button
             type="button"
             className="btn btn-ghost"
-            onClick={() => { setError(""); setMessage(""); setMode((m) => (m === "signIn" ? "signUp" : "signIn")); }}
+            onClick={() => switchMode(mode === "signIn" ? "signUp" : "signIn")}
             style={{ marginTop: 12, width: "100%" }}
           >
             {mode === "signIn" ? "Don't have an account? Sign up" : "Already have an account? Sign in"}

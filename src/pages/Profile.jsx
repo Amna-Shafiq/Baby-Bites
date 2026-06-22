@@ -65,10 +65,12 @@ function Profile() {
 
   // account
   const [showPasswordForm, setShowPasswordForm]   = useState(false);
+  const [currentPassword, setCurrentPassword]     = useState("");
   const [newPassword, setNewPassword]             = useState("");
   const [passwordStatus, setPasswordStatus]       = useState("");
   const [showDeleteAccount, setShowDeleteAccount] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [deletionPassword, setDeletionPassword]   = useState("");
   const [deleteAccountStatus, setDeleteAccountStatus] = useState("");
   const [deletingAccount, setDeletingAccount]     = useState(false);
 
@@ -139,10 +141,16 @@ function Profile() {
 
   const handleChangePassword = async (e) => {
     e.preventDefault(); setPasswordStatus("");
-    if (!newPassword || newPassword.length < 8) { setPasswordStatus("Password must be at least 8 characters."); return; }
+    if (!currentPassword) { setPasswordStatus("Please enter your current password."); return; }
+    if (!newPassword || newPassword.length < 8) { setPasswordStatus("New password must be at least 8 characters."); return; }
+    const { error: authError } = await supabase.auth.signInWithPassword({
+      email: session.user.email,
+      password: currentPassword,
+    });
+    if (authError) { setPasswordStatus("Current password is incorrect."); return; }
     const { error } = await supabase.auth.updateUser({ password: newPassword });
     if (error) { setPasswordStatus(error.message); return; }
-    setPasswordStatus("Password updated!"); setNewPassword("");
+    setPasswordStatus("Password updated!"); setNewPassword(""); setCurrentPassword("");
     setTimeout(() => { setPasswordStatus(""); setShowPasswordForm(false); }, 2000);
   };
 
@@ -161,6 +169,22 @@ function Profile() {
     if (deleteConfirmText !== "DELETE") return;
     setDeletingAccount(true);
     setDeleteAccountStatus("");
+    if (!isOAuthUser) {
+      if (!deletionPassword) {
+        setDeleteAccountStatus("Please enter your password to confirm.");
+        setDeletingAccount(false);
+        return;
+      }
+      const { error: authError } = await supabase.auth.signInWithPassword({
+        email: session.user.email,
+        password: deletionPassword,
+      });
+      if (authError) {
+        setDeleteAccountStatus("Incorrect password.");
+        setDeletingAccount(false);
+        return;
+      }
+    }
     const { error } = await supabase.rpc("delete_own_account");
     if (error) {
       setDeleteAccountStatus("Something went wrong. Please try again.");
@@ -476,6 +500,14 @@ function Profile() {
                         <input
                           className="input"
                           type="password"
+                          value={currentPassword}
+                          onChange={e => setCurrentPassword(e.target.value)}
+                          placeholder="Current password"
+                          style={{ flex: 1, minWidth: 200 }}
+                        />
+                        <input
+                          className="input"
+                          type="password"
                           value={newPassword}
                           onChange={e => setNewPassword(e.target.value)}
                           placeholder="New password (min 8 chars)"
@@ -483,7 +515,7 @@ function Profile() {
                           style={{ flex: 1, minWidth: 200 }}
                         />
                         <button type="submit" className="btn btn-primary">Update</button>
-                        <button type="button" className="btn btn-ghost" onClick={() => { setShowPasswordForm(false); setNewPassword(""); setPasswordStatus(""); }}>Cancel</button>
+                        <button type="button" className="btn btn-ghost" onClick={() => { setShowPasswordForm(false); setNewPassword(""); setCurrentPassword(""); setPasswordStatus(""); }}>Cancel</button>
                         {passwordStatus && <p style={{ width: "100%", fontSize: ".85rem", color: passwordStatus.includes("!") ? "var(--green-dark)" : "#c0392b", margin: 0 }}>{passwordStatus}</p>}
                       </form>
                     )}
@@ -536,6 +568,16 @@ function Profile() {
                       placeholder="Type DELETE to confirm"
                       style={{ marginBottom: 10, fontFamily: "Nunito, sans-serif" }}
                     />
+                    {!isOAuthUser && (
+                      <input
+                        className="input"
+                        type="password"
+                        value={deletionPassword}
+                        onChange={e => setDeletionPassword(e.target.value)}
+                        placeholder="Enter your password to confirm"
+                        style={{ marginBottom: 10, fontFamily: "Nunito, sans-serif" }}
+                      />
+                    )}
                     {deleteAccountStatus && (
                       <p style={{ fontSize: ".82rem", color: "#c0392b", margin: "0 0 8px" }}>{deleteAccountStatus}</p>
                     )}
@@ -548,7 +590,7 @@ function Profile() {
                       >
                         {deletingAccount ? "Deleting…" : "Yes, delete my account"}
                       </button>
-                      <button className="btn btn-ghost" onClick={() => { setShowDeleteAccount(false); setDeleteConfirmText(""); setDeleteAccountStatus(""); }}>Cancel</button>
+                      <button className="btn btn-ghost" onClick={() => { setShowDeleteAccount(false); setDeleteConfirmText(""); setDeleteAccountStatus(""); setDeletionPassword(""); }}>Cancel</button>
                     </div>
                   </div>
                 )}
