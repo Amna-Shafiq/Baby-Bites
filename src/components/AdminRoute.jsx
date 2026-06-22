@@ -13,7 +13,6 @@ function AdminRoute({ children }) {
     // which only reads from local storage without a network round-trip.
     supabase.auth.getUser().then(({ data: { user }, error }) => {
       if (error || !user || user.email !== ADMIN_EMAIL) {
-        setStatus("denied");
         navigate("/", { replace: true });
       } else {
         setStatus("allowed");
@@ -21,15 +20,13 @@ function AdminRoute({ children }) {
     });
   }, [navigate]);
 
-  if (status === "checking") {
+  if (status !== "allowed") {
     return (
       <div className="page" style={{ textAlign: "center", paddingTop: "6rem" }}>
         <p className="muted">Verifying access…</p>
       </div>
     );
   }
-
-  if (status === "denied") return null;
 
   return children;
 }
