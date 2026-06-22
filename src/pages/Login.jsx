@@ -124,7 +124,8 @@ function Login({ redirectTo = "/" }) {
         });
         if (error) throw error;
         if (data?.user?.identities?.length === 0) {
-          throw new Error("An account with this email already exists. Please sign in instead.");
+          setMessage("Check your email — if this address is new, you'll receive a confirmation link.");
+          return;
         }
         setMessage("Account created! Check your email to confirm, then sign in.");
         return;

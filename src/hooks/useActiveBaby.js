@@ -58,11 +58,12 @@ function useActiveBaby() {
 
   const addBaby = useCallback(async (payload) => {
     if (!supabase || !userId) return { error: "Not logged in." };
+    if (babies.length >= 10) return { error: "Maximum of 10 baby profiles per account." };
     const { error } = await supabase.from("babies").insert({ user_id: userId, ...payload });
     if (error) return { error: error.message };
     await loadBabies();
     return { error: null };
-  }, [userId, loadBabies]);
+  }, [userId, babies.length, loadBabies]);
 
   const updateBaby = useCallback(async (babyId, payload) => {
     if (!supabase || !userId) return { error: "Not logged in." };
