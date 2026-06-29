@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useForm, ValidationError } from "@formspree/react";
 import { Helmet } from "react-helmet-async";
@@ -23,8 +23,36 @@ const STORY_PARAGRAPHS = [
   "Baby Bites is still growing and evolving alongside our own journey, and I'm so grateful you're here to be part of it. I truly hope this little corner of the internet helps make feeding your baby feel easier, more joyful, and a little less lonely. 🤍",
 ];
 
+const COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes between submissions
+const STORAGE_KEY = "bb_contact_last_sent";
+
 function ContactForm() {
   const [state, handleSubmit] = useForm("xbdekwlb");
+  const [cooldownLeft, setCooldownLeft] = useState(() => {
+    const last = Number(localStorage.getItem(STORAGE_KEY) || 0);
+    const remaining = COOLDOWN_MS - (Date.now() - last);
+    return remaining > 0 ? remaining : 0;
+  });
+
+  useEffect(() => {
+    if (cooldownLeft <= 0) return;
+    const interval = setInterval(() => {
+      setCooldownLeft((prev) => {
+        const next = prev - 1000;
+        return next <= 0 ? 0 : next;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [cooldownLeft]);
+
+  const onSubmit = (e) => {
+    if (cooldownLeft > 0) { e.preventDefault(); return; }
+    handleSubmit(e);
+    localStorage.setItem(STORAGE_KEY, String(Date.now()));
+    setCooldownLeft(COOLDOWN_MS);
+  };
+
+  const minutesLeft = Math.ceil(cooldownLeft / 60000);
 
   if (state.succeeded) {
     return (
@@ -37,7 +65,7 @@ function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+    <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
         <input className="input" type="text" name="firstName" placeholder="First name" required />
         <input className="input" type="text" name="lastName"  placeholder="Last name"  required />
@@ -53,11 +81,16 @@ function ContactForm() {
         required
       />
       <ValidationError field="message" errors={state.errors} style={{ fontSize: "0.8rem", color: "#c0392b" }} />
+      {cooldownLeft > 0 && (
+        <p style={{ margin: 0, fontSize: "0.82rem", color: "#c0392b", fontWeight: 600 }}>
+          Please wait {minutesLeft} minute{minutesLeft !== 1 ? "s" : ""} before sending another message.
+        </p>
+      )}
       <button
         type="submit"
         className="btn btn-primary"
-        disabled={state.submitting}
-        style={{ alignSelf: "flex-start" }}
+        disabled={state.submitting || cooldownLeft > 0}
+        style={{ alignSelf: "flex-start", opacity: cooldownLeft > 0 ? 0.5 : 1 }}
       >
         {state.submitting ? "Sending…" : "Send message"}
       </button>
