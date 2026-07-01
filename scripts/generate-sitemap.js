@@ -82,7 +82,9 @@ async function generateSitemap() {
   // Ensure dist/ exists (in case script is run standalone)
   if (!existsSync("dist")) mkdirSync("dist");
 
-  writeFileSync("dist/sitemap.xml", buildXml(urls), "utf-8");
+  const xml = buildXml(urls);
+  writeFileSync("dist/sitemap.xml", xml, "utf-8");
+  writeFileSync("public/sitemap.xml", xml, "utf-8");
   console.log(`✓ Sitemap written — ${urls.length} URLs (${foods.length} foods, ${meals.length} meals)`);
 }
 
