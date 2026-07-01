@@ -857,7 +857,7 @@ function Home() {
             </button>
           </div>
           <div className="lp-stats">
-            <div><div className="sn">160+</div><div className="sl">{t("statFoods")}</div></div>
+            <div><div className="sn">170+</div><div className="sl">{t("statFoods")}</div></div>
             <div><div className="sn">100+</div><div className="sl">{t("statRecipes")}</div></div>
             <div><div className="sn">4–18m</div><div className="sl">{t("statAges")}</div></div>
           </div>
