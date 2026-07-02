@@ -208,17 +208,17 @@ function AllFoods() {
   return (
     <div className="page foods-page">
       <Helmet>
-        <title>Baby-Safe Foods A–Z | Baby Bites</title>
-        <meta name="description" content="Browse 100+ baby-safe foods organised by food group and age. Filter by allergens, search by name, and find out when and how to introduce each food safely." />
+        <title>Baby Foods A–Z | Baby Bites</title>
+        <meta name="description" content="Browse 170+ baby foods organised by food group and age. Filter by allergens, search by name, and find out when and how to introduce each food." />
         <meta property="og:type"        content="website" />
         <meta property="og:site_name"   content="Baby Bites" />
         <meta property="og:url"         content="https://babybites.net/foods" />
-        <meta property="og:title"       content="Baby-Safe Foods A–Z | Baby Bites" />
-        <meta property="og:description" content="Browse 100+ baby-safe foods organised by food group and age. Filter by allergens, search by name, and find out when and how to introduce each food safely." />
+        <meta property="og:title"       content="Baby Foods A–Z | Baby Bites" />
+        <meta property="og:description" content="Browse 170+ baby foods organised by food group and age. Filter by allergens, search by name, and find out when and how to introduce each food." />
         <meta property="og:image"       content="https://babybites.net/food-spread.webp" />
         <meta name="twitter:card"        content="summary_large_image" />
-        <meta name="twitter:title"       content="Baby-Safe Foods A–Z | Baby Bites" />
-        <meta name="twitter:description" content="Browse 100+ baby-safe foods organised by food group and age. Filter by allergens, search by name, and find out when and how to introduce each food safely." />
+        <meta name="twitter:title"       content="Baby Foods A–Z | Baby Bites" />
+        <meta name="twitter:description" content="Browse 170+ baby foods organised by food group and age. Filter by allergens, search by name, and find out when and how to introduce each food." />
         <meta name="twitter:image"       content="https://babybites.net/food-spread.webp" />
       </Helmet>
 
@@ -240,7 +240,7 @@ function AllFoods() {
           {t("foodsTitle")}
         </h1>
         <p style={{ color: "var(--muted)", fontSize: "1rem", margin: 0, fontWeight: 500 }}>
-          Browse 100+ foods with safe-from ages, texture tips and allergen guidance
+          Browse 170+ foods with age guidance, texture tips and allergen information
         </p>
       </div>
 
