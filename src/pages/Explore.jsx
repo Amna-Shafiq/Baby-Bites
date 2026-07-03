@@ -561,6 +561,18 @@ const MYTHS = [
     explanation: "Women who enjoy a cup of coffee can rejoice — caffeine isn't off-limits while breastfeeding. Research has found that only about 1% of the caffeine you drink ends up in breast milk. You can safely consume up to 200 mg per day (about two 8-oz cups of coffee). Just be sure to count all sources of caffeine — tea, chocolate, and soft drinks — toward your daily total.",
     source: null,
   },
+  {
+    statement: "Babies need juice to stay hydrated",
+    answer: "myth",
+    explanation: "Fruit juice — however natural — is loaded with sugar, and offers none of the fibre, protein, or oral-motor benefits of whole fruit. It can quickly become a habit, crowd out breastmilk or formula, and even cause diarrhoea in toddlers who drink too much. Paediatricians recommend avoiding juice entirely for babies, and minimising it for toddlers. Water and milk are all babies need.",
+    source: "AAP / WHO",
+  },
+  {
+    statement: "Baby's first food must be infant rice cereal",
+    answer: "myth",
+    explanation: "Infant cereal is convenient and iron-fortified, but it's not the only — or even the best — starting point. Babies around the world begin solids with meats, fruits, vegetables, legumes, and soups. The key priority is iron: older babies (especially exclusively breastfed ones) need reliable iron sources. Both fortified cereals and meats meet that need. You can start with whatever soft, age-appropriate food you like — there's no single correct first food.",
+    source: null,
+  },
 ];
 
 function ConfettiBurst({ active }) {
