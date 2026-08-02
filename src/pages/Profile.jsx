@@ -401,7 +401,7 @@ function Profile() {
                 {formStatus && <p style={{ color: "#c0392b", fontSize: ".85rem", marginTop: 10 }}>{formStatus}</p>}
 
                 <div style={{ marginTop: 14, display: "flex", gap: 8, justifyContent: "flex-end", flexWrap: "wrap", alignItems: "center" }}>
-                  {!addMode && selectedBaby && babies.length > 1 && (
+                  {!addMode && selectedBaby && (
                     deleteConfirm === selectedBabyId ? (
                       <>
                         <span style={{ fontSize: ".85rem", color: "var(--muted)" }}>Are you sure?</span>
