@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useForm, ValidationError } from "@formspree/react";
 import { Helmet } from "react-helmet-async";
+import ReminderSignup from "../components/ReminderSignup";
 
 const TEAM = [
   { name: "Amna Shafiq", role: "Founder and Lead Developer", photo: "/AmnaShafiq.JPG" },
@@ -162,6 +163,11 @@ function About() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* ── Reminder signup ── */}
+      <div style={{ marginBottom: "1.25rem" }}>
+        <ReminderSignup />
       </div>
 
       {/* ── Contact ── */}
