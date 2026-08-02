@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 import useActiveBaby from "../hooks/useActiveBaby";
 import { supabase } from "../lib/supabaseClient";
+import BabyReminderBlock from "../components/BabyReminderBlock";
 
 const AVATARS = ["🐣","🍼","👶","🧒","🌟","🐻","🦁","🐼","🐨","🐸","🦊","🐧","🦋","🌈","⭐","🍭"];
 
@@ -415,6 +416,45 @@ function Profile() {
                   <button type="submit" className="btn btn-primary">{addMode ? "Add baby" : "Save changes"}</button>
                 </div>
               </form>
+            )}
+
+            {/* ── Milestone reminders (Basics tab only) ── */}
+            {tab === "basics" && !addMode && (
+              <div style={{ marginTop: 10 }}>
+                <div style={{ ...panelCard, marginBottom: 0 }}>
+                  <div style={sectionTitle}>Milestone reminders</div>
+                  <div style={sectionSub}>
+                    Get an email reminder when each baby reaches a new feeding stage.
+                  </div>
+
+                  {loading ? null : babies.length === 0 ? (
+                    <div style={{ padding: "12px 0", display: "flex", alignItems: "center", gap: 10 }}>
+                      <span style={{ fontSize: 20 }}>👶</span>
+                      <p style={{ margin: 0, fontSize: ".85rem", color: "var(--muted)", fontFamily: "Nunito, sans-serif" }}>
+                        Add a baby profile first to set up milestone reminders.{" "}
+                        <button
+                          type="button"
+                          className="btn-ghost"
+                          onClick={() => { setAddMode(true); setTab("basics"); }}
+                          style={{ background: "none", border: "none", color: "var(--orange-dark)", fontWeight: 700, cursor: "pointer", padding: 0, fontFamily: "Nunito, sans-serif", fontSize: ".85rem" }}
+                        >
+                          Add a baby →
+                        </button>
+                      </p>
+                    </div>
+                  ) : (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 4 }}>
+                      {babies.map((b) => (
+                        <BabyReminderBlock
+                          key={b.id}
+                          baby={b}
+                          userEmail={session?.user?.email ?? ""}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
             )}
 
             {/* ── Tab: Diet ── */}
